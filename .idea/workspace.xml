@@ -4,21 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/Coordinate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix setCell">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/EffectiveValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/EffectiveValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,8 +100,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1723683024905</updated>
-      <workItem from="1723683025870" duration="10013000" />
+      <workItem from="1723683025870" duration="10640000" />
     </task>
+    <task id="LOCAL-00001" summary="fix setCell">
+      <option name="closed" value="true" />
+      <created>1723727858810</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723727858810</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +126,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix setCell" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix setCell" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
