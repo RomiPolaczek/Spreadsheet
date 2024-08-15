@@ -1,6 +1,6 @@
-package shticell.sheet.api;
+package sheet.api;
 
-import shticell.sheet.cell.api.Cell;
+import sheet.cell.api.Cell;
 
 public interface Sheet {
     int getVersion();

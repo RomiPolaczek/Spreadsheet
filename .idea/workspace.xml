@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="" />
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/Coordinate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/EffectiveValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/EffectiveValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "romipolaczek"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/romipolaczek/sheet-cell.git",
+    "accountId": "b376b095-8031-495c-bf87-4e65986435fc"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 7
 }]]></component>
@@ -21,14 +59,44 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/engine/src/sheet",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/src/Main.java",
+    "onboarding.tips.debug.path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/user-interface/src/Main.java",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/engine/src/sheet" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="expression.impl" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="engine" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -45,11 +113,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1723683024905</updated>
+      <workItem from="1723683025870" duration="10013000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -58,6 +138,11 @@
           <url>file://$PROJECT_DIR$/src/Main.java</url>
           <line>11</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/user-interface/src/Main.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

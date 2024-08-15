@@ -1,11 +1,16 @@
-package shticell.sheet.impl;
+package sheet.impl;
 
-import shticell.sheet.api.Sheet;
-import shticell.sheet.cell.api.Cell;
-import shticell.sheet.coordinate.Coordinate;
-import shticell.sheet.coordinate.CoordinateFactory;
+import sheet.api.CellType;
+import sheet.api.EffectiveValue;
+import sheet.api.Sheet;
+import sheet.cell.api.Cell;
+import sheet.cell.impl.CellImpl;
+import sheet.coordinate.Coordinate;
+import sheet.coordinate.CoordinateFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SheetImpl implements Sheet {
@@ -30,8 +35,16 @@ public class SheetImpl implements Sheet {
     public void setCell(int row, int column, String value) {
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
         Cell cell = activeCells.get(coordinate);
-        // if null need to create the cell...
 
+        if(cell == null) {
+            EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
+            int version = this.getVersion(); // You may have a different way to manage versions
+            List<Cell> dependsOn = new ArrayList<>();
+            List<Cell> influencingOn = new ArrayList<>();
+
+            cell = new CellImpl(row, column, value, effectiveValue, version, dependsOn, influencingOn);
+            activeCells.put(coordinate, cell);
+        }
         cell.setCellOriginalValue(value);
     }
 }
