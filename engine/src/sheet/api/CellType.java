@@ -28,10 +28,6 @@ public enum CellType {
         }
     }
 
-//    public boolean isString(String value) {
-//        return !isBoolean(value) && !isNumber(value);
-//    }
-
     public static CellType setCellType(String value){
         if(isBoolean(value)){
             return CellType.BOOLEAN;

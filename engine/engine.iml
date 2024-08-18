@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="JAXB" level="project" />
+    <orderEntry type="library" name="download1" level="project" />
+    <orderEntry type="library" name="mod" level="project" />
   </component>
 </module>
