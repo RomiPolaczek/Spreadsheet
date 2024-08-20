@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add parse expression">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add sub, abs and pow functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +147,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724154268002</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add sub, abs and pow functions">
+      <option name="closed" value="true" />
+      <created>1724162988032</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724162988032</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,7 +176,8 @@
     <MESSAGE value="fix setCell" />
     <MESSAGE value="load file function and add engine class" />
     <MESSAGE value="add parse expression" />
-    <option name="LAST_COMMIT_MESSAGE" value="add parse expression" />
+    <MESSAGE value="add sub, abs and pow functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sub, abs and pow functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -190,11 +196,6 @@
           <url>file://$PROJECT_DIR$/engine/src/Main.java</url>
           <line>67</line>
           <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>

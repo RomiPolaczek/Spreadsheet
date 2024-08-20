@@ -247,6 +247,26 @@ public enum FunctionParser {
             // all is good. create the relevant function instance
             return new SubExpression(source, startIndex, endIndex);
         }
+    },
+    REF{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function. it should have exactly one argument
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Invalid number of arguments for REF function. Expected 1, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression arg = parseExpression(arguments.get(0).trim());
+
+            // more validations on the expected argument types
+            if (!arg.getFunctionResultType().equals(CellType.STRING)) {
+                throw new IllegalArgumentException("Invalid argument types for REF function. Expected STRING, but got " + arg.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new RefExpression(arg);
+        }
     }
     ;
 
@@ -313,8 +333,8 @@ public enum FunctionParser {
  //       String input = "{POW, 2 , SS }";
       //  String input = "{ABS, 2, 3}";
        // String input = "{Sub, romimi100, 4, 7}";
-        String input = "{Sub, ss, ss, w}";
-
+      //  String input = "{Sub, ss, ss, w}";
+          String input = "{DIVIDE, 2, 0}";
 
         Expression expression = parseExpression(input);
         EffectiveValue result = expression.eval();

@@ -20,9 +20,11 @@ public class DivideExpression implements Expression {
         EffectiveValue leftValue = left.eval();
         EffectiveValue rightValue = right.eval();
         // do some checking... error handling...
-        //double result = (Double) leftValue.getValue() + (Double) rightValue.getValue();
-        double result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
+        if (rightValue.extractValueWithExpectation(Double.class) == 0) {
+            return new EffectiveValueImpl(CellType.STRING, "NaN");
+        }
 
+        double result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
         return new EffectiveValueImpl(CellType.NUMERIC, result);
     }
 
