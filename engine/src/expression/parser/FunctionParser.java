@@ -111,6 +111,70 @@ public enum FunctionParser {
             // all is good. create the relevant function instance
             return new ConcatExpression(left, right);
         }
+    },
+    TIMES{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function (e.g. number of arguments)
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for TIMES function. Expected 2, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            // more validations on the expected argument types
+            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for TIMES function. Expected NUMERIC, but got " + left.getFunctionResultType() + " and " + right.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new TimesExpression(left, right);
+        }
+    },
+    DIVIDE{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function (e.g. number of arguments)
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for DIVIDE function. Expected 2, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            // more validations on the expected argument types
+            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for DIVIDE function. Expected NUMERIC, but got " + left.getFunctionResultType() + " and " + right.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new DivideExpression(left, right);
+        }
+
+    },
+    MOD{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function (e.g. number of arguments)
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for MOD function. Expected 2, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            // more validations on the expected argument types
+            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for MOD function. Expected NUMERIC, but got " + left.getFunctionResultType() + " and " + right.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new ModExpression(left, right);
+        }
     }
     ;
 
@@ -173,7 +237,7 @@ public enum FunctionParser {
   //      String input = "{plus, {minus, 44, 22}, {plus, 1, 2}}";
    //     String input = "{upper_case, hello world}";
 //        String input = "4";
-        String input = "{CONCAT, 2 ,    world}";
+        String input = "{MOD, 1 , 10 }";
         Expression expression = parseExpression(input);
         EffectiveValue result = expression.eval();
         System.out.println("result: " + result.getValue() + " of type " + result.getCellType());
