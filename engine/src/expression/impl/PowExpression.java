@@ -5,12 +5,12 @@ import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.impl.EffectiveValueImpl;
 
-public class ConcatExpression implements Expression {
+public class PowExpression implements Expression {
 
     private Expression left;
     private Expression right;
 
-    public ConcatExpression(Expression left, Expression right) {
+    public PowExpression(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }
@@ -20,13 +20,13 @@ public class ConcatExpression implements Expression {
         EffectiveValue leftValue = left.eval();
         EffectiveValue rightValue = right.eval();
         // do some checking... error handling...
-        String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
-
-        return new EffectiveValueImpl(CellType.STRING, result);
+        //double result = (Double) leftValue.getValue() + (Double) rightValue.getValue();
+        double result = Math.pow(leftValue.extractValueWithExpectation(Double.class), rightValue.extractValueWithExpectation(Double.class));
+        return new EffectiveValueImpl(CellType.NUMERIC, result);
     }
 
     @Override
     public CellType getFunctionResultType() {
-        return CellType.STRING;
+        return CellType.NUMERIC;
     }
 }

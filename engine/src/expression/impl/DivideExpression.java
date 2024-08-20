@@ -6,6 +6,7 @@ import sheet.api.EffectiveValue;
 import sheet.impl.EffectiveValueImpl;
 
 public class DivideExpression implements Expression {
+
     private Expression left;
     private Expression right;
 

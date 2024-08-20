@@ -6,6 +6,7 @@ import sheet.api.EffectiveValue;
 import sheet.impl.EffectiveValueImpl;
 
 public class TimesExpression implements Expression {
+
     private Expression left;
     private Expression right;
 

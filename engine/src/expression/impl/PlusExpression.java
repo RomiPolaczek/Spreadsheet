@@ -6,7 +6,6 @@ import sheet.api.EffectiveValue;
 import sheet.impl.EffectiveValueImpl;
 
 public class PlusExpression implements Expression {
-
     private Expression left;
     private Expression right;
 

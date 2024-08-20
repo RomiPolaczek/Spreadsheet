@@ -175,6 +175,78 @@ public enum FunctionParser {
             // all is good. create the relevant function instance
             return new ModExpression(left, right);
         }
+    },
+    POW{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function (e.g. number of arguments)
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for POW function. Expected 2, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            // more validations on the expected argument types
+            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for PLUS function. Expected NUMERIC, but got " + left.getFunctionResultType() + " and " + right.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new PowExpression(left, right);
+        }
+    },
+    ABS{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function. it should have exactly one argument
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Invalid number of arguments for ABS function. Expected 1, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression arg = parseExpression(arguments.get(0).trim());
+
+            // more validations on the expected argument types
+            if (!arg.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for ABS function. Expected NUMERIC, but got " + arg.getFunctionResultType());
+            }
+
+            // all is good. create the relevant function instance
+            return new AbsExpression(arg);
+        }
+    },
+    SUB{
+        @Override
+        public Expression parse(List<String> arguments) {
+            // validations of the function (e.g. number of arguments)
+            if (arguments.size() != 3) {
+                throw new IllegalArgumentException("Invalid number of arguments for SUB function. Expected 3, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression source = parseExpression(arguments.get(0).trim());
+            Expression startIndex = parseExpression(arguments.get(1).trim());
+            Expression endIndex = parseExpression(arguments.get(2).trim());
+
+            // more validations on the expected argument types
+            if (!source.getFunctionResultType().equals(CellType.STRING)) {
+                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the first argument to be STRING, but got " + source.getFunctionResultType());
+            }
+
+            if(!startIndex.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the second argument to be NUMERIC, but got " + startIndex.getFunctionResultType());
+            }
+
+            if(!endIndex.getFunctionResultType().equals(CellType.NUMERIC)) {
+                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the third argument to be NUMERIC, but got " + endIndex.getFunctionResultType());
+            }
+
+
+            // all is good. create the relevant function instance
+            return new SubExpression(source, startIndex, endIndex);
+        }
     }
     ;
 
@@ -237,7 +309,13 @@ public enum FunctionParser {
   //      String input = "{plus, {minus, 44, 22}, {plus, 1, 2}}";
    //     String input = "{upper_case, hello world}";
 //        String input = "4";
-        String input = "{MOD, 1 , 10 }";
+//        String input = "{MOD, 1 , 10 }";
+ //       String input = "{POW, 2 , SS }";
+      //  String input = "{ABS, 2, 3}";
+       // String input = "{Sub, romimi100, 4, 7}";
+        String input = "{Sub, ss, ss, w}";
+
+
         Expression expression = parseExpression(input);
         EffectiveValue result = expression.eval();
         System.out.println("result: " + result.getValue() + " of type " + result.getCellType());
