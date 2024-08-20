@@ -2,6 +2,7 @@ package sheet.cell.impl;
 
 import expression.api.Expression;
 import expression.impl.UpperCaseExpression;
+import expression.parser.FunctionParser;
 import sheet.api.EffectiveValue;
 import sheet.cell.api.Cell;
 import sheet.coordinate.Coordinate;
@@ -49,10 +50,8 @@ public class CellImpl implements Cell {
     @Override
     public void calculateEffectiveValue() {///////
         // build the expression object out of the original value...
-        // it can be {PLUS, 4, 5} OR {CONCAT, "hello", "world"}
-
-        // first question: what is the generic type of Expression ?
-        Expression expression = new UpperCaseExpression("bla");
+        // it can be {PLUS, 4, 5} OR {CONCAT, hello, world}
+        Expression expression = FunctionParser.parseExpression(originalValue);
 
         // second question: what is the return type of eval() ?
         effectiveValue = expression.eval();

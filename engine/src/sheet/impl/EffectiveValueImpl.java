@@ -28,7 +28,10 @@ public class EffectiveValueImpl implements EffectiveValue {
         if (cellType.isAssignableFrom(type)) {
             return type.cast(value);
         }
-        // error handling... exception ? return null ?
-        return null;
+        // error handling... exception ? return null
+        else {
+            throw new ClassCastException(cellType.toString() + " is not of type " + type.getName());
+        }
+        //return null;
     }
 }

@@ -1,16 +1,16 @@
 package expression.impl;
 
-import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.impl.EffectiveValueImpl;
+import expression.api.Expression;
 
-public class PlusExpression implements Expression {
+public class MinusExpression implements Expression {
 
     private Expression left;
     private Expression right;
 
-    public PlusExpression(Expression left, Expression right) {
+    public MinusExpression(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }
@@ -21,7 +21,7 @@ public class PlusExpression implements Expression {
         EffectiveValue rightValue = right.eval();
         // do some checking... error handling...
         //double result = (Double) leftValue.getValue() + (Double) rightValue.getValue();
-        double result = leftValue.extractValueWithExpectation(Double.class) + rightValue.extractValueWithExpectation(Double.class);
+        double result = leftValue.extractValueWithExpectation(Double.class) - rightValue.extractValueWithExpectation(Double.class);
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);
     }

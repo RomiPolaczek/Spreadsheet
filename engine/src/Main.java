@@ -4,23 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateFactory;
-import sheet.coordinate.CoordinateImpl;
-import sheet.api.CellType;
-import sheet.api.EffectiveValue;
-import sheet.api.Sheet;
 import sheet.cell.api.Cell;
-import sheet.cell.impl.CellImpl;
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateFactory;
-import sheet.coordinate.CoordinateImpl;
-import sheet.layout.api.Layout;
-import sheet.layout.impl.LayoutImpl;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws Exception {

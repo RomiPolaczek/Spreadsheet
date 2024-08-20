@@ -19,7 +19,7 @@ public enum CellType {
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
 
-    public static boolean isNumber(String value) {
+    public static boolean isNumeric(String value) {
         try {
             Double.parseDouble(value);
             return true;
@@ -32,7 +32,7 @@ public enum CellType {
         if(isBoolean(value)){
             return CellType.BOOLEAN;
         }
-        if(isNumber(value)){
+        if(isNumeric(value)){
             return CellType.NUMERIC;
         }
         return CellType.STRING;
