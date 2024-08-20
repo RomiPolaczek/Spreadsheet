@@ -9,6 +9,8 @@ public interface Layout {
     void setColumns(int columns);
     int getColumns();
     int getRows();
+    int getRowsHeightUnits();
+    int getColumnsWidthUnits();
     void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException;
     public void CheckValidation(int value, String str) throws ValidationException;
 }

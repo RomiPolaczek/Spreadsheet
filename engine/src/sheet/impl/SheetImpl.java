@@ -8,6 +8,7 @@ import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateImpl;
+import sheet.layout.api.Layout;
 import sheet.layout.impl.LayoutImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,11 @@ public class SheetImpl implements Sheet {
     @Override
     public String getName(){
         return name;
+    }
+
+    @Override
+    public Layout getLayout() {
+        return layout;
     }
 
     @Override

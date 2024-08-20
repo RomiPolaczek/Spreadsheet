@@ -77,6 +77,12 @@ public class LayoutImpl implements Layout {
     }
 
     @Override
+    public int getRowsHeightUnits(){ return rowsHeightUnits; }
+
+    @Override
+    public int getColumnsWidthUnits(){ return columnsWidthUnits; }
+
+    @Override
     public void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException {
         if(value > upperLimit || value < lowerLimit) {
             throw new ValidationException(str + " must be between " + upperLimit + " and " + lowerLimit);

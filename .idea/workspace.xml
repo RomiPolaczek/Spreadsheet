@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix setCell">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/JaxbNew.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/mod.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/sheet/layout/api/Layout.java" afterDir="false" />
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="load file function and add engine class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/CoordinateImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/layout/api/Layout.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/layout/api/Layout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +51,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Main.executor": "Debug",
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
@@ -122,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723727858810</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="load file function and add engine class">
+      <option name="closed" value="true" />
+      <created>1723976935537</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723976935537</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,7 +145,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix setCell" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix setCell" />
+    <MESSAGE value="load file function and add engine class" />
+    <option name="LAST_COMMIT_MESSAGE" value="load file function and add engine class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -155,11 +160,6 @@
           <url>file://$PROJECT_DIR$/user-interface/src/Main.java</url>
           <line>11</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/Main.java</url>
-          <line>28</line>
-          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
