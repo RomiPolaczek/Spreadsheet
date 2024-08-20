@@ -1,3 +1,4 @@
+import dto.DTOsheet;
 import impl.EngineImpl;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public class Main {
             System.out.println();
         }
 
+        DTOsheet dtoSheet = engine.createDTOSheetForDisplay(); //DISPLAY
 
         scanner.close();///////
     }

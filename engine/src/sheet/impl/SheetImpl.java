@@ -57,6 +57,11 @@ public class SheetImpl implements Sheet {
     }
 
     @Override
+    public Map<Coordinate, Cell> getActiveCells() {
+        return activeCells;
+    }
+
+    @Override
     public void setCell(int row, int column, String value) {
         if(row > layout.getRows() - 1)
             throw new IndexOutOfBoundsException("Row " + row+1 + " out of bounds");

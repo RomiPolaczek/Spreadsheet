@@ -1,0 +1,15 @@
+package dto;
+
+public class DTOlayout {
+    private int rowsHeightUnits;
+    private int columnsWidthUnits;
+    private int rows;
+    private int columns;
+
+    public  DTOlayout(int rowsHeightUnits, int columnsWidthUnits, int rows, int columns) {
+        this.rowsHeightUnits = rowsHeightUnits;
+        this.columnsWidthUnits = columnsWidthUnits;
+        this.rows = rows;
+        this.columns = columns;
+    }
+}
