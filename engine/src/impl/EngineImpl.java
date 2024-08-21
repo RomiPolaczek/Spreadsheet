@@ -58,15 +58,10 @@ public class EngineImpl implements Engine {
         }
     }
 
-    private void fromXmlFileToObject() {
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(STLSheet.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+    private void fromXmlFileToObject() throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(STLSheet.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
     }
 
     private void fromStlSheetToOurSheet() {
@@ -83,7 +78,7 @@ public class EngineImpl implements Engine {
 
         for(STLCell stlCell : stlSheet.getSTLCells().getSTLCell())
         {
-            int row = stlCell.getRow() - 1;
+            int row = stlCell.getRow();
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
             sheet.setCell(row, col, stlCell.getSTLOriginalValue());
         }

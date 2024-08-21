@@ -63,9 +63,9 @@ public class SheetImpl implements Sheet {
 
     @Override
     public void setCell(int row, int column, String value) {
-        if(row > layout.getRows() - 1)
-            throw new IndexOutOfBoundsException("Row " + row+1 + " out of bounds");
-        if(column > layout.getColumns() - 1)
+        if(row > layout.getRows())
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        if(column > layout.getColumns())
             throw new IndexOutOfBoundsException("Column " + CoordinateImpl.convertNumberToAlphabetString(column) + " out of bounds");
 
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
@@ -81,6 +81,7 @@ public class SheetImpl implements Sheet {
             activeCells.put(coordinate, cell);
         }
         cell.setCellOriginalValue(value);
+        cell.calculateEffectiveValue();
     }
 
 }

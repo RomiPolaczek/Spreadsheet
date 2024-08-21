@@ -12,4 +12,21 @@ public class DTOlayout {
         this.rows = rows;
         this.columns = columns;
     }
+
+    public int getRowsHeightUnits() {
+        return rowsHeightUnits;
+    }
+
+    public int getColumnsWidthUnits() {
+        return columnsWidthUnits;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
 }

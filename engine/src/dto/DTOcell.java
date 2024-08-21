@@ -12,4 +12,16 @@ public class DTOcell {
         this.col = col;
         this.effectiveValue = effectiveValue;
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return col;
+    }
+
+    public String getEffectiveValue() {
+        return effectiveValue;
+    }
 }

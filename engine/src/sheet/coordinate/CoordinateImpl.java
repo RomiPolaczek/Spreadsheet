@@ -37,7 +37,7 @@ public class CoordinateImpl implements Coordinate {
         int length = column.length();
 
         for (int i = 0; i < length; i++) {
-            int position = column.charAt(i) - 'A' + 1;
+            int position = column.charAt(i) - 'A';
             result = result * 26 + position;
         }
         return result;
