@@ -3,6 +3,7 @@ package expression.impl;
 import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
+import sheet.api.SheetReadActions;
 import sheet.impl.EffectiveValueImpl;
 
 public class SubExpression implements Expression {
@@ -16,10 +17,10 @@ public class SubExpression implements Expression {
         this.endIndex = endIndex;
     }
 
-    public EffectiveValue eval() {
-        EffectiveValue sourceValue = source.eval();
-        EffectiveValue startIndexValue = startIndex.eval();
-        EffectiveValue endIndexValue = endIndex.eval();
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue sourceValue = source.eval(sheet);
+        EffectiveValue startIndexValue = startIndex.eval(sheet);
+        EffectiveValue endIndexValue = endIndex.eval(sheet);
         // do some checking... error handling...
 
         String sourceString = sourceValue.extractValueWithExpectation(String.class);

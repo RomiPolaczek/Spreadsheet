@@ -7,28 +7,28 @@ import dto.DTOsheet;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import sheet.api.Sheet;
 import sheet.cell.api.Cell;
-import sheet.cell.impl.CellImpl;
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateFactory;
+import sheet.coordinate.impl.CoordinateImpl;
 import sheet.impl.SheetImpl;
-import sheet.layout.api.Layout;
 import sheet.layout.impl.LayoutImpl;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLSheet;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EngineImpl implements Engine {
 
-    private SheetImpl sheet;
+    private Sheet sheet;
     private STLSheet stlSheet;
     private File file;
 
+  //  public EngineImpl() {sheet = new SheetImpl();}
+
+    @Override
     public void LoadFile(String fileName) throws Exception {
         setFile(fileName);
         fromXmlFileToObject();
@@ -39,7 +39,8 @@ public class EngineImpl implements Engine {
         checkFileValidation(fileName);
     }
 
-    public SheetImpl getSheet(){
+    @Override
+    public Sheet getSheet(){
         return sheet;
     }
 
@@ -80,15 +81,16 @@ public class EngineImpl implements Engine {
         {
             int row = stlCell.getRow();
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
-            sheet.setCell(row, col, stlCell.getSTLOriginalValue());
+            sheet.updateCellValueAndCalculate(row, col, stlCell.getSTLOriginalValue());
         }
     }
 
+    @Override
     public DTOsheet createDTOSheetForDisplay() {
         String name = sheet.getName();
         int version = sheet.getVersion();
         Map<Coordinate, Cell> cellsMap = sheet.getActiveCells();
-        List<DTOcell> cellsList = new ArrayList<DTOcell>();
+        Map<Coordinate ,DTOcell> dtoCellsMap = new HashMap<>();
         DTOlayout dtoLayout = new DTOlayout(sheet.getLayout().getRowsHeightUnits(), sheet.getLayout().getColumnsWidthUnits(),
                 sheet.getLayout().getRows(), sheet.getLayout().getColumns());
 
@@ -96,11 +98,10 @@ public class EngineImpl implements Engine {
         {
             DTOcell dtoCell = new DTOcell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn(),
                     cell.getEffectiveValue().getValue().toString());
-            cellsList.add(dtoCell);
+
+            dtoCellsMap.put(CoordinateFactory.createCoordinate(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn()), dtoCell);
         }
 
-        return new DTOsheet(name, version, cellsList, dtoLayout);
-
+        return new DTOsheet(name, version, dtoCellsMap, dtoLayout);
     }
-
 }

@@ -3,62 +3,30 @@ package expression.impl;
 import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
-import sheet.coordinate.CoordinateImpl;
-import sheet.impl.EffectiveValueImpl;
+import sheet.api.SheetReadActions;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateFactory;
 
 public class RefExpression implements Expression {
-    private Expression e;
 
-    public RefExpression(Expression e) { this.e = e; }
+    private final Coordinate coordinate;
+
+    public RefExpression(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
 
     @Override
-    public EffectiveValue eval() {
-        EffectiveValue eval = e.eval();
-        String result = eval.extractValueWithExpectation(String.class);
-        int[] coordinates = getCoordinates(result);
-       // Cell cell =
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        // error handling if the cell is empty or not found
+        CoordinateFactory.isValidCoordinate(coordinate, sheet);
+        if(sheet.getCell(coordinate.getRow(), coordinate.getColumn()) == null)
+            throw new Exception("The cell is empty or not found.");
 
-        return new EffectiveValueImpl(CellType.NUMERIC, result);
+        return sheet.getCell(coordinate.getRow(), coordinate.getColumn()).getEffectiveValue();
     }
 
     @Override
     public CellType getFunctionResultType() {
-        return CellType.NUMERIC;
-    }
-
-
-    public static int[] getCoordinates(String cellId) {
-        // Validate the cell ID first
-        if (!isValidCellId(cellId)) {
-            throw new IllegalArgumentException("Invalid cell ID: " + cellId);
-        }
-
-        // Separate the letters from the numbers
-        StringBuilder columnPart = new StringBuilder();
-        StringBuilder rowPart = new StringBuilder();
-
-        for (char c : cellId.toCharArray()) {
-            if (Character.isLetter(c)) {
-                columnPart.append(c);
-            } else if (Character.isDigit(c)) {
-                rowPart.append(c);
-            }
-        }
-
-        // Convert the column letters to a number
-        int columnNumber = CoordinateImpl.convertStringColumnToNumber(columnPart.toString());
-        // Parse the row part
-        int rowNumber = Integer.parseInt(rowPart.toString());
-
-
-        // CHECK THAT THE CELL IS IN THE OF THE SHEET!!!!
-
-
-        return new int[]{rowNumber, columnNumber};
-    }
-
-    private static boolean isValidCellId(String cellId) {
-        // A valid cell ID should match the pattern: letters followed by digits
-        return cellId.matches("^[A-Z]+[0-9]+$");
+        return CellType.UNKNOWN;
     }
 }

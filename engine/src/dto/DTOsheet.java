@@ -1,17 +1,16 @@
 package dto;
 
-import sheet.coordinate.CoordinateFactory;
-
-import java.util.List;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateFactory;
 import java.util.Map;
 
 public class DTOsheet {
     private String name;
     private int version;
-    private List<DTOcell> cells;
+    private Map<Coordinate,DTOcell> cells;
     private DTOlayout layout;
 
-    public DTOsheet(String name, int version, List<DTOcell> cells, DTOlayout layout) {
+    public DTOsheet(String name, int version, Map<Coordinate ,DTOcell> cells, DTOlayout layout) {
         this.name = name;
         this.version = version;
         this.cells = cells;
@@ -26,7 +25,7 @@ public class DTOsheet {
         return version;
     }
 
-    public List<DTOcell> getCells() {
+    public Map<Coordinate ,DTOcell> getCells() {
         return cells;
     }
 
@@ -34,7 +33,7 @@ public class DTOsheet {
         return  layout;
     }
 
-    //public DTOcell getCell(int row, int col) {
-     //   return cells.get(CoordinateFactory.createCoordinate(row, col));
-   // }
+    public DTOcell getCell(int row, int col) {
+        return cells.get(CoordinateFactory.createCoordinate(row, col));
+    }
 }

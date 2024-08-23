@@ -11,6 +11,8 @@ public interface Layout {
     int getRows();
     int getRowsHeightUnits();
     int getColumnsWidthUnits();
-    void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException;
-    public void CheckValidation(int value, String str) throws ValidationException;
+    int getRowsLowerLimit();
+    int getColsLowerLimit();
+    // void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException;
+    public void CheckValidation(int value, String str) throws Exception;
 }

@@ -1,4 +1,6 @@
-package sheet.coordinate;
+package sheet.coordinate.impl;
+
+import sheet.coordinate.api.Coordinate;
 
 public class CoordinateImpl implements Coordinate {
     private final int row;
@@ -37,7 +39,7 @@ public class CoordinateImpl implements Coordinate {
         int length = column.length();
 
         for (int i = 0; i < length; i++) {
-            int position = column.charAt(i) - 'A';
+            int position = column.charAt(i) - 'A' + 1;
             result = result * 26 + position;
         }
         return result;

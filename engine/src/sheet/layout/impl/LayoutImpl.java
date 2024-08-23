@@ -1,6 +1,5 @@
 package sheet.layout.impl;
 
-import jakarta.xml.bind.ValidationException;
 import sheet.layout.api.Layout;
 
 public class LayoutImpl implements Layout {
@@ -22,7 +21,7 @@ public class LayoutImpl implements Layout {
             CheckValidation(rowsHeightUnits, "Rows Height Units");
             this.rowsHeightUnits = rowsHeightUnits;
         }
-        catch (ValidationException e)
+        catch (Exception e)
         {
             //לבדוק אם אנחנו רוצות לתפוס פה או לזרוק הלאה
         }
@@ -34,7 +33,7 @@ public class LayoutImpl implements Layout {
             CheckValidation(columnsWidthUnits, "Columns Height Units");
             this.columnsWidthUnits = columnsWidthUnits;
         }
-        catch (ValidationException e)
+        catch (Exception e)
         {
             //לבדוק אם אנחנו רוצות לתפוס פה או לזרוק הלאה
         }
@@ -47,7 +46,7 @@ public class LayoutImpl implements Layout {
             CheckValidation(rows, ROWS_UPPER_LIMIT, ROWS_LOWER_LIMIT, "Rows");
             this.rows = rows;
         }
-        catch (ValidationException e)
+        catch (Exception e)
         {
             //לבדוק אם אנחנו רוצות לתפוס פה או לזרוק הלאה
         }
@@ -60,7 +59,7 @@ public class LayoutImpl implements Layout {
             CheckValidation(columns, COLUMNS_UPPER_LIMIT, COLUMNS_LOWER_LIMIT, "Columns");
             this.columns = columns;
         }
-        catch (ValidationException e)
+        catch (Exception e)
         {
             //לבדוק אם אנחנו רוצות לתפוס פה או לזרוק הלאה
         }
@@ -83,16 +82,22 @@ public class LayoutImpl implements Layout {
     public int getColumnsWidthUnits(){ return columnsWidthUnits; }
 
     @Override
-    public void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException {
+    public int getRowsLowerLimit() { return ROWS_LOWER_LIMIT; }
+
+    @Override
+    public int getColsLowerLimit() { return COLUMNS_LOWER_LIMIT; }
+
+    //@Override
+    public static void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws Exception {
         if(value > upperLimit || value < lowerLimit) {
-            throw new ValidationException(str + " must be between " + upperLimit + " and " + lowerLimit);
+            throw new Exception(str + " must be between " + upperLimit + " and " + lowerLimit);
         }
     }
 
     @Override
-    public void CheckValidation(int value, String str) throws ValidationException {
+    public void CheckValidation(int value, String str) throws Exception {
         if(value <= 0)
-            throw new ValidationException(str + " must be greater than zero");
+            throw new Exception(str + " must be greater than zero");
     }
 
 }

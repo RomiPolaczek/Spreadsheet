@@ -1,13 +1,14 @@
 package sheet.cell.impl;
 
 import expression.api.Expression;
-import expression.impl.UpperCaseExpression;
 import expression.parser.FunctionParser;
 import sheet.api.EffectiveValue;
 import sheet.cell.api.Cell;
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateImpl;
+import sheet.api.SheetReadActions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CellImpl implements Cell {
@@ -18,15 +19,18 @@ public class CellImpl implements Cell {
     private int version;
     private final List<Cell> dependsOn;
     private final List<Cell> influencingOn;
+    private final SheetReadActions sheet;
 
-    public CellImpl(int row, int column, String originalValue, EffectiveValue effectiveValue, int version, List<Cell> dependsOn, List<Cell> influencingOn) {
+
+    public CellImpl(int row, int column, String originalValue, int version, SheetReadActions sheet)  {
+        this.sheet = sheet;
         this.coordinate = new CoordinateImpl(row, column);
         this.originalValue = originalValue;
-        this.effectiveValue = effectiveValue;
         this.version = version;
-        this.dependsOn = dependsOn;
-        this.influencingOn = influencingOn;
+        this.dependsOn = new ArrayList<>();
+        this.influencingOn = new ArrayList<>();
     }
+
     @Override
     public Coordinate getCoordinate() {
         return coordinate;
@@ -48,13 +52,26 @@ public class CellImpl implements Cell {
     }
 
     @Override
-    public void calculateEffectiveValue() {///////
+    public boolean calculateEffectiveValue(){
         // build the expression object out of the original value...
-        // it can be {PLUS, 4, 5} OR {CONCAT, hello, world}
-        Expression expression = FunctionParser.parseExpression(originalValue);
+        // it can be {PLUS, 4, 5} OR {CONCAT, {ref, A4}, world}
 
-        // second question: what is the return type of eval() ?
-        effectiveValue = expression.eval();
+        try //CHECK THIS AVI
+        {
+            Expression expression = FunctionParser.parseExpression(originalValue);
+
+            EffectiveValue newEffectiveValue = expression.eval(sheet);
+
+            if (newEffectiveValue.equals(effectiveValue)) {
+                return false;
+            } else {
+                effectiveValue = newEffectiveValue;
+                return true;
+            }
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     @Override

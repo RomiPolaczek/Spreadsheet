@@ -3,6 +3,7 @@ package expression.impl;
 import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
+import sheet.api.SheetReadActions;
 import sheet.impl.EffectiveValueImpl;
 
 public class UpperCaseExpression implements Expression {
@@ -14,8 +15,8 @@ public class UpperCaseExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval() {
-        EffectiveValue eval = e.eval();
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue eval = e.eval(sheet);
         String upperCaseResult = eval.extractValueWithExpectation(String.class).toUpperCase();
         return new EffectiveValueImpl(CellType.STRING, upperCaseResult);
     }

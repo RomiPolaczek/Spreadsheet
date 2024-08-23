@@ -3,6 +3,7 @@ package expression.impl;
 import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
+import sheet.api.SheetReadActions;
 import sheet.impl.EffectiveValueImpl;
 
 public class AbsExpression implements Expression {
@@ -11,8 +12,8 @@ public class AbsExpression implements Expression {
     public AbsExpression(Expression e) { this.e = e; }
 
     @Override
-    public EffectiveValue eval() {
-        EffectiveValue eval = e.eval();
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue eval = e.eval(sheet);
         double result = eval.extractValueWithExpectation(Double.class);
 
         if(result < 0)

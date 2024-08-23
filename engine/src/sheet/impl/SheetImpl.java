@@ -5,20 +5,22 @@ import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateFactory;
-import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateFactory;
+import sheet.coordinate.impl.CoordinateImpl;
 import sheet.layout.api.Layout;
-import sheet.layout.impl.LayoutImpl;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SheetImpl implements Sheet {
 
     private Map<Coordinate, Cell> activeCells;
-    private LayoutImpl layout;
+    private Layout layout;
     private String name;
     private int version = 1;
 
@@ -27,7 +29,7 @@ public class SheetImpl implements Sheet {
     }
 
     @Override
-    public void setLayout(LayoutImpl layout) {
+    public void setLayout(Layout layout) {
         this.layout = layout;
     }
 
@@ -61,27 +63,130 @@ public class SheetImpl implements Sheet {
         return activeCells;
     }
 
+//    @Override
+//    public void setCell(int row, int column, String value) {
+//        if(row > layout.getRows())
+//            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+//        if(column > layout.getColumns())
+//            throw new IndexOutOfBoundsException("Column " + CoordinateImpl.convertNumberToAlphabetString(column) + " out of bounds");
+//
+//        Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
+//        Cell cell = activeCells.get(coordinate);
+//
+//        if(cell == null) {
+//            EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
+//            int version = this.getVersion(); // You may have a different way to manage versions
+//            List<Cell> dependsOn = new ArrayList<>();
+//            List<Cell> influencingOn = new ArrayList<>();
+//
+//            cell = new CellImpl(row, column, value, effectiveValue, version, dependsOn, influencingOn);
+//            activeCells.put(coordinate, cell);
+//        }
+//        cell.setCellOriginalValue(value);
+//        cell.calculateEffectiveValue();
+//    }
+
     @Override
-    public void setCell(int row, int column, String value) {
-        if(row > layout.getRows())
-            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
-        if(column > layout.getColumns())
-            throw new IndexOutOfBoundsException("Column " + CoordinateImpl.convertNumberToAlphabetString(column) + " out of bounds");
+    public Sheet updateCellValueAndCalculate(int row, int column, String value) {
 
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
-        Cell cell = activeCells.get(coordinate);
 
-        if(cell == null) {
-            EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
-            int version = this.getVersion(); // You may have a different way to manage versions
-            List<Cell> dependsOn = new ArrayList<>();
-            List<Cell> influencingOn = new ArrayList<>();
+        SheetImpl newSheetVersion = copySheet();
+        Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion);
+        newSheetVersion.activeCells.put(coordinate, newCell);
 
-            cell = new CellImpl(row, column, value, effectiveValue, version, dependsOn, influencingOn);
-            activeCells.put(coordinate, cell);
+        try {
+            List<Cell> cellsThatHaveChanged =
+                    newSheetVersion
+                            .orderCellsForCalculation()
+                            .stream()
+                            .filter(Cell::calculateEffectiveValue)
+                            .collect(Collectors.toList());
+
+            // successful calculation. update sheet and relevant cells version
+            // int newVersion = newSheetVersion.increaseVersion();
+            // cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
+
+            return newSheetVersion;
+        } catch (Exception e) {
+            // deal with the runtime error that was discovered as part of invocation
+            return this;
         }
-        cell.setCellOriginalValue(value);
-        cell.calculateEffectiveValue();
     }
+
+    private List<Cell> orderCellsForCalculation() {
+        // Create a map to store the in-degree of each cell
+        Map<Cell, Integer> inDegree = new HashMap<>();
+
+        // Create a map to store the adjacency list of the graph
+        Map<Cell, List<Cell>> adjList = new HashMap<>();
+
+        // Initialize the in-degree and adjacency list for each cell
+        for (Cell cell : activeCells.values()) {
+            inDegree.put(cell, 0);
+            adjList.put(cell, new ArrayList<>());
+        }
+
+        // Build the graph
+        for (Cell cell : activeCells.values()) {
+            List<Cell> dependencies = cell.getDependsOn(); // assuming getDependencies() returns a list of cells this cell depends on
+            for (Cell dep : dependencies) {
+                adjList.get(dep).add(cell);
+                inDegree.put(cell, inDegree.get(cell) + 1);
+            }
+        }
+
+        // Initialize a queue to store cells with no dependencies (in-degree 0)
+        Queue<Cell> queue = new LinkedList<>();
+        for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.add(entry.getKey());
+            }
+        }
+
+        // Perform topological sorting
+        List<Cell> sortedCells = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            Cell cell = queue.poll();
+            sortedCells.add(cell);
+
+            // Decrease the in-degree of the neighboring cells
+            for (Cell neighbor : adjList.get(cell)) {
+                inDegree.put(neighbor, inDegree.get(neighbor) - 1);
+                if (inDegree.get(neighbor) == 0) {
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        // If we have sorted all cells, return the sorted list
+        if (sortedCells.size() == activeCells.size()) {
+            return sortedCells;
+        } else {
+            throw new RuntimeException("Circular dependency detected");
+        }
+    }
+
+
+    private SheetImpl copySheet() {
+        // lots of options here:
+        // 1. implement clone all the way (yac... !)
+        // 2. implement copy constructor for CellImpl and SheetImpl
+
+        // 3. how about serialization ?
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            oos.close();
+
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+            return (SheetImpl) ois.readObject();
+        } catch (Exception e) {
+            // deal with the runtime error that was discovered as part of invocation
+            return this;
+        }
+    }
+
 
 }

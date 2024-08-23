@@ -1,7 +1,7 @@
 package sheet.cell.api;
 
 import sheet.api.EffectiveValue;
-import sheet.coordinate.Coordinate;
+import sheet.coordinate.api.Coordinate;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface Cell {
     String getOriginalValue();
     void setCellOriginalValue(String value);
     EffectiveValue getEffectiveValue();
-    void calculateEffectiveValue();
+    boolean calculateEffectiveValue();
     int getVersion();
     List<Cell> getDependsOn();
     List<Cell> getInfluencingOn();

@@ -3,6 +3,8 @@ package sheet.impl;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 
+import java.util.Objects;
+
 public class EffectiveValueImpl implements EffectiveValue {
 
     private CellType cellType;
@@ -28,10 +30,25 @@ public class EffectiveValueImpl implements EffectiveValue {
         if (cellType.isAssignableFrom(type)) {
             return type.cast(value);
         }
-        // error handling... exception ? return null
-        else {
-            throw new ClassCastException(cellType.toString() + " is not of type " + type.getName());
-        }
-        //return null;
+        // error handling... exception ? return null ?
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EffectiveValueImpl that = (EffectiveValueImpl) o;
+
+        if (cellType != that.cellType) return false;
+        return Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cellType != null ? cellType.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
     }
 }
