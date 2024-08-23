@@ -5,6 +5,6 @@ public class Main {
         UserInterface UI = new UserInterface();
         UI.LoadFile();
         UI.DisplaySheet();
-
+        UI.DisplayCell();
     }
 }

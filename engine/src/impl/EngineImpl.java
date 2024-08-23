@@ -97,7 +97,7 @@ public class EngineImpl implements Engine {
         for(Cell cell : cellsMap.values())
         {
             DTOcell dtoCell = new DTOcell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn(),
-                    cell.getEffectiveValue().getValue().toString());
+                    cell.getEffectiveValue().getValue().toString(), cell.getOriginalValue(), cell.getVersion(), cell.getDependsOn(), cell.getInfluencingOn());
 
             dtoCellsMap.put(CoordinateFactory.createCoordinate(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn()), dtoCell);
         }

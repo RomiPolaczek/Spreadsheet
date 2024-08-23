@@ -17,8 +17,8 @@ public class CellImpl implements Cell {
     private String originalValue;
     private EffectiveValue effectiveValue;
     private int version;
-    private final List<Cell> dependsOn;
-    private final List<Cell> influencingOn;
+    private List<Cell> dependsOn;
+    private List<Cell> influencingOn;
     private final SheetReadActions sheet;
 
 

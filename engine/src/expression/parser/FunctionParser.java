@@ -3,8 +3,12 @@ package expression.parser;
 import expression.impl.*;
 import sheet.api.CellType;
 import expression.api.Expression;
+import sheet.api.EffectiveValue;
+import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+import sheet.impl.SheetImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -19,7 +23,7 @@ public enum FunctionParser {
             }
 
             // all is good. create the relevant function instance
-            String actualValue = arguments.get(0).trim();
+            String actualValue = arguments.get(0);
             if (CellType.isBoolean(actualValue)) {
                 return new IdentityExpression(Boolean.parseBoolean(actualValue), CellType.BOOLEAN);
             } else if (CellType.isNumeric(actualValue)) {
@@ -91,7 +95,7 @@ public enum FunctionParser {
             }
 
             // structure is good. parse arguments
-            Expression arg = parseExpression(arguments.get(0).trim());
+            Expression arg = parseExpression(arguments.get(0));
 
             // more validations on the expected argument types
             CellType argCellType = arg.getFunctionResultType();
@@ -113,8 +117,8 @@ public enum FunctionParser {
             }
 
             // structure is good. parse arguments
-            Expression left = parseExpression(arguments.get(0).trim());
-            Expression right = parseExpression(arguments.get(1).trim());
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
 
             // more validations on the expected argument types
             CellType leftCellType = left.getFunctionResultType();
@@ -263,9 +267,9 @@ public enum FunctionParser {
             }
 
             // structure is good. parse arguments
-            Expression source = parseExpression(arguments.get(0).trim());
-            Expression startIndex = parseExpression(arguments.get(1).trim());
-            Expression endIndex = parseExpression(arguments.get(2).trim());
+            Expression source = parseExpression(arguments.get(0));
+            Expression startIndex = parseExpression(arguments.get(1));
+            Expression endIndex = parseExpression(arguments.get(2));
 
             CellType sourceCellType = source.getFunctionResultType();
             CellType startCellType = startIndex.getFunctionResultType();
@@ -324,7 +328,7 @@ public enum FunctionParser {
         }
 
         // handle identity expression
-        return FunctionParser.IDENTITY.parse(List.of(input.trim()));
+        return FunctionParser.IDENTITY.parse(List.of(input));
     }
 
     private static List<String> parseMainParts(String input) {
@@ -342,7 +346,7 @@ public enum FunctionParser {
 
             if (c == ',' && stack.isEmpty()) {
                 // If we are at a comma and the stack is empty, it's a separator for top-level parts
-                parts.add(buffer.toString().trim());
+                parts.add(buffer.toString());
                 buffer.setLength(0); // Clear the buffer for the next part
             } else {
                 buffer.append(c);
@@ -351,34 +355,40 @@ public enum FunctionParser {
 
         // Add the last part
         if (buffer.length() > 0) {
-            parts.add(buffer.toString().trim());
+            parts.add(buffer.toString());
         }
 
         return parts;
     }
 
-    public static void main(String[] args) {
-
-        //String input = "plus, {plus, 1, 2}, {plus, 1, {plus, 1, 2}}";
-//        String input = "1";
-//        parseMainParts(input).forEach(System.out::println);
-
-//        String input = "{plus, 1, 2}";
-  //      String input = "{plus, {minus, 44, 22}, {plus, 1, 2}}";
-   //     String input = "{upper_case, hello world}";
-//        String input = "4";
-//        String input = "{MOD, 1 , 10 }";
- //       String input = "{POW, 2 , SS }";
-      //  String input = "{ABS, 2, 3}";
-       // String input = "{Sub, romimi100, 4, 7}";
-      //  String input = "{Sub, ss, ss, w}";
-     //     String input = "{DIVIDE, 2, 0}";
-        String input = "{concat, hello    ,world}";
-
-
-        Expression expression = parseExpression(input);
-     //   EffectiveValue result = expression.eval();
-      //  System.out.println("result: " + result.getValue() + " of type " + result.getCellType());
-    }
+//    public static void main(String[] args) {
+//
+//        //String input = "plus, {plus, 1, 2}, {plus, 1, {plus, 1, 2}}";
+////        String input = "1";
+////        parseMainParts(input).forEach(System.out::println);
+//
+////        String input = "{plus, 1, 2}";
+//  //      String input = "{plus, {minus, 44, 22}, {plus, 1, 2}}";
+//   //     String input = "{upper_case, hello world}";
+////        String input = "4";
+////        String input = "{MOD, 1 , 10 }";
+// //       String input = "{POW, 2 , SS }";
+//      //  String input = "{ABS, 2, 3}";
+//        String input = "{Sub, romi  mi100, 4, 7}";
+//      //  String input = "{Sub, ss, ss, w}";
+//     //     String input = "{DIVIDE, 2, 0}";
+//        Sheet sheet = new SheetImpl();
+//      //  String input = "{concat, hello    ,world}";
+//
+//
+//        Expression expression = parseExpression(input);
+//        EffectiveValue result = null;
+//        try {
+//            result = expression.eval(sheet);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        System.out.println("result: " + result.getValue() + " of type " + result.getCellType());
+//    }
 
 }

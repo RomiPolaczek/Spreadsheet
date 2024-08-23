@@ -36,4 +36,6 @@ public class DTOsheet {
     public DTOcell getCell(int row, int col) {
         return cells.get(CoordinateFactory.createCoordinate(row, col));
     }
+
+    public DTOcell getCell(Coordinate coordinate) { return cells.get(coordinate); }
 }
