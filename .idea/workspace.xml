@@ -6,12 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix ref function and dto for display">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
     </list>
@@ -55,7 +54,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.FunctionParser.executor": "Run",
-    "Application.Main (1).executor": "Run",
+    "Application.Main (1).executor": "Debug",
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -215,14 +214,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>82</line>
-          <option name="timeStamp" value="50" />
+          <line>131</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-field">
-          <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>
-          <line>88</line>
-          <properties field="UPPER_CASE" class="expression.parser.FunctionParser" />
-          <option name="timeStamp" value="48" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

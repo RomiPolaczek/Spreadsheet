@@ -6,5 +6,9 @@ public class Main {
         UI.LoadFile();
         UI.DisplaySheet();
         UI.DisplayCell();
+        UI.EditCell();
+        UI.EditCell();
+        UI.EditCell();
     }
+
 }

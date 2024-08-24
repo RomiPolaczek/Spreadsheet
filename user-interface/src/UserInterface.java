@@ -31,7 +31,7 @@ public class UserInterface {
     }
 
     public void DisplaySheet() {
-        DTOsheet dtoSheet = engine.createDTOSheetForDisplay();
+        DTOsheet dtoSheet = engine.createDTOSheetForDisplay(engine.getSheet());
 
         System.out.println("Sheet Name: " + dtoSheet.getName());
         System.out.println("Version: " + dtoSheet.getVersion());
@@ -79,26 +79,22 @@ public class UserInterface {
     }
 
     public void DisplayCell(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Please enter the cell identity (e.g., A4 or B7): ");
-        String input = scanner.nextLine().toUpperCase();
+        String input = getCellFromUser();
 
-        DTOsheet dtoSheet = engine.createDTOSheetForDisplay();
+        DTOsheet dtoSheet = engine.createDTOSheetForDisplay(engine.getSheet());
         Coordinate coordinate = CoordinateFactory.from(input);
 
         try {
             CoordinateFactory.isValidCoordinate(coordinate, engine.getSheet());
 
-
             DTOcell dtoCell = dtoSheet.getCell(coordinate);
             if(dtoCell == null){
-                throw new Exception("The cell " + input + " is empty");
+                System.out.println("Cell identity: " + input);
+                throw new Exception("The cell " + input + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
             }
-            System.out.println("Cell identity: " + input);
-            System.out.println("Original value: " + dtoCell.getOriginalValue());
-            System.out.println("Effective value: " + dtoCell.getEffectiveValue());
-            System.out.println("The last version that commited changes: " + dtoCell.getVersion());
 
+            printCellFirstParts(input, dtoCell);
+            System.out.println("The last version that commited changes: " + dtoCell.getVersion());
 
             List<String> dependsOn = dtoCell.getDependsOn();
             if(dependsOn.isEmpty())
@@ -124,4 +120,70 @@ public class UserInterface {
             System.out.println(e.getMessage());
         }
     }
+
+    private String getCellFromUser() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please enter the cell identity (e.g., A4 or B7): ");
+        String input = scanner.nextLine().toUpperCase();
+        return input;
+    }
+
+    private void printCellFirstParts(String input, DTOcell dtoCell) {
+        System.out.println("Cell identity: " + input);
+        System.out.println("Original value: " + dtoCell.getOriginalValue());
+        System.out.println("Effective value: " + dtoCell.getEffectiveValue());
+    }
+
+    public void EditCell(){
+        String inputCell = getCellFromUser();
+        DTOsheet dtoSheet = engine.createDTOSheetForDisplay(engine.getSheet());
+        Coordinate coordinate = CoordinateFactory.from(inputCell);
+
+        try {
+            CoordinateFactory.isValidCoordinate(coordinate, engine.getSheet()); //האם לשנות לדיטיאו
+
+            DTOcell dtoCell = dtoSheet.getCell(coordinate);
+            if(dtoCell == null){
+                System.out.println("Cell identity: " + inputCell);
+                throw new Exception("The cell " + inputCell + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
+            }
+            printCellFirstParts(inputCell, dtoCell);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please enter the new value of the cell: ");
+        String inputValue = scanner.nextLine().toUpperCase();
+
+        engine.getSheet().updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
+
+        DisplaySheet();
+        engine.AddSheetVersionToMap(engine.getSheet());
+    }
+
+    public void DisplayVersions () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please enter a version number: ");
+
+        try {
+            int version = Integer.parseInt(scanner.nextLine());
+            DTOsheet dtoSheet = engine.getSheetVersion(version);
+            DisplaySheetVersion(dtoSheet);
+        } catch (Exception e) {
+            System.out.print("Version must be an integer");
+        }
+    }
+
+        public void DisplaySheetVersion(DTOsheet dtoSheet) {
+            System.out.println("Sheet Name: " + dtoSheet.getName());
+            System.out.println("Version: " + dtoSheet.getVersion());
+            System.out.println();
+
+            printSheet(dtoSheet);
+    }
+
+
+
 }

@@ -17,7 +17,9 @@ import sheet.layout.impl.LayoutImpl;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLSheet;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EngineImpl implements Engine {
@@ -25,8 +27,11 @@ public class EngineImpl implements Engine {
     private Sheet sheet;
     private STLSheet stlSheet;
     private File file;
+    private Map<Integer,DTOsheet> sheetsVersions;
 
-  //  public EngineImpl() {sheet = new SheetImpl();}
+    public EngineImpl() {
+        sheetsVersions = new HashMap<>();
+    }
 
     @Override
     public void LoadFile(String fileName) throws Exception {
@@ -83,10 +88,12 @@ public class EngineImpl implements Engine {
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
             sheet.updateCellValueAndCalculate(row, col, stlCell.getSTLOriginalValue());
         }
+
+        AddSheetVersionToMap(sheet);
     }
 
     @Override
-    public DTOsheet createDTOSheetForDisplay() {
+    public DTOsheet createDTOSheetForDisplay(Sheet sheet) {
         String name = sheet.getName();
         int version = sheet.getVersion();
         Map<Coordinate, Cell> cellsMap = sheet.getActiveCells();
@@ -103,5 +110,16 @@ public class EngineImpl implements Engine {
         }
 
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout);
+    }
+
+    @Override
+    public void AddSheetVersionToMap(Sheet sheet) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        sheetsVersions.put(sheet.getVersion(),dtoSheet);
+    }
+
+    @Override
+    public DTOsheet getSheetVersion(Integer versionNumber) {
+        return sheetsVersions.get(versionNumber);
     }
 }

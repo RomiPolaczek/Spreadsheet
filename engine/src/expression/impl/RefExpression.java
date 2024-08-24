@@ -29,4 +29,5 @@ public class RefExpression implements Expression {
     public CellType getFunctionResultType() {
         return CellType.UNKNOWN;
     }
+
 }
