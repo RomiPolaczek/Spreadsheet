@@ -8,10 +8,11 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateImpl;
 import sheet.api.SheetReadActions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CellImpl implements Cell {
+public class CellImpl implements Cell, Serializable {
 
     private final Coordinate coordinate;
     private String originalValue;

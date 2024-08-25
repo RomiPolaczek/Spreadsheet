@@ -7,6 +7,7 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -159,19 +160,24 @@ public class UserInterface {
 
         engine.getSheet().updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
 
+        engine.getSheet().IncreaseVersion();
+        engine.AddVersionToVersionManager();
         DisplaySheet();
-        engine.AddSheetVersionToMap(engine.getSheet());
     }
 
     public void DisplayVersions () {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Please enter a version number: ");
+        System.out.println("Please enter a version number: ");
 
         try {
-            int version = Integer.parseInt(scanner.nextLine());
-            DTOsheet dtoSheet = engine.getSheetVersion(version);
+            String version = scanner.nextLine();
+            DTOsheet dtoSheet = engine.GetVersionForDisplay(version);
             DisplaySheetVersion(dtoSheet);
-        } catch (Exception e) {
+        }
+        catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (Exception e) {
             System.out.print("Version must be an integer");
         }
     }

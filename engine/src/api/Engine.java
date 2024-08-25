@@ -10,7 +10,8 @@ public interface Engine {
 
     DTOsheet createDTOSheetForDisplay(Sheet sheet);
 
-    void AddSheetVersionToMap(Sheet sheet);
+    void AddVersionToVersionManager();
 
-    DTOsheet getSheetVersion(Integer versionNumber);
+    DTOsheet GetVersionForDisplay(String version);
+
 }

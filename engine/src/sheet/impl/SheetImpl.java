@@ -6,14 +6,12 @@ import sheet.cell.impl.CellImpl;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.layout.api.Layout;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SheetImpl implements Sheet {
+public class SheetImpl implements Sheet, Serializable {
 
     private Map<Coordinate, Cell> activeCells;
     private Layout layout;
@@ -99,6 +97,7 @@ public class SheetImpl implements Sheet {
                             .filter(Cell::calculateEffectiveValue)
                             .collect(Collectors.toList());
 
+            //version += 1;
             // successful calculation. update sheet and relevant cells version
             // int newVersion = newSheetVersion.increaseVersion();
             // cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
@@ -163,8 +162,8 @@ public class SheetImpl implements Sheet {
         }
     }
 
-
-    private SheetImpl copySheet() {
+    @Override
+    public SheetImpl copySheet() {
         // lots of options here:
         // 1. implement clone all the way (yac... !)
         // 2. implement copy constructor for CellImpl and SheetImpl
@@ -178,10 +177,17 @@ public class SheetImpl implements Sheet {
 
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
             return (SheetImpl) ois.readObject();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // deal with the runtime error that was discovered as part of invocation
+            e.printStackTrace();
             return this;
         }
+    }
+
+    @Override
+    public void IncreaseVersion () {
+        version++;
     }
 
 

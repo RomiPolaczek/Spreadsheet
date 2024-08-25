@@ -17,6 +17,9 @@ import sheet.layout.impl.LayoutImpl;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLSheet;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,10 +30,10 @@ public class EngineImpl implements Engine {
     private Sheet sheet;
     private STLSheet stlSheet;
     private File file;
-    private Map<Integer,DTOsheet> sheetsVersions;
+    private VersionManager versionManager;
 
     public EngineImpl() {
-        sheetsVersions = new HashMap<>();
+        versionManager = new VersionManager();
     }
 
     @Override
@@ -53,14 +56,14 @@ public class EngineImpl implements Engine {
         file = new File(fileName);
 
         if (!file.exists()) {
-            throw new Exception("File does not exist at path: " + fileName);
+            throw new FileNotFoundException("File does not exist at path: " + fileName);
         }
         if (!file.canRead()) {
-            throw new Exception("File cannot be read at path: " + fileName);
+            throw new IOException("File cannot be read at path: " + fileName);
         }
         // Check if file has .xml extension
         if (!fileName.toLowerCase().endsWith(".xml")) {
-            throw new Exception("The file does not have an XML extension.");
+            throw new IllegalArgumentException("The file does not have an XML extension.");
         }
     }
 
@@ -89,7 +92,7 @@ public class EngineImpl implements Engine {
             sheet.updateCellValueAndCalculate(row, col, stlCell.getSTLOriginalValue());
         }
 
-        AddSheetVersionToMap(sheet);
+        versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet));
     }
 
     @Override
@@ -113,13 +116,15 @@ public class EngineImpl implements Engine {
     }
 
     @Override
-    public void AddSheetVersionToMap(Sheet sheet) {
+    public void AddVersionToVersionManager() {
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-        sheetsVersions.put(sheet.getVersion(),dtoSheet);
+        versionManager.AddSheetVersionToMap(dtoSheet);
     }
 
     @Override
-    public DTOsheet getSheetVersion(Integer versionNumber) {
-        return sheetsVersions.get(versionNumber);
+    public DTOsheet GetVersionForDisplay(String version) {
+        Integer versionNumber = Integer.parseInt(version);
+        DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
+        return dtoSheet;
     }
 }
