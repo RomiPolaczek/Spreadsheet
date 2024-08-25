@@ -2,6 +2,7 @@ package api;
 
 import dto.DTOsheet;
 import sheet.api.Sheet;
+import sheet.coordinate.api.Coordinate;
 
 public interface Engine {
     void LoadFile(String fileName) throws Exception;
@@ -10,8 +11,8 @@ public interface Engine {
 
     DTOsheet createDTOSheetForDisplay(Sheet sheet);
 
-    void AddVersionToVersionManager();
+    //void AddVersionToVersionManager();
 
     DTOsheet GetVersionForDisplay(String version);
-
+    void EditCell(Coordinate coordinate, String inputValue);
 }

@@ -2,10 +2,8 @@ import api.Engine;
 import dto.DTOcell;
 import dto.DTOsheet;
 import impl.EngineImpl;
-import sheet.api.SheetReadActions;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -156,12 +154,8 @@ public class UserInterface {
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter the new value of the cell: ");
-        String inputValue = scanner.nextLine().toUpperCase();
-
-        engine.getSheet().updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
-
-        engine.getSheet().IncreaseVersion();
-        engine.AddVersionToVersionManager();
+        String inputValue = scanner.nextLine();
+        engine.EditCell(coordinate, inputValue);
         DisplaySheet();
     }
 
@@ -182,14 +176,11 @@ public class UserInterface {
         }
     }
 
-        public void DisplaySheetVersion(DTOsheet dtoSheet) {
-            System.out.println("Sheet Name: " + dtoSheet.getName());
-            System.out.println("Version: " + dtoSheet.getVersion());
-            System.out.println();
+    public void DisplaySheetVersion(DTOsheet dtoSheet) {
+        System.out.println("Sheet Name: " + dtoSheet.getName());
+        System.out.println("Version: " + dtoSheet.getVersion());
+        System.out.println();
 
-            printSheet(dtoSheet);
+        printSheet(dtoSheet);
     }
-
-
-
 }

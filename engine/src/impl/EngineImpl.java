@@ -89,7 +89,7 @@ public class EngineImpl implements Engine {
         {
             int row = stlCell.getRow();
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
-            sheet.updateCellValueAndCalculate(row, col, stlCell.getSTLOriginalValue());
+            sheet.setCell(row, col, stlCell.getSTLOriginalValue());
         }
 
         versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet));
@@ -115,16 +115,24 @@ public class EngineImpl implements Engine {
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout);
     }
 
-    @Override
-    public void AddVersionToVersionManager() {
-        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-        versionManager.AddSheetVersionToMap(dtoSheet);
-    }
+//    @Override
+//    public void AddVersionToVersionManager() {
+//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+//        versionManager.AddSheetVersionToMap(dtoSheet);
+//    }
 
     @Override
     public DTOsheet GetVersionForDisplay(String version) {
         Integer versionNumber = Integer.parseInt(version);
         DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
         return dtoSheet;
+    }
+
+    @Override
+    public void EditCell(Coordinate coordinate, String inputValue){
+        sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
+        sheet.IncreaseVersion();
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        versionManager.AddSheetVersionToMap(dtoSheet);
     }
 }

@@ -4,6 +4,7 @@ import sheet.impl.SheetImpl;
 import sheet.layout.api.Layout;
 
 public interface SheetUpdateActions {
+    void setCell(int row, int column, String value);
     Sheet updateCellValueAndCalculate(int row, int column, String value);
   //  void setCell(int row, int column, String value);
     void setLayout(Layout layout);

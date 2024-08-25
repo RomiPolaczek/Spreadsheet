@@ -6,16 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="start of &quot;edit cell&quot;&#10;start of &quot;display version&quot;&#10;both unfinished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
     </list>
@@ -228,19 +222,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>132</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/impl/VersionManager.java</url>
           <line>18</line>
           <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="67" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />

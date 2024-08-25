@@ -1,10 +1,13 @@
 package sheet.impl;
 
+import sheet.api.CellType;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+import sheet.coordinate.impl.CoordinateImpl;
 import sheet.layout.api.Layout;
 
 import java.io.*;
@@ -57,28 +60,28 @@ public class SheetImpl implements Sheet, Serializable {
         return activeCells;
     }
 
-//    @Override
-//    public void setCell(int row, int column, String value) {
-//        if(row > layout.getRows())
-//            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
-//        if(column > layout.getColumns())
-//            throw new IndexOutOfBoundsException("Column " + CoordinateImpl.convertNumberToAlphabetString(column) + " out of bounds");
-//
-//        Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
-//        Cell cell = activeCells.get(coordinate);
-//
-//        if(cell == null) {
-//            EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
-//            int version = this.getVersion(); // You may have a different way to manage versions
-//            List<Cell> dependsOn = new ArrayList<>();
-//            List<Cell> influencingOn = new ArrayList<>();
-//
-//            cell = new CellImpl(row, column, value, effectiveValue, version, dependsOn, influencingOn);
-//            activeCells.put(coordinate, cell);
-//        }
-//        cell.setCellOriginalValue(value);
-//        cell.calculateEffectiveValue();
-//    }
+    @Override
+    public void setCell(int row, int column, String value) {
+        if(row > layout.getRows())
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        if(column > layout.getColumns())
+            throw new IndexOutOfBoundsException("Column " + CoordinateImpl.convertNumberToAlphabetString(column) + " out of bounds");
+
+        Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
+        Cell cell = activeCells.get(coordinate);
+
+        if(cell == null) {
+            EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
+            int version = this.getVersion(); // You may have a different way to manage versions
+            List<Cell> dependsOn = new ArrayList<>();
+            List<Cell> influencingOn = new ArrayList<>();
+
+            cell = new CellImpl(row, column, value, version, this);
+            activeCells.put(coordinate, cell);
+        }
+        cell.setCellOriginalValue(value);
+        cell.calculateEffectiveValue();
+    }
 
     @Override
     public Sheet updateCellValueAndCalculate(int row, int column, String value) {
@@ -189,6 +192,8 @@ public class SheetImpl implements Sheet, Serializable {
     public void IncreaseVersion () {
         version++;
     }
+
+
 
 
 }
