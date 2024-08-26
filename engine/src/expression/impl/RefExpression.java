@@ -4,8 +4,10 @@ import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.SheetReadActions;
+import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+import sheet.coordinate.impl.CoordinateImpl;
 
 public class RefExpression implements Expression {
 
@@ -16,13 +18,20 @@ public class RefExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
         // error handling if the cell is empty or not found
         CoordinateFactory.isValidCoordinate(coordinate, sheet);
-        if(sheet.getCell(coordinate.getRow(), coordinate.getColumn()) == null)
-            throw new Exception("The cell is empty or not found.");
+        Cell newCell = sheet.getCell(coordinate.getRow(), coordinate.getColumn());
+        if(newCell == null)
+        {
+            String cellStr = CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()) + coordinate.getRow();
+            throw new Exception("The cell " + cellStr + " is empty or not found.");
+        }
 
-        return sheet.getCell(coordinate.getRow(), coordinate.getColumn()).getEffectiveValue();
+        newCell.getDependsOn().add(cell);
+        cell.getInfluencingOn().add(newCell);
+
+        return newCell.getEffectiveValue();
     }
 
     @Override

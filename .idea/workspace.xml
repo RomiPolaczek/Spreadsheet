@@ -6,9 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="start of &quot;edit cell&quot;&#10;start of &quot;display version&quot;&#10;both unfinished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
@@ -225,6 +240,16 @@
           <url>file://$PROJECT_DIR$/engine/src/impl/VersionManager.java</url>
           <line>18</line>
           <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/impl/EngineImpl.java</url>
+          <line>123</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>
+          <line>325</line>
+          <option name="timeStamp" value="87" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />

@@ -3,6 +3,7 @@ package expression.impl;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.SheetReadActions;
+import sheet.cell.api.Cell;
 import sheet.impl.EffectiveValueImpl;
 import expression.api.Expression;
 
@@ -17,7 +18,7 @@ public class IdentityExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
         return new EffectiveValueImpl(type, value);
     }
 

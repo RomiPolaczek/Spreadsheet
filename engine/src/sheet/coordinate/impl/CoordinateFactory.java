@@ -5,10 +5,12 @@ import sheet.coordinate.api.Coordinate;
 import sheet.layout.api.Layout;
 import sheet.layout.impl.LayoutImpl;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SequencedCollection;
 
-public class CoordinateFactory {
+public class CoordinateFactory implements Serializable {
 
     private static Map<String, Coordinate> cachedCoordinates = new HashMap<>();
 

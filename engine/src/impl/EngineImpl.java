@@ -19,10 +19,7 @@ import xmlGenerated.STLSheet;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EngineImpl implements Engine {
@@ -114,12 +111,6 @@ public class EngineImpl implements Engine {
 
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout);
     }
-
-//    @Override
-//    public void AddVersionToVersionManager() {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-//        versionManager.AddSheetVersionToMap(dtoSheet);
-//    }
 
     @Override
     public DTOsheet GetVersionForDisplay(String version) {

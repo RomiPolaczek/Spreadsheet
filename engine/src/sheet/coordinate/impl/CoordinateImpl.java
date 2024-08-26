@@ -4,7 +4,7 @@ import sheet.coordinate.api.Coordinate;
 
 import java.io.Serializable;
 
-public class CoordinateImpl implements Coordinate , Serializable {
+public class CoordinateImpl implements Coordinate, Serializable {
     private final int row;
     private final int column;
 

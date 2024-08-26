@@ -2,7 +2,6 @@ package sheet.cell.api;
 
 import sheet.api.EffectiveValue;
 import sheet.coordinate.api.Coordinate;
-
 import java.util.List;
 
 public interface Cell {

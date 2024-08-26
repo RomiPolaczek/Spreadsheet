@@ -99,20 +99,22 @@ public class UserInterface {
             if(dependsOn.isEmpty())
                 System.out.println("There are no cells depending on cell " + input);
             else {
-                System.out.println("The list of cells that depends on cell " + input + " : ");
+                System.out.print("The list of cells that depends on cell " + input + ": ");
                 for (String dependsOnName : dependsOn) {
                     System.out.print(dependsOnName + " ");
                 }
+                System.out.println();
             }
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
             if(influencingOn.isEmpty())
                 System.out.println("There are no cells influencing on cell " + input);
             else{
-                System.out.println("The list of cells that influencing on cell " + input + " : ");
+                System.out.print("The list of cells that influencing on cell " + input + " : ");
                 for (String influencingOnName : influencingOn) {
                     System.out.print(influencingOnName + " ");
                 }
+                System.out.println();
             }
         }
         catch (Exception e){
@@ -144,19 +146,20 @@ public class UserInterface {
             DTOcell dtoCell = dtoSheet.getCell(coordinate);
             if(dtoCell == null){
                 System.out.println("Cell identity: " + inputCell);
-                throw new Exception("The cell " + inputCell + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
+                System.out.println("The cell " + inputCell + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
             }
-            printCellFirstParts(inputCell, dtoCell);
+            else{
+                printCellFirstParts(inputCell, dtoCell);
+            }
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Please enter the new value of the cell: ");
+            String inputValue = scanner.nextLine();
+            engine.EditCell(coordinate, inputValue);
+            DisplaySheet();
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Please enter the new value of the cell: ");
-        String inputValue = scanner.nextLine();
-        engine.EditCell(coordinate, inputValue);
-        DisplaySheet();
     }
 
     public void DisplayVersions () {
