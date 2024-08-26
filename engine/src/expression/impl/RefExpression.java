@@ -28,8 +28,8 @@ public class RefExpression implements Expression {
             throw new Exception("The cell " + cellStr + " is empty or not found.");
         }
 
-        newCell.getDependsOn().add(cell);
-        cell.getInfluencingOn().add(newCell);
+        cell.getDependsOn().add(newCell);
+        newCell.getInfluencingOn().add(cell);
 
         return newCell.getEffectiveValue();
     }

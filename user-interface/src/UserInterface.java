@@ -97,9 +97,9 @@ public class UserInterface {
 
             List<String> dependsOn = dtoCell.getDependsOn();
             if(dependsOn.isEmpty())
-                System.out.println("There are no cells depending on cell " + input);
+                System.out.println("There are no cells that cell " + input + " depends on");
             else {
-                System.out.print("The list of cells that depends on cell " + input + ": ");
+                System.out.print("The list of cells that cell " + input + " depends on: ");
                 for (String dependsOnName : dependsOn) {
                     System.out.print(dependsOnName + " ");
                 }
@@ -108,9 +108,9 @@ public class UserInterface {
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
             if(influencingOn.isEmpty())
-                System.out.println("There are no cells influencing on cell " + input);
+                System.out.println("There are no cells that cell " + input + " influencing on");
             else{
-                System.out.print("The list of cells that influencing on cell " + input + " : ");
+                System.out.print("The list of cells that cell " + input + " influence on: ");
                 for (String influencingOnName : influencingOn) {
                     System.out.print(influencingOnName + " ");
                 }

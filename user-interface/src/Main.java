@@ -4,9 +4,9 @@ public class Main {
         UserInterface UI = new UserInterface();
         UI.LoadFile();
         UI.DisplaySheet();
-//        UI.DisplayCell();
-//        UI.DisplayCell();
-//        UI.DisplayCell();
+        UI.DisplayCell();
+        UI.DisplayCell();
+        UI.DisplayCell();
 
         UI.EditCell();
         UI.EditCell();
