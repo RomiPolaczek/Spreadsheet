@@ -1,5 +1,6 @@
 package sheet.impl;
 
+import expression.parser.FunctionParser;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
@@ -12,6 +13,8 @@ import sheet.layout.api.Layout;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SheetImpl implements Sheet, Serializable {
@@ -91,14 +94,27 @@ public class SheetImpl implements Sheet, Serializable {
 
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
 
+  //      Cell originalCell = getCell(coordinate);
+//        if(originalCell != null) {
+//             for(Cell dependsOnCell : originalCell.getDependsOn())
+//                dependsOnCell.getInfluencingOn().remove(originalCell);
+//             for(Cell influenceOnCell : originalCell.getInfluencingOn())
+//                 influenceOnCell.getDependsOn().remove(originalCell);
+//        }
+
         SheetImpl newSheetVersion = copySheet();
+
         Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion);
+        //newSheetVersion.getCell(row,column)
         newSheetVersion.activeCells.put(coordinate, newCell);
+
         Boolean success = false;
         try {
+            newSheetVersion.updateInfluenceAndDepends();
+            List<Cell> orderedCells = newSheetVersion
+                    .orderCellsForCalculation();
             List<Cell> cellsThatHaveChanged =
-                    newSheetVersion
-                            .orderCellsForCalculation()
+                    orderedCells
                             .stream()
                             .filter(Cell::calculateEffectiveValue)
                             .collect(Collectors.toList());
@@ -122,55 +138,222 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     private List<Cell> orderCellsForCalculation() {
-        // Initialize the in-degree map and adjacency list for the dependency graph
-        Map<Cell, Integer> inDegree = new HashMap<>();
-        Map<Cell, List<Cell>> adjList = new HashMap<>();
+    // Initialize the in-degree map and adjacency list for the dependency graph
+    Map<Cell, Integer> inDegree = new HashMap<>();
+    Map<Cell, List<Cell>> adjList = new HashMap<>();
 
-        // Initialize in-degree and adjacency list for all active cells
-        for (Cell cell : activeCells.values()) {
-            inDegree.put(cell, 0); // Start with 0 in-degree for all cells
-            adjList.put(cell, new ArrayList<>()); // Initialize adjacency list
-        }
+    // Initialize in-degree and adjacency list for all active cells
+    for (Cell cell : activeCells.values()) {
+        inDegree.put(cell, 0); // Start with 0 in-degree for all cells
+        adjList.put(cell, new ArrayList<>()); // Initialize adjacency list
+    }
 
-        // Build the graph by populating adjacency list and in-degree map
-        for (Cell cell : activeCells.values()) {
-            for (Cell dependency : cell.getDependsOn()) {
-                adjList.get(dependency).add(cell); // dependency -> cell
+    // Build the graph by populating adjacency list and in-degree map
+    for (Cell cell : activeCells.values()) {
+        List<Coordinate> dependencies = cell.getDependsOn();
+
+        for (Coordinate coord : dependencies) {
+            Cell dependencyCell = activeCells.get(coord);
+            if (dependencyCell != null) {
+                adjList.get(dependencyCell).add(cell); // dependencyCell -> cell
                 inDegree.put(cell, inDegree.get(cell) + 1); // Increment in-degree of cell
             }
         }
-
-        // Initialize a queue for cells with no dependencies (in-degree 0)
-        Queue<Cell> queue = new LinkedList<>();
-        for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
-            if (entry.getValue() == 0) {
-                queue.add(entry.getKey());
-            }
-        }
-
-        // Perform topological sorting
-        List<Cell> sortedCells = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            Cell currentCell = queue.poll();
-            sortedCells.add(currentCell);
-
-            // Reduce in-degree of all cells that depend on the current cell
-            for (Cell dependentCell : adjList.get(currentCell)) {
-                inDegree.put(dependentCell, inDegree.get(dependentCell) - 1);
-                if (inDegree.get(dependentCell) == 0) {
-                    queue.add(dependentCell);
-                }
-            }
-        }
-
-        // Check if a valid topological order exists (i.e., no cycles)
-        if (sortedCells.size() != activeCells.size()) {
-            throw new RuntimeException("Circular dependency detected in cells");
-        }
-
-        return sortedCells;
     }
 
+    // Initialize a queue for cells with no dependencies (in-degree 0)
+    Queue<Cell> queue = new LinkedList<>();
+    for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
+        if (entry.getValue() == 0) {
+            queue.add(entry.getKey());
+        }
+    }
+
+    // Perform topological sorting
+    List<Cell> sortedCells = new ArrayList<>();
+    while (!queue.isEmpty()) {
+        Cell currentCell = queue.poll();
+        sortedCells.add(currentCell);
+
+        // Reduce in-degree of all cells that depend on the current cell
+        for (Cell dependentCell : adjList.get(currentCell)) {
+            inDegree.put(dependentCell, inDegree.get(dependentCell) - 1);
+            if (inDegree.get(dependentCell) == 0) {
+                queue.add(dependentCell);
+            }
+        }
+    }
+
+    // Check if a valid topological order exists (i.e., no cycles)
+    if (sortedCells.size() != activeCells.size()) {
+        throw new RuntimeException("Circular dependency detected in cells");
+    }
+
+    return sortedCells;
+}
+
+
+//    private List<Cell> orderCellsForCalculation(){
+//    // Initialize the in-degree map and adjacency list for Deps-Influence graph
+//    Map<Cell, Integer> inDegree = new HashMap<>();
+//    Map<Cell, List<Cell>> adjList = new HashMap<>();
+//
+//    // Initialize in-degree and adjacency list for all active cells
+//    for (Cell cell : activeCells.values()) {
+//        inDegree.put(cell, 0);
+//        adjList.put(cell, new ArrayList<>());
+//    }
+//
+//    // Build the graph by populating adjacency list and in-degree map
+//    for (Cell cell : activeCells.values()) {
+//        // Get the list of cells that the current cell influences
+//        List<Cell> influencedCells = cell.getInfluencingOn(); // Assumes getInfluences() returns a list of cells influenced by this cell
+//
+//        for (Cell influencedCell : influencedCells) {
+//            adjList.get(cell).add(influencedCell);
+//            inDegree.put(influencedCell, inDegree.get(influencedCell) + 1);
+//        }
+//    }
+//
+//    // Initialize a queue for cells with no dependencies (in-degree 0)
+//    Queue<Cell> queue = new LinkedList<>();
+//    for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
+//        if (entry.getValue() == 0) {
+//            queue.add(entry.getKey());
+//        }
+//    }
+//
+//    // Perform topological sorting
+//    List<Cell> sortedCells = new ArrayList<>();
+//    while (!queue.isEmpty()) {
+//        Cell currentCell = queue.poll();
+//        sortedCells.add(currentCell);
+//
+//        // Reduce in-degree of all adjacent cells
+//        for (Cell neighbor : adjList.get(currentCell)) {
+//            inDegree.put(neighbor, inDegree.get(neighbor) - 1);
+//            if (inDegree.get(neighbor) == 0) {
+//                queue.add(neighbor);
+//            }
+//        }
+//    }
+//
+//    // Check if a valid topological order exists
+//    if (sortedCells.size() != activeCells.size()) {
+//        throw new RuntimeException("Circular dependency detected in cells");
+//    }
+//
+//    return sortedCells;
+//}
+//
+//    //version 1
+////    private List<Cell> orderCellsForCalculation() {
+////        // Initialize the in-degree map and adjacency list for the dependency graph
+////        Map<Cell, Integer> inDegree = new HashMap<>();
+////        Map<Cell, List<Cell>> adjList = new HashMap<>();
+////
+////        // Initialize in-degree and adjacency list for all active cells
+////        for (Cell cell : activeCells.values()) {
+////            inDegree.put(cell, 0); // Start with 0 in-degree for all cells
+////            adjList.put(cell, new ArrayList<>()); // Initialize adjacency list
+////        }
+////
+////        // Build the graph by populating adjacency list and in-degree map
+////        for (Cell cell : activeCells.values()) {
+////            for (Cell dependency : cell.getDependsOn()) {
+////                adjList.get(dependency).add(cell); // dependency -> cell
+////                inDegree.put(cell, inDegree.get(cell) + 1); // Increment in-degree of cell
+////            }
+////        }
+////
+////        // Initialize a queue for cells with no dependencies (in-degree 0)
+////        Queue<Cell> queue = new LinkedList<>();
+////        for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
+////            if (entry.getValue() == 0) {
+////                queue.add(entry.getKey());
+////            }
+////        }
+////
+////        // Perform topological sorting
+////        List<Cell> sortedCells = new ArrayList<>();
+////        while (!queue.isEmpty()) {
+////            Cell currentCell = queue.poll();
+////            sortedCells.add(currentCell);
+////
+////            // Reduce in-degree of all cells that depend on the current cell
+////            for (Cell dependentCell : adjList.get(currentCell)) {
+////                inDegree.put(dependentCell, inDegree.get(dependentCell) - 1);
+////                if (inDegree.get(dependentCell) == 0) {
+////                    queue.add(dependentCell);
+////                }
+////            }
+////        }
+////
+////        // Check if a valid topological order exists (i.e., no cycles)
+////        if (sortedCells.size() != activeCells.size()) {
+////            throw new RuntimeException("Circular dependency detected in cells");
+////        }
+////
+////        return sortedCells;
+////    }
+//
+////    private List<Cell> orderCellsForCalculation() {
+////    // Initialize the in-degree map and adjacency list for the dependency graph
+////    Map<Cell, Integer> inDegree = new HashMap<>();
+////    Map<Cell, List<Cell>> adjList = new HashMap<>();
+////
+////    // Initialize in-degree and adjacency list for all active cells and their dependencies
+////    for (Cell cell : activeCells.values()) {
+////        inDegree.put(cell, 0); // Start with 0 in-degree for all cells
+////        adjList.put(cell, new ArrayList<>()); // Initialize adjacency list
+////
+////        // Ensure that all dependencies are also added to the inDegree and adjList maps
+////        for (Cell dependency : cell.getDependsOn()) {
+////            inDegree.putIfAbsent(dependency, 0); // Add with in-degree 0 if not already present
+////            adjList.putIfAbsent(dependency, new ArrayList<>()); // Ensure dependency has an adjacency list
+////        }
+////    }
+////
+////    // Build the graph by populating adjacency list and in-degree map
+////    for (Cell cell : activeCells.values()) {
+////        for (Cell dependency : cell.getDependsOn()) {
+////            adjList.get(dependency).add(cell); // dependency -> cell
+////            inDegree.put(cell, inDegree.get(cell) + 1); // Increment in-degree of cell
+////        }
+////    }
+////
+////    // Initialize a queue for cells with no dependencies (in-degree 0)
+////    Queue<Cell> queue = new LinkedList<>();
+////    for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
+////        if (entry.getValue() == 0) {
+////            queue.add(entry.getKey());
+////        }
+////    }
+////
+////    // Perform topological sorting
+////    List<Cell> sortedCells = new ArrayList<>();
+////    while (!queue.isEmpty()) {
+////        Cell currentCell = queue.poll();
+////        sortedCells.add(currentCell);
+////
+////        // Reduce in-degree of all cells that depend on the current cell
+////        for (Cell dependentCell : adjList.get(currentCell)) {
+////            inDegree.put(dependentCell, inDegree.get(dependentCell) - 1);
+////            if (inDegree.get(dependentCell) == 0) {
+////                queue.add(dependentCell);
+////            }
+////        }
+////    }
+////
+////    // Check if a valid topological order exists (i.e., no cycles)
+////    if (sortedCells.size() != activeCells.size()) {
+////        throw new RuntimeException("Circular dependency detected in cells");
+////    }
+////
+////    return sortedCells;
+////}
+//
+//
     @Override
     public SheetImpl copySheet() {
         Boolean success = false;
@@ -218,5 +401,35 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(activeCells, layout, name, version);
+    }
+
+    private void updateInfluenceAndDepends() throws Exception {
+        List<String> refCells;
+        for (Cell cell : activeCells.values()) {
+            cell.getInfluencingOn().clear();
+            cell.getDependsOn().clear();
+            refCells = extractRefCells(cell.getOriginalValue());
+            for(String refCell : refCells) {
+                Coordinate coordinate = CoordinateFactory.from(refCell);
+                CoordinateFactory.isValidCoordinate(coordinate, this);
+                cell.getDependsOn().add(coordinate);
+                getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+            }
+        }
+    }
+
+    public List<String> extractRefCells(String input) {
+        List<String> refCells = new ArrayList<>();
+
+        // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
+        Pattern pattern = Pattern.compile("\\bREF\\s*,\\s*([A-Z]+[0-9]+)\\b", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
+
+        // Find all matches and add the cell references to the list
+        while (matcher.find()) {
+            refCells.add(matcher.group(1));
+        }
+
+        return refCells;
     }
 }

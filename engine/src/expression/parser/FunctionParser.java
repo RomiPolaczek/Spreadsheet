@@ -332,7 +332,7 @@ public enum FunctionParser implements Serializable {
         return FunctionParser.IDENTITY.parse(List.of(input));
     }
 
-    private static List<String> parseMainParts(String input) {
+    public static List<String> parseMainParts(String input) {
         List<String> parts = new ArrayList<>();
         StringBuilder buffer = new StringBuilder();
         Stack<Character> stack = new Stack<>();

@@ -11,6 +11,6 @@ public interface Cell {
     EffectiveValue getEffectiveValue();
     boolean calculateEffectiveValue();
     int getVersion();
-    List<Cell> getDependsOn();
-    List<Cell> getInfluencingOn();
+    List<Coordinate> getDependsOn();
+    List<Coordinate> getInfluencingOn();
 }

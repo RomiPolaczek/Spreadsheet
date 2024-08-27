@@ -11,6 +11,7 @@ import sheet.api.SheetReadActions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CellImpl implements Cell, Serializable {
@@ -19,8 +20,8 @@ public class CellImpl implements Cell, Serializable {
     private String originalValue;
     private EffectiveValue effectiveValue;
     private int version;
-    private List<Cell> dependsOn;
-    private List<Cell> influencingOn;
+    private List<Coordinate> dependsOn;
+    private List<Coordinate> influencingOn;
     private SheetReadActions sheet;
 
 
@@ -82,12 +83,12 @@ public class CellImpl implements Cell, Serializable {
     }
 
     @Override
-    public List<Cell> getDependsOn() {
+    public List<Coordinate> getDependsOn() {
         return dependsOn;
     }
 
     @Override
-    public List<Cell> getInfluencingOn() {
+    public List<Coordinate> getInfluencingOn() {
         return influencingOn;
     }
 

@@ -30,10 +30,33 @@ public class RefExpression implements Expression, Serializable {
             String cellStr = CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()) + coordinate.getRow();
             throw new Exception("The cell " + cellStr + " is empty or not found.");
         }
-        if(!cell.getDependsOn().contains(newCell))
-            cell.getDependsOn().add(newCell);
-        if(!newCell.getInfluencingOn().contains(cell))
-            newCell.getInfluencingOn().add(cell);
+//        if(!cell.getDependsOn().contains(newCell))
+//            cell.getDependsOn().add(newCell);
+//        if(!newCell.getInfluencingOn().contains(cell))
+//            newCell.getInfluencingOn().add(cell);
+
+//        boolean isInDependsOn = false;
+//        for (Cell dependentCell : cell.getDependsOn()) {
+//            if (dependentCell.getCoordinate().equals(newCell.getCoordinate())) {
+//                isInDependsOn = true;
+//                break;
+//            }
+//        }
+//        if (!isInDependsOn) {
+//            cell.getDependsOn().add(newCell);
+//        }
+//
+//        // Check if 'cell' is already in 'newCell.getInfluencingOn()' by comparing coordinates
+//        boolean isInInfluencingOn = false;
+//        for (Cell influencingCell : newCell.getInfluencingOn()) {
+//            if (influencingCell.getCoordinate().equals(cell.getCoordinate())) {
+//                isInInfluencingOn = true;
+//                break;
+//            }
+//        }
+//        if (!isInInfluencingOn) {
+//            newCell.getInfluencingOn().add(cell);
+//        }
 
         return newCell.getEffectiveValue();
     }

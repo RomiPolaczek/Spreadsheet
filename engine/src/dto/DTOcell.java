@@ -2,6 +2,7 @@ package dto;
 
 import sheet.api.EffectiveValue;
 import sheet.cell.api.Cell;
+import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 
@@ -18,7 +19,7 @@ public class DTOcell {
     private List<String> influencingOn;
 
 
-    public DTOcell(int row, int col, String effectiveValue, String originalValue, int version, List<Cell> dependsOn, List<Cell> influencingOn) {
+    public DTOcell(int row, int col, String effectiveValue, String originalValue, int version, List<Coordinate> dependsOn, List<Coordinate> influencingOn) {
         this.row = row;
         this.col = col;
         this.effectiveValue = effectiveValue;
@@ -48,13 +49,13 @@ public class DTOcell {
 
     public List<String> getInfluencingOn() {return influencingOn;}
 
-    private List<String> convertListCellsToString(List<Cell> cells) {
+    private List<String> convertListCellsToString(List<Coordinate> coordinates) {
         List<String> cellsList = new ArrayList<>();
 
-        for (Cell cell : cells) {
+        for (Coordinate coordinate : coordinates) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(CoordinateImpl.convertNumberToAlphabetString(cell.getCoordinate().getColumn()));
-            stringBuilder.append(cell.getCoordinate().getRow());
+            stringBuilder.append(CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()));
+            stringBuilder.append(coordinate.getRow());
 
             cellsList.add(stringBuilder.toString());
         }

@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix duplicates in dependsOn and influencesOn ,add printStack">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,10 +267,25 @@
           <line>123</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java</url>
           <line>20</line>
           <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="115" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
+          <line>113</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
+          <line>112</line>
+          <option name="timeStamp" value="122" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />
@@ -276,5 +293,17 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="sheet.cell.impl.CellImpl" memberName="sheet" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[1]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[1]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[1]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
