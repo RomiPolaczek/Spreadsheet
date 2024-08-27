@@ -11,6 +11,13 @@ public class Main {
         UI.EditCell();
         UI.EditCell();
         UI.EditCell();
+        UI.EditCell();
+        UI.EditCell();
+        UI.EditCell();
+
+        UI.EditCell();
+        UI.EditCell();
+
         UI.DisplayVersions();
         UI.DisplayVersions();
         UI.DisplayVersions();

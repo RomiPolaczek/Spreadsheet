@@ -105,11 +105,12 @@ public class SheetImpl implements Sheet, Serializable {
 
             //version += 1;
             // successful calculation. update sheet and relevant cells version
-            // int newVersion = newSheetVersion.increaseVersion();
+            // int newVersion = newSheetVersion.IncreaseVersion();
             //cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
             success = true;
             return newSheetVersion;
         } catch (Exception e) {
+            e.printStackTrace();
             // deal with the runtime error that was discovered as part of invocation
             throw new RuntimeException(e.getMessage());
         } finally {
@@ -202,4 +203,9 @@ public class SheetImpl implements Sheet, Serializable {
     public void IncreaseVersion () {
         version++;
     }
+
+//    @Override
+//    public int IncreaseVersion () {
+//        return ++version;
+//    }
 }

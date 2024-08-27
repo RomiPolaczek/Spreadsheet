@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CoordinateFactory implements Serializable {
+public class CoordinateFactory {
 
     private static Map<String, Coordinate> cachedCoordinates = new HashMap<>();
 
@@ -33,7 +33,8 @@ public class CoordinateFactory implements Serializable {
 
             for (char c : trim.toCharArray()) {
                 if (Character.isLetter(c)) {
-                    columnPart.append(c);
+                    char upperCaseLetter = Character.toUpperCase(c);
+                    columnPart.append(upperCaseLetter);
                 } else if (Character.isDigit(c)) {
                     rowPart.append(c);
                 }

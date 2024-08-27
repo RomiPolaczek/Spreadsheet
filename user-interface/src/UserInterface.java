@@ -154,17 +154,20 @@ public class UserInterface {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Please enter the new value of the cell: ");
             String inputValue = scanner.nextLine();
+         //   if(inputValue.isBlank())
+
             engine.EditCell(coordinate, inputValue);
             DisplaySheet();
         }
         catch (Exception e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void DisplayVersions () {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter a version number: ");
+        System.out.print("Please enter a version number: ");
 
         try {
             String version = scanner.nextLine();

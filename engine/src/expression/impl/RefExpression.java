@@ -30,9 +30,10 @@ public class RefExpression implements Expression, Serializable {
             String cellStr = CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()) + coordinate.getRow();
             throw new Exception("The cell " + cellStr + " is empty or not found.");
         }
-
-        cell.getDependsOn().add(newCell);
-        newCell.getInfluencingOn().add(cell);
+        if(!cell.getDependsOn().contains(newCell))
+            cell.getDependsOn().add(newCell);
+        if(!newCell.getInfluencingOn().contains(cell))
+            newCell.getInfluencingOn().add(cell);
 
         return newCell.getEffectiveValue();
     }
