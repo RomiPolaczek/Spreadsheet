@@ -56,4 +56,5 @@ public class CoordinateFactory {
         LayoutImpl.CheckValidation(coordinate.getRow(), sheet.getLayout().getRows(), sheet.getLayout().getRowsLowerLimit(), "Row");
         LayoutImpl.CheckValidation(coordinate.getColumn(), sheet.getLayout().getColumns(), sheet.getLayout().getColsLowerLimit(), "Column");
     }
+
 }

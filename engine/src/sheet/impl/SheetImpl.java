@@ -122,24 +122,21 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     private List<Cell> orderCellsForCalculation() {
-        // Initialize the in-degree map and adjacency list for Deps-Influence graph
+        // Initialize the in-degree map and adjacency list for the dependency graph
         Map<Cell, Integer> inDegree = new HashMap<>();
         Map<Cell, List<Cell>> adjList = new HashMap<>();
 
         // Initialize in-degree and adjacency list for all active cells
         for (Cell cell : activeCells.values()) {
-            inDegree.put(cell, 0);
-            adjList.put(cell, new ArrayList<>());
+            inDegree.put(cell, 0); // Start with 0 in-degree for all cells
+            adjList.put(cell, new ArrayList<>()); // Initialize adjacency list
         }
 
         // Build the graph by populating adjacency list and in-degree map
         for (Cell cell : activeCells.values()) {
-            // Get the list of cells that the current cell influences
-            List<Cell> influencedCells = cell.getInfluencingOn(); // Assumes getInfluences() returns a list of cells influenced by this cell
-
-            for (Cell influencedCell : influencedCells) {
-                adjList.get(cell).add(influencedCell);
-                inDegree.put(influencedCell, inDegree.get(influencedCell) + 1);
+            for (Cell dependency : cell.getDependsOn()) {
+                adjList.get(dependency).add(cell); // dependency -> cell
+                inDegree.put(cell, inDegree.get(cell) + 1); // Increment in-degree of cell
             }
         }
 
@@ -157,16 +154,16 @@ public class SheetImpl implements Sheet, Serializable {
             Cell currentCell = queue.poll();
             sortedCells.add(currentCell);
 
-            // Reduce in-degree of all adjacent cells
-            for (Cell neighbor : adjList.get(currentCell)) {
-                inDegree.put(neighbor, inDegree.get(neighbor) - 1);
-                if (inDegree.get(neighbor) == 0) {
-                    queue.add(neighbor);
+            // Reduce in-degree of all cells that depend on the current cell
+            for (Cell dependentCell : adjList.get(currentCell)) {
+                inDegree.put(dependentCell, inDegree.get(dependentCell) - 1);
+                if (inDegree.get(dependentCell) == 0) {
+                    queue.add(dependentCell);
                 }
             }
         }
 
-        // Check if a valid topological order exists
+        // Check if a valid topological order exists (i.e., no cycles)
         if (sortedCells.size() != activeCells.size()) {
             throw new RuntimeException("Circular dependency detected in cells");
         }
@@ -208,4 +205,18 @@ public class SheetImpl implements Sheet, Serializable {
 //    public int IncreaseVersion () {
 //        return ++version;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SheetImpl sheet = (SheetImpl) o;
+        return version == sheet.version && Objects.equals(activeCells, sheet.activeCells) && Objects.equals(layout, sheet.layout) && Objects.equals(name, sheet.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(activeCells, layout, name, version);
+    }
 }

@@ -11,6 +11,7 @@ import sheet.api.SheetReadActions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CellImpl implements Cell, Serializable {
 
@@ -88,5 +89,18 @@ public class CellImpl implements Cell, Serializable {
     @Override
     public List<Cell> getInfluencingOn() {
         return influencingOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CellImpl cell = (CellImpl) o;
+        return version == cell.version && Objects.equals(coordinate, cell.coordinate) && Objects.equals(originalValue, cell.originalValue) && Objects.equals(effectiveValue, cell.effectiveValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordinate, originalValue, effectiveValue, version);
     }
 }

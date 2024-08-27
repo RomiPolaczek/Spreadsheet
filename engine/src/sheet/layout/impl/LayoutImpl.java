@@ -3,6 +3,7 @@ package sheet.layout.impl;
 import sheet.layout.api.Layout;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class LayoutImpl implements Layout, Serializable {
     private int rowsHeightUnits;
@@ -75,4 +76,16 @@ public class LayoutImpl implements Layout, Serializable {
             throw new IllegalArgumentException (str + " must be greater than zero");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LayoutImpl layout = (LayoutImpl) o;
+        return rowsHeightUnits == layout.rowsHeightUnits && columnsWidthUnits == layout.columnsWidthUnits && rows == layout.rows && columns == layout.columns && ROWS_LOWER_LIMIT == layout.ROWS_LOWER_LIMIT && COLUMNS_LOWER_LIMIT == layout.COLUMNS_LOWER_LIMIT && ROWS_UPPER_LIMIT == layout.ROWS_UPPER_LIMIT && COLUMNS_UPPER_LIMIT == layout.COLUMNS_UPPER_LIMIT;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rowsHeightUnits, columnsWidthUnits, rows, columns, ROWS_LOWER_LIMIT, COLUMNS_LOWER_LIMIT, ROWS_UPPER_LIMIT, COLUMNS_UPPER_LIMIT);
+    }
 }
