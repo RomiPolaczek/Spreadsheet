@@ -2,13 +2,11 @@ package sheet.coordinate.impl;
 
 import sheet.api.SheetReadActions;
 import sheet.coordinate.api.Coordinate;
-import sheet.layout.api.Layout;
 import sheet.layout.impl.LayoutImpl;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SequencedCollection;
+
 
 public class CoordinateFactory implements Serializable {
 

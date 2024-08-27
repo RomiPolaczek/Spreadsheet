@@ -5,13 +5,16 @@ import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.SheetReadActions;
 import sheet.cell.api.Cell;
+import sheet.cell.impl.CellImpl;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 
-public class RefExpression implements Expression {
+import java.io.Serializable;
 
-    private final Coordinate coordinate;
+public class RefExpression implements Expression, Serializable {
+
+    private Coordinate coordinate;
 
     public RefExpression(Coordinate coordinate) {
         this.coordinate = coordinate;
@@ -21,7 +24,7 @@ public class RefExpression implements Expression {
     public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
         // error handling if the cell is empty or not found
         CoordinateFactory.isValidCoordinate(coordinate, sheet);
-        Cell newCell = sheet.getCell(coordinate.getRow(), coordinate.getColumn());
+        CellImpl newCell = (CellImpl) sheet.getCell(CoordinateFactory.createCoordinate(coordinate.getRow(), coordinate.getColumn()));
         if(newCell == null)
         {
             String cellStr = CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()) + coordinate.getRow();

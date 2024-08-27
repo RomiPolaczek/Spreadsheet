@@ -12,4 +12,5 @@ public interface SheetReadActions {
     String getName();
     Layout getLayout();
     Map<Coordinate, Cell> getActiveCells();
+    Cell getCell(Coordinate coordinate);
 }

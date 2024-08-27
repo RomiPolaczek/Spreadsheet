@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add dependsOn and InfluencingOn in ref">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix dependsOn anf InfluencingOn">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724675851406</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix dependsOn anf InfluencingOn">
+      <option name="closed" value="true" />
+      <created>1724676933518</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1724676933518</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,7 +232,8 @@
     <MESSAGE value="fix ref function and dto for display" />
     <MESSAGE value="start of &quot;edit cell&quot;&#10;start of &quot;display version&quot;&#10;both unfinished" />
     <MESSAGE value="add dependsOn and InfluencingOn in ref" />
-    <option name="LAST_COMMIT_MESSAGE" value="add dependsOn and InfluencingOn in ref" />
+    <MESSAGE value="fix dependsOn anf InfluencingOn" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix dependsOn anf InfluencingOn" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -227,7 +243,7 @@
           <line>11</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/impl/VersionManager.java</url>
           <line>18</line>
           <option name="timeStamp" value="63" />
@@ -239,18 +255,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="89" />
+          <line>27</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
-          <line>160</line>
-          <option name="timeStamp" value="90" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
-          <line>145</line>
-          <option name="timeStamp" value="91" />
+          <url>file://$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="95" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />

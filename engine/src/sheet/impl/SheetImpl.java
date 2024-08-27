@@ -56,6 +56,9 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
+    public Cell getCell(Coordinate coordinate) { return this.activeCells.get(coordinate); }
+
+    @Override
     public Map<Coordinate, Cell> getActiveCells() {
         return activeCells;
     }
@@ -91,7 +94,7 @@ public class SheetImpl implements Sheet, Serializable {
         SheetImpl newSheetVersion = copySheet();
         Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion);
         newSheetVersion.activeCells.put(coordinate, newCell);
-
+        Boolean success = false;
         try {
             List<Cell> cellsThatHaveChanged =
                     newSheetVersion
@@ -103,38 +106,43 @@ public class SheetImpl implements Sheet, Serializable {
             //version += 1;
             // successful calculation. update sheet and relevant cells version
             // int newVersion = newSheetVersion.increaseVersion();
-            // cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
-
+            //cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
+            success = true;
             return newSheetVersion;
         } catch (Exception e) {
             // deal with the runtime error that was discovered as part of invocation
-            return this;
+            throw new RuntimeException(e.getMessage());
+        } finally {
+//            if (!success) {
+//                // If an error occurred, return the original sheet
+//                return this;
+//            }
         }
     }
 
     private List<Cell> orderCellsForCalculation() {
-        // Create a map to store the in-degree of each cell
+        // Initialize the in-degree map and adjacency list for Deps-Influence graph
         Map<Cell, Integer> inDegree = new HashMap<>();
-
-        // Create a map to store the adjacency list of the graph
         Map<Cell, List<Cell>> adjList = new HashMap<>();
 
-        // Initialize the in-degree and adjacency list for each cell
+        // Initialize in-degree and adjacency list for all active cells
         for (Cell cell : activeCells.values()) {
             inDegree.put(cell, 0);
             adjList.put(cell, new ArrayList<>());
         }
 
-        // Build the graph
+        // Build the graph by populating adjacency list and in-degree map
         for (Cell cell : activeCells.values()) {
-            List<Cell> dependencies = cell.getDependsOn(); // assuming getDependencies() returns a list of cells this cell depends on
-            for (Cell dep : dependencies) {
-                adjList.get(dep).add(cell);
-                inDegree.put(cell, inDegree.get(cell) + 1);
+            // Get the list of cells that the current cell influences
+            List<Cell> influencedCells = cell.getInfluencingOn(); // Assumes getInfluences() returns a list of cells influenced by this cell
+
+            for (Cell influencedCell : influencedCells) {
+                adjList.get(cell).add(influencedCell);
+                inDegree.put(influencedCell, inDegree.get(influencedCell) + 1);
             }
         }
 
-        // Initialize a queue to store cells with no dependencies (in-degree 0)
+        // Initialize a queue for cells with no dependencies (in-degree 0)
         Queue<Cell> queue = new LinkedList<>();
         for (Map.Entry<Cell, Integer> entry : inDegree.entrySet()) {
             if (entry.getValue() == 0) {
@@ -145,11 +153,11 @@ public class SheetImpl implements Sheet, Serializable {
         // Perform topological sorting
         List<Cell> sortedCells = new ArrayList<>();
         while (!queue.isEmpty()) {
-            Cell cell = queue.poll();
-            sortedCells.add(cell);
+            Cell currentCell = queue.poll();
+            sortedCells.add(currentCell);
 
-            // Decrease the in-degree of the neighboring cells
-            for (Cell neighbor : adjList.get(cell)) {
+            // Reduce in-degree of all adjacent cells
+            for (Cell neighbor : adjList.get(currentCell)) {
                 inDegree.put(neighbor, inDegree.get(neighbor) - 1);
                 if (inDegree.get(neighbor) == 0) {
                     queue.add(neighbor);
@@ -157,21 +165,18 @@ public class SheetImpl implements Sheet, Serializable {
             }
         }
 
-        // If we have sorted all cells, return the sorted list
-        if (sortedCells.size() == activeCells.size()) {
-            return sortedCells;
-        } else {
-            throw new RuntimeException("Circular dependency detected");
+        // Check if a valid topological order exists
+        if (sortedCells.size() != activeCells.size()) {
+            throw new RuntimeException("Circular dependency detected in cells");
         }
+
+        return sortedCells;
     }
 
     @Override
     public SheetImpl copySheet() {
-        // lots of options here:
-        // 1. implement clone all the way (yac... !)
-        // 2. implement copy constructor for CellImpl and SheetImpl
+        Boolean success = false;
 
-        // 3. how about serialization ?
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -179,12 +184,17 @@ public class SheetImpl implements Sheet, Serializable {
             oos.close();
 
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+            success = true;
             return (SheetImpl) ois.readObject();
         }
         catch (Exception e) {
             // deal with the runtime error that was discovered as part of invocation
-            e.printStackTrace();
-            return this;
+            throw new RuntimeException(e);
+        } finally {
+            if (!success) {
+                // If an error occurred, return the original sheet
+                return this;
+            }
         }
     }
 

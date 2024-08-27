@@ -3,6 +3,7 @@ package sheet.coordinate.impl;
 import sheet.coordinate.api.Coordinate;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class CoordinateImpl implements Coordinate, Serializable {
     private final int row;
@@ -45,5 +46,18 @@ public class CoordinateImpl implements Coordinate, Serializable {
             result = result * 26 + position;
         }
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CoordinateImpl that = (CoordinateImpl) o;
+        return row == that.row && column == that.column;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column);
     }
 }

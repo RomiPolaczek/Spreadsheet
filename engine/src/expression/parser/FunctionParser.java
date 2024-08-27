@@ -9,11 +9,12 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.impl.SheetImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public enum FunctionParser {
+public enum FunctionParser implements Serializable {
     IDENTITY {
         @Override
         public Expression parse(List<String> arguments) {

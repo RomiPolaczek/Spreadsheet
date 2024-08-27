@@ -20,7 +20,7 @@ public class CellImpl implements Cell, Serializable {
     private int version;
     private List<Cell> dependsOn;
     private List<Cell> influencingOn;
-    private final SheetReadActions sheet;
+    private SheetReadActions sheet;
 
 
     public CellImpl(int row, int column, String originalValue, int version, SheetReadActions sheet)  {
@@ -57,7 +57,7 @@ public class CellImpl implements Cell, Serializable {
         // build the expression object out of the original value...
         // it can be {PLUS, 4, 5} OR {CONCAT, {ref, A4}, world}
 
-        try //CHECK THIS AVI
+        try
         {
             Expression expression = FunctionParser.parseExpression(originalValue);
 
@@ -71,7 +71,7 @@ public class CellImpl implements Cell, Serializable {
             }
         }
         catch (Exception e){
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
