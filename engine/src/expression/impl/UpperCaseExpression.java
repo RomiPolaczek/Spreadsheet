@@ -16,8 +16,8 @@ public class UpperCaseExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
-        EffectiveValue eval = e.eval(sheet, cell);
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue eval = e.eval(sheet);
         String upperCaseResult = eval.extractValueWithExpectation(String.class).toUpperCase();
         return new EffectiveValueImpl(CellType.STRING, upperCaseResult);
     }

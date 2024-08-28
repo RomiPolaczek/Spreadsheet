@@ -23,6 +23,7 @@ public class SheetImpl implements Sheet, Serializable {
     private Layout layout;
     private String name;
     private int version = 1;
+    private int numberCellsThatHaveChanged;
 
     public SheetImpl(){
         this.activeCells = new HashMap<>();
@@ -67,6 +68,9 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
+    public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
+
+    @Override
     public void setCell(int row, int column, String value) {
         if(row > layout.getRows())
             throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
@@ -79,19 +83,19 @@ public class SheetImpl implements Sheet, Serializable {
         if(cell == null) {
             EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.setCellType(value), value); // example implementation
             int version = this.getVersion(); // You may have a different way to manage versions
-            List<Cell> dependsOn = new ArrayList<>();
-            List<Cell> influencingOn = new ArrayList<>();
 
             cell = new CellImpl(row, column, value, version, this);
             activeCells.put(coordinate, cell);
         }
         cell.setCellOriginalValue(value);
         cell.calculateEffectiveValue();
+        numberCellsThatHaveChanged++;
     }
 
     @Override
     public Sheet updateCellValueAndCalculate(int row, int column, String value) {
 
+        numberCellsThatHaveChanged = 0;
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
 
   //      Cell originalCell = getCell(coordinate);
@@ -113,17 +117,17 @@ public class SheetImpl implements Sheet, Serializable {
             newSheetVersion.updateInfluenceAndDepends();
             List<Cell> orderedCells = newSheetVersion
                     .orderCellsForCalculation();
-            List<Cell> cellsThatHaveChanged =
-                    orderedCells
-                            .stream()
-                            .filter(Cell::calculateEffectiveValue)
-                            .collect(Collectors.toList());
+            List <Cell> cellsThatHaveChanged = orderedCells
+                                    .stream()
+                                    .filter(Cell::calculateEffectiveValue)
+                                    .collect(Collectors.toList());
 
             //version += 1;
             // successful calculation. update sheet and relevant cells version
             // int newVersion = newSheetVersion.IncreaseVersion();
             //cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
             success = true;
+            newSheetVersion.numberCellsThatHaveChanged = cellsThatHaveChanged.size();
             return newSheetVersion;
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,16 +9,18 @@ import java.util.NoSuchElementException;
 
 public class VersionManager {
     private Map<Integer, DTOsheet> sheetsVersions;
+    private Map<Integer, Integer> versionToChanges;
 
     public VersionManager() {
         sheetsVersions = new HashMap<Integer, DTOsheet>();
+        versionToChanges = new HashMap<Integer, Integer>();
     }
 
-    public void AddSheetVersionToMap(DTOsheet dtoSheet) {
+    public void AddSheetVersionToMap(DTOsheet dtoSheet, Integer changes) {
         //DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         //Sheet newSheet = sheet.copySheet();
         sheetsVersions.put(dtoSheet.getVersion(), dtoSheet);
-        //System.out.println("added version number " + dtoSheet.getVersion());
+        versionToChanges.put(dtoSheet.getVersion(), changes);
     }
 
     public DTOsheet getSheetVersion(Integer versionNumber) {
@@ -27,6 +29,8 @@ public class VersionManager {
         }
         return sheetsVersions.get(versionNumber);
     }
+
+    public Map<Integer, Integer> getVersionToChanges() { return versionToChanges; }
 }
 
 //public class VersionManager {

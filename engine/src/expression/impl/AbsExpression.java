@@ -13,8 +13,8 @@ public class AbsExpression implements Expression {
     public AbsExpression(Expression e) { this.e = e; }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
-        EffectiveValue eval = e.eval(sheet, cell);
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue eval = e.eval(sheet);
         double result = eval.extractValueWithExpectation(Double.class);
 
         if(result < 0)

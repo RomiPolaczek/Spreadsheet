@@ -10,13 +10,59 @@ import java.util.Scanner;
 
 public class UserInterface {
     private Engine engine;
+    private Scanner scanner;
 
-    public UserInterface(){
+    public UserInterface() {
         engine = new EngineImpl();
+        scanner = new Scanner(System.in);
     }
 
+    public void DisplayMenu() {
+        String optionsToChoose = """
+                Please choose one of the following options:
+                1) Load new XML file
+                2) Display current sheet
+                3) Display a certain cell's data
+                4) Edit a cell
+                5) Display versions of the sheet
+                6) Exit
+                """;
+        int chosenOption;
+        do {
+            System.out.println(optionsToChoose);
+
+            chosenOption = getChoiceAndCheckValidation(6, 1);
+
+            if (chosenOption == 1)
+                LoadFile();
+            else if (engine.getFile()!=null || chosenOption == 6) {
+                switch (chosenOption) {
+                    case 2:
+                        DisplaySheet();
+                        break;
+                    case 3:
+                        DisplayCell();
+                        break;
+                    case 4:
+                        EditCell();
+                        break;
+                    case 5:
+                        DisplayVersions();
+                        break;
+                    case 6:
+                        System.out.println("Exiting...");
+                        break;
+                }
+            }
+            else {
+                System.out.println("No file loaded yet. Please load a file first.");
+            }
+        }
+        while(chosenOption != 6);
+    }
+
+
     public void LoadFile(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the full path to the file: ");
 
         String filePath = scanner.nextLine();
@@ -166,6 +212,8 @@ public class UserInterface {
     }
 
     public void DisplayVersions () {
+        printVersionChangesTable();
+
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter a version number: ");
 
@@ -182,6 +230,18 @@ public class UserInterface {
         }
     }
 
+    public void printVersionChangesTable() {
+        int numberOfVersions = engine.getNumberOfVersions();
+        System.out.println("Version | Changes");
+        System.out.println("-----------------");
+
+        // Iterate through the map and print each entry
+        for (int i=1; i<=numberOfVersions; i++) {
+            int changes = engine.getChangesAccordingToVersionNumber(i);
+            System.out.printf("%-7d | %-7d%n", i, changes);
+        }
+}
+
     public void DisplaySheetVersion(DTOsheet dtoSheet) {
         System.out.println("Sheet Name: " + dtoSheet.getName());
         System.out.println("Version: " + dtoSheet.getVersion());
@@ -189,4 +249,23 @@ public class UserInterface {
 
         printSheet(dtoSheet);
     }
+
+    private int getChoiceAndCheckValidation (int upperLimit, int lowerLimit) {
+        String choice = "";
+        while (true) {
+            choice = scanner.nextLine().trim();
+            try {
+                int choiceNum = Integer.parseInt(choice);
+                if (choiceNum >= lowerLimit && choiceNum <= upperLimit) {
+                    return choiceNum;
+                } else {
+                    System.out.print("Invalid choice. Please enter a number between " + lowerLimit + " and " + upperLimit + ": ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid number between " + lowerLimit + " and " + upperLimit + ": ");
+            }
+        }
+    }
+
+
 }

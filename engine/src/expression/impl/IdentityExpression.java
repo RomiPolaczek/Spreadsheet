@@ -18,7 +18,7 @@ public class IdentityExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
         return new EffectiveValueImpl(type, value);
     }
 

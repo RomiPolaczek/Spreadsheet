@@ -21,7 +21,7 @@ public class RefExpression implements Expression, Serializable {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
         // error handling if the cell is empty or not found
         CoordinateFactory.isValidCoordinate(coordinate, sheet);
         CellImpl newCell = (CellImpl) sheet.getCell(CoordinateFactory.createCoordinate(coordinate.getRow(), coordinate.getColumn()));
@@ -30,7 +30,16 @@ public class RefExpression implements Expression, Serializable {
             String cellStr = CoordinateImpl.convertNumberToAlphabetString(coordinate.getColumn()) + coordinate.getRow();
             throw new Exception("The cell " + cellStr + " is empty or not found.");
         }
-//        if(!cell.getDependsOn().contains(newCell))
+
+        return newCell.getEffectiveValue();
+    }
+
+    @Override
+    public CellType getFunctionResultType() {
+        return CellType.UNKNOWN;
+    }
+
+    //        if(!cell.getDependsOn().contains(newCell))
 //            cell.getDependsOn().add(newCell);
 //        if(!newCell.getInfluencingOn().contains(cell))
 //            newCell.getInfluencingOn().add(cell);
@@ -57,13 +66,4 @@ public class RefExpression implements Expression, Serializable {
 //        if (!isInInfluencingOn) {
 //            newCell.getInfluencingOn().add(cell);
 //        }
-
-        return newCell.getEffectiveValue();
-    }
-
-    @Override
-    public CellType getFunctionResultType() {
-        return CellType.UNKNOWN;
-    }
-
 }

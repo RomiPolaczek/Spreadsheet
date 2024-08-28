@@ -49,19 +49,30 @@ public class EngineImpl implements Engine {
         return sheet;
     }
 
-    private void checkFileValidation(String fileName) throws Exception {
-        file = new File(fileName);
+    @Override
+    public int getNumberOfVersions() { return versionManager.getVersionToChanges().size();}
 
-        if (!file.exists()) {
+    @Override
+    public int getChangesAccordingToVersionNumber(int version) { return versionManager.getVersionToChanges().get(version); }
+
+    @Override
+    public File getFile() { return file; }
+
+    private void checkFileValidation(String fileName) throws Exception {
+        File newFile =  new File(fileName);
+
+        if (!newFile.exists()) {
             throw new FileNotFoundException("File does not exist at path: " + fileName);
         }
-        if (!file.canRead()) {
+        if (!newFile.canRead()) {
             throw new IOException("File cannot be read at path: " + fileName);
         }
         // Check if file has .xml extension
         if (!fileName.toLowerCase().endsWith(".xml")) {
             throw new IllegalArgumentException("The file does not have an XML extension.");
         }
+
+        file = newFile;
     }
 
     private void fromXmlFileToObject() throws JAXBException {
@@ -89,7 +100,7 @@ public class EngineImpl implements Engine {
             sheet.setCell(row, col, stlCell.getSTLOriginalValue());
         }
 
-        versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet));
+        versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet), sheet.getNumberCellsThatHaveChanged());
     }
 
     @Override
@@ -124,6 +135,6 @@ public class EngineImpl implements Engine {
         sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
         sheet.IncreaseVersion();
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-        versionManager.AddSheetVersionToMap(dtoSheet);
+        versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
     }
 }

@@ -63,7 +63,7 @@ public class CellImpl implements Cell, Serializable {
         {
             Expression expression = FunctionParser.parseExpression(originalValue);
 
-            EffectiveValue newEffectiveValue = expression.eval(sheet, this);
+            EffectiveValue newEffectiveValue = expression.eval(sheet);
 
             if (newEffectiveValue.equals(effectiveValue)) {
                 return false;

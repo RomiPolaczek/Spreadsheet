@@ -6,6 +6,6 @@ import sheet.api.SheetReadActions;
 import sheet.cell.api.Cell;
 
 public interface Expression {
-    EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception;
+    EffectiveValue eval(SheetReadActions sheet) throws Exception;
     CellType getFunctionResultType();
 }

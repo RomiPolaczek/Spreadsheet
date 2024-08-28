@@ -18,9 +18,9 @@ public class ConcatExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
-        EffectiveValue leftValue = left.eval(sheet, cell);
-        EffectiveValue rightValue = right.eval(sheet, cell);
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue leftValue = left.eval(sheet);
+        EffectiveValue rightValue = right.eval(sheet);
         // do some checking... error handling...
         String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
 

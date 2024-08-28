@@ -18,10 +18,10 @@ public class SubExpression implements Expression {
         this.endIndex = endIndex;
     }
 
-    public EffectiveValue eval(SheetReadActions sheet, Cell cell) throws Exception {
-        EffectiveValue sourceValue = source.eval(sheet, cell);
-        EffectiveValue startIndexValue = startIndex.eval(sheet, cell);
-        EffectiveValue endIndexValue = endIndex.eval(sheet, cell);
+    public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        EffectiveValue sourceValue = source.eval(sheet);
+        EffectiveValue startIndexValue = startIndex.eval(sheet);
+        EffectiveValue endIndexValue = endIndex.eval(sheet);
         // do some checking... error handling...
 
         String sourceString = sourceValue.extractValueWithExpectation(String.class);
