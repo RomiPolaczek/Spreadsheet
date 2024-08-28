@@ -3,11 +3,12 @@ package impl;
 import dto.DTOsheet;
 import sheet.api.Sheet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class VersionManager {
+public class VersionManager implements Serializable {
     private Map<Integer, DTOsheet> sheetsVersions;
     private Map<Integer, Integer> versionToChanges;
 

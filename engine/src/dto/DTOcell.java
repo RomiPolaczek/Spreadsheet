@@ -6,10 +6,11 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DTOcell {
+public class DTOcell implements Serializable {
     private int row;
     private int col;
     private String effectiveValue;

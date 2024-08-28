@@ -2,9 +2,11 @@ package dto;
 
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+
+import java.io.Serializable;
 import java.util.Map;
 
-public class DTOsheet {
+public class DTOsheet implements Serializable {
     private String name;
     private int version;
     private Map<Coordinate,DTOcell> cells;

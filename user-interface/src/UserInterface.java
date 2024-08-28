@@ -7,6 +7,7 @@ import sheet.coordinate.impl.CoordinateFactory;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+ import java.io.*;
 
 public class UserInterface {
     private Engine engine;
@@ -25,17 +26,19 @@ public class UserInterface {
                 3) Display a certain cell's data
                 4) Edit a cell
                 5) Display versions of the sheet
-                6) Exit
+                6) Save system state
+                7) Load system state
+                8) Exit
                 """;
         int chosenOption;
         do {
             System.out.println(optionsToChoose);
 
-            chosenOption = getChoiceAndCheckValidation(6, 1);
+            chosenOption = getChoiceAndCheckValidation(8, 1);
 
             if (chosenOption == 1)
                 LoadFile();
-            else if (engine.getFile()!=null || chosenOption == 6) {
+            else if (engine.getFile()!=null || chosenOption == 8) {
                 switch (chosenOption) {
                     case 2:
                         DisplaySheet();
@@ -50,6 +53,12 @@ public class UserInterface {
                         DisplayVersions();
                         break;
                     case 6:
+                        saveSystemState();
+                        break;
+                    case 7:
+                        loadSystemState();
+                        break;
+                    case 8:
                         System.out.println("Exiting...");
                         break;
                 }
@@ -58,7 +67,7 @@ public class UserInterface {
                 System.out.println("No file loaded yet. Please load a file first.");
             }
         }
-        while(chosenOption != 6);
+        while(chosenOption != 8);
     }
 
 
@@ -266,6 +275,33 @@ public class UserInterface {
             }
         }
     }
+
+     private void saveSystemState() {
+        System.out.print("Enter the full path and filename to save the system state (without extension): ");
+        String filePath = scanner.nextLine();
+        try {
+            engine.saveSystemState(filePath);
+            System.out.println("System state saved successfully.");
+        } catch (IOException e) {
+            System.out.println("Error saving system state: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadSystemState() {
+        System.out.print("Enter the full path and filename to load the system state (without extension): ");
+        String filePath = scanner.nextLine();
+        try {
+            engine = EngineImpl.loadSystemState(filePath);
+            //fileLoaded = true;
+            System.out.println("System state loaded successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading system state: " + e.getMessage());
+        }
+    }
+
+
+
 
 
 }

@@ -4,28 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="finish ref and move the edit of influence and depends to the sheet">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add menu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOlayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOlayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/VersionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/VersionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCells.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCells.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSize.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSize.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -242,7 +233,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1724796159104</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL‎-00012" summary="add menu">
+      <option name="closed" value="true" />
+      <created>1724837230279</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL‎-00012" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1724837230279</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,7 +271,8 @@
     <MESSAGE value="fix duplicates in dependsOn and influencesOn ,add printStack" />
     <MESSAGE value="finish ref and change influ and depend to the sheet" />
     <MESSAGE value="finish ref and move the edit of influence and depends to the sheet" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish ref and move the edit of influence and depends to the sheet" />
+    <MESSAGE value="add menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="add menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -284,12 +284,12 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/impl/VersionManager.java</url>
-          <line>20</line>
+          <line>21</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/impl/EngineImpl.java</url>
-          <line>134</line>
+          <line>133</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -304,13 +304,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>253</line>
-          <option name="timeStamp" value="129" />
+          <line>36</line>
+          <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="130" />
+          <line>279</line>
+          <option name="timeStamp" value="131" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />

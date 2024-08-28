@@ -14,6 +14,8 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
+import java.io.Serializable;
+
 
 /**
  * <p>Java class for anonymous complex type</p>.
@@ -42,7 +44,7 @@ import jakarta.xml.bind.annotation.XmlType;
     "stlCells"
 })
 @XmlRootElement(name = "STL-Sheet")
-public class STLSheet {
+public class STLSheet implements Serializable {
 
     @XmlElement(name = "STL-Layout", required = true)
     protected STLLayout stlLayout;

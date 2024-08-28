@@ -16,13 +16,12 @@ import sheet.impl.SheetImpl;
 import sheet.layout.impl.LayoutImpl;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLSheet;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EngineImpl implements Engine {
+public class EngineImpl implements Engine, Serializable {
 
     private Sheet sheet;
     private STLSheet stlSheet;
@@ -136,5 +135,18 @@ public class EngineImpl implements Engine {
         sheet.IncreaseVersion();
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
+    }
+
+    @Override
+    public void saveSystemState(String filePath) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath + ".ser"))) {
+            oos.writeObject(this);
+        }
+    }
+
+    public static EngineImpl loadSystemState(String filePath) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath + ".ser"))) {
+            return (EngineImpl) ois.readObject();
+        }
     }
 }

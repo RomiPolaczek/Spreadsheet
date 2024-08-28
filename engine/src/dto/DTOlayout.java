@@ -1,6 +1,8 @@
 package dto;
 
-public class DTOlayout {
+import java.io.Serializable;
+
+public class DTOlayout implements Serializable {
     private int rowsHeightUnits;
     private int columnsWidthUnits;
     private int rows;

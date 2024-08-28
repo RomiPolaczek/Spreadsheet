@@ -7,6 +7,7 @@
 
 package xmlGenerated;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -40,7 +41,7 @@ import jakarta.xml.bind.annotation.XmlType;
     "stlCell"
 })
 @XmlRootElement(name = "STL-Cells")
-public class STLCells {
+public class STLCells implements Serializable {
 
     @XmlElement(name = "STL-Cell", required = true)
     protected List<STLCell> stlCell;

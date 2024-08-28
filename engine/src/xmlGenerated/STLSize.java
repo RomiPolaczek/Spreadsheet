@@ -13,6 +13,8 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
+import java.io.Serializable;
+
 
 /**
  * <p>Java class for anonymous complex type</p>.
@@ -35,7 +37,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "STL-Size")
-public class STLSize {
+public class STLSize implements Serializable {
 
     @XmlAttribute(name = "rows-height-units", required = true)
     protected int rowsHeightUnits;
