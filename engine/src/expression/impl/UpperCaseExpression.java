@@ -4,7 +4,6 @@ import expression.api.Expression;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.SheetReadActions;
-import sheet.cell.api.Cell;
 import sheet.impl.EffectiveValueImpl;
 
 public class UpperCaseExpression implements Expression {

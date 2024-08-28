@@ -1,6 +1,5 @@
 package sheet.layout.api;
 
-import jakarta.xml.bind.ValidationException;
 
 public interface Layout {
     void setRowsHeightUnits(int rowsHeightUnits);
@@ -13,6 +12,5 @@ public interface Layout {
     int getColumnsWidthUnits();
     int getRowsLowerLimit();
     int getColsLowerLimit();
-    // void CheckValidation(int value, int upperLimit, int lowerLimit, String str) throws ValidationException;
-    public void CheckValidation(int value, String str) throws Exception;
+    void CheckValidation(int value, String str) throws Exception;
 }

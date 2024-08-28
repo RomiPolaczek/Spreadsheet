@@ -7,7 +7,7 @@ import sheet.coordinate.impl.CoordinateFactory;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
- import java.io.*;
+import java.io.*;
 
 public class UserInterface {
     private Engine engine;
@@ -20,6 +20,7 @@ public class UserInterface {
 
     public void DisplayMenu() {
         String optionsToChoose = """
+                
                 Please choose one of the following options:
                 1) Load new XML file
                 2) Display current sheet
@@ -32,7 +33,7 @@ public class UserInterface {
                 """;
         int chosenOption;
         do {
-            System.out.println(optionsToChoose);
+            System.out.print(optionsToChoose);
 
             chosenOption = getChoiceAndCheckValidation(8, 1);
 
@@ -69,7 +70,6 @@ public class UserInterface {
         }
         while(chosenOption != 8);
     }
-
 
     public void LoadFile(){
         System.out.println("Please enter the full path to the file: ");
@@ -144,7 +144,7 @@ public class UserInterface {
             DTOcell dtoCell = dtoSheet.getCell(coordinate);
             if(dtoCell == null){
                 System.out.println("Cell identity: " + input);
-                throw new Exception("The cell " + input + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
+                throw new Exception("The cell " + input + " is empty");
             }
 
             printCellFirstParts(input, dtoCell);
@@ -178,7 +178,6 @@ public class UserInterface {
     }
 
     private String getCellFromUser() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter the cell identity (e.g., A4 or B7): ");
         String input = scanner.nextLine().toUpperCase();
         return input;
@@ -206,7 +205,7 @@ public class UserInterface {
             else{
                 printCellFirstParts(inputCell, dtoCell);
             }
-            Scanner scanner = new Scanner(System.in);
+
             System.out.print("Please enter the new value of the cell: ");
             String inputValue = scanner.nextLine();
          //   if(inputValue.isBlank())
@@ -216,14 +215,12 @@ public class UserInterface {
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 
     public void DisplayVersions () {
         printVersionChangesTable();
 
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter a version number: ");
 
         try {
@@ -284,7 +281,6 @@ public class UserInterface {
             System.out.println("System state saved successfully.");
         } catch (IOException e) {
             System.out.println("Error saving system state: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -293,15 +289,10 @@ public class UserInterface {
         String filePath = scanner.nextLine();
         try {
             engine = EngineImpl.loadSystemState(filePath);
-            //fileLoaded = true;
             System.out.println("System state loaded successfully.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading system state: " + e.getMessage());
         }
     }
-
-
-
-
 
 }

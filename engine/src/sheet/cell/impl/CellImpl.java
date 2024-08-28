@@ -11,7 +11,6 @@ import sheet.api.SheetReadActions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class CellImpl implements Cell, Serializable {
@@ -58,11 +57,9 @@ public class CellImpl implements Cell, Serializable {
     public boolean calculateEffectiveValue(){
         // build the expression object out of the original value...
         // it can be {PLUS, 4, 5} OR {CONCAT, {ref, A4}, world}
-
         try
         {
             Expression expression = FunctionParser.parseExpression(originalValue);
-
             EffectiveValue newEffectiveValue = expression.eval(sheet);
 
             if (newEffectiveValue.equals(effectiveValue)) {
@@ -75,6 +72,11 @@ public class CellImpl implements Cell, Serializable {
         catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public void updateVersion(int version){
+        this.version = version;
     }
 
     @Override

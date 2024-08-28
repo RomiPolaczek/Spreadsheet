@@ -3,7 +3,6 @@ package expression.impl;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.SheetReadActions;
-import sheet.cell.api.Cell;
 import sheet.impl.EffectiveValueImpl;
 import expression.api.Expression;
 

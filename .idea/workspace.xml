@@ -8,15 +8,31 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOcell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOlayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOlayout.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/dto/DTOsheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/api/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/AbsExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ConcatExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/DivideExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/IdentityExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/MinusExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/ModExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PowExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/SubExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/TimesExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/UpperCaseExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/impl/VersionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/VersionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCells.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLCells.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSize.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/xmlGenerated/STLSize.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/Sheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/api/Cell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/EffectiveValueImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/layout/impl/LayoutImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-interface/src/UserInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,28 +72,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.FunctionParser.executor": "Run",
-    "Application.Main (1).executor": "Run",
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rotem/IdeaProjects/jaxb-ri/mod",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/user-interface/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.FunctionParser.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rotem/IdeaProjects/jaxb-ri/mod&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/user-interface/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/engine/src/sheet" />
@@ -283,28 +299,18 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/impl/VersionManager.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/engine/src/impl/EngineImpl.java</url>
-          <line>133</line>
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java</url>
-          <line>20</line>
+          <line>19</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java</url>
-          <line>25</line>
+          <line>24</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/user-interface/src/UserInterface.java</url>
-          <line>36</line>
+          <line>37</line>
           <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

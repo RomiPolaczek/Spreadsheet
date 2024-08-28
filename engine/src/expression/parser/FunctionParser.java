@@ -3,12 +3,8 @@ package expression.parser;
 import expression.impl.*;
 import sheet.api.CellType;
 import expression.api.Expression;
-import sheet.api.EffectiveValue;
-import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
-import sheet.impl.SheetImpl;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -361,35 +357,5 @@ public enum FunctionParser implements Serializable {
 
         return parts;
     }
-
-//    public static void main(String[] args) {
-//
-//        //String input = "plus, {plus, 1, 2}, {plus, 1, {plus, 1, 2}}";
-////        String input = "1";
-////        parseMainParts(input).forEach(System.out::println);
-//
-////        String input = "{plus, 1, 2}";
-//  //      String input = "{plus, {minus, 44, 22}, {plus, 1, 2}}";
-//   //     String input = "{upper_case, hello world}";
-////        String input = "4";
-////        String input = "{MOD, 1 , 10 }";
-// //       String input = "{POW, 2 , SS }";
-//      //  String input = "{ABS, 2, 3}";
-//        String input = "{Sub, romi  mi100, 4, 7}";
-//      //  String input = "{Sub, ss, ss, w}";
-//     //     String input = "{DIVIDE, 2, 0}";
-//        Sheet sheet = new SheetImpl();
-//      //  String input = "{concat, hello    ,world}";
-//
-//
-//        Expression expression = parseExpression(input);
-//        EffectiveValue result = null;
-//        try {
-//            result = expression.eval(sheet);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println("result: " + result.getValue() + " of type " + result.getCellType());
-//    }
 
 }

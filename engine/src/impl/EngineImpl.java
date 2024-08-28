@@ -132,7 +132,6 @@ public class EngineImpl implements Engine, Serializable {
     @Override
     public void EditCell(Coordinate coordinate, String inputValue){
         sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
-        sheet.IncreaseVersion();
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
     }
