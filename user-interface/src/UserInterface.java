@@ -105,7 +105,7 @@ public class UserInterface {
             char colName = (char) ('A' + col);
             System.out.print("|" + String.format("%-" + columnWidth + "s", colName));
         }
-        System.out.println();
+        System.out.println("|");
 
         // Print rows with cells
         int line = 0;
@@ -127,7 +127,7 @@ public class UserInterface {
                 else
                     System.out.print("|" + String.format("%-" + columnWidth + "s", ""));
             }
-            System.out.println();
+            System.out.println("|");
         }
     }
 

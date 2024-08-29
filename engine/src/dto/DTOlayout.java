@@ -30,5 +30,4 @@ public class DTOlayout implements Serializable {
     public int getColumns() {
         return columns;
     }
-
 }

@@ -268,8 +268,8 @@ public enum FunctionParser implements Serializable {
 
             // structure is good. parse arguments
             Expression source = parseExpression(arguments.get(0));
-            Expression startIndex = parseExpression(arguments.get(1));
-            Expression endIndex = parseExpression(arguments.get(2));
+            Expression startIndex = parseExpression(arguments.get(1).trim());
+            Expression endIndex = parseExpression(arguments.get(2).trim());
 
 //            CellType sourceCellType = source.getFunctionResultType();
 //            CellType startCellType = startIndex.getFunctionResultType();
@@ -315,9 +315,10 @@ public enum FunctionParser implements Serializable {
 
     public static Expression parseExpression(String input) {
 
-        if (input.startsWith("{") && input.endsWith("}")) {
+        String trimInput = input.trim();
+        if (trimInput.startsWith("{") && trimInput.endsWith("}")) {
 
-            String functionContent = input.substring(1, input.length() - 1);
+            String functionContent = trimInput.substring(1, trimInput.length() - 1);
             List<String> topLevelParts = parseMainParts(functionContent);
 
             String functionName = topLevelParts.get(0).trim().toUpperCase();
@@ -360,5 +361,4 @@ public enum FunctionParser implements Serializable {
 
         return parts;
     }
-
 }

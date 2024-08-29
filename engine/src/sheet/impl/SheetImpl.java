@@ -78,8 +78,7 @@ public class SheetImpl implements Sheet, Serializable {
         Cell cell = activeCells.get(coordinate);
 
         if(cell == null) {
-            int version = this.getVersion(); // You may have a different way to manage versions
-
+            int version = this.getVersion();
             cell = new CellImpl(row, column, value, version, this);
             activeCells.put(coordinate, cell);
         }
