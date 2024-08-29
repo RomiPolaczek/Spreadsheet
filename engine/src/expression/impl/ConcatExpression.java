@@ -20,8 +20,14 @@ public class ConcatExpression implements Expression {
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
-        // do some checking... error handling...
-        String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
+
+        String result;
+        try{
+            result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
+        }
+        catch(Exception e){
+            throw new IllegalArgumentException("Invalid argument types for CONCAT function. Expected STRING, but got " + leftValue.getCellType() + " and " + rightValue.getCellType());
+        }
 
         return new EffectiveValueImpl(CellType.STRING, result);
     }

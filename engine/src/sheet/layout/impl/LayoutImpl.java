@@ -63,7 +63,8 @@ public class LayoutImpl implements Layout, Serializable {
     @Override
     public int getColsLowerLimit () { return COLUMNS_LOWER_LIMIT; }
 
-    public static void CheckValidation (int value, int upperLimit, int lowerLimit, String str) {
+    @Override
+    public void CheckValidation (int value, int upperLimit, int lowerLimit, String str) {
         if(value > upperLimit || value < lowerLimit) {
             throw new IllegalArgumentException(str + " must be between " + lowerLimit + " and " + upperLimit);
         }

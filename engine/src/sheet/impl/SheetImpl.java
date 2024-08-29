@@ -90,7 +90,6 @@ public class SheetImpl implements Sheet, Serializable {
 
     @Override
     public Sheet updateCellValueAndCalculate(int row, int column, String value) {
-
         numberCellsThatHaveChanged = 0;
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
         SheetImpl newSheetVersion = copySheet();
@@ -98,8 +97,6 @@ public class SheetImpl implements Sheet, Serializable {
         Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion);
         newSheetVersion.activeCells.put(coordinate, newCell);
 
-
-        Boolean success = false;
         try {
             newSheetVersion.updateInfluenceAndDepends();
             List<Cell> orderedCells = newSheetVersion
@@ -113,17 +110,12 @@ public class SheetImpl implements Sheet, Serializable {
             // successful calculation. update sheet and relevant cells version
             newSheetVersion.IncreaseVersion();
             cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newSheetVersion.getVersion()));
-            success = true;
             newSheetVersion.numberCellsThatHaveChanged = cellsThatHaveChanged.size();
             return newSheetVersion;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // deal with the runtime error that was discovered as part of invocation
             throw new RuntimeException(e.getMessage());
-        } finally {
-//            if (!success) {
-//                // If an error occurred, return the original sheet
-//                return this;
-//            }
         }
     }
 
@@ -176,7 +168,7 @@ public class SheetImpl implements Sheet, Serializable {
 
         // Check if a valid topological order exists (i.e., no cycles)
         if (sortedCells.size() != activeCells.size()) {
-            throw new RuntimeException("Circular dependency detected in cells");
+            throw new RuntimeException("Circular dependency detected in cells - a cell can not reference itself");
         }
 
         return sortedCells;
@@ -198,7 +190,7 @@ public class SheetImpl implements Sheet, Serializable {
         }
         catch (Exception e) {
             // deal with the runtime error that was discovered as part of invocation
-            throw new RuntimeException(e);
+            throw new RuntimeException("Copy sheet failed.");
         } finally {
             if (!success) {
                 // If an error occurred, return the original sheet
@@ -225,7 +217,7 @@ public class SheetImpl implements Sheet, Serializable {
         return Objects.hash(activeCells, layout, name, version);
     }
 
-    private void updateInfluenceAndDepends() throws Exception {
+    private void updateInfluenceAndDepends(){
         List<String> refCells;
         for (Cell cell : activeCells.values()) {
             cell.getInfluencingOn().clear();
@@ -233,9 +225,12 @@ public class SheetImpl implements Sheet, Serializable {
             refCells = extractRefCells(cell.getOriginalValue());
             for(String refCell : refCells) {
                 Coordinate coordinate = CoordinateFactory.from(refCell);
-                CoordinateFactory.isValidCoordinate(coordinate, this);
-                cell.getDependsOn().add(coordinate);
-                getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+                if(getCell(coordinate) != null)
+                {
+                    CoordinateFactory.isValidCoordinate(coordinate, this);
+                    cell.getDependsOn().add(coordinate);
+                    getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+                }
             }
         }
     }

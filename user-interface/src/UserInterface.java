@@ -3,7 +3,6 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import impl.EngineImpl;
 import sheet.coordinate.api.Coordinate;
-import sheet.coordinate.impl.CoordinateFactory;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -80,7 +79,7 @@ public class UserInterface {
             engine.LoadFile(filePath);
         }
         catch (Exception e){
-           System.out.println(e.getMessage());
+           System.out.println("Loading file failed: " + e.getMessage());
         }
     }
 
@@ -134,12 +133,10 @@ public class UserInterface {
 
     public void DisplayCell(){
         String input = getCellFromUser();
-
         DTOsheet dtoSheet = engine.createDTOSheetForDisplay(engine.getSheet());
-        Coordinate coordinate = CoordinateFactory.from(input);
 
         try {
-            CoordinateFactory.isValidCoordinate(coordinate, engine.getSheet());
+            Coordinate coordinate = engine.checkAndConvertInputToCoordinate(input);
 
             DTOcell dtoCell = dtoSheet.getCell(coordinate);
             if(dtoCell == null){
@@ -192,22 +189,20 @@ public class UserInterface {
     public void EditCell(){
         String inputCell = getCellFromUser();
         DTOsheet dtoSheet = engine.createDTOSheetForDisplay(engine.getSheet());
-        Coordinate coordinate = CoordinateFactory.from(inputCell);
 
         try {
-            CoordinateFactory.isValidCoordinate(coordinate, engine.getSheet()); //האם לשנות לדיטיאו
-
+            Coordinate coordinate = engine.checkAndConvertInputToCoordinate(inputCell);
             DTOcell dtoCell = dtoSheet.getCell(coordinate);
             if(dtoCell == null){
                 System.out.println("Cell identity: " + inputCell);
-                System.out.println("The cell " + inputCell + " is empty"); //לא צריך לזרוק אקספשן לדעתי, זה רק הדפסה
+                System.out.println("The cell " + inputCell + " is empty");
             }
             else{
                 printCellFirstParts(inputCell, dtoCell);
             }
 
             System.out.print("Please enter the new value of the cell: ");
-            String inputValue = scanner.nextLine();
+            String inputValue = scanner.nextLine().trim();
          //   if(inputValue.isBlank())
 
             engine.EditCell(coordinate, inputValue);
@@ -273,7 +268,7 @@ public class UserInterface {
         }
     }
 
-     private void saveSystemState() {
+    private void saveSystemState() {
         System.out.print("Enter the full path and filename to save the system state (without extension): ");
         String filePath = scanner.nextLine();
         try {
@@ -294,5 +289,4 @@ public class UserInterface {
             System.out.println("Error loading system state: " + e.getMessage());
         }
     }
-
 }

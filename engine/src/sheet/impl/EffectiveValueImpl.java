@@ -31,8 +31,7 @@ public class EffectiveValueImpl implements EffectiveValue, Serializable {
         if (cellType.isAssignableFrom(type)) {
             return type.cast(value);
         }
-        // error handling... exception ? return null ?
-        return null;
+        throw new ClassCastException();
     }
 
     @Override

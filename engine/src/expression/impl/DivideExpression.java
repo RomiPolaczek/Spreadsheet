@@ -20,12 +20,20 @@ public class DivideExpression implements Expression {
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
-        // do some checking... error handling...
-        if (rightValue.extractValueWithExpectation(Double.class) == 0) {
-            return new EffectiveValueImpl(CellType.STRING, "NaN");
+        double result;
+
+        try
+        {
+            if (rightValue.extractValueWithExpectation(Double.class) == 0) {
+                return new EffectiveValueImpl(CellType.STRING, "NaN");
+            }
+
+            result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
+        }
+        catch (Exception e){
+            throw new IllegalArgumentException("Invalid argument types for DIVIDE function. Expected NUMERIC, but got " + leftValue.getCellType() + " and " + rightValue.getCellType());
         }
 
-        double result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
         return new EffectiveValueImpl(CellType.NUMERIC, result);
     }
 

@@ -13,8 +13,15 @@ public class AbsExpression implements Expression {
 
     @Override
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        double result;
         EffectiveValue eval = e.eval(sheet);
-        double result = eval.extractValueWithExpectation(Double.class);
+
+        try {
+            result = eval.extractValueWithExpectation(Double.class);
+        }
+        catch (Exception e){
+            throw new IllegalArgumentException("Invalid argument types for ABS function. Expected NUMERIC, but got " + eval.getCellType());
+        }
 
         if(result < 0)
             result = result * (-1);
@@ -26,5 +33,4 @@ public class AbsExpression implements Expression {
     public CellType getFunctionResultType() {
         return CellType.NUMERIC;
     }
-
 }

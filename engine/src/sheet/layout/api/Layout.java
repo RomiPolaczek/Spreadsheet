@@ -13,4 +13,5 @@ public interface Layout {
     int getRowsLowerLimit();
     int getColsLowerLimit();
     void CheckValidation(int value, String str) throws Exception;
+    void CheckValidation (int value, int upperLimit, int lowerLimit, String str);
 }

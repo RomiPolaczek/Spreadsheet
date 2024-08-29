@@ -18,14 +18,24 @@ public class SubExpression implements Expression {
     }
 
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        String sourceString;
+        double start;
+        double end;
+
         EffectiveValue sourceValue = source.eval(sheet);
         EffectiveValue startIndexValue = startIndex.eval(sheet);
         EffectiveValue endIndexValue = endIndex.eval(sheet);
-        // do some checking... error handling...
 
-        String sourceString = sourceValue.extractValueWithExpectation(String.class);
-        double start = startIndexValue.extractValueWithExpectation(Double.class);
-        double end = endIndexValue.extractValueWithExpectation(Double.class);
+        try
+        {
+            sourceString = sourceValue.extractValueWithExpectation(String.class);
+            start = startIndexValue.extractValueWithExpectation(Double.class);
+            end = endIndexValue.extractValueWithExpectation(Double.class);
+        }
+        catch(Exception e){
+            throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the first argument to be STRING - NUMERIC - NUMERIC  but got " +
+                    sourceValue.getCellType() + " - " + startIndexValue.getCellType() + " - " + endIndexValue.getCellType());
+        }
 
         // Check the validity of the indices
         if (sourceString == null || start < 0 || end < start || end >= sourceString.length()) {

@@ -16,8 +16,17 @@ public class UpperCaseExpression implements Expression {
 
     @Override
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        String upperCaseResult;
         EffectiveValue eval = e.eval(sheet);
-        String upperCaseResult = eval.extractValueWithExpectation(String.class).toUpperCase();
+
+        try{
+            upperCaseResult = eval.extractValueWithExpectation(String.class).toUpperCase();
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Invalid argument types for UPPER_CASE function. Expected STRING, but got " + eval.getCellType());
+        }
+
         return new EffectiveValueImpl(CellType.STRING, upperCaseResult);
     }
 

@@ -34,13 +34,10 @@ public class EngineImpl implements Engine, Serializable {
 
     @Override
     public void LoadFile(String fileName) throws Exception {
-        setFile(fileName);
-        fromXmlFileToObject();
+        File newFile = checkFileValidation(fileName);
+        fromXmlFileToObject(newFile);
         fromStlSheetToOurSheet();
-    }
-
-    private void setFile(String fileName) throws Exception { ///לבדוק אקספשין
-        checkFileValidation(fileName);
+        file = newFile;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class EngineImpl implements Engine, Serializable {
     @Override
     public File getFile() { return file; }
 
-    private void checkFileValidation(String fileName) throws Exception {
+    private File checkFileValidation(String fileName) throws Exception {
         File newFile =  new File(fileName);
 
         if (!newFile.exists()) {
@@ -71,10 +68,10 @@ public class EngineImpl implements Engine, Serializable {
             throw new IllegalArgumentException("The file does not have an XML extension.");
         }
 
-        file = newFile;
+        return newFile;
     }
 
-    private void fromXmlFileToObject() throws JAXBException {
+    private void fromXmlFileToObject(File file) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(STLSheet.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
@@ -147,5 +144,16 @@ public class EngineImpl implements Engine, Serializable {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath + ".ser"))) {
             return (EngineImpl) ois.readObject();
         }
+    }
+
+    @Override
+    public Coordinate checkAndConvertInputToCoordinate(String inputCell) {
+        Coordinate coordinate = CoordinateFactory.from(inputCell);
+
+        if(coordinate == null)
+            throw new IllegalArgumentException("Invalid coordinate provided, please provide a valid cell identity (e.g., A4 or B7).");
+
+        CoordinateFactory.isValidCoordinate(coordinate, sheet);
+        return coordinate;
     }
 }

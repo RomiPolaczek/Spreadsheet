@@ -21,7 +21,6 @@ public class RefExpression implements Expression, Serializable {
 
     @Override
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
-        // error handling if the cell is empty or not found
         CoordinateFactory.isValidCoordinate(coordinate, sheet);
         CellImpl newCell = (CellImpl) sheet.getCell(CoordinateFactory.createCoordinate(coordinate.getRow(), coordinate.getColumn()));
         if (newCell == null) {

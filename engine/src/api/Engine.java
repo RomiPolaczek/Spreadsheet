@@ -16,4 +16,5 @@ public interface Engine {
     int getChangesAccordingToVersionNumber(int version);
     File getFile();
     void saveSystemState(String filePath) throws IOException;
+    Coordinate checkAndConvertInputToCoordinate(String inputCell);
 }

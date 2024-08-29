@@ -2,7 +2,6 @@ package sheet.coordinate.impl;
 
 import sheet.api.SheetReadActions;
 import sheet.coordinate.api.Coordinate;
-import sheet.layout.impl.LayoutImpl;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,14 +45,36 @@ public class CoordinateFactory {
 
             return createCoordinate(rowNumber, columnNumber);
         }
-        catch (NumberFormatException e) {      ////FIX EXCEPTIONNNNNN
-            return null;
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid coordinate provided, please provide a valid cell identity (e.g., A4 or B7).");
         }
     }
 
-    public static void isValidCoordinate(Coordinate coordinate, SheetReadActions sheet) throws Exception {
-        LayoutImpl.CheckValidation(coordinate.getRow(), sheet.getLayout().getRows(), sheet.getLayout().getRowsLowerLimit(), "Row");
-        LayoutImpl.CheckValidation(coordinate.getColumn(), sheet.getLayout().getColumns(), sheet.getLayout().getColsLowerLimit(), "Column");
-    }
+    public static void isValidCoordinate(Coordinate coordinate, SheetReadActions sheet) {
+        int row = coordinate.getRow();
+        int column = coordinate.getColumn();
+        int rowLowerLimit = sheet.getLayout().getRowsLowerLimit();
+        int rowUpperLimit = sheet.getLayout().getRows();
+        int columnUpperLimit = sheet.getLayout().getColumns();
+        int columnLowerLimit = sheet.getLayout().getColsLowerLimit();
+        String columnStr = CoordinateImpl.convertNumberToAlphabetString(column);
+        String columnUpperLimitStr = CoordinateImpl.convertNumberToAlphabetString(columnUpperLimit);
+        String columnLowerLimitStr = CoordinateImpl.convertNumberToAlphabetString(columnLowerLimit);
+        String exception;
 
+        if((row > rowUpperLimit || row < rowLowerLimit)  && (column > columnUpperLimit || column < columnLowerLimit)) {
+            exception =
+                    "Expected rows to be between " + rowLowerLimit + "-" + rowUpperLimit + " but got " + row +
+                    "\nExpected columns to be between " + columnLowerLimitStr + "-" + columnUpperLimitStr + " but got " + columnStr;
+            throw new IllegalArgumentException(exception);
+        }
+        else if(row > rowUpperLimit || row < rowLowerLimit) {
+            exception = "Expected rows to be between " + rowLowerLimit + "-" + rowUpperLimit + " but got " + row;
+            throw new IllegalArgumentException(exception);
+        }
+        else if(column > columnUpperLimit || column < columnLowerLimit) {
+            exception = "Expected columns to be between " + columnLowerLimitStr + "-" + columnUpperLimitStr + " but got " + columnStr;
+            throw new IllegalArgumentException(exception);
+        }
+    }
 }

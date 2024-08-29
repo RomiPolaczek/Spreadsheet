@@ -17,11 +17,21 @@ public class PlusExpression implements Expression {
 
     @Override
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
+        double result;
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
-        // do some checking... error handling...
-        //double result = (Double) leftValue.getValue() + (Double) rightValue.getValue();
-        double result = leftValue.extractValueWithExpectation(Double.class) + rightValue.extractValueWithExpectation(Double.class);
+
+        CellType leftCellType = leftValue.getCellType();
+        CellType rightCellType = rightValue.getCellType();
+
+        try
+        {
+            result = leftValue.extractValueWithExpectation(Double.class) + rightValue.extractValueWithExpectation(Double.class);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Invalid argument types for PLUS function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
+        }
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);
     }
