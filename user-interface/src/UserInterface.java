@@ -37,7 +37,12 @@ public class UserInterface {
             chosenOption = getChoiceAndCheckValidation(8, 1);
 
             if (chosenOption == 1)
+            {
                 LoadFile();
+            }
+            else if (chosenOption == 7) {
+                loadSystemState();
+            }
             else if (engine.getFile()!=null || chosenOption == 8) {
                 switch (chosenOption) {
                     case 2:
@@ -54,9 +59,6 @@ public class UserInterface {
                         break;
                     case 6:
                         saveSystemState();
-                        break;
-                    case 7:
-                        loadSystemState();
                         break;
                     case 8:
                         System.out.println("Exiting...");

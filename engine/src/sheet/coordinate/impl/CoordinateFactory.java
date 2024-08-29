@@ -25,6 +25,10 @@ public class CoordinateFactory {
 
     public static Coordinate from(String trim) {
         try {
+            if (!trim.matches("^[A-Za-z]+\\d+$")) {
+                throw new IllegalArgumentException("Invalid coordinate provided. Please provide a valid cell identity (e.g., A4, C3).");
+            }
+
             // Separate the letters from the numbers
             StringBuilder columnPart = new StringBuilder();
             StringBuilder rowPart = new StringBuilder();

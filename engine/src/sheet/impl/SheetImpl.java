@@ -84,6 +84,7 @@ public class SheetImpl implements Sheet, Serializable {
         }
         cell.setCellOriginalValue(value);
         cell.calculateEffectiveValue();
+        updateInfluenceAndDepends();
         numberCellsThatHaveChanged++;
     }
 

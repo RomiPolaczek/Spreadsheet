@@ -42,16 +42,6 @@ public enum FunctionParser implements Serializable {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for PLUS function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
-
             // all is good. create the relevant function instance
             return new PlusExpression(left, right);
         }
@@ -68,17 +58,6 @@ public enum FunctionParser implements Serializable {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for MINUS function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
-
             // all is good. create the relevant function instance
             return new MinusExpression(left, right);
         }
@@ -93,13 +72,6 @@ public enum FunctionParser implements Serializable {
 
             // structure is good. parse arguments
             Expression arg = parseExpression(arguments.get(0));
-
-//            // more validations on the expected argument types
-//            CellType argCellType = arg.getFunctionResultType();
-//
-//            if (!argCellType.equals(CellType.STRING) && !argCellType.equals(CellType.UNKNOWN)) {
-//                throw new IllegalArgumentException("Invalid argument types for UPPER_CASE function. Expected STRING, but got " + argCellType);
-//            }
 
             // all is good. create the relevant function instance
             return new UpperCaseExpression(arg);
@@ -117,16 +89,6 @@ public enum FunctionParser implements Serializable {
             Expression left = parseExpression(arguments.get(0));
             Expression right = parseExpression(arguments.get(1));
 
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.STRING) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.STRING) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for CONCAT function. Expected STRING, but got " + leftCellType + " and " + rightCellType);
-//            }
-
             // all is good. create the relevant function instance
             return new ConcatExpression(left, right);
         }
@@ -143,16 +105,6 @@ public enum FunctionParser implements Serializable {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for TIMES function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
-
             // all is good. create the relevant function instance
             return new TimesExpression(left, right);
         }
@@ -168,16 +120,6 @@ public enum FunctionParser implements Serializable {
             // structure is good. parse arguments
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
-//
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for DIVIDE function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
 
             // all is good. create the relevant function instance
             return new DivideExpression(left, right);
@@ -196,16 +138,6 @@ public enum FunctionParser implements Serializable {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for MOD function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
-
             // all is good. create the relevant function instance
             return new ModExpression(left, right);
         }
@@ -221,16 +153,6 @@ public enum FunctionParser implements Serializable {
             // structure is good. parse arguments
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
-//
-//            // more validations on the expected argument types
-//            CellType leftCellType = left.getFunctionResultType();
-//            CellType rightCellType = right.getFunctionResultType();
-//
-//            // support UNKNOWN type as its value will be determined at runtime
-//            if ( (!leftCellType.equals(CellType.NUMERIC) && !leftCellType.equals(CellType.UNKNOWN)) ||
-//                    (!rightCellType.equals(CellType.NUMERIC) && !rightCellType.equals(CellType.UNKNOWN)) ) {
-//                throw new IllegalArgumentException("Invalid argument types for POW function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
-//            }
 
             // all is good. create the relevant function instance
             return new PowExpression(left, right);
@@ -246,13 +168,6 @@ public enum FunctionParser implements Serializable {
 
             // structure is good. parse arguments
             Expression arg = parseExpression(arguments.get(0).trim());
-
-//            // more validations on the expected argument types
-//            CellType argCellType = arg.getFunctionResultType();
-//
-//            if (!argCellType.equals(CellType.NUMERIC) && !argCellType.equals(CellType.UNKNOWN)) {
-//                throw new IllegalArgumentException("Invalid argument types for ABS function. Expected NUMERIC, but got " + arg.getFunctionResultType());
-//            }
 
             // all is good. create the relevant function instance
             return new AbsExpression(arg);
@@ -270,23 +185,6 @@ public enum FunctionParser implements Serializable {
             Expression source = parseExpression(arguments.get(0));
             Expression startIndex = parseExpression(arguments.get(1).trim());
             Expression endIndex = parseExpression(arguments.get(2).trim());
-
-//            CellType sourceCellType = source.getFunctionResultType();
-//            CellType startCellType = startIndex.getFunctionResultType();
-//            CellType endCellType = endIndex.getFunctionResultType();
-//
-//            // more validations on the expected argument types
-//            if (!sourceCellType.equals(CellType.STRING) && sourceCellType.equals(CellType.UNKNOWN)) {
-//                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the first argument to be STRING, but got " + sourceCellType);
-//            }
-//
-//            if(!startCellType.equals(CellType.NUMERIC) && !startCellType.equals(CellType.UNKNOWN)) {
-//                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the second argument to be NUMERIC, but got " + startCellType);
-//            }
-//
-//            if(!endCellType.equals(CellType.NUMERIC) && !endCellType.equals(CellType.UNKNOWN)) {
-//                throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the third argument to be NUMERIC, but got " + endCellType);
-//            }
 
             // all is good. create the relevant function instance
             return new SubExpression(source, startIndex, endIndex);
