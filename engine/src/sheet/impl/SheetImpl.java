@@ -67,6 +67,7 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
 
+
     @Override
     public void setCell(int row, int column, String value) {
         if(row > layout.getRows())
@@ -76,12 +77,6 @@ public class SheetImpl implements Sheet, Serializable {
 
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
         Cell cell = activeCells.get(coordinate);
-
-        if(cell == null) {
-            int version = this.getVersion();
-            cell = new CellImpl(row, column, value, version, this);
-            activeCells.put(coordinate, cell);
-        }
         cell.setCellOriginalValue(value);
         cell.calculateEffectiveValue();
         updateInfluenceAndDepends();
@@ -217,9 +212,10 @@ public class SheetImpl implements Sheet, Serializable {
         return Objects.hash(activeCells, layout, name, version);
     }
 
+
     private void updateInfluenceAndDepends(){
         List<String> refCells;
-        for (Cell cell : activeCells.values()) {
+        for (Cell cell : this.activeCells.values()) {
             cell.getInfluencingOn().clear();
             cell.getDependsOn().clear();
             refCells = extractRefCells(cell.getOriginalValue());
@@ -229,13 +225,13 @@ public class SheetImpl implements Sheet, Serializable {
                 {
                     CoordinateFactory.isValidCoordinate(coordinate, this);
                     cell.getDependsOn().add(coordinate);
-                    getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+                    this.getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
                 }
             }
         }
     }
 
-    public List<String> extractRefCells(String input) {
+    private List<String> extractRefCells(String input) {
         List<String> refCells = new ArrayList<>();
 
         // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
@@ -248,5 +244,14 @@ public class SheetImpl implements Sheet, Serializable {
         }
 
         return refCells;
+    }
+
+    @Override
+    public void setEmptyCell(int row, int column){
+        Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
+        CellImpl newCell = new CellImpl(coordinate.getRow(), coordinate.getColumn(), "", 1, this);
+        newCell.calculateEffectiveValue();
+        activeCells.put(coordinate, newCell);
+        updateInfluenceAndDepends();
     }
 }

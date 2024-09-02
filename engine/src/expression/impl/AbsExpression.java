@@ -20,7 +20,7 @@ public class AbsExpression implements Expression {
             result = eval.extractValueWithExpectation(Double.class);
         }
         catch (Exception e){
-            throw new IllegalArgumentException("Invalid argument types for ABS function. Expected NUMERIC, but got " + eval.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "NaN");
         }
 
         if(result < 0)

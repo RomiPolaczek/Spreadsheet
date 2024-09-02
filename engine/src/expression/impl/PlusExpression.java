@@ -30,7 +30,7 @@ public class PlusExpression implements Expression {
         }
         catch (Exception e)
         {
-            throw new IllegalArgumentException("Invalid argument types for PLUS function. Expected NUMERIC, but got " + leftCellType + " and " + rightCellType);
+            return new EffectiveValueImpl(CellType.ERROR, "NaN");
         }
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);

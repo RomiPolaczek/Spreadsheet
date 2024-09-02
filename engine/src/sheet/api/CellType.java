@@ -4,7 +4,9 @@ public enum CellType {
     NUMERIC(Double.class) ,
     STRING(String.class) ,
     BOOLEAN(Boolean.class),
-    UNKNOWN(Void.class);
+    UNKNOWN(Void.class),
+    EMPTY(Void.class),
+    ERROR(Void.class);
 
 
     private Class<?> type;

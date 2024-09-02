@@ -10,4 +10,5 @@ public interface SheetUpdateActions {
     void setName(String name);
     void IncreaseVersion ();
     SheetImpl copySheet();
+    void setEmptyCell(int row, int column);
 }

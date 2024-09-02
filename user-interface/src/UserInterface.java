@@ -205,7 +205,6 @@ public class UserInterface {
 
             System.out.print("Please enter the new value of the cell: ");
             String inputValue = scanner.nextLine().trim();
-         //   if(inputValue.isBlank())
 
             engine.EditCell(coordinate, inputValue);
             DisplaySheet();

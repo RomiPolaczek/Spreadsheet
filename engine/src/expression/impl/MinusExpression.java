@@ -27,7 +27,7 @@ public class MinusExpression implements Expression{
             result = leftValue.extractValueWithExpectation(Double.class) - rightValue.extractValueWithExpectation(Double.class);
         }
         catch (Exception e){
-            throw new IllegalArgumentException("Invalid argument types for MINUS function. Expected NUMERIC, but got " + leftValue.getCellType() + " and " + rightValue.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "NaN");
         }
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);

@@ -24,7 +24,7 @@ public class UpperCaseExpression implements Expression {
         }
         catch (Exception e)
         {
-            throw new IllegalArgumentException("Invalid argument types for UPPER_CASE function. Expected STRING, but got " + eval.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "!UNDEFINED!");
         }
 
         return new EffectiveValueImpl(CellType.STRING, upperCaseResult);

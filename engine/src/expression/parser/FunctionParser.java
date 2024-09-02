@@ -223,7 +223,16 @@ public enum FunctionParser implements Serializable {
 
             //remove the first element from the array
             topLevelParts.remove(0);
-            return FunctionParser.valueOf(functionName).parse(topLevelParts);
+            FunctionParser functionParser;
+
+            try {
+                functionParser = FunctionParser.valueOf(functionName);
+            }
+            catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid function name: " + functionName);
+            }
+
+            return functionParser.parse(topLevelParts);
         }
 
         // handle identity expression

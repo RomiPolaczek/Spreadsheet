@@ -26,7 +26,7 @@ public class PowExpression implements Expression {
             result = Math.pow(leftValue.extractValueWithExpectation(Double.class), rightValue.extractValueWithExpectation(Double.class));
         }
         catch (Exception e) {
-            throw new IllegalArgumentException("Invalid argument types for POW function. Expected NUMERIC, but got " + leftValue.getCellType() + " and " + rightValue.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "NaN");
         }
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);

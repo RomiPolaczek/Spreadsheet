@@ -89,6 +89,12 @@ public class EngineImpl implements Engine, Serializable {
 
         sheet.setName(stlSheet.getName());
 
+        for(int row = 1; row <= stlSheet.getSTLLayout().getRows(); row++) {
+            for(int column = 1; column <= stlSheet.getSTLLayout().getColumns(); column++) {
+                sheet.setEmptyCell(row, column);
+            }
+        }
+
         for(STLCell stlCell : stlSheet.getSTLCells().getSTLCell())
         {
             int row = stlCell.getRow();

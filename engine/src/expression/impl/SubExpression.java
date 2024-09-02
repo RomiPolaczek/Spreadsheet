@@ -33,8 +33,7 @@ public class SubExpression implements Expression {
             end = endIndexValue.extractValueWithExpectation(Double.class);
         }
         catch(Exception e){
-            throw new IllegalArgumentException("Invalid argument types for SUB function. Expected the arguments to be STRING - NUMERIC - NUMERIC but got " +
-                    sourceValue.getCellType() + " - " + startIndexValue.getCellType() + " - " + endIndexValue.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "!UNDEFINED!");
         }
 
         // Check the validity of the indices

@@ -14,5 +14,4 @@ public interface SheetReadActions {
     Map<Coordinate, Cell> getActiveCells();
     Cell getCell(Coordinate coordinate);
     int getNumberCellsThatHaveChanged();
-
 }

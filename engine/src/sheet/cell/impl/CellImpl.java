@@ -2,11 +2,13 @@ package sheet.cell.impl;
 
 import expression.api.Expression;
 import expression.parser.FunctionParser;
+import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateImpl;
 import sheet.api.SheetReadActions;
+import sheet.impl.EffectiveValueImpl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +59,11 @@ public class CellImpl implements Cell, Serializable {
     public boolean calculateEffectiveValue(){
         // build the expression object out of the original value...
         // it can be {PLUS, 4, 5} OR {CONCAT, {ref, A4}, world}
+        if(Objects.equals(originalValue, "")){
+            effectiveValue = new EffectiveValueImpl(CellType.EMPTY, "");
+            return false;
+        }
+
         try
         {
             Expression expression = FunctionParser.parseExpression(originalValue);
@@ -106,4 +113,5 @@ public class CellImpl implements Cell, Serializable {
     public int hashCode() {
         return Objects.hash(coordinate, originalValue, effectiveValue, version);
     }
+
 }

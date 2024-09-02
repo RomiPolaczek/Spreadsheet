@@ -26,7 +26,7 @@ public class ConcatExpression implements Expression {
             result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
         }
         catch(Exception e){
-            throw new IllegalArgumentException("Invalid argument types for CONCAT function. Expected STRING, but got " + leftValue.getCellType() + " and " + rightValue.getCellType());
+            return new EffectiveValueImpl(CellType.ERROR, "!UNDEFINED!");
         }
 
         return new EffectiveValueImpl(CellType.STRING, result);
