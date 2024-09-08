@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/consoleUI/consoleUI.iml" filepath="$PROJECT_DIR$/consoleUI/consoleUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/engine/engine.iml" filepath="$PROJECT_DIR$/engine/engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" filepath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" />
       <module fileurl="file://$PROJECT_DIR$/sheet-cell.iml" filepath="$PROJECT_DIR$/sheet-cell.iml" />
-      <module fileurl="file://$PROJECT_DIR$/user-interface/user-interface.iml" filepath="$PROJECT_DIR$/user-interface/user-interface.iml" />
     </modules>
   </component>
 </project>
