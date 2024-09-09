@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+   <content>
+      <VBox alignment="TOP_CENTER">
+         <children>
+            <Label alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="31.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="750.0" spacing="12.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="loadFileButton" minWidth="100.0" mnemonicParsing="false" onAction="#loadFileButtonAction" prefHeight="27.0" prefWidth="119.0" text="Load file" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="fileNameLabel" maxWidth="1.7976931348623157E308" prefWidth="600.0" style="-fx-background-color: #DCDCDC;" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="12.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="575.0" spacing="7.0">
+               <children>
+                  <Label text="Selected Celll ID:" />
+                  <ComboBox fx:id="cellsComboBox" onAction="#cellsComboBoxAction" prefWidth="100.0" />
+                  <Label text="Original Cell Value:" />
+                  <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update Value" />
+                  <Button fx:id="versionSelectorButton" mnemonicParsing="false" onAction="#versionSelectorButtonAction" text="Version Selector" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
