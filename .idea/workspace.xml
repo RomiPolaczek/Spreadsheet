@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="initialize all empty cells, add cellType and fix exception in all expressions">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/download.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add comboBox for selectedCells">
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-interface/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/consoleUI/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-interface/src/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/consoleUI/src/UserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-interface/user-interface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/consoleUI/consoleUI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +23,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -68,6 +68,7 @@
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -79,6 +80,11 @@
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -312,7 +318,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725294446228</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="add comboBox for selectedCells">
+      <option name="closed" value="true" />
+      <created>1725919520468</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1725919520468</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +374,8 @@
     <MESSAGE value="fix concat function" />
     <MESSAGE value="delete notes and fix load system and updateInfluenceAndDepends func" />
     <MESSAGE value="initialize all empty cells, add cellType and fix exception in all expressions" />
-    <option name="LAST_COMMIT_MESSAGE" value="initialize all empty cells, add cellType and fix exception in all expressions" />
+    <MESSAGE value="add comboBox for selectedCells" />
+    <option name="LAST_COMMIT_MESSAGE" value="add comboBox for selectedCells" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -400,8 +415,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/javaFX-UI/src/app/AppController.java</url>
-          <line>16</line>
-          <properties class="app.AppController" method="setPrimaryStage">
+          <line>19</line>
+          <properties class="app.AppController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
