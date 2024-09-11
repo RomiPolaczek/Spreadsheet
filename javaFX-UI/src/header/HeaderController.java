@@ -25,26 +25,26 @@ import java.io.File;
 
 public class HeaderController {
 
-    @FXML
-    private Label fileNameLabel;
-    @FXML
-    private Button loadFileButton;
-    @FXML
-    private Button updateCellValueButton;
-    @FXML
-    private Button versionSelectorButton;
-    @FXML
-    private ComboBox<String> cellsComboBox;
 
-    // private Stage primaryStage;
+    @FXML private Label fileNameLabel;
+    @FXML private Label originalCellValueLabel;
+    @FXML private Button loadFileButton;
+    @FXML private Button updateCellValueButton;
+    @FXML private Button versionSelectorButton;
+    @FXML private Label selectedCellIDLabel;
+
 
     private AppController mainController;
     private SimpleStringProperty selectedFileProperty;
     private SimpleBooleanProperty isFileSelected;
+    private SimpleStringProperty selectedCellProperty;
+    private SimpleStringProperty originalCellValueProperty;
 
     public HeaderController() {
         selectedFileProperty = new SimpleStringProperty();
         isFileSelected = new SimpleBooleanProperty(false);
+        selectedCellProperty = new SimpleStringProperty();
+        originalCellValueProperty = new SimpleStringProperty();
     }
 
     @FXML
@@ -52,7 +52,8 @@ public class HeaderController {
         fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(isFileSelected.not());
         versionSelectorButton.disableProperty().bind(isFileSelected.not());
-
+        selectedCellIDLabel.textProperty().bind(selectedCellProperty);
+        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
     }
 
     @FXML
@@ -72,9 +73,8 @@ public class HeaderController {
             // Show progress bar pop-up
             Stage progressBarStage = createProgressBarStage();
             showProgressBar(progressBarStage, absolutePath);
-
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             showErrorAlert(e);
         }
     }
@@ -93,8 +93,7 @@ public class HeaderController {
                 Platform.runLater(() -> {
                     selectedFileProperty.set(absolutePath);
                     isFileSelected.set(true);
-                    populateCellsComboBox(); /// delete
-                    mainController.makeSheet();
+                    mainController.setSheet();
                 });
                 return null;
             }
@@ -178,28 +177,35 @@ public class HeaderController {
         this.mainController = mainController;
     }
 
-    @FXML
-    void cellsComboBoxAction(ActionEvent event) {
-        // Get the selected cell
-        String selectedCell = cellsComboBox.getSelectionModel().getSelectedItem();
-
-        // Perform your action based on the selected cell
-        System.out.println("Selected cell: " + selectedCell);
+    public void addClickEventForCell(Label label, String cellID, String originalValue) {
+        label.setOnMouseClicked(event -> {
+            selectedCellProperty.set(cellID);
+            originalCellValueProperty.set(originalValue);
+        });
     }
 
-    private void populateCellsComboBox() {
-        // Assuming your spreadsheet has 26 columns (A-Z) and 10 rows (1-10)
-        ObservableList<String> cellReferences = FXCollections.observableArrayList();
-        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-        int totalColumns = dtoSheet.getLayout().getColumns();  // A to Z
-        int totalRows = dtoSheet.getLayout().getRows();     // Rows 1 to 10
+//    @FXML
+//    void cellsComboBoxAction(ActionEvent event) {
+//        // Get the selected cell
+//        String selectedCell = cellsComboBox.getSelectionModel().getSelectedItem();
+//
+//        // Perform your action based on the selected cell
+//        System.out.println("Selected cell: " + selectedCell);
+//    }
 
-        // Generate cell references like A1, A2, B1, B2, ..., Z10
-        for (char col = 'A'; col < 'A' + totalColumns; col++) {
-            for (int row = 1; row <= totalRows; row++) {
-                cellReferences.add(col + String.valueOf(row));
-            }
-        }
-        cellsComboBox.setItems(cellReferences);
-    }
+//    private void populateCellsComboBox() {
+//        // Assuming your spreadsheet has 26 columns (A-Z) and 10 rows (1-10)
+//        ObservableList<String> cellReferences = FXCollections.observableArrayList();
+//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+//        int totalColumns = dtoSheet.getLayout().getColumns();  // A to Z
+//        int totalRows = dtoSheet.getLayout().getRows();     // Rows 1 to 10
+//
+//        // Generate cell references like A1, A2, B1, B2, ..., Z10
+//        for (char col = 'A'; col < 'A' + totalColumns; col++) {
+//            for (int row = 1; row <= totalRows; row++) {
+//                cellReferences.add(col + String.valueOf(row));
+//            }
+//        }
+//        cellsComboBox.setItems(cellReferences);
+//    }
 }

@@ -16,13 +16,11 @@ public class AppController {
     @FXML private ScrollPane sheetComponent;
     @FXML private SheetController sheetComponentController;
     private Engine engine;
-    //private Stage primaryStage;
 
-//    public void setPrimaryStage(Stage primaryStage) {
-//        this.primaryStage = primaryStage;
-//    }
 
     public Engine getEngine() { return engine; }
+
+    public HeaderController getHeaderComponentController() { return headerComponentController; }
 
     @FXML
     public void initialize() {
@@ -36,7 +34,7 @@ public class AppController {
         }
     }
 
-    public void makeSheet(){
-        sheetComponentController.initialSheetAccordingToSize();
+    public void setSheet(){
+        sheetComponentController.setSheet();
     }
 }

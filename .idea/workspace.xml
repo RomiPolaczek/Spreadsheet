@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add comboBox for selectedCells">
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" afterDir="false" />
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add progress bar and sheet component">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -326,7 +324,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725919520468</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="add progress bar and sheet component">
+      <option name="closed" value="true" />
+      <created>1725928462329</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1725928462329</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,7 +381,8 @@
     <MESSAGE value="delete notes and fix load system and updateInfluenceAndDepends func" />
     <MESSAGE value="initialize all empty cells, add cellType and fix exception in all expressions" />
     <MESSAGE value="add comboBox for selectedCells" />
-    <option name="LAST_COMMIT_MESSAGE" value="add comboBox for selectedCells" />
+    <MESSAGE value="add progress bar and sheet component" />
+    <option name="LAST_COMMIT_MESSAGE" value="add progress bar and sheet component" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -412,15 +419,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="183" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/javaFX-UI/src/app/AppController.java</url>
-          <line>19</line>
-          <properties class="app.AppController">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="187" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

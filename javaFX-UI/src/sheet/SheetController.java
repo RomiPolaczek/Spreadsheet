@@ -1,6 +1,8 @@
 package sheet;
 
 import app.AppController;
+import dto.DTOcell;
+import dto.DTOsheet;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
@@ -12,6 +14,7 @@ public class SheetController {
     @FXML private GridPane dynamicGridPane;
     private AppController mainController;
 
+
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
@@ -20,15 +23,15 @@ public class SheetController {
 //        // Method to dynamically resize the GridPane using predefined values
 //        resizeGrid(5, 6);
 //    }
-    public void initialSheetAccordingToSize(){
-        int rows = mainController.getEngine().getSheet().getLayout().getRows();
-        int cols = mainController.getEngine().getSheet().getLayout().getColumns();
-        resizeGrid(rows, cols);
-    }
+
+    public void setSheet() {
+        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+        int rows = dtoSheet.getLayout().getRows();
+        int cols = dtoSheet.getLayout().getColumns();
+        int columnWidth = dtoSheet.getLayout().getColumnsWidthUnits();
+        int rowsHeight = dtoSheet.getLayout().getRowsHeightUnits();
 
 
-
-    private void resizeGrid(int rows, int cols) {
         // Clear existing constraints and children
         dynamicGridPane.getRowConstraints().clear();
         dynamicGridPane.getColumnConstraints().clear();
@@ -37,14 +40,14 @@ public class SheetController {
         // Add new row constraints
         for (int i = 0; i < rows; i++) {
             RowConstraints row = new RowConstraints();
-            row.setPrefHeight(30);  // Set the preferred height of the rows
+            row.setPrefHeight(rowsHeight);  // Set the preferred height of the rows
             dynamicGridPane.getRowConstraints().add(row);
         }
 
         // Add new column constraints
         for (int j = 0; j < cols; j++) {
             ColumnConstraints col = new ColumnConstraints();
-            col.setPrefWidth(50);  // Set the preferred width of the columns
+            col.setPrefWidth(columnWidth);  // Set the preferred width of the columns
             dynamicGridPane.getColumnConstraints().add(col);
         }
 
@@ -62,13 +65,22 @@ public class SheetController {
             dynamicGridPane.add(rowHeader, 0, row);  // Row headers in the first column
         }
 
-        // Fill the rest of the grid with empty cells or placeholders
+        // Fill the rest of the grid with cell values from the DTOsheet
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
-                Label cellLabel = new Label("");  // Empty cell for now
+                // Get the effective value for the current cell from the DTOsheet
+                DTOcell cellData = dtoSheet.getCell(row ,col); // Assuming row/col are zero-indexed
+                String cellValue = (cellData != null && cellData.getEffectiveValue() != null) ? cellData.getEffectiveValue() : "";
+
+                // Create the Label for the cell and set the value
+                Label cellLabel = new Label(cellValue);
+                String cellName = Character.toString((char) ('A' + col - 1)) + row;  // e.g., "A1", "B2", etc.
+                mainController.getHeaderComponentController().addClickEventForCell(cellLabel ,cellName, cellData.getOriginalValue());
                 cellLabel.getStyleClass().add("single-cell");
                 dynamicGridPane.add(cellLabel, col, row);
             }
         }
     }
+
+
 }
