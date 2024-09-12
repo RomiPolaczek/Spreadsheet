@@ -69,18 +69,18 @@
 
 /* Depends-on Cell Effect */
 .single-cell.depends-on-cell {
+    -fx-background-color: #e0f0ff; /* Light blue background */
+    -fx-border-style: dotted; /* Dotted border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-color: #007bff; /* Blue border color */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,255,0.5), 2, 0.5, 0, 0); /* Blue shadow effect */
+}
+
+/* Influence-on Cell Effect */
+.single-cell.influence-on-cell {
     -fx-background-color: #e0ffe0; /* Light green background */
     -fx-border-style: dotted; /* Dotted border */
     -fx-border-width: 2px; /* Border width */
     -fx-border-color: #28a745; /* Green border color */
     -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); /* Green shadow effect */
-}
-
-/* Influence-on Cell Effect */
-.single-cell.influence-on-cell {
-    -fx-background-color: #ffe0e0; /* Light pink background */
-    -fx-border-style: dotted; /* Dotted border */
-    -fx-border-width: 2px; /* Border width */
-    -fx-border-color: #dc3545; /* Red border color */
-    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 2, 0.5, 0, 0); /* Red shadow effect */
 }
