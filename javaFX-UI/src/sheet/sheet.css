@@ -1,60 +1,86 @@
+ /*Overall GridPane Style */
 .gridpane {
-    -fx-background-color: lightgray;
-    -fx-border-color: black;
-    -fx-grid-lines-visible: true;
+    -fx-background-color: white; /* White background for the grid */
+    -fx-border-color: black; /* Black border color around the grid */
+    -fx-border-width: 1px;
+    -fx-grid-lines-visible: true; /* Show grid lines */
+    /*-fx-horizontal-grid-lines-visible: true; !* Ensure horizontal grid lines are visible *!*/
+    /*-fx-vertical-grid-lines-visible: true; !* Ensure vertical grid lines are visible *!*/
 }
 
-/*.header-cell {*/
-/*    !*-fx-background-color: #333;*!*/
-/*    !*-fx-text-fill: white;*!*/
-/*    -fx-font-weight: bold;*/
-/*    !*-fx-border-color: black;*!*/
+/* Header Cell Style */
+.header-cell {
+    -fx-background-color: #e0e0e0; /* Light gray background for headers */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-text-fill: #000000; /* Black text color */
+    -fx-alignment: center; /* Center text alignment */
+    -fx-text-alignment: center; /* Center text horizontally */
+    -fx-padding: 0; /* Remove padding if necessary */
+    -fx-max-width: Infinity; /* Allow label to expand horizontally */
+    -fx-max-height: Infinity; /* Allow label to expand vertically */
+    -fx-min-width: 0; /* Allow label to contract */
+    -fx-min-height: 0; /* Allow label to contract */
+}
+
+/*!* Normal Cell Style *!*/
+/*.normal-cell {*/
+/*    -fx-background-color: #ffffff; !* White background for normal cells *!*/
+/*    !*-fx-border-color: black; !* Black border color for cells *!*!*/
+/*    !*-fx-border-width: 1px; !* Border width *!*!*/
+/*    !*-fx-padding: 5px; !* Cell padding *!*!*/
+/*    -fx-alignment: center; !* Center text alignment *!*/
 /*}*/
 
-.normal-cell {
-    -fx-background-color: white;
-    -fx-border-color: black;
-    -fx-alignment: center;
-}
-
+/* Single Cell Style */
 .single-cell {
-    -fx-border-color: black;
-    -fx-padding: 3px;
-    -fx-width: 10;
-    -fx-min-width: 50;
+    -fx-background-color: #ffffff; /* White background */
+    /*-fx-border-color: black; !* Black border color *!*/
+    /*-fx-border-width: 1px; !* Border width *!*/
+    /*-fx-padding: 5px; !* Cell padding *!*/
+    -fx-alignment: center; /* Center text alignment */
+    -fx-text-alignment: center; /* Center text horizontally */
+    -fx-padding: 0; /* Remove padding if necessary */
+    -fx-max-width: Infinity; /* Allow label to expand horizontally */
+    -fx-max-height: Infinity; /* Allow label to expand vertically */
+    -fx-min-width: 0; /* Allow label to contract */
+    -fx-min-height: 0; /* Allow label to contract */
+
 }
 
-.background-cell {
-    -fx-background-color: white;
-}
+/*!* Background Cell Style *!*/
+/*.background-cell {*/
+/*    -fx-background-color: #f9f9f9; !* Light gray background for special cells *!*/
+/*}*/
 
+/* Hover Effect */
 .single-cell:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 5, 0.5, 0, 0);
+    -fx-background-color: #f0f0f0; /* Slightly gray background on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 5, 0.5, 0, 0); /* Drop shadow effect */
 }
 
-#selected-cell {
-    -fx-effect: dropshadow(gaussian, rgba(0, 40, 255, 0.75), 10, 0.5, 0, 0);
-}
+/*!* Selected Cell Effect *!*/
+/*#selected-cell {*/
+/*    -fx-background-color: #d0e0ff; !* Light blue background for selected cell *!*/
+/*    -fx-border-color: #004085; !* Dark blue border for selection *!*/
+/*    -fx-border-width: 2px; !* Border width *!*/
+/*    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.75), 5, 0.5, 0, 0); !* Blue drop shadow *!*/
+/*}*/
 
-.single-cell.depends-on-cell {
-    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.75), 2, 0.5, 0, 0);
-    -fx-border-style: dotted;
-    -fx-border-width: 3px;
-    -fx-border-color: rgba(0,255,0,0.75);
-}
+/*!* Depends-on Cell Effect *!*/
+/*.single-cell.depends-on-cell {*/
+/*    -fx-background-color: #e0ffe0; !* Light green background *!*/
+/*    -fx-border-style: dotted; !* Dotted border *!*/
+/*    -fx-border-width: 2px; !* Border width *!*/
+/*    -fx-border-color: #28a745; !* Green border color *!*/
+/*    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); !* Green shadow effect *!*/
+/*}*/
 
-.single-cell.influence-on-cell {
-    -fx-effect: dropshadow(gaussian, rgba(255, 0, 161, 0.75), 2, 0.5, 0, 0);
-    -fx-border-style: dotted;
-    -fx-border-width: 3px;
-    -fx-border-color: rgba(255, 0, 161, 0.75);
-}
-
-
-/* Make the font bold in headers */
-.header-cell {
-    -fx-font-size: 16px;
-    -fx-width: 10;
-    -fx-font-weight: bold;
-    -fx-text-alignment: center;
-}
+/*!* Influence-on Cell Effect *!*/
+/*.single-cell.influence-on-cell {*/
+/*    -fx-background-color: #ffe0e0; !* Light pink background *!*/
+/*    -fx-border-style: dotted; !* Dotted border *!*/
+/*    -fx-border-width: 2px; !* Border width *!*/
+/*    -fx-border-color: #dc3545; !* Red border color *!*/
+/*    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 2, 0.5, 0, 0); !* Red shadow effect *!*/
+/*}*/

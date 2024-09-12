@@ -35,7 +35,7 @@ public class Main extends Application {
 //        appController.setBusinessLogic(engine);
 
         // set stage
-        Scene scene = new Scene(root, 800, 400);
+        Scene scene = new Scene(root, 900, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

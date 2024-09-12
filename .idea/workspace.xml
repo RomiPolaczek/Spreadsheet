@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add progress bar and sheet component">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add setSheet including cellID and originalValue labels">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +144,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="app.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="app.Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="javaFX-UI" />
       <option name="VM_PARAMETERS" value="--module-path $PROJECT_DIR$/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml" />
@@ -151,7 +154,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.app.Main" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.FunctionParser" />
         <item itemvalue="Application.Main" />
@@ -332,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725928462329</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add setSheet including cellID and originalValue labels">
+      <option name="closed" value="true" />
+      <created>1726056479903</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1726056479904</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,7 +392,8 @@
     <MESSAGE value="initialize all empty cells, add cellType and fix exception in all expressions" />
     <MESSAGE value="add comboBox for selectedCells" />
     <MESSAGE value="add progress bar and sheet component" />
-    <option name="LAST_COMMIT_MESSAGE" value="add progress bar and sheet component" />
+    <MESSAGE value="add setSheet including cellID and originalValue labels" />
+    <option name="LAST_COMMIT_MESSAGE" value="add setSheet including cellID and originalValue labels" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -401,6 +412,12 @@
           <line>13</line>
           <properties field="IDENTITY" class="expression.parser.FunctionParser" />
           <option name="timeStamp" value="159" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java</url>
+          <line>36</line>
+          <properties field="versionSelectorComboBox" class="header.HeaderController" />
+          <option name="timeStamp" value="189" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java</url>
