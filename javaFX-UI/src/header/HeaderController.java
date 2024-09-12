@@ -1,6 +1,7 @@
 package header;
 
 import app.AppController;
+import dto.DTOcell;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -23,6 +24,8 @@ import dto.DTOsheet;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -44,6 +47,8 @@ public class HeaderController {
     private SimpleStringProperty selectedCellProperty;
     private SimpleStringProperty originalCellValueProperty;
     private SimpleStringProperty lastUpdateVersionCellProperty;
+    private List<String> lastHighlightedCells = new ArrayList<>();
+
 
     public HeaderController() {
         selectedFileProperty = new SimpleStringProperty();
@@ -177,12 +182,38 @@ public class HeaderController {
         this.mainController = mainController;
     }
 
-    public void addClickEventForCell(Label label, String cellID, String originalValue, int version) {
+    public void addClickEventForCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
+            resetPreviousStyles();
+
             selectedCellProperty.set(cellID);
-            originalCellValueProperty.set(originalValue);
-            lastUpdateVersionCellProperty.set(String.valueOf(version));
+            originalCellValueProperty.set(dtoCell.getOriginalValue());
+            lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
+
+            List<String> dependsOn = dtoCell.getDependsOn();
+            for(String dependsOnCellID : dependsOn) {
+                mainController.getSheetComponentController().getCellLabels().get(dependsOnCellID).getStyleClass().add("depends-on-cell");
+            }
+
+            List<String> influencingOn = dtoCell.getInfluencingOn();
+            for(String influencingCellID : influencingOn) {
+                mainController.getSheetComponentController().getCellLabels().get(influencingCellID).getStyleClass().add("influence-on-cell");
+            }
+
+            lastHighlightedCells.clear();
+            lastHighlightedCells.addAll(dependsOn);
+            lastHighlightedCells.addAll(influencingOn);
         });
+    }
+
+    private void resetPreviousStyles() {
+        // Reset styles for all previously highlighted cells
+        for (String cellID : lastHighlightedCells) {
+            Label cellLabel = mainController.getSheetComponentController().getCellLabels().get(cellID);
+            cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
+        }
+        // Clear the list after resetting
+        lastHighlightedCells.clear();
     }
 
     @FXML
@@ -209,15 +240,17 @@ public class HeaderController {
         Label currentValueLabel;
 
         if(Objects.equals(currentValue, ""))
-            currentValueLabel = new Label("Current Value: empty cell");
+            currentValueLabel = new Label("Current Value:  empty cell");
         else
-            currentValueLabel = new Label("Current Value: " + currentValue);
+            currentValueLabel = new Label("Current Value:  " + currentValue);
 
         vbox.getChildren().add(currentValueLabel);
 
         // Create and configure the text field for the new value
+        vbox.getChildren().add(new Label("Enter new value: "));
+
         TextField newValueTextField = new TextField();
-        newValueTextField.setPromptText("Enter new value");
+//        newValueTextField.setPromptText("Enter new value");
         vbox.getChildren().add(newValueTextField);
 
         // Create and configure the submit button

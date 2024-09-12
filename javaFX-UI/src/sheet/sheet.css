@@ -55,7 +55,7 @@
 
 /* Hover Effect */
 .single-cell:hover {
-    -fx-background-color: #f0f0f0; /* Slightly gray background on hover */
+    -fx-background-color: #cdcdcd; /* Slightly gray background on hover */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 5, 0.5, 0, 0); /* Drop shadow effect */
 }
 
@@ -67,20 +67,20 @@
 /*    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.75), 5, 0.5, 0, 0); !* Blue drop shadow *!*/
 /*}*/
 
-/*!* Depends-on Cell Effect *!*/
-/*.single-cell.depends-on-cell {*/
-/*    -fx-background-color: #e0ffe0; !* Light green background *!*/
-/*    -fx-border-style: dotted; !* Dotted border *!*/
-/*    -fx-border-width: 2px; !* Border width *!*/
-/*    -fx-border-color: #28a745; !* Green border color *!*/
-/*    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); !* Green shadow effect *!*/
-/*}*/
+/* Depends-on Cell Effect */
+.single-cell.depends-on-cell {
+    -fx-background-color: #e0ffe0; /* Light green background */
+    -fx-border-style: dotted; /* Dotted border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-color: #28a745; /* Green border color */
+    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); /* Green shadow effect */
+}
 
-/*!* Influence-on Cell Effect *!*/
-/*.single-cell.influence-on-cell {*/
-/*    -fx-background-color: #ffe0e0; !* Light pink background *!*/
-/*    -fx-border-style: dotted; !* Dotted border *!*/
-/*    -fx-border-width: 2px; !* Border width *!*/
-/*    -fx-border-color: #dc3545; !* Red border color *!*/
-/*    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 2, 0.5, 0, 0); !* Red shadow effect *!*/
-/*}*/
+/* Influence-on Cell Effect */
+.single-cell.influence-on-cell {
+    -fx-background-color: #ffe0e0; /* Light pink background */
+    -fx-border-style: dotted; /* Dotted border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-color: #dc3545; /* Red border color */
+    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 2, 0.5, 0, 0); /* Red shadow effect */
+}

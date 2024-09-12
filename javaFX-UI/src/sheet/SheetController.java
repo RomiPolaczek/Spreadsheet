@@ -13,23 +13,33 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SheetController {
 
     @FXML private GridPane dynamicGridPane;
     private AppController mainController;
+    private Map<String, Label> cellLabels;
 
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
 
+    public Map<String, Label> getCellLabels() {
+        return cellLabels;
+    }
+
     public void setSheet(DTOsheet dtoSheet) {
+        cellLabels = new HashMap<>();
         int rows = dtoSheet.getLayout().getRows();
         int cols = dtoSheet.getLayout().getColumns();
         int columnWidth = dtoSheet.getLayout().getColumnsWidthUnits();
         int rowsHeight = dtoSheet.getLayout().getRowsHeightUnits();
+
+        dynamicGridPane.setGridLinesVisible(false); // Disable temporarily
         dynamicGridPane.getStyleClass().add("gridpane");
-//        dynamicGridPane.gridLinesVisibleProperty().set(true);
 
         // Clear existing constraints and children
         dynamicGridPane.getRowConstraints().clear();
@@ -80,7 +90,8 @@ public class SheetController {
                 // Create the Label for the cell and set the value
                 Label cellLabel = new Label(cellValue);
                 String cellName = Character.toString((char) ('A' + col - 1)) + row;  // e.g., "A1", "B2", etc.
-                mainController.getHeaderComponentController().addClickEventForCell(cellLabel ,cellName, cellData.getOriginalValue(), cellData.getVersion());
+                mainController.getHeaderComponentController().addClickEventForCell(cellLabel ,cellName, cellData);
+                cellLabels.put(cellName, cellLabel);
                 cellLabel.getStyleClass().add("single-cell");
                 dynamicGridPane.add(cellLabel, col, row);
             }
