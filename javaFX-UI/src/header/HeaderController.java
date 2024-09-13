@@ -32,13 +32,20 @@ import java.util.Objects;
 public class HeaderController {
 
 
-    @FXML private Label fileNameLabel;
-    @FXML private Label originalCellValueLabel;
-    @FXML private Button loadFileButton;
-    @FXML private Button updateCellValueButton;
-    @FXML private Label lastUpdateVersionCellLabel;
-    @FXML private ComboBox<String> versionSelectorComboBox;
-    @FXML private Label selectedCellIDLabel;
+    @FXML
+    private Label fileNameLabel;
+    @FXML
+    private Label originalCellValueLabel;
+    @FXML
+    private Button loadFileButton;
+    @FXML
+    private Button updateCellValueButton;
+    @FXML
+    private Label lastUpdateVersionCellLabel;
+    @FXML
+    private ComboBox<String> versionSelectorComboBox;
+    @FXML
+    private Label selectedCellIDLabel;
 
 
     private AppController mainController;
@@ -56,7 +63,7 @@ public class HeaderController {
         selectedCellProperty = new SimpleStringProperty();
         originalCellValueProperty = new SimpleStringProperty();
         lastUpdateVersionCellProperty = new SimpleStringProperty();
-        versionSelectorComboBox = new ComboBox<String>();
+        versionSelectorComboBox = new ComboBox<>();
     }
 
     @FXML
@@ -69,27 +76,27 @@ public class HeaderController {
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
     }
 
+    public void setMainController(AppController mainController) {
+        this.mainController = mainController;
+    }
+
     @FXML
     void loadFileButtonAction(ActionEvent event) {
-        try {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select words file");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-            Stage stage = (Stage) fileNameLabel.getScene().getWindow();
-            File selectedFile = fileChooser.showOpenDialog(stage);
-            if (selectedFile == null) {
-                return;
-            }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select words file");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
+        Stage stage = (Stage) fileNameLabel.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
-            String absolutePath = selectedFile.getAbsolutePath();
+        if (selectedFile == null) {
+            return;
+        }
 
-            // Show progress bar pop-up
-            Stage progressBarStage = createProgressBarStage();
-            showProgressBar(progressBarStage, absolutePath);
-        }
-        catch (Exception e) {
-            showErrorAlert(e);
-        }
+        String absolutePath = selectedFile.getAbsolutePath();
+
+        // Show progress bar pop-up
+        Stage progressBarStage = createProgressBarStage();
+        showProgressBar(progressBarStage, absolutePath);
     }
 
     private void showProgressBar(Stage progressBarStage, String absolutePath) {
@@ -122,7 +129,7 @@ public class HeaderController {
             protected void failed() {
                 super.failed();
                 progressBarStage.close(); // Close progress bar pop-up if failed
-                showErrorAlert((Exception) getException());
+                mainController.showAlert("Error", "File Load Error", "An error occurred while loading the file: \n" + getException().getMessage(), Alert.AlertType.ERROR);
             }
         };
 
@@ -166,22 +173,6 @@ public class HeaderController {
         return progressBarStage;
     }
 
-    private void showErrorAlert(Exception e) {
-        // Create an alert to show the error message
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("File Load Error");
-        alert.setContentText("An error occurred while loading the file: \n" + e.getMessage());
-
-        // Show the alert dialog
-        alert.showAndWait();
-    }
-
-
-    public void setMainController(AppController mainController) {
-        this.mainController = mainController;
-    }
-
     public void addClickEventForCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
@@ -191,12 +182,12 @@ public class HeaderController {
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
 
             List<String> dependsOn = dtoCell.getDependsOn();
-            for(String dependsOnCellID : dependsOn) {
+            for (String dependsOnCellID : dependsOn) {
                 mainController.getSheetComponentController().getCellLabels().get(dependsOnCellID).getStyleClass().add("depends-on-cell");
             }
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
-            for(String influencingCellID : influencingOn) {
+            for (String influencingCellID : influencingOn) {
                 mainController.getSheetComponentController().getCellLabels().get(influencingCellID).getStyleClass().add("influence-on-cell");
             }
 
@@ -239,7 +230,7 @@ public class HeaderController {
         // Create and configure the label for the current cell value
         Label currentValueLabel;
 
-        if(Objects.equals(currentValue, ""))
+        if (Objects.equals(currentValue, ""))
             currentValueLabel = new Label("Current Value:  empty cell");
         else
             currentValueLabel = new Label("Current Value:  " + currentValue);
@@ -257,19 +248,14 @@ public class HeaderController {
         Button submitButton = new Button("Update");
         submitButton.setOnAction(e -> {
             String newValue = newValueTextField.getText();
-            try{
-                if (newValue == null) {
-                    mainController.showAlert("Invalid input", "Please enter a valid value.");
-                } else {
-                    // Call the EditCell function from the Engine class to update the cell
-                    updateCellValue(cellID, newValue);
-                    popupStage.close();
-                }
-            }
-            catch (Exception ex){
-                mainController.showAlert("Invalid input", ex.getMessage());
+            try {
+                updateCellValue(cellID, newValue);
+                popupStage.close();
+            } catch (Exception ex) {
+                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
             }
         });
+
         vbox.getChildren().add(submitButton);
 
         // Set the scene
@@ -294,14 +280,14 @@ public class HeaderController {
         originalCellValueProperty.set(newValue);
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
 
-     //   mainController.showAlert("Success", "Cell " + cellID + " has been updated successfully.");
+        //   mainController.showAlert("Success", "Cell " + cellID + " has been updated successfully.");
     }
 
     public void populateVersionSelector() {
         // Get available versions from the engine
         ObservableList<String> availableVersions = FXCollections.observableArrayList();
         int numOfVersions = mainController.getEngine().getNumberOfVersions();
-        for(int i = 1; i<= numOfVersions; i++) {
+        for (int i = 1; i <= numOfVersions; i++) {
             availableVersions.add(String.valueOf(i));
         }
         FXCollections.observableArrayList(mainController.getEngine().getNumberOfVersions());
@@ -320,58 +306,24 @@ public class HeaderController {
             return;
         }
 
-        try {
-            DTOsheet dtoSheet = mainController.getEngine().GetVersionForDisplay(selectedVersion);
 
-            // Use setSheet() from SheetController to display the selected version
-            mainController.getSheetComponentController().displaySheetVersionInPopup(dtoSheet);
+        DTOsheet dtoSheet = mainController.getEngine().GetVersionForDisplay(selectedVersion);
 
-            // Clear the selection to return to the unselected state
-            versionSelectorComboBox.getSelectionModel().clearSelection();
-        } catch (Exception e) {
-            mainController.showAlert("Error", "Failed to load version: " + e.getMessage());
-        } finally {
-//            // Reset the prompt text without triggering the action again
-//            Platform.runLater(() -> {
-//                versionSelectorComboBox.setButtonCell(new ListCell<>() {
-//                    @Override
-//                    protected void updateItem(String item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        setText(empty ? "Version Selector" : item);
-//                    }
-//                });
-//            });
+        // Use setSheet() from SheetController to display the selected version
+        mainController.getSheetComponentController().displaySheetVersionInPopup(dtoSheet);
 
-            // Prevent re-triggering the action after resetting the prompt
-            versionSelectorComboBox.getSelectionModel().clearSelection();
-        }
+        // Reset the prompt text without triggering the action again
+        Platform.runLater(() -> {
+            versionSelectorComboBox.setButtonCell(new ListCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? "Version Selector" : item);
+                }
+            });
+        });
+
+        // Prevent re-triggering the action after resetting the prompt
+        versionSelectorComboBox.getSelectionModel().clearSelection();
     }
-
-
-
-
-//    @FXML
-//    void cellsComboBoxAction(ActionEvent event) {
-//        // Get the selected cell
-//        String selectedCell = cellsComboBox.getSelectionModel().getSelectedItem();
-//
-//        // Perform your action based on the selected cell
-//        System.out.println("Selected cell: " + selectedCell);
-//    }
-
-//    private void populateCellsComboBox() {
-//        // Assuming your spreadsheet has 26 columns (A-Z) and 10 rows (1-10)
-//        ObservableList<String> cellReferences = FXCollections.observableArrayList();
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//        int totalColumns = dtoSheet.getLayout().getColumns();  // A to Z
-//        int totalRows = dtoSheet.getLayout().getRows();     // Rows 1 to 10
-//
-//        // Generate cell references like A1, A2, B1, B2, ..., Z10
-//        for (char col = 'A'; col < 'A' + totalColumns; col++) {
-//            for (int row = 1; row <= totalRows; row++) {
-//                cellReferences.add(col + String.valueOf(row));
-//            }
-//        }
-//        cellsComboBox.setItems(cellReferences);
-//    }
 }

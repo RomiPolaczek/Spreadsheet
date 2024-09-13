@@ -100,38 +100,33 @@ public class SheetController {
     }
 
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
-        try {
-            // Create a new Stage (pop-up window)
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-            popupStage.setTitle("Sheet Version - " + dtoSheet.getVersion());
+        // Create a new Stage (pop-up window)
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
+        popupStage.setTitle("Sheet Version - " + dtoSheet.getVersion());
 
-            // Create a new GridPane for this version
-            GridPane versionGrid = new GridPane();
+        // Create a new GridPane for this version
+        GridPane versionGrid = new GridPane();
 
-            // Create a new SheetController instance for the pop-up
-            SheetController newSheetController = new SheetController();
-            newSheetController.setMainController(mainController);  // Pass the main controller
-            newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
+        // Create a new SheetController instance for the pop-up
+        SheetController newSheetController = new SheetController();
+        newSheetController.setMainController(mainController);  // Pass the main controller
+        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
-            // Use the existing setSheet() method to populate the grid with the version data
-            newSheetController.setSheet(dtoSheet);
+        // Use the existing setSheet() method to populate the grid with the version data
+        newSheetController.setSheet(dtoSheet);
 
-            // Create a VBox to hold the GridPane
-            VBox vbox = new VBox(versionGrid);
-            vbox.setPadding(new javafx.geometry.Insets(20));
+        // Create a VBox to hold the GridPane
+        VBox vbox = new VBox(versionGrid);
+        vbox.setPadding(new javafx.geometry.Insets(20));
 
-            // Set the scene for the pop-up
-            Scene scene = new Scene(vbox);
-            scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm()); // Ensure the path is correct
-            popupStage.setScene(scene);
+        // Set the scene for the pop-up
+        Scene scene = new Scene(vbox);
+        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm()); // Ensure the path is correct
+        popupStage.setScene(scene);
 
-            // Show the pop-up window
-            popupStage.showAndWait();
-        } catch (Exception e) {
-            mainController.showAlert("Error", "Unable to display the sheet version: " + e.getMessage());
-        }
-
+        // Show the pop-up window
+        popupStage.showAndWait();
     }
 
 //    public void displaySheetVersionInPopup(DTOsheet dtoSheet) {

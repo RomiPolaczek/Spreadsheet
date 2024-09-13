@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add influencingOn and dependsOn highlights to ui">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="change highlights colors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -344,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726180728498</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="change highlights colors">
+      <option name="closed" value="true" />
+      <created>1726182264490</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1726182264490</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -396,7 +407,8 @@
     <MESSAGE value="add progress bar and sheet component" />
     <MESSAGE value="add setSheet including cellID and originalValue labels" />
     <MESSAGE value="add influencingOn and dependsOn highlights to ui" />
-    <option name="LAST_COMMIT_MESSAGE" value="add influencingOn and dependsOn highlights to ui" />
+    <MESSAGE value="change highlights colors" />
+    <option name="LAST_COMMIT_MESSAGE" value="change highlights colors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -427,7 +439,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/javaFX-UI/src/app/Main.java</url>
-          <line>17</line>
+          <line>13</line>
           <properties class="app.Main" method="main">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
