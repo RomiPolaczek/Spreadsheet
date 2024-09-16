@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="change highlights colors">
+    <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="fix exceptions and showAlert">
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/JAXB.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consoleUI/consoleUI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/consoleUI/consoleUI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/app.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
@@ -20,8 +25,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="CSS File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -73,7 +78,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
@@ -178,6 +183,8 @@
       <workItem from="1724572271220" duration="10659000" />
       <workItem from="1725187422054" duration="16315000" />
       <workItem from="1725365748517" duration="25443000" />
+      <workItem from="1726422239071" duration="146000" />
+      <workItem from="1726422808328" duration="5901000" />
     </task>
     <task id="LOCAL-00001" summary="fix setCell">
       <option name="closed" value="true" />
@@ -355,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726182264490</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fix exceptions and showAlert">
+      <option name="closed" value="true" />
+      <created>1726242104695</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1726242104696</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +423,8 @@
     <MESSAGE value="add setSheet including cellID and originalValue labels" />
     <MESSAGE value="add influencingOn and dependsOn highlights to ui" />
     <MESSAGE value="change highlights colors" />
-    <option name="LAST_COMMIT_MESSAGE" value="change highlights colors" />
+    <MESSAGE value="fix exceptions and showAlert" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix exceptions and showAlert" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

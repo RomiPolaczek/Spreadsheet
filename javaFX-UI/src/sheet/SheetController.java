@@ -27,8 +27,8 @@ public class SheetController {
         this.mainController = mainController;
     }
 
-    public Map<String, Label> getCellLabels() {
-        return cellLabels;
+    public Label getCellLabel(String cellID) {
+        return cellLabels.get(cellID);
     }
 
     public void setSheet(DTOsheet dtoSheet) {

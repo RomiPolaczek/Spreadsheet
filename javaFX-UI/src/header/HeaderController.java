@@ -80,6 +80,8 @@ public class HeaderController {
         this.mainController = mainController;
     }
 
+    public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
+
     @FXML
     void loadFileButtonAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -183,12 +185,12 @@ public class HeaderController {
 
             List<String> dependsOn = dtoCell.getDependsOn();
             for (String dependsOnCellID : dependsOn) {
-                mainController.getSheetComponentController().getCellLabels().get(dependsOnCellID).getStyleClass().add("depends-on-cell");
+                mainController.getCellLabel(dependsOnCellID).getStyleClass().add("depends-on-cell");
             }
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
             for (String influencingCellID : influencingOn) {
-                mainController.getSheetComponentController().getCellLabels().get(influencingCellID).getStyleClass().add("influence-on-cell");
+                mainController.getCellLabel(influencingCellID).getStyleClass().add("influence-on-cell");
             }
 
             lastHighlightedCells.clear();
@@ -200,7 +202,7 @@ public class HeaderController {
     private void resetPreviousStyles() {
         // Reset styles for all previously highlighted cells
         for (String cellID : lastHighlightedCells) {
-            Label cellLabel = mainController.getSheetComponentController().getCellLabels().get(cellID);
+            Label cellLabel = mainController.getCellLabel(cellID);
             cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
         }
         // Clear the list after resetting
