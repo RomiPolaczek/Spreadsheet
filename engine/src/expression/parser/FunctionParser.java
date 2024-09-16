@@ -206,6 +206,112 @@ public enum FunctionParser implements Serializable {
 
             return new RefExpression(target);
         }
+    },
+    EQUAL{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for EQUAL function. Expected 2, but got " + arguments.size());
+            }
+
+            // structure is good. parse arguments
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            // all is good. create the relevant function instance
+            return new EqualExpression(left, right);
+        }
+    },
+    NOT{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Invalid number of arguments for NOT function. Expected 1, but got " + arguments.size());
+            }
+
+            Expression arg = parseExpression(arguments.get(0).trim());
+
+            return new NotExpression(arg);
+        }
+    },
+    BIGGER{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for BIGGER function. Expected 2, but got " + arguments.size());
+            }
+
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            return new BiggerExpression(left, right);
+        }
+    },
+    LESS{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for LESS function. Expected 2, but got " + arguments.size());
+            }
+
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            return new LessExpression(left, right);
+        }
+    },
+    OR{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for OR function. Expected 2, but got " + arguments.size());
+            }
+
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            return new OrExpression(left, right);
+        }
+    },
+    AND{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for AND function. Expected 2, but got " + arguments.size());
+            }
+
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            return new AndExpression(left, right);
+        }
+    },
+    IF{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 3) {
+                throw new IllegalArgumentException("Invalid number of arguments for IF function. Expected 3, but got " + arguments.size());
+            }
+
+            Expression condition = parseExpression(arguments.get(0));
+            Expression thenPart = parseExpression(arguments.get(1));
+            Expression elsePart = parseExpression(arguments.get(2));
+
+            return new IfExpression(condition, thenPart, elsePart);
+        }
+    },
+    PERCENT{
+        @Override
+        public Expression parse(List<String> arguments) {
+            if (arguments.size() != 2) {
+                throw new IllegalArgumentException("Invalid number of arguments for PERCENT function. Expected 2, but got " + arguments.size());
+            }
+
+            Expression left = parseExpression(arguments.get(0));
+            Expression right = parseExpression(arguments.get(1));
+
+            return new PercentExpression(left, right);
+        }
     }
     ;
 

@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="change highlights colors">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/javafx.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/mod.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consoleUI/consoleUI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/consoleUI/consoleUI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/PlusExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +23,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="CSS File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -53,38 +56,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.FunctionParser.executor&quot;: &quot;Run&quot;,
-    &quot;Application.LiveExampleSceneBuilderMain.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.app.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FunctionParser.executor": "Run",
+    "Application.LiveExampleSceneBuilderMain.executor": "Run",
+    "Application.Main (1).executor": "Run",
+    "Application.Main (2).executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.app.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/rotem/IdeaProjects/sheet-cell/lib/javafx.web.jar",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src/Main.java",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;module&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/javaFX-UI/src" />
@@ -418,17 +421,32 @@
           <line>11</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="184" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="186" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
+          <line>221</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />
           <option name="timeStamp" value="72" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-field">
+        <line-breakpoint type="java-field">
           <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>
           <line>13</line>
           <properties field="IDENTITY" class="expression.parser.FunctionParser" />
           <option name="timeStamp" value="159" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
+        <line-breakpoint type="java-method">
           <url>file://$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java</url>
           <line>25</line>
           <properties class="sheet.coordinate.impl.CoordinateFactory" method="from">
@@ -437,7 +455,7 @@
           </properties>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
+        <line-breakpoint type="java-method">
           <url>file://$PROJECT_DIR$/javaFX-UI/src/app/Main.java</url>
           <line>13</line>
           <properties class="app.Main" method="main">
@@ -453,6 +471,20 @@
         <PinnedItemInfo parentTag="sheet.cell.impl.CellImpl" memberName="sheet" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[4]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)newSheetVersion.activeCells).entrySet().toArray()[13]" custom="java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[5]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/sheet_cell$app_Main.ic" NAME="app.Main Coverage Results" MODIFIED="1725632086431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
