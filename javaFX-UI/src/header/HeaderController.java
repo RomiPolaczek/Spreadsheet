@@ -220,6 +220,7 @@ public class HeaderController {
     public void addClickEventForSelectedColumn(Label label){
         label.setOnMouseClicked(event -> {
             mainController.selectedColumnProperty().set(label.getText());
+            mainController.resetColumnAlignmentComboBox();
         });
     }
 

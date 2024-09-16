@@ -1,16 +1,12 @@
 package left.command;
 
 import app.AppController;
-import dto.DTOcell;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-
-import java.util.List;
 
 public class CommandController {
 
@@ -26,15 +22,12 @@ public class CommandController {
 
     public CommandController(){
         selectedColumnProperty = new SimpleStringProperty();
-//        columnAlignmentComboBox = new ComboBox<>();
     }
 
     @FXML
     public void initialize() {
         columnAlignmentComboBox.getItems().addAll("Left", "Center", "Right");
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
-        columnAlignmentComboBox.setPromptText("Column Alignment");
-
     }
 
     public void setMainController(AppController mainController) {
@@ -103,18 +96,30 @@ public class CommandController {
         for (Label cellLabel : mainController.getAllCellLabelsInColumn(selectedColumnLabel.getText())) {
             cellLabel.setAlignment(alignmentStyle);
         }
-
-
     }
 
 
+//    public void addClickEventForSelectedColumn(Label label) {
+//        label.setOnMouseClicked(event -> {
+//           selectedColumnProperty.set(label.getText());
+//
+//            // Reset the ComboBox prompt text
+//            columnAlignmentComboBox.getSelectionModel().clearSelection();
+//            columnAlignmentComboBox.setPromptText("Column Alignment");
+//        });
+//    }
 
-    public void addClickEventForSelectedColumn(Label label) {
-        label.setOnMouseClicked(event -> {
-           selectedColumnProperty.set(label.getText());
+    public void resetColumnAlignmentComboBox(){
+        columnAlignmentComboBox.getSelectionModel().clearSelection();
+
+        columnAlignmentComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "Column Alignment" : item);
+            }
         });
     }
-
 
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
