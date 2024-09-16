@@ -218,6 +218,10 @@ public class SheetImpl implements Sheet, Serializable {
         for (Cell cell : this.activeCells.values()) {
             cell.getInfluencingOn().clear();
             cell.getDependsOn().clear();
+        }
+        for (Cell cell : this.activeCells.values()) {
+//            cell.getInfluencingOn().clear();
+//            cell.getDependsOn().clear();
             refCells = extractRefCells(cell.getOriginalValue());
             for(String refCell : refCells) {
                 Coordinate coordinate = CoordinateFactory.from(refCell);
@@ -231,19 +235,35 @@ public class SheetImpl implements Sheet, Serializable {
         }
     }
 
+//    private List<String> extractRefCells(String input) {
+//        List<String> refCells = new ArrayList<>();
+//
+//        // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
+//        Pattern pattern = Pattern.compile("\\bREF\\s*,\\s*([A-Z]+[0-9]+)\\b", Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(input);
+//
+//        // Find all matches and add the cell references to the list
+//        while (matcher.find()) {
+//            refCells.add(matcher.group(1));
+//        }
+//
+//        return refCells;
+//    }
+
     private List<String> extractRefCells(String input) {
-        List<String> refCells = new ArrayList<>();
+        Set<String> refCellsSet = new HashSet<>(); // Use Set to avoid duplicates
 
         // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
         Pattern pattern = Pattern.compile("\\bREF\\s*,\\s*([A-Z]+[0-9]+)\\b", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
 
-        // Find all matches and add the cell references to the list
+        // Find all matches and add the cell references to the set (which avoids duplicates)
         while (matcher.find()) {
-            refCells.add(matcher.group(1));
+            refCellsSet.add(matcher.group(1));
         }
 
-        return refCells;
+        // Convert the set back to a list before returning (if you need a list)
+        return new ArrayList<>(refCellsSet);
     }
 
     @Override

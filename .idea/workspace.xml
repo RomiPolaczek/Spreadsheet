@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="242461db-d97c-4eff-a925-98ff3e4c193c" name="Changes" comment="add Command and Left controllers- set color picker for cell">
       <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/command.fxml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/left.fxml" afterDir="false" />
@@ -14,6 +15,7 @@
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.css" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +92,14 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;module&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/javaFX-UI/src" />
@@ -452,21 +455,23 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          
           <url>file://$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java</url>
           <line>61</line>
           <option name="timeStamp" value="185" />
+
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.io.NotSerializableException" package="java.io" />
           <option name="timeStamp" value="72" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-field">
+        <line-breakpoint type="java-field">
           <url>file://$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java</url>
           <line>13</line>
           <properties field="IDENTITY" class="expression.parser.FunctionParser" />
           <option name="timeStamp" value="159" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
+        <line-breakpoint type="java-method">
           <url>file://$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java</url>
           <line>25</line>
           <properties class="sheet.coordinate.impl.CoordinateFactory" method="from">
@@ -475,7 +480,7 @@
           </properties>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
+        <line-breakpoint type="java-method">
           <url>file://$PROJECT_DIR$/javaFX-UI/src/app/Main.java</url>
           <line>13</line>
           <properties class="app.Main" method="main">
@@ -491,6 +496,20 @@
         <PinnedItemInfo parentTag="sheet.cell.impl.CellImpl" memberName="sheet" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[4]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)newSheetVersion.activeCells).entrySet().toArray()[13]" custom="java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[5]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
+        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/sheet_cell$app_Main.ic" NAME="app.Main Coverage Results" MODIFIED="1725632086431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
