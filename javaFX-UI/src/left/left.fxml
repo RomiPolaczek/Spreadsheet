@@ -8,6 +8,7 @@
       <VBox>
          <children>
             <fx:include fx:id="commandComponent" source="command/command.fxml" />
+            <fx:include fx:id="rangeComponent" source="range/range.fxml" />
          </children>
       </VBox>
    </content>

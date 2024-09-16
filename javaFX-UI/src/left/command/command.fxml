@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.command.CommandController">
@@ -26,6 +27,9 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <value>
+            <Color />
+         </value>
       </ColorPicker>
       <Label fx:id="selectedColumnLabel" text=" ">
          <graphic>

@@ -93,4 +93,7 @@ public class AppController {
     public List<Label> getAllCellLabelsInColumn(String column) {
         return sheetComponentController.getAllCellLabelsInColumn(column);
     }
+
+    public void resetColumnAlignmentComboBox() { leftComponentController.resetColumnAlignmentComboBox(); }
+
 }
