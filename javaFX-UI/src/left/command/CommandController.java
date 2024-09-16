@@ -1,13 +1,16 @@
 package left.command;
 
 import app.AppController;
+import dto.DTOcell;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+
+import java.util.List;
 
 public class CommandController {
 
@@ -15,16 +18,31 @@ public class CommandController {
     @FXML private ColorPicker cellTextColorPicker;
     @FXML private ComboBox<String> columnAlignmentComboBox;
     @FXML private Label selectedColumnLabel;
-    private AppController mainController;
+    @FXML private Button dynamicAnalysisButton;
 
-    public void setMainController(AppController mainController) {
-        this.mainController = mainController;
+    private AppController mainController;
+    private SimpleStringProperty selectedColumnProperty;
+
+
+    public CommandController(){
+        selectedColumnProperty = new SimpleStringProperty();
+//        columnAlignmentComboBox = new ComboBox<>();
     }
 
     @FXML
     public void initialize() {
         columnAlignmentComboBox.getItems().addAll("Left", "Center", "Right");
+        selectedColumnLabel.textProperty().bind(selectedColumnProperty);
+        columnAlignmentComboBox.setPromptText("Column Alignment");
+
     }
+
+    public void setMainController(AppController mainController) {
+        this.mainController = mainController;
+    }
+
+    public SimpleStringProperty selectedColumnProperty() {return selectedColumnProperty;}
+
 
     @FXML
     void cellBackgroundColorPickerOnAction(ActionEvent event) {
@@ -62,6 +80,44 @@ public class CommandController {
 
     @FXML
     void columnAlignmentComboBoxOnAction(ActionEvent event) {
+        // Get selected alignment from ComboBox
+        String alignment = columnAlignmentComboBox.getValue();
+
+        if (alignment == null) {
+            return; // No selection made
+        }
+
+        Pos alignmentStyle;
+
+        switch (alignment) {
+            case "Left":
+                alignmentStyle = Pos.CENTER_LEFT;
+                break;
+            case "Right":
+                alignmentStyle = Pos.CENTER_RIGHT;
+                break;
+            default:
+                alignmentStyle = Pos.CENTER;
+        }
+
+        for (Label cellLabel : mainController.getAllCellLabelsInColumn(selectedColumnLabel.getText())) {
+            cellLabel.setAlignment(alignmentStyle);
+        }
+
+
+    }
+
+
+
+    public void addClickEventForSelectedColumn(Label label) {
+        label.setOnMouseClicked(event -> {
+           selectedColumnProperty.set(label.getText());
+        });
+    }
+
+
+    @FXML
+    void dynamicAnalysisButtonAction(ActionEvent event) {
 
     }
 

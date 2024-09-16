@@ -1,7 +1,9 @@
 package left;
 
 import app.AppController;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import left.command.CommandController;
@@ -19,4 +21,9 @@ public class LeftController {
             commandComponentController.setMainController(mainController);
         }
     }
+
+    public SimpleStringProperty selectedColumnProperty() { return commandComponentController.selectedColumnProperty(); }
+
+    public void addClickEventForSelectedColumn(Label label) { commandComponentController.addClickEventForSelectedColumn(label);}
+
 }

@@ -1,6 +1,7 @@
 package app;
 
 import api.Engine;
+import dto.DTOcell;
 import header.HeaderController;
 import impl.EngineImpl;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import left.LeftController;
 import sheet.SheetController;
+
+import java.util.List;
 
 public class AppController {
 
@@ -67,12 +70,27 @@ public class AppController {
         return sheetComponentController;
     }
 
-
     public SimpleStringProperty getSelectedCellProperty() {
         return headerComponentController.getSelectedCellProperty();
     }
 
     public Label getCellLabel(String cellID) {
         return sheetComponentController.getCellLabel(cellID);
+    }
+
+    public SimpleStringProperty selectedColumnProperty() {
+        return leftComponentController.selectedColumnProperty();
+    }
+
+    public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
+        headerComponentController.addClickEventForSelectedCell(label, cellID, dtoCell);
+    }
+
+    public void addClickEventForSelectedColumn(Label label) {
+        headerComponentController.addClickEventForSelectedColumn(label);
+    }
+
+    public List<Label> getAllCellLabelsInColumn(String column) {
+        return sheetComponentController.getAllCellLabelsInColumn(column);
     }
 }

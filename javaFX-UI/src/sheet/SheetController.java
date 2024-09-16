@@ -4,6 +4,7 @@ import app.AppController;
 import dto.DTOcell;
 import dto.DTOsheet;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
@@ -13,7 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SheetController {
@@ -66,8 +69,11 @@ public class SheetController {
 
             if(col == 0)
                 columnHeader = new Label();
-            else
+            else {
                 columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
+                mainController.addClickEventForSelectedColumn(columnHeader);
+                columnHeader.getStyleClass().add("column-cell");
+            }
 
             columnHeader.getStyleClass().add("header-cell");
             dynamicGridPane.add(columnHeader, col, 0);  // Column headers in the first row
@@ -88,11 +94,12 @@ public class SheetController {
                 String cellValue = (cellData != null && cellData.getEffectiveValue() != null) ? cellData.getEffectiveValue() : "";
 
                 // Create the Label for the cell and set the value
-                Label cellLabel = new Label(cellValue);
                 String cellName = Character.toString((char) ('A' + col - 1)) + row;  // e.g., "A1", "B2", etc.
-                mainController.getHeaderComponentController().addClickEventForCell(cellLabel ,cellName, cellData);
+                Label cellLabel = new Label(cellValue);
+                mainController.addClickEventForSelectedCell(cellLabel ,cellName, cellData);
                 cellLabels.put(cellName, cellLabel);
                 cellLabel.getStyleClass().add("single-cell");
+                cellLabel.setAlignment(Pos.CENTER);
                 dynamicGridPane.add(cellLabel, col, row);
             }
         }
@@ -127,6 +134,22 @@ public class SheetController {
 
         // Show the pop-up window
         popupStage.showAndWait();
+    }
+
+    public List<Label> getAllCellLabelsInColumn(String column) {
+        List<Label> labelsInColumn = new ArrayList<>();
+
+        for (Map.Entry<String, Label> entry : cellLabels.entrySet()) {
+            String cellId = entry.getKey();
+            Label label = entry.getValue();
+
+            // Check if the cell's column matches the specified column
+            if (cellId.startsWith(column)) {
+                labelsInColumn.add(label);
+            }
+        }
+
+        return labelsInColumn;
     }
 
 //    public void displaySheetVersionInPopup(DTOsheet dtoSheet) {

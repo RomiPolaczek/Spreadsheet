@@ -74,6 +74,25 @@ public class HeaderController {
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueLabel.textProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+
+        // Add listener for changes to the selectedCellProperty
+        selectedCellProperty.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                // Reset the style of the previously selected cell
+                Label prevCellLabel = mainController.getCellLabel(oldValue);
+                if (prevCellLabel != null) {
+                    prevCellLabel.setId(null); // Reset to previous style
+                }
+            }
+
+            if (newValue != null) {
+                // Apply style to the newly selected cell
+                Label newCellLabel = mainController.getCellLabel(newValue);
+                if (newCellLabel != null) {
+                    newCellLabel.setId("selected-cell"); // Apply selected-cell style
+                }
+            }
+        });
     }
 
     public void setMainController(AppController mainController) {
@@ -175,10 +194,9 @@ public class HeaderController {
         return progressBarStage;
     }
 
-    public void addClickEventForCell(Label label, String cellID, DTOcell dtoCell) {
+    public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
-
             selectedCellProperty.set(cellID);
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
@@ -196,6 +214,12 @@ public class HeaderController {
             lastHighlightedCells.clear();
             lastHighlightedCells.addAll(dependsOn);
             lastHighlightedCells.addAll(influencingOn);
+        });
+    }
+
+    public void addClickEventForSelectedColumn(Label label){
+        label.setOnMouseClicked(event -> {
+            mainController.selectedColumnProperty().set(label.getText());
         });
     }
 
@@ -243,7 +267,6 @@ public class HeaderController {
         vbox.getChildren().add(new Label("Enter new value: "));
 
         TextField newValueTextField = new TextField();
-//        newValueTextField.setPromptText("Enter new value");
         vbox.getChildren().add(newValueTextField);
 
         // Create and configure the submit button
@@ -281,8 +304,6 @@ public class HeaderController {
 
         originalCellValueProperty.set(newValue);
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-
-        //   mainController.showAlert("Success", "Cell " + cellID + " has been updated successfully.");
     }
 
     public void populateVersionSelector() {
