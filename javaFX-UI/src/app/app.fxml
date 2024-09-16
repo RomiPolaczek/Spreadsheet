@@ -12,6 +12,9 @@
          <center>
             <fx:include fx:id="sheetComponent" source="../sheet/sheet.fxml" />
          </center>
+         <left>
+            <fx:include fx:id="leftComponent" source="../left/left.fxml" />
+         </left>
       </BorderPane>
    </content>
 </ScrollPane>
