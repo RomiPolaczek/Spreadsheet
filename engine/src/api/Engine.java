@@ -17,4 +17,6 @@ public interface Engine {
     File getFile();
     void saveSystemState(String filePath) throws IOException;
     Coordinate checkAndConvertInputToCoordinate(String inputCell);
+    void addRange(String name, String rangeStr);
+    void removeRange(String name);
 }
