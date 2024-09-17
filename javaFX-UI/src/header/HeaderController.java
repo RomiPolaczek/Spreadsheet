@@ -74,11 +74,32 @@ public class HeaderController {
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueLabel.textProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+
+        // Add listener for changes to the selectedCellProperty
+        selectedCellProperty.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                // Reset the style of the previously selected cell
+                Label prevCellLabel = mainController.getCellLabel(oldValue);
+                if (prevCellLabel != null) {
+                    prevCellLabel.setId(null); // Reset to previous style
+                }
+            }
+
+            if (newValue != null) {
+                // Apply style to the newly selected cell
+                Label newCellLabel = mainController.getCellLabel(newValue);
+                if (newCellLabel != null) {
+                    newCellLabel.setId("selected-cell"); // Apply selected-cell style
+                }
+            }
+        });
     }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
+
+    public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
     @FXML
     void loadFileButtonAction(ActionEvent event) {
@@ -173,22 +194,21 @@ public class HeaderController {
         return progressBarStage;
     }
 
-    public void addClickEventForCell(Label label, String cellID, DTOcell dtoCell) {
+    public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
-
             selectedCellProperty.set(cellID);
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
 
             List<String> dependsOn = dtoCell.getDependsOn();
             for (String dependsOnCellID : dependsOn) {
-                mainController.getSheetComponentController().getCellLabels().get(dependsOnCellID).getStyleClass().add("depends-on-cell");
+                mainController.getCellLabel(dependsOnCellID).getStyleClass().add("depends-on-cell");
             }
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
             for (String influencingCellID : influencingOn) {
-                mainController.getSheetComponentController().getCellLabels().get(influencingCellID).getStyleClass().add("influence-on-cell");
+                mainController.getCellLabel(influencingCellID).getStyleClass().add("influence-on-cell");
             }
 
             lastHighlightedCells.clear();
@@ -197,10 +217,17 @@ public class HeaderController {
         });
     }
 
+    public void addClickEventForSelectedColumn(Label label){
+        label.setOnMouseClicked(event -> {
+            mainController.selectedColumnProperty().set(label.getText());
+            mainController.resetColumnAlignmentComboBox();
+        });
+    }
+
     private void resetPreviousStyles() {
         // Reset styles for all previously highlighted cells
         for (String cellID : lastHighlightedCells) {
-            Label cellLabel = mainController.getSheetComponentController().getCellLabels().get(cellID);
+            Label cellLabel = mainController.getCellLabel(cellID);
             cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
         }
         // Clear the list after resetting
@@ -241,7 +268,6 @@ public class HeaderController {
         vbox.getChildren().add(new Label("Enter new value: "));
 
         TextField newValueTextField = new TextField();
-//        newValueTextField.setPromptText("Enter new value");
         vbox.getChildren().add(newValueTextField);
 
         // Create and configure the submit button
@@ -279,8 +305,6 @@ public class HeaderController {
 
         originalCellValueProperty.set(newValue);
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-
-        //   mainController.showAlert("Success", "Cell " + cellID + " has been updated successfully.");
     }
 
     public void populateVersionSelector() {

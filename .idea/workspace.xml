@@ -12,6 +12,23 @@
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
+    
+    <list default="true" id="473ac415-02d7-4e59-bf73-545690d201da" name="Changes" comment="add column alignment">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/angus_activation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/range/RangeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/left/range/range.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/command.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/command.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/left.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/left.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,39 +38,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;romipolaczek&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/romipolaczek/sheet-cell.git&quot;,
-    &quot;accountId&quot;: &quot;b376b095-8031-495c-bf87-4e65986435fc&quot;
-  }
-}</component>
-  <component name="KubernetesApiPersistence">{}</component>
-  <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="2kfmUff3Wjy17C2F1tkcphZW8fx" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
@@ -117,11 +107,27 @@
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="backup.LiveExampleSceneBuilderMain" />
+
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "JavaFX",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="javaFX-UI" />
       <option name="VM_PARAMETERS" value="--module-path $PROJECT_DIR$/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="backup.*" />
+          <option name="PATTERN" value="app.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -129,32 +135,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="consoleUI" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="engine" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="app.Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app.Main" />
-      <module name="javaFX-UI" />
-      <option name="VM_PARAMETERS" value="--module-path $PROJECT_DIR$/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main (1)" />
-        <item itemvalue="Application.FunctionParser" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -367,33 +349,8 @@
       <updated>1726481961983</updated>
     </task>
     <option name="localTasksCounter" value="24" />
+  <component name="TaskManager">
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="HEAD" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix setCell" />
@@ -421,6 +378,9 @@
     <MESSAGE value="change highlights colors" />
     <MESSAGE value="Fixed depends and influences and add the part 2 function (except for range functions)" />
     <option name="LAST_COMMIT_MESSAGE" value="Fixed depends and influences and add the part 2 function (except for range functions)" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="add column alignment" />
+    <option name="LAST_COMMIT_MESSAGE" value="add column alignment" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -467,6 +427,10 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="183" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="186" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -475,22 +439,5 @@
         <PinnedItemInfo parentTag="sheet.cell.impl.CellImpl" memberName="sheet" />
       </pinned-members>
     </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[4]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
-        <watch expression="((HashMap)newSheetVersion.activeCells).entrySet().toArray()[13]" custom="java.util.HashMap" />
-        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[5]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
-        <watch expression="((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]" custom="sheet.impl.SheetImpl,java.util.HashMap" />
-        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
-        <watch expression="((HashMap.Node)((HashMap)((SheetImpl)this).activeCells).entrySet().toArray()[10]).getValue()" custom="java.util.HashMap.Node,sheet.impl.SheetImpl,java.util.HashMap" />
-      </configuration>
-    </watches-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/sheet_cell$app_Main.ic" NAME="app.Main Coverage Results" MODIFIED="1725632086431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
