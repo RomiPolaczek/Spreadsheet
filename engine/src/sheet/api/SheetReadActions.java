@@ -5,6 +5,7 @@ import sheet.coordinate.api.Coordinate;
 import sheet.layout.api.Layout;
 import sheet.range.Range;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SheetReadActions {
@@ -16,4 +17,6 @@ public interface SheetReadActions {
     Cell getCell(Coordinate coordinate);
     int getNumberCellsThatHaveChanged();
     Map<String, Range> getStringToRange();
+    List<String> getExistingRangeNames();
+    List<String> getRangeCellsList(String name);
 }

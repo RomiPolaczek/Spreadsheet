@@ -60,4 +60,12 @@ public class CoordinateImpl implements Coordinate, Serializable {
     public int hashCode() {
         return Objects.hash(row, column);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append(column + 'A');
+        result.append(row);
+        return result.toString();
+    }
 }

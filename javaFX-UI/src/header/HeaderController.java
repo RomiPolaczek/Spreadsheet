@@ -101,6 +101,8 @@ public class HeaderController {
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
+    public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
+
     @FXML
     void loadFileButtonAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();

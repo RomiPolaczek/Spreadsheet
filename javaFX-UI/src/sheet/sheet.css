@@ -67,6 +67,10 @@
     -fx-effect: dropshadow(gaussian, rgba(79, 80, 83, 0.75), 5, 0.5, 0, 0); /* Blue drop shadow */
 }
 
+ .Range-label{
+     -fx-background-color: #efef87;
+ }
+
 /* Depends-on Cell Effect */
 .single-cell.depends-on-cell {
     -fx-background-color: #e0f0ff; /* Light blue background */

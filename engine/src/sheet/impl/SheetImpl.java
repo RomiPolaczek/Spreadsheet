@@ -70,6 +70,7 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
 
+
     @Override
     public void setCell(int row, int column, String value) {
         if(row > layout.getRows())
@@ -221,8 +222,6 @@ public class SheetImpl implements Sheet, Serializable {
             cell.getDependsOn().clear();
         }
         for (Cell cell : this.activeCells.values()) {
-//            cell.getInfluencingOn().clear();
-//            cell.getDependsOn().clear();
             refCells = extractRefCells(cell.getOriginalValue());
             for(String refCell : refCells) {
                 Coordinate coordinate = CoordinateFactory.from(refCell);
@@ -282,7 +281,19 @@ public class SheetImpl implements Sheet, Serializable {
         stringToRange.remove(name);
     }
 
-    public Range getRange(String name) {
-        return stringToRange.get(name);
+    @Override
+    public List<String> getRangeCellsList(String name) {
+        Range range = stringToRange.get(name);
+        List<String> rangeCellsList = new ArrayList<>();
+        for(Coordinate coordinate: range.getCells())
+        {
+            rangeCellsList.add(coordinate.toString());
+        }
+        return rangeCellsList;
+    }
+
+    @Override
+    public List<String> getExistingRangeNames() {
+        return stringToRange.keySet().stream().collect(Collectors.toList());
     }
 }

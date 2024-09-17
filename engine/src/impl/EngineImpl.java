@@ -19,6 +19,7 @@ import xmlGenerated.STLSheet;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EngineImpl implements Engine, Serializable {
@@ -173,4 +174,13 @@ public class EngineImpl implements Engine, Serializable {
         sheet.removeRange(name);
     }
 
+    @Override
+    public List<String> getExistingRanges(){
+        return sheet.getExistingRangeNames();
+    }
+
+    @Override
+    public List<String> getRangeCellsList(String name){
+        return sheet.getRangeCellsList(name);
+    }
 }

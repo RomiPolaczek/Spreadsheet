@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="engine" />
     <orderEntry type="library" exported="" name="javafx-swt" level="project" />
+    <orderEntry type="library" name="angus-activation" level="project" />
   </component>
 </module>

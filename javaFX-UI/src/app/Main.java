@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.net.URL;
 
 
@@ -28,7 +27,7 @@ public class Main extends Application {
         AppController appController = loader.getController();
 
         // set stage
-        Scene scene = new Scene(root, 900, 400);
+        Scene scene = new Scene(root, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

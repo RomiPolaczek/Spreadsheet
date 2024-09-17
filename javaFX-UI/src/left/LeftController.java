@@ -19,9 +19,12 @@ public class LeftController {
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
         // If the commandComponentController is already initialized, set the mainController there too
-        if (commandComponentController != null && rangeComponent != null) {
+        if (commandComponentController != null && rangeComponentController != null) {
             commandComponentController.setMainController(mainController);
             rangeComponentController.setMainController(mainController);
+        }
+        else {
+            System.out.println("null");
         }
     }
 

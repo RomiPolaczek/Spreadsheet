@@ -4,6 +4,7 @@ import api.Engine;
 import dto.DTOcell;
 import header.HeaderController;
 import impl.EngineImpl;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -49,7 +50,7 @@ public class AppController {
             sheetComponentController.setMainController(this);
             leftComponentController.setMainController(this);
         } else {
-            System.out.println("nuullllll");
+            System.out.println("nuullllll");//Delete
         }
     }
 
@@ -95,5 +96,7 @@ public class AppController {
     }
 
     public void resetColumnAlignmentComboBox() { leftComponentController.resetColumnAlignmentComboBox(); }
+
+    public SimpleBooleanProperty isFileSelectedProperty() { return headerComponentController.isFileSelectedProperty(); }
 
 }
