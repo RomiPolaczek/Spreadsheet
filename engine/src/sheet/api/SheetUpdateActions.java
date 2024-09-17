@@ -11,4 +11,6 @@ public interface SheetUpdateActions {
     void IncreaseVersion ();
     SheetImpl copySheet();
     void setEmptyCell(int row, int column);
+    void addRange(String name, String rangeStr);
+    void removeRange(String name);
 }

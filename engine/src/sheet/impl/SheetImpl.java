@@ -7,6 +7,7 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 import sheet.layout.api.Layout;
+import sheet.range.Range;
 
 import java.io.*;
 import java.util.*;
@@ -21,9 +22,11 @@ public class SheetImpl implements Sheet, Serializable {
     private String name;
     private int version = 1;
     private int numberCellsThatHaveChanged;
+    private Map<String, Range> stringToRange;
 
     public SheetImpl(){
         this.activeCells = new HashMap<>();
+        this.stringToRange = new HashMap<>();
     }
 
     @Override
@@ -66,7 +69,6 @@ public class SheetImpl implements Sheet, Serializable {
 
     @Override
     public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
-
 
     @Override
     public void setCell(int row, int column, String value) {
@@ -212,7 +214,6 @@ public class SheetImpl implements Sheet, Serializable {
         return Objects.hash(activeCells, layout, name, version);
     }
 
-
     private void updateInfluenceAndDepends(){
         List<String> refCells;
         for (Cell cell : this.activeCells.values()) {
@@ -234,21 +235,6 @@ public class SheetImpl implements Sheet, Serializable {
             }
         }
     }
-
-//    private List<String> extractRefCells(String input) {
-//        List<String> refCells = new ArrayList<>();
-//
-//        // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
-//        Pattern pattern = Pattern.compile("\\bREF\\s*,\\s*([A-Z]+[0-9]+)\\b", Pattern.CASE_INSENSITIVE);
-//        Matcher matcher = pattern.matcher(input);
-//
-//        // Find all matches and add the cell references to the list
-//        while (matcher.find()) {
-//            refCells.add(matcher.group(1));
-//        }
-//
-//        return refCells;
-//    }
 
     private List<String> extractRefCells(String input) {
         Set<String> refCellsSet = new HashSet<>(); // Use Set to avoid duplicates
@@ -273,5 +259,30 @@ public class SheetImpl implements Sheet, Serializable {
         newCell.calculateEffectiveValue();
         activeCells.put(coordinate, newCell);
         updateInfluenceAndDepends();
+    }
+
+    @Override
+    public Map<String, Range> getStringToRange() {
+        return stringToRange;
+    }
+
+    @Override
+    public void addRange(String name, String rangeStr) {
+        if(stringToRange.containsKey(name)) {
+            throw new RuntimeException("The name" + name + "already exists and can not be used again");
+        }
+        Range range = new Range(name,layout.getRows());
+        range.parseRange(rangeStr);
+        stringToRange.put(name,range);
+    }
+
+    @Override
+    public void removeRange(String name) {
+        //check if there is a usage in the range in some function
+        stringToRange.remove(name);
+    }
+
+    public Range getRange(String name) {
+        return stringToRange.get(name);
     }
 }

@@ -29,12 +29,14 @@ public class UserInterface {
                 6) Save system state
                 7) Load system state
                 8) Exit
+                9) Add new range
+                10) Delete a range
                 """;
         int chosenOption;
         do {
             System.out.print(optionsToChoose);
 
-            chosenOption = getChoiceAndCheckValidation(8, 1);
+            chosenOption = getChoiceAndCheckValidation(10, 1);
 
             if (chosenOption == 1)
             {
@@ -63,6 +65,10 @@ public class UserInterface {
                     case 8:
                         System.out.println("Exiting...");
                         break;
+                    case 9:
+                        addNewRange();
+                    case 10:
+                        deleteRange();
                 }
             }
             else {
@@ -288,6 +294,25 @@ public class UserInterface {
             System.out.println("System state loaded successfully.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading system state: " + e.getMessage());
+        }
+    }
+
+    private void addNewRange() {
+        System.out.print("Enter the name of the range: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the range: ");
+        String rangeStr = scanner.nextLine();
+        engine.addRange(name,rangeStr);
+    }
+
+    private void deleteRange() {
+        System.out.print("Enter the name of the range: ");
+        String name = scanner.nextLine();
+        if(engine.getSheet().getStringToRange().containsKey(name)) {
+            engine.removeRange(name);
+        }
+        else {
+            throw new NoSuchElementException("The range " + name + " does not exist.");
         }
     }
 }

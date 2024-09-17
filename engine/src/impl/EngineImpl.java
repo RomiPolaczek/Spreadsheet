@@ -162,4 +162,15 @@ public class EngineImpl implements Engine, Serializable {
         CoordinateFactory.isValidCoordinate(coordinate, sheet);
         return coordinate;
     }
+
+    @Override
+    public void addRange(String name, String rangeStr) {
+        sheet.addRange(name, rangeStr);
+    }
+
+    @Override
+    public void removeRange(String name) {
+        sheet.removeRange(name);
+    }
+
 }
