@@ -33,14 +33,6 @@ public class EqualExpression implements Expression {
         }
 
         return new EffectiveValueImpl(CellType.BOOLEAN, result);
-
-//        try{
-//            result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
-//        }
-//        catch(Exception e){
-//            return new EffectiveValueImpl(CellType.ERROR, "!UNDEFINED!");
-//        }
-
     }
 
     @Override

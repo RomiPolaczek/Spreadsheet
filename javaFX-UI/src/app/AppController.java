@@ -2,6 +2,7 @@ package app;
 
 import api.Engine;
 import dto.DTOcell;
+import dto.DTOsheet;
 import header.HeaderController;
 import impl.EngineImpl;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import left.LeftController;
 import sheet.SheetController;
+import sheet.api.Sheet;
 
 import java.util.List;
 
@@ -34,14 +36,6 @@ public class AppController {
     private Engine engine;
 
 
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public HeaderController getHeaderComponentController() {
-        return headerComponentController;
-    }
-
     @FXML
     public void initialize() {
         engine = new EngineImpl();
@@ -54,10 +48,6 @@ public class AppController {
         }
     }
 
-//    public void setSheet(){
-//        sheetComponentController.setSheet();
-//    }
-
     // Utility method to show alerts
     public void showAlert(String title, String header, String message, AlertType type) {
         Alert alert = new Alert(type);
@@ -67,8 +57,12 @@ public class AppController {
         alert.showAndWait();
     }
 
-    public SheetController getSheetComponentController() {
-        return sheetComponentController;
+    public void setSheet(DTOsheet dtoSheet) {
+        sheetComponentController.setSheet(dtoSheet);
+    }
+
+    public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
+        sheetComponentController.displaySheetVersionInPopup(dtoSheet);
     }
 
     public SimpleStringProperty getSelectedCellProperty() {
@@ -77,6 +71,14 @@ public class AppController {
 
     public Label getCellLabel(String cellID) {
         return sheetComponentController.getCellLabel(cellID);
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void populateVersionSelector() {
+        headerComponentController.populateVersionSelector();
     }
 
     public SimpleStringProperty selectedColumnProperty() {
@@ -95,8 +97,16 @@ public class AppController {
         return sheetComponentController.getAllCellLabelsInColumn(column);
     }
 
-    public void resetColumnAlignmentComboBox() { leftComponentController.resetColumnAlignmentComboBox(); }
+    public void resetColumnAlignmentComboBox() {
+        leftComponentController.resetColumnAlignmentComboBox();
+    }
 
-    public SimpleBooleanProperty isFileSelectedProperty() { return headerComponentController.isFileSelectedProperty(); }
+    public SimpleBooleanProperty isFileSelectedProperty() {
+        return headerComponentController.isFileSelectedProperty();
+    }
+
+    public void initializeCommandAndRangeControllers() {
+        leftComponentController.initializeCommandAndRangeControllers();
+    }
 
 }

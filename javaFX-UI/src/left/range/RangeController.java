@@ -4,7 +4,6 @@ import app.AppController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -20,14 +19,15 @@ public class RangeController {
 
     private AppController mainController;
 
-
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+    }
+
+    public void initializeRangeController() {
         addRangeButton.disableProperty().bind(mainController.isFileSelectedProperty().not());
         deleteRangeComboBox.disableProperty().set(true);
         displayRangeComboBox.disableProperty().set(true);
     }
-
 
     private void populateRangeComboBoxes() {
         // Get the list of existing ranges from the engine
@@ -102,7 +102,6 @@ public class RangeController {
     }
 
 
-
     @FXML
     void deleteRangeComboBoxOnAction(ActionEvent event) {
         // Get the selected range from the combo box
@@ -111,12 +110,17 @@ public class RangeController {
         if (selectedRange != null) {
             try {
                 mainController.getEngine().removeRange(selectedRange); // Assuming the engine is accessed through mainController
-                deleteRangeComboBox.getItems().remove(selectedRange); // Remove the range from the combo box
+                deleteRangeComboBox.getItems().remove(selectedRange);// Remove the range from the combo box
+
+//                // Clear the selection and set the prompt text
+//                deleteRangeComboBox.getSelectionModel().clearSelection();
+//                deleteRangeComboBox.setPromptText("Delete Range");
             } catch (Exception ex) {
                 mainController.showAlert("Error", "Unable to delete range", ex.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
+
 
     @FXML
     void displayRangeComboBoxOnAction(ActionEvent event) {
@@ -127,9 +131,9 @@ public class RangeController {
                 List<String> cellsToHighlight = mainController.getEngine().getRangeCellsList(selectedRangeName);
                 for (String cellID : cellsToHighlight) {
                     // Assuming each cell is represented by a JavaFX Label or similar node
+
                     Label cellLabel = mainController.getCellLabel(cellID); // Assuming cellLabels is a Map of cell IDs to Labels
                     if (cellLabel != null) {
-                        cellLabel.setStyle("-fx-background-color: yellow");
                         cellLabel.getStyleClass().add("Range-label");
                     }
                 }
@@ -139,6 +143,18 @@ public class RangeController {
         } else {
             mainController.showAlert("Error", "No range selected", "Please select a range to display.", Alert.AlertType.WARNING);
         }
+    }
+
+    private void resetDeleteRangeComboBox(){
+        deleteRangeComboBox.getSelectionModel().clearSelection();
+
+        deleteRangeComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "Column Alignment" : item);
+            }
+        });
     }
 
 }

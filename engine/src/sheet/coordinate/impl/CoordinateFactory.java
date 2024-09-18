@@ -2,6 +2,8 @@ package sheet.coordinate.impl;
 
 import sheet.api.SheetReadActions;
 import sheet.coordinate.api.Coordinate;
+import sheet.layout.api.Layout;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,13 +56,13 @@ public class CoordinateFactory {
         }
     }
 
-    public static void isValidCoordinate(Coordinate coordinate, SheetReadActions sheet) {
+    public static void isValidCoordinate(Coordinate coordinate, Layout layout) {
         int row = coordinate.getRow();
         int column = coordinate.getColumn();
-        int rowLowerLimit = sheet.getLayout().getRowsLowerLimit();
-        int rowUpperLimit = sheet.getLayout().getRows();
-        int columnUpperLimit = sheet.getLayout().getColumns();
-        int columnLowerLimit = sheet.getLayout().getColsLowerLimit();
+        int rowLowerLimit = layout.getRowsLowerLimit();
+        int rowUpperLimit = layout.getRows();
+        int columnUpperLimit = layout.getColumns();
+        int columnLowerLimit = layout.getColsLowerLimit();
         String columnStr = CoordinateImpl.convertNumberToAlphabetString(column);
         String columnUpperLimitStr = CoordinateImpl.convertNumberToAlphabetString(columnUpperLimit);
         String columnLowerLimitStr = CoordinateImpl.convertNumberToAlphabetString(columnLowerLimit);
@@ -81,4 +83,6 @@ public class CoordinateFactory {
             throw new IllegalArgumentException(exception);
         }
     }
+
+
 }

@@ -22,6 +22,7 @@ public class LeftController {
         if (commandComponentController != null && rangeComponentController != null) {
             commandComponentController.setMainController(mainController);
             rangeComponentController.setMainController(mainController);
+            initializeCommandAndRangeControllers();
         }
         else {
             System.out.println("null");
@@ -30,8 +31,10 @@ public class LeftController {
 
     public SimpleStringProperty selectedColumnProperty() { return commandComponentController.selectedColumnProperty(); }
 
-//    public void addClickEventForSelectedColumn(Label label) { commandComponentController.addClickEventForSelectedColumn(label);}
-
     public void resetColumnAlignmentComboBox() { commandComponentController.resetColumnAlignmentComboBox(); }
 
+    public void initializeCommandAndRangeControllers(){
+        commandComponentController.initializeCommandController();
+        rangeComponentController.initializeRangeController();
+    }
 }

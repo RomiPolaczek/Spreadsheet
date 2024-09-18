@@ -227,7 +227,7 @@ public class SheetImpl implements Sheet, Serializable {
                 Coordinate coordinate = CoordinateFactory.from(refCell);
                 if(getCell(coordinate) != null)
                 {
-                    CoordinateFactory.isValidCoordinate(coordinate, this);
+                    CoordinateFactory.isValidCoordinate(coordinate, this.layout);
                     cell.getDependsOn().add(coordinate);
                     this.getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
                 }
@@ -268,9 +268,9 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public void addRange(String name, String rangeStr) {
         if(stringToRange.containsKey(name)) {
-            throw new RuntimeException("The name" + name + "already exists and can not be used again");
+            throw new RuntimeException("The name " + name + " already exists and can not be used again");
         }
-        Range range = new Range(name,layout.getRows());
+        Range range = new Range(name,layout);
         range.parseRange(rangeStr);
         stringToRange.put(name,range);
     }

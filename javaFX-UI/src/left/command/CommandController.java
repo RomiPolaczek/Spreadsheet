@@ -21,17 +21,24 @@ public class CommandController {
 
 
     public CommandController(){
-        selectedColumnProperty = new SimpleStringProperty();
     }
 
-    @FXML
-    public void initialize() {
-        columnAlignmentComboBox.getItems().addAll("Left", "Center", "Right");
+
+    public void initializeCommandController(){
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
+        cellBackgroundColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
+        cellTextColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
+        columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
     }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+    }
+
+    @FXML
+    public void initialize(){
+        selectedColumnProperty = new SimpleStringProperty();
+        columnAlignmentComboBox.getItems().addAll("Left","Center", "Right");
     }
 
     public SimpleStringProperty selectedColumnProperty() {return selectedColumnProperty;}
@@ -98,16 +105,6 @@ public class CommandController {
         }
     }
 
-
-//    public void addClickEventForSelectedColumn(Label label) {
-//        label.setOnMouseClicked(event -> {
-//           selectedColumnProperty.set(label.getText());
-//
-//            // Reset the ComboBox prompt text
-//            columnAlignmentComboBox.getSelectionModel().clearSelection();
-//            columnAlignmentComboBox.setPromptText("Column Alignment");
-//        });
-//    }
 
     public void resetColumnAlignmentComboBox(){
         columnAlignmentComboBox.getSelectionModel().clearSelection();

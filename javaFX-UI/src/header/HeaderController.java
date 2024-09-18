@@ -31,7 +31,6 @@ import java.util.Objects;
 
 public class HeaderController {
 
-
     @FXML
     private Label fileNameLabel;
     @FXML
@@ -103,6 +102,18 @@ public class HeaderController {
 
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
 
+    private void resetHeaderControllerForNewFile(){
+        selectedCellProperty = new SimpleStringProperty();
+        originalCellValueProperty = new SimpleStringProperty();
+        lastUpdateVersionCellProperty = new SimpleStringProperty();
+
+        updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
+        versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
+        selectedCellIDLabel.textProperty().bind(selectedCellProperty);
+        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
+        lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+    }
+
     @FXML
     void loadFileButtonAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -137,7 +148,9 @@ public class HeaderController {
                     selectedFileProperty.set(absolutePath);
                     isFileSelected.set(true);
                     DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-                    mainController.getSheetComponentController().setSheet(dtoSheet);
+                    resetHeaderControllerForNewFile();
+                    mainController.initializeCommandAndRangeControllers();
+                    mainController.setSheet(dtoSheet);
                 });
                 return null;
             }
@@ -303,7 +316,7 @@ public class HeaderController {
 
         // Refresh the sheet display
         DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-        mainController.getSheetComponentController().setSheet(dtoSheet);
+        mainController.setSheet(dtoSheet);
 
         originalCellValueProperty.set(newValue);
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
@@ -336,7 +349,7 @@ public class HeaderController {
         DTOsheet dtoSheet = mainController.getEngine().GetVersionForDisplay(selectedVersion);
 
         // Use setSheet() from SheetController to display the selected version
-        mainController.getSheetComponentController().displaySheetVersionInPopup(dtoSheet);
+        mainController.displaySheetVersionInPopup(dtoSheet);
 
         // Reset the prompt text without triggering the action again
         Platform.runLater(() -> {
