@@ -20,7 +20,7 @@ public enum CellType {
     }
 
     public static boolean isBoolean(String value) {
-        return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
+        return value.equalsIgnoreCase("TRUE") || value.equalsIgnoreCase("FALSE");
     }
 
     public static boolean isNumeric(String value) {

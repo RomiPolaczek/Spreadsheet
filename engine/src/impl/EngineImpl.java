@@ -160,7 +160,7 @@ public class EngineImpl implements Engine, Serializable {
         if(coordinate == null)
             throw new IllegalArgumentException("Invalid coordinate provided, please provide a valid cell identity (e.g., A4 or B7).");
 
-        CoordinateFactory.isValidCoordinate(coordinate, sheet);
+        CoordinateFactory.isValidCoordinate(coordinate, sheet.getLayout());
         return coordinate;
     }
 

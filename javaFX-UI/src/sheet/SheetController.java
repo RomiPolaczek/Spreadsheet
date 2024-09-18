@@ -103,7 +103,7 @@ public class SheetController {
                 dynamicGridPane.add(cellLabel, col, row);
             }
         }
-        mainController.getHeaderComponentController().populateVersionSelector();
+        mainController.populateVersionSelector();
     }
 
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {

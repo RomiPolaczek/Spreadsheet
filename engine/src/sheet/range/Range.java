@@ -3,6 +3,7 @@ package sheet.range;
 import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+import sheet.layout.api.Layout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +11,12 @@ import java.util.List;
 public class Range {
     private List<Coordinate> cells;
     String name;
-    int numberOfRows;
+    Layout layout;
 
-    public Range(String name, int numberOfRows) {
+    public Range(String name, Layout layout) {
         this.cells = new ArrayList<Coordinate>();
         this.name = name;
-        this.numberOfRows = numberOfRows;
+        this.layout = layout;
     }
     public List<Coordinate> getCells() { return cells; }
 
@@ -31,9 +32,16 @@ public class Range {
         String topLeft = parts[0].trim();
         String bottomRight = parts[1].trim();
 
+        if(bottomRight.startsWith(".")) {
+            throw new IllegalArgumentException("Invalid range format. Expected format: <top-left-cell>..<bottom-right-cell>");
+        }
+
         // Convert top-left and bottom-right cell references into column letters and row numbers
         Coordinate topLeftCoordinate = CoordinateFactory.from(topLeft);
         Coordinate bottomRightCoordinate = CoordinateFactory.from(bottomRight);
+
+        CoordinateFactory.isValidCoordinate(topLeftCoordinate, layout);
+        CoordinateFactory.isValidCoordinate(bottomRightCoordinate, layout);
 
         if (topLeftCoordinate.getColumn() > bottomRightCoordinate.getColumn() || topLeftCoordinate.getRow() > bottomRightCoordinate.getRow()) {
             throw new IllegalArgumentException("Invalid range. Expected <top-left-cell>..<bottom-right-cell>");
@@ -47,7 +55,7 @@ public class Range {
         // Iterate over the range of columns and rows
         for (int col = topLeftColumn; col <= bottomRightColumn; col++) {
             int startRow = (col == topLeftColumn) ? topLeftRow : 1;
-            int endRow = (col == bottomRightColumn) ? bottomRightRow : numberOfRows;
+            int endRow = (col == bottomRightColumn) ? bottomRightRow : layout.getRows();
 
             for (int row = startRow; row <= endRow ; row++ ){
                 cells.add(CoordinateFactory.createCoordinate(row,col));

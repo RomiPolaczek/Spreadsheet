@@ -20,7 +20,7 @@ public class RefExpression implements Expression, Serializable {
 
     @Override
     public EffectiveValue eval(SheetReadActions sheet) throws Exception {
-        CoordinateFactory.isValidCoordinate(coordinate, sheet);
+        CoordinateFactory.isValidCoordinate(coordinate, sheet.getLayout());
         return sheet.getCell(CoordinateFactory.createCoordinate(coordinate.getRow(), coordinate.getColumn())).getEffectiveValue();
     }
 

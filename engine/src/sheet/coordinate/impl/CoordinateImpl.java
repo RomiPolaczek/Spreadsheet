@@ -63,9 +63,6 @@ public class CoordinateImpl implements Coordinate, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append(column + 'A');
-        result.append(row);
-        return result.toString();
+        return convertNumberToAlphabetString(column) + row;
     }
 }
