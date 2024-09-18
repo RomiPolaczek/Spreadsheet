@@ -31,7 +31,7 @@ public class IfExpression implements Expression {
 
         try {
             if(!thenType.equals(elseType))
-                throw new InputMismatchException();
+                throw new InputMismatchException("The types of <then> and <else> must match.");
             conditionResult = conditionValue.extractValueWithExpectation(Boolean.class);
         } catch (Exception e) {
             return new EffectiveValueImpl(CellType.ERROR, "UNKNOWN");

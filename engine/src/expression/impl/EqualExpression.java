@@ -32,7 +32,8 @@ public class EqualExpression implements Expression {
             }
         }
 
-        return new EffectiveValueImpl(CellType.BOOLEAN, result);
+        String resultStr = result.toString().toUpperCase();
+        return new EffectiveValueImpl(CellType.BOOLEAN, resultStr);
 
 //        try{
 //            result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="angus-activation">
+  <library name="angus-activatio">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod/angus-activation.jar!/" />
       <root url="jar://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod/jakarta.activation-api.jar!/" />
