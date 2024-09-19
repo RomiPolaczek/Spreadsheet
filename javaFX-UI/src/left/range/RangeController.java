@@ -1,45 +1,85 @@
 package left.range;
 
 import app.AppController;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class RangeController {
 
-    @FXML private Button addRangeButton;
-    @FXML private ComboBox<String> deleteRangeComboBox;
-    @FXML private ComboBox<String> displayRangeComboBox;
+    @FXML
+    private Button addRangeButton;
+    @FXML
+    private Button deleteRangeButton;
+    @FXML
+    private ListView<String> rangeListView;
 
     private AppController mainController;
+    private ObservableList<String> rangeObservableList;
+    private List<ToggleButton> toggleButtons;
+    private BooleanProperty anyRangePressedProperty;
+
+
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+        rangeObservableList = FXCollections.observableArrayList();
+        toggleButtons = new ArrayList<>();
+        anyRangePressedProperty = new SimpleBooleanProperty(false);
     }
 
     public void initializeRangeController() {
         addRangeButton.disableProperty().bind(mainController.isFileSelectedProperty().not());
-        deleteRangeComboBox.disableProperty().set(true);
-        displayRangeComboBox.disableProperty().set(true);
-    }
+        deleteRangeButton.disableProperty().bind(anyRangePressedProperty.not());
 
-    private void populateRangeComboBoxes() {
-        // Get the list of existing ranges from the engine
-        List<String> ranges = mainController.getEngine().getExistingRanges();
+        // Set a custom CellFactory to display a label for each range
+        rangeListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> listView) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(String rangeName, boolean empty) {
+                        super.updateItem(rangeName, empty);
+                        if (empty || rangeName == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            ToggleButton toggleButton = new ToggleButton(rangeName);
+                            toggleButton.getStyleClass().add("toggle-button");// Add custom styling if needed
+                            toggleButton.setMaxWidth( Double.MAX_VALUE );
 
-        // Clear existing items
-        deleteRangeComboBox.getItems().clear();
-        displayRangeComboBox.getItems().clear();
+                            // Add listener to handle button selection (pressed)
+                            toggleButton.selectedProperty().addListener((observable, oldValue, isSelected) -> {
+                                if (isSelected) {
+                                    displayRange(rangeName);  // Display the range when button is pressed
+                                } else {
+                                    removeRangeDisplay(rangeName);  // Remove the range display when released
+                                }
+                                updateAnyRangePressedProperty();
+                            });
 
-        // Add new items
-        deleteRangeComboBox.getItems().addAll(ranges);
-        displayRangeComboBox.getItems().addAll(ranges);
+                            toggleButtons.add(toggleButton); // Keep track of the toggle button
+                            setGraphic(toggleButton);  // Set the label as the graphic of the cell
+                        }
+                    }
+                };
+            }
+        });
     }
 
 
@@ -81,7 +121,8 @@ public class RangeController {
             String name = nameField.getText();
             String rangeStr = rangeField.getText();
             try {
-                mainController.getEngine().addRange(name, rangeStr);  // Assuming the engine is accessed through mainController
+                mainController.getEngine().addRange(name, rangeStr);
+                resetAllToggleButtons(); // Unpress all toggle buttons when a new range is added
                 popupStage.close();
             } catch (Exception ex) {
                 mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
@@ -96,65 +137,91 @@ public class RangeController {
 
         // Show the pop-up window
         popupStage.showAndWait();
-        populateRangeComboBoxes();
-        displayRangeComboBox.disableProperty().set(false);
-        deleteRangeComboBox.disableProperty().set(false);
+        populateRangeListView();
     }
 
-
     @FXML
-    void deleteRangeComboBoxOnAction(ActionEvent event) {
-        // Get the selected range from the combo box
-        String selectedRange = deleteRangeComboBox.getSelectionModel().getSelectedItem();
+    void deleteRangeButtonOnAction(ActionEvent event) {
+        List<ToggleButton> pressedButtons = new ArrayList<>();
 
-        if (selectedRange != null) {
+        // Identify all pressed toggle buttons
+        for (ToggleButton button : toggleButtons) {
+            if (button.isSelected()) {
+                pressedButtons.add(button);
+            }
+        }
+
+        // Check if there are any pressed buttons
+        if (pressedButtons.isEmpty()) {
+            mainController.showAlert("Warning", "No ranges selected", "Please select ranges to delete.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Process each pressed button to remove its range
+        for (ToggleButton button : pressedButtons) {
+            String rangeName = button.getText();
             try {
-                mainController.getEngine().removeRange(selectedRange); // Assuming the engine is accessed through mainController
-                deleteRangeComboBox.getItems().remove(selectedRange);// Remove the range from the combo box
-
-//                // Clear the selection and set the prompt text
-//                deleteRangeComboBox.getSelectionModel().clearSelection();
-//                deleteRangeComboBox.setPromptText("Delete Range");
+                // Remove the range from the engine
+                button.setSelected(false);
+                mainController.getEngine().removeRange(rangeName);
+                rangeObservableList.remove(rangeName);
             } catch (Exception ex) {
                 mainController.showAlert("Error", "Unable to delete range", ex.getMessage(), Alert.AlertType.ERROR);
             }
         }
+
+        // Reset all toggle buttons to the unpressed state
+        resetAllToggleButtons();
+    }
+
+    private void populateRangeListView() {
+        List<String> ranges = mainController.getEngine().getExistingRanges();
+        rangeObservableList.clear();
+        rangeObservableList.addAll(ranges);
+        rangeListView.setItems(rangeObservableList);
     }
 
 
-    @FXML
-    void displayRangeComboBoxOnAction(ActionEvent event) {
-        String selectedRangeName = displayRangeComboBox.getValue();
-
-        if (selectedRangeName != null && !selectedRangeName.isEmpty()) {
-            try {
-                List<String> cellsToHighlight = mainController.getEngine().getRangeCellsList(selectedRangeName);
-                for (String cellID : cellsToHighlight) {
-                    // Assuming each cell is represented by a JavaFX Label or similar node
-
-                    Label cellLabel = mainController.getCellLabel(cellID); // Assuming cellLabels is a Map of cell IDs to Labels
-                    if (cellLabel != null) {
-                        cellLabel.getStyleClass().add("Range-label");
-                    }
+    private void displayRange(String rangeName) {
+        try {
+            // Retrieve the list of cells in the range from the engine
+            List<String> cellsToHighlight = mainController.getEngine().getRangeCellsList(rangeName);
+            for (String cellID : cellsToHighlight) {
+                Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
+                if (cellLabel != null) {
+                    cellLabel.getStyleClass().add("Range-label");  // Add a custom CSS class to highlight the range
                 }
-            } catch (Exception ex) {
-                mainController.showAlert("Error", "Unable to display range", ex.getMessage(), Alert.AlertType.ERROR);
             }
-        } else {
-            mainController.showAlert("Error", "No range selected", "Please select a range to display.", Alert.AlertType.WARNING);
+        } catch (Exception ex) {
+            mainController.showAlert("Error", "Unable to display range", ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void resetDeleteRangeComboBox(){
-        deleteRangeComboBox.getSelectionModel().clearSelection();
-
-        deleteRangeComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "Column Alignment" : item);
+    private void removeRangeDisplay(String rangeName) {
+        try {
+            // Retrieve the list of cells in the range from the engine
+            List<String> cellsToUnhighlight = mainController.getEngine().getRangeCellsList(rangeName);
+            for (String cellID : cellsToUnhighlight) {
+                Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
+                if (cellLabel != null) {
+                    cellLabel.getStyleClass().remove("Range-label");  // Remove the custom CSS class to remove highlighting
+                }
             }
-        });
+        } catch (Exception ex) {
+            mainController.showAlert("Error", "Unable to remove range display", ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void resetAllToggleButtons() {
+        for (ToggleButton button : toggleButtons) {
+            button.setSelected(false);
+        }
+        updateAnyRangePressedProperty(); // Update the property after resetting
+    }
+
+    private void updateAnyRangePressedProperty() {
+        boolean anyPressed = toggleButtons.stream().anyMatch(ToggleButton::isSelected);
+        anyRangePressedProperty.set(anyPressed);
     }
 
 }

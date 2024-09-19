@@ -1,0 +1,27 @@
+/* Default ToggleButton styling */
+.toggle-button {
+    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-border-color: #808080;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+/* Additional hover effect */
+.toggle-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #e0e0e0, #c0c0c0);
+    -fx-border-color: #707070;
+}
+
+/* Styling when the ToggleButton is pressed (selected) */
+.toggle-button:selected {
+    -fx-background-color: linear-gradient(to bottom, #80c7ff, #3399ff);
+    -fx-text-fill: white;
+    -fx-border-color: #0066cc;
+    -fx-font-weight: bold;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}

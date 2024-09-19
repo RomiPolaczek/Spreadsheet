@@ -102,17 +102,17 @@ public class HeaderController {
 
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
 
-    private void resetHeaderControllerForNewFile(){
-        selectedCellProperty = new SimpleStringProperty();
-        originalCellValueProperty = new SimpleStringProperty();
-        lastUpdateVersionCellProperty = new SimpleStringProperty();
-
-        updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
-        versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
-        selectedCellIDLabel.textProperty().bind(selectedCellProperty);
-        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
-        lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
-    }
+//    private void resetHeaderControllerForNewFile(){
+//        selectedCellProperty = new SimpleStringProperty();
+//        originalCellValueProperty = new SimpleStringProperty();
+//        lastUpdateVersionCellProperty = new SimpleStringProperty();
+//
+//        updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
+//        versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
+//        selectedCellIDLabel.textProperty().bind(selectedCellProperty);
+//        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
+//        lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+//    }
 
     @FXML
     void loadFileButtonAction(ActionEvent event) {
@@ -148,7 +148,7 @@ public class HeaderController {
                     selectedFileProperty.set(absolutePath);
                     isFileSelected.set(true);
                     DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-                    resetHeaderControllerForNewFile();
+                //    resetHeaderControllerForNewFile();
                     mainController.initializeCommandAndRangeControllers();
                     mainController.setSheet(dtoSheet);
                 });
