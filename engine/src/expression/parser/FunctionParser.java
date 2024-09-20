@@ -312,6 +312,30 @@ public enum FunctionParser implements Serializable {
 
             return new PercentExpression(left, right);
         }
+    },
+    SUM {
+        @Override
+        public Expression parse(List<String> arguments){
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Invalid number of arguments for SUM function. Expected 1, but got " + arguments.size());
+            }
+
+            Expression range = parseExpression((arguments.get(0)));
+            //check if the range even exists
+            return new SumExpression(range);
+        }
+    },
+    AVERAGE {
+        @Override
+        public Expression parse(List<String> arguments){
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Invalid number of arguments for AVERAGE function. Expected 1, but got " + arguments.size());
+            }
+
+            Expression range = parseExpression((arguments.get(0)));
+            //check if the range even exists
+            return new AverageExpression(range);
+        }
     }
     ;
 

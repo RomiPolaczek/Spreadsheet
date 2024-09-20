@@ -43,7 +43,7 @@ public class Range {
         CoordinateFactory.isValidCoordinate(topLeftCoordinate, layout);
         CoordinateFactory.isValidCoordinate(bottomRightCoordinate, layout);
 
-        if (topLeftCoordinate.getColumn() > bottomRightCoordinate.getColumn() || topLeftCoordinate.getRow() > bottomRightCoordinate.getRow()) {
+        if (topLeftCoordinate.getColumn() > bottomRightCoordinate.getColumn() /*|| topLeftCoordinate.getRow() > bottomRightCoordinate.getRow()*/) {
             throw new IllegalArgumentException("Invalid range. Expected <top-left-cell>..<bottom-right-cell>");
         }
 

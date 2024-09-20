@@ -217,12 +217,17 @@ public class SheetImpl implements Sheet, Serializable {
 
     private void updateInfluenceAndDepends(){
         List<String> refCells;
+        List<String> sumCells;
+        List<String> avgCells;
+
         for (Cell cell : this.activeCells.values()) {
             cell.getInfluencingOn().clear();
             cell.getDependsOn().clear();
         }
         for (Cell cell : this.activeCells.values()) {
             refCells = extractRefCells(cell.getOriginalValue());
+            sumCells = extractSumCells(cell.getOriginalValue());
+            avgCells = extractAverageCells(cell.getOriginalValue());
             for(String refCell : refCells) {
                 Coordinate coordinate = CoordinateFactory.from(refCell);
                 if(getCell(coordinate) != null)
@@ -232,11 +237,35 @@ public class SheetImpl implements Sheet, Serializable {
                     this.getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
                 }
             }
+            for(String sumCell : sumCells)
+            {
+                Range range = stringToRange.get(sumCell);
+                if(range != null)
+                {
+                    for (Coordinate coordinate : range.getCells()) {
+                        CoordinateFactory.isValidCoordinate(coordinate, this.layout);
+                        cell.getDependsOn().add(coordinate);
+                        this.getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+                    }
+                }
+            }
+            for(String sumCell : avgCells)
+            {
+                Range range = stringToRange.get(sumCell);
+                if(range != null)
+                {
+                    for (Coordinate coordinate : range.getCells()) {
+                        CoordinateFactory.isValidCoordinate(coordinate, this.layout);
+                        cell.getDependsOn().add(coordinate);
+                        this.getCell(coordinate).getInfluencingOn().add(cell.getCoordinate());
+                    }
+                }
+            }
         }
     }
 
     private List<String> extractRefCells(String input) {
-        Set<String> refCellsSet = new HashSet<>(); // Use Set to avoid duplicates
+        Set<String> refCellsSet = new HashSet<>();
 
         // Regular expression to match "REF" (case-insensitive) followed by a cell reference with unlimited letters
         Pattern pattern = Pattern.compile("\\bREF\\s*,\\s*([A-Z]+[0-9]+)\\b", Pattern.CASE_INSENSITIVE);
@@ -250,6 +279,42 @@ public class SheetImpl implements Sheet, Serializable {
         // Convert the set back to a list before returning (if you need a list)
         return new ArrayList<>(refCellsSet);
     }
+
+    private List<String> extractSumCells(String input) {
+    Set<String> sumStringsSet = new HashSet<>();
+
+    // Regular expression to match "SUM" (case-insensitive) followed by any string inside curly braces
+    Pattern pattern = Pattern.compile("\\{\\s*SUM\\s*,\\s*([^\\}]+)\\s*\\}", Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(input);
+
+    // Find all matches and add the extracted strings to the set (which avoids duplicates)
+    while (matcher.find()) {
+        sumStringsSet.add(matcher.group(1).trim());  // Trim to remove extra spaces around the string
+    }
+
+    // Convert the set back to a list before returning (if you need a list)
+    return new ArrayList<>(sumStringsSet);
+    }
+
+    private List<String> extractAverageCells(String input) {
+        Set<String> averageStringsSet = new HashSet<>();
+
+        // Regular expression to match "SUM" (case-insensitive) followed by any string inside curly braces
+        Pattern pattern = Pattern.compile("\\{\\s*AVERAGE\\s*,\\s*([^\\}]+)\\s*\\}", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
+
+        // Find all matches and add the extracted strings to the set (which avoids duplicates)
+        while (matcher.find()) {
+            averageStringsSet.add(matcher.group(1).trim());  // Trim to remove extra spaces around the string
+        }
+
+        // Convert the set back to a list before returning (if you need a list)
+        return new ArrayList<>(averageStringsSet);
+    }
+
+
+
+
 
     @Override
     public void setEmptyCell(int row, int column){
@@ -296,4 +361,5 @@ public class SheetImpl implements Sheet, Serializable {
     public List<String> getExistingRangeNames() {
         return stringToRange.keySet().stream().collect(Collectors.toList());
     }
+
 }

@@ -19,4 +19,5 @@ public interface SheetReadActions {
     Map<String, Range> getStringToRange();
     List<String> getExistingRangeNames();
     List<String> getRangeCellsList(String name);
+
 }

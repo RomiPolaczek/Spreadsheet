@@ -21,9 +21,6 @@ public class PlusExpression implements Expression {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
 
-//        CellType leftCellType = leftValue.getCellType();
-//        CellType rightCellType = rightValue.getCellType();
-
         try
         {
             result = leftValue.extractValueWithExpectation(Double.class) + rightValue.extractValueWithExpectation(Double.class);
