@@ -1,5 +1,5 @@
  /*Overall GridPane Style */
-.gridpane {
+.grid-pane {
     -fx-background-color: white; /* White background for the grid */
     -fx-border-color: black; /* Black border color around the grid */
     -fx-border-width: 1px;

@@ -24,7 +24,15 @@ public class SheetController {
     @FXML private GridPane dynamicGridPane;
     private AppController mainController;
     private Map<String, Label> cellLabels;
+    private Map<String, String> cellStyles;
+    private Map<String, Pos> columnAlignments;
 
+
+    @FXML
+    public void initialize() {
+        cellStyles = new HashMap<>();
+        columnAlignments = new HashMap<>();
+    }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -34,7 +42,19 @@ public class SheetController {
         return cellLabels.get(cellID);
     }
 
-    public void setSheet(DTOsheet dtoSheet) {
+    public Map<String, String> getCellStyles(){
+        return cellStyles;
+    }
+
+    public Map<String, Pos> getColumnAlignments() {
+        return columnAlignments;
+    }
+
+    public void setColumnAlignment(String column, Pos alignment) {
+        columnAlignments.put(column, alignment);
+    }
+
+    public void setSheet(DTOsheet dtoSheet, boolean applyCustomStyles) {
         cellLabels = new HashMap<>();
         int rows = dtoSheet.getLayout().getRows();
         int cols = dtoSheet.getLayout().getColumns();
@@ -42,7 +62,7 @@ public class SheetController {
         int rowsHeight = dtoSheet.getLayout().getRowsHeightUnits();
 
         dynamicGridPane.setGridLinesVisible(false); // Disable temporarily
-        dynamicGridPane.getStyleClass().add("gridpane");
+        dynamicGridPane.getStyleClass().add("grid-pane");
 
         // Clear existing constraints and children
         dynamicGridPane.getRowConstraints().clear();
@@ -67,10 +87,11 @@ public class SheetController {
         for (int col = 0; col <= cols; col++) {
             Label columnHeader;
 
-            if(col == 0)
+            if (col == 0) {
                 columnHeader = new Label();
-            else {
-                columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
+            } else {
+                String column = Character.toString((char) ('A' + col - 1));
+                columnHeader = new Label(column);
                 mainController.addClickEventForSelectedColumn(columnHeader);
                 columnHeader.getStyleClass().add("column-cell");
             }
@@ -96,15 +117,29 @@ public class SheetController {
                 // Create the Label for the cell and set the value
                 String cellName = Character.toString((char) ('A' + col - 1)) + row;  // e.g., "A1", "B2", etc.
                 Label cellLabel = new Label(cellValue);
-                mainController.addClickEventForSelectedCell(cellLabel ,cellName, cellData);
+                mainController.addClickEventForSelectedCell(cellLabel, cellName, cellData);
                 cellLabels.put(cellName, cellLabel);
+
+                // Apply saved column alignment if it exists
+                String columnName = Character.toString((char) ('A' + col - 1)); // e.g., "A", "B", "C"
+                if (applyCustomStyles && columnAlignments.containsKey(columnName)) {
+                    cellLabel.setAlignment(columnAlignments.get(columnName));
+                } else {
+                    cellLabel.setAlignment(Pos.CENTER); // Default alignment
+                }
+
+                // Apply custom styles only if the flag is true
+                if (applyCustomStyles && cellStyles.containsKey(cellName)) {
+                    cellLabel.setStyle(cellStyles.get(cellName));
+                }
+
                 cellLabel.getStyleClass().add("single-cell");
-                cellLabel.setAlignment(Pos.CENTER);
                 dynamicGridPane.add(cellLabel, col, row);
             }
         }
         mainController.populateVersionSelector();
     }
+
 
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
         // Create a new Stage (pop-up window)
@@ -121,7 +156,7 @@ public class SheetController {
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet);
+        newSheetController.setSheet(dtoSheet, false);
 
         // Create a VBox to hold the GridPane
         VBox vbox = new VBox(versionGrid);
@@ -151,6 +186,7 @@ public class SheetController {
 
         return labelsInColumn;
     }
+
 
 //    public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
 //        // Create a new pop-up stage

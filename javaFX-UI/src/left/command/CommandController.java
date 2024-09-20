@@ -1,6 +1,7 @@
 package left.command;
 
 import app.AppController;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,22 +13,22 @@ public class CommandController {
 
     @FXML private ColorPicker cellBackgroundColorPicker;
     @FXML private ColorPicker cellTextColorPicker;
+    @FXML private Button resetCellDesignButton;
     @FXML private ComboBox<String> columnAlignmentComboBox;
     @FXML private Label selectedColumnLabel;
     @FXML private Button dynamicAnalysisButton;
 
     private AppController mainController;
     private SimpleStringProperty selectedColumnProperty;
-
-
-    public CommandController(){
-    }
+    public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
 
 
     public void initializeCommandController(){
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
         cellBackgroundColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
         cellTextColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
+        resetCellDesignButton.disableProperty().bind(mainController.getSelectedCellProperty().isNull()
+                .or(mainController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
         columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
     }
 
@@ -58,7 +59,14 @@ public class CommandController {
         Label cellLabel = mainController.getCellLabel(selectedCell.get());
 
         // Update the background color of the cell
-        cellLabel.setStyle(cellLabel.getStyle() + backgroundColor);
+        String currentStyle = cellLabel.getStyle();
+        String newStyle = currentStyle + backgroundColor;
+        cellLabel.setStyle(newStyle);
+
+        // Save the style in the cellStyles map
+        mainController.getCellStyles().put(selectedCell.get(), newStyle);
+
+        resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
 
     @FXML
@@ -75,8 +83,97 @@ public class CommandController {
         Label cellLabel = mainController.getCellLabel(selectedCell.get());
 
         // Update the text color of the cell
-        cellLabel.setStyle(cellLabel.getStyle() + textColor);
+        String currentStyle = cellLabel.getStyle();
+        String newStyle = currentStyle + textColor;
+        cellLabel.setStyle(newStyle);
+
+        // Save the style in the cellStyles map
+        mainController.getCellStyles().put(selectedCell.get(), newStyle);
+
+        resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
+
+    public void updateColorPickersWithCellStyles(Label cell) {
+        // Parse current background color from the cell style
+        String backgroundColor = extractStyleValue(cell.getStyle(), "-fx-background-color");
+        if (backgroundColor != null) {
+            cellBackgroundColorPicker.setValue(Color.web(backgroundColor));
+        } else {
+            cellBackgroundColorPicker.setValue(Color.WHITE);  // Default to white if no background color is set
+        }
+
+        // Parse current text color from the cell style
+        String textColor = extractStyleValue(cell.getStyle(), "-fx-text-fill");
+        if (textColor != null) {
+            cellTextColorPicker.setValue(Color.web(textColor));
+        } else {
+            cellTextColorPicker.setValue(Color.BLACK);  // Default to black if no text color is set
+        }
+
+    }
+
+    private String extractStyleValue(String style, String property) {
+        if (style == null || property == null) {
+            return null;
+        }
+        for (String s : style.split(";")) {
+            if (s.startsWith(property)) {
+                return s.split(":")[1].trim();
+            }
+        }
+        return null;
+    }
+
+
+    @FXML
+    void resetCellDesignButtonOnAction(ActionEvent event) {
+        // Get the selected cell property
+        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
+        if (selectedCell != null && selectedCell.get() != null) {
+            Label cellLabel = mainController.getCellLabel(selectedCell.get());
+
+            // Reset the cell's style to the default
+            cellLabel.setStyle(DEFAULT_CELL_STYLE);
+
+            // Save the reset style in the cellStyles map
+            mainController.getCellStyles().put(selectedCell.get(), DEFAULT_CELL_STYLE);
+
+            // Optionally, reset the color pickers to reflect the default colors
+            cellBackgroundColorPicker.setValue(Color.WHITE);
+            cellTextColorPicker.setValue(Color.BLACK);
+            resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
+        }
+    }
+
+    public BooleanBinding isDefaultCellStyle() {
+        return new BooleanBinding() {
+            {
+                super.bind(mainController.getSelectedCellProperty());
+            }
+
+            @Override
+            protected boolean computeValue() {
+                SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
+                if (selectedCell == null || selectedCell.get() == null) {
+                    return true; // Disable if no cell is selected
+                }
+
+                Label cellLabel = mainController.getCellLabel(selectedCell.get());
+                if (cellLabel == null) {
+                    return true;
+                }
+
+                // Check if the cell's current style matches the default style
+                String currentStyle = cellLabel.getStyle();
+
+                if(currentStyle.isBlank() || currentStyle.equals(DEFAULT_CELL_STYLE))
+                    return true;
+                else
+                    return false;
+            }
+        };
+    }
+
 
     @FXML
     void columnAlignmentComboBoxOnAction(ActionEvent event) {
@@ -103,12 +200,14 @@ public class CommandController {
         for (Label cellLabel : mainController.getAllCellLabelsInColumn(selectedColumnLabel.getText())) {
             cellLabel.setAlignment(alignmentStyle);
         }
+
+        mainController.setColumnAlignment(selectedColumnLabel.getText(), alignmentStyle);
     }
 
 
     public void resetColumnAlignmentComboBox(){
         columnAlignmentComboBox.getSelectionModel().clearSelection();
-
+//        selectedColumnLabel.setStyle("-fx-font-size: 14px;");
         columnAlignmentComboBox.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -122,5 +221,7 @@ public class CommandController {
     void dynamicAnalysisButtonAction(ActionEvent event) {
 
     }
+
+
 
 }
