@@ -9,10 +9,14 @@ import left.command.CommandController;
 import left.range.RangeController;
 
 public class LeftController {
-    @FXML private VBox commandComponent;
-    @FXML private CommandController commandComponentController;
-    @FXML private VBox rangeComponent;
-    @FXML private RangeController rangeComponentController;
+    @FXML
+    private VBox commandComponent;
+    @FXML
+    private CommandController commandComponentController;
+    @FXML
+    private VBox rangeComponent;
+    @FXML
+    private RangeController rangeComponentController;
     private AppController mainController;
 
 
@@ -23,18 +27,25 @@ public class LeftController {
             commandComponentController.setMainController(mainController);
             rangeComponentController.setMainController(mainController);
             initializeCommandAndRangeControllers();
-        }
-        else {
+        } else {
             System.out.println("null");
         }
     }
 
-    public SimpleStringProperty selectedColumnProperty() { return commandComponentController.selectedColumnProperty(); }
+    public SimpleStringProperty selectedColumnProperty() {
+        return commandComponentController.selectedColumnProperty();
+    }
 
-    public void resetColumnAlignmentComboBox() { commandComponentController.resetColumnAlignmentComboBox(); }
+    public void resetColumnAlignmentComboBox() {
+        commandComponentController.resetColumnAlignmentComboBox();
+    }
 
-    public void initializeCommandAndRangeControllers(){
+    public void initializeCommandAndRangeControllers() {
         commandComponentController.initializeCommandController();
         rangeComponentController.initializeRangeController();
+    }
+
+    public void updateColorPickersWithCellStyles(Label cell) {
+        commandComponentController.updateColorPickersWithCellStyles(cell);
     }
 }

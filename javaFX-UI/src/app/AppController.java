@@ -5,18 +5,20 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import header.HeaderController;
 import impl.EngineImpl;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import left.LeftController;
 import sheet.SheetController;
-import sheet.api.Sheet;
 
 import java.util.List;
+import java.util.Map;
 
 public class AppController {
 
@@ -58,7 +60,7 @@ public class AppController {
     }
 
     public void setSheet(DTOsheet dtoSheet) {
-        sheetComponentController.setSheet(dtoSheet);
+        sheetComponentController.setSheet(dtoSheet, true);
     }
 
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
@@ -109,4 +111,19 @@ public class AppController {
         leftComponentController.initializeCommandAndRangeControllers();
     }
 
+    public Map<String, String> getCellStyles() {
+        return sheetComponentController.getCellStyles();
+    }
+
+    public void updateColorPickersWithCellStyles(Label cell) {
+        leftComponentController.updateColorPickersWithCellStyles(cell);
+    }
+
+    public void setColumnAlignment(String column, Pos alignment) {
+        sheetComponentController.setColumnAlignment(column, alignment);
+    }
+
+//    public BooleanBinding isDefaultCellStyle() {
+//   //     return headerComponentController.isDefaultCellStyle();
+//    }
 }

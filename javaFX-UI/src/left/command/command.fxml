@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-
 <VBox alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.command.CommandController">
    <children>
       <Label text="Cell Background Color:" />
@@ -31,6 +30,11 @@
             <Color />
          </value>
       </ColorPicker>
+      <Button fx:id="resetCellDesignButton" mnemonicParsing="false" onAction="#resetCellDesignButtonOnAction" prefWidth="115.0" text="Reset Cell Design">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Button>
       <Label fx:id="selectedColumnLabel" text=" ">
          <graphic>
             <Label text="Selected Column: " />

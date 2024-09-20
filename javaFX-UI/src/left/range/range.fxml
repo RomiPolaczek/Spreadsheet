@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
-
 
 <VBox alignment="TOP_CENTER" stylesheets="@range.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.range.RangeController">
    <children>
       <Separator prefWidth="200.0" />
-      <Button fx:id="addRangeButton" mnemonicParsing="false" onAction="#addRangeButtonOnAction" text="Add Range">
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </Button>
+      <ToolBar>
+         <items>
+            <Button fx:id="addRangeButton" mnemonicParsing="false" onAction="#addRangeButtonOnAction" prefWidth="90.0" text="Add Range" />
+            <Button fx:id="deleteRangeButton" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" prefWidth="90.0" text="Delete Range" />
+         </items>
+      </ToolBar>
       <ListView fx:id="rangeListView" prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="deleteRangeButton" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" text="Delete Range" />
    </children>
 </VBox>

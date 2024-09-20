@@ -2,6 +2,7 @@ package header;
 
 import app.AppController;
 import dto.DTOcell;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -27,6 +28,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static left.command.CommandController.DEFAULT_CELL_STYLE;
 
 
 public class HeaderController {
@@ -101,6 +104,8 @@ public class HeaderController {
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
+
+
 
 //    private void resetHeaderControllerForNewFile(){
 //        selectedCellProperty = new SimpleStringProperty();
@@ -216,6 +221,9 @@ public class HeaderController {
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
 
+            mainController.updateColorPickersWithCellStyles(label);
+
+
             List<String> dependsOn = dtoCell.getDependsOn();
             for (String dependsOnCellID : dependsOn) {
                 mainController.getCellLabel(dependsOnCellID).getStyleClass().add("depends-on-cell");
@@ -235,6 +243,7 @@ public class HeaderController {
     public void addClickEventForSelectedColumn(Label label){
         label.setOnMouseClicked(event -> {
             mainController.selectedColumnProperty().set(label.getText());
+//            label.setStyle("-fx-font-size: 24px");
             mainController.resetColumnAlignmentComboBox();
         });
     }
@@ -345,7 +354,6 @@ public class HeaderController {
             return;
         }
 
-
         DTOsheet dtoSheet = mainController.getEngine().GetVersionForDisplay(selectedVersion);
 
         // Use setSheet() from SheetController to display the selected version
@@ -365,4 +373,5 @@ public class HeaderController {
         // Prevent re-triggering the action after resetting the prompt
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
+
 }
