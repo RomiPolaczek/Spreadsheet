@@ -29,6 +29,7 @@ public class RangeController {
     @FXML
     private ListView<String> rangeListView;
 
+
     private AppController mainController;
     private ObservableList<String> rangeObservableList;
     private List<ToggleButton> toggleButtons;
@@ -189,7 +190,7 @@ public class RangeController {
             for (String cellID : cellsToHighlight) {
                 Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
                 if (cellLabel != null) {
-                    cellLabel.getStyleClass().add("Range-label");  // Add a custom CSS class to highlight the range
+                    cellLabel.getStyleClass().add("range-label");  // Add a custom CSS class to highlight the range
                 }
             }
         } catch (Exception ex) {
@@ -204,7 +205,7 @@ public class RangeController {
             for (String cellID : cellsToUnhighlight) {
                 Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
                 if (cellLabel != null) {
-                    cellLabel.getStyleClass().remove("Range-label");  // Remove the custom CSS class to remove highlighting
+                    cellLabel.getStyleClass().remove("range-label");  // Remove the custom CSS class to remove highlighting
                 }
             }
         } catch (Exception ex) {

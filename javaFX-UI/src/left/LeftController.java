@@ -48,4 +48,8 @@ public class LeftController {
     public void updateColorPickersWithCellStyles(Label cell) {
         commandComponentController.updateColorPickersWithCellStyles(cell);
     }
+
+    public void resetColumnSlider() {
+        commandComponentController.resetColumnSlider();
+    }
 }

@@ -4,7 +4,9 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 
 <VBox alignment="TOP_CENTER" stylesheets="@range.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.range.RangeController">
    <children>
@@ -12,7 +14,14 @@
       <ToolBar>
          <items>
             <Button fx:id="addRangeButton" mnemonicParsing="false" onAction="#addRangeButtonOnAction" prefWidth="90.0" text="Add Range" />
-            <Button fx:id="deleteRangeButton" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" prefWidth="90.0" text="Delete Range" />
+            <Button fx:id="deleteRangeButton" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" prefWidth="90.0" text="Delete Range">
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" height="0.0" radius="0.0" width="0.0">
+                     <color>
+                        <Color red="0.7894737124443054" green="0.2229532152414322" blue="0.2229532152414322" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
          </items>
       </ToolBar>
       <ListView fx:id="rangeListView" prefHeight="200.0" prefWidth="200.0" />

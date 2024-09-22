@@ -2,7 +2,6 @@ package header;
 
 import app.AppController;
 import dto.DTOcell;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static left.command.CommandController.DEFAULT_CELL_STYLE;
 
 
 public class HeaderController {
@@ -153,9 +151,9 @@ public class HeaderController {
                     selectedFileProperty.set(absolutePath);
                     isFileSelected.set(true);
                     DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-                //    resetHeaderControllerForNewFile();
+       //             mainController.initialColumnWidth(dtoSheet.getLayout());
                     mainController.initializeCommandAndRangeControllers();
-                    mainController.setSheet(dtoSheet);
+                    mainController.setSheet(dtoSheet, false);
                 });
                 return null;
             }
@@ -245,6 +243,7 @@ public class HeaderController {
             mainController.selectedColumnProperty().set(label.getText());
 //            label.setStyle("-fx-font-size: 24px");
             mainController.resetColumnAlignmentComboBox();
+            mainController.resetColumnSlider();
         });
     }
 
@@ -325,7 +324,7 @@ public class HeaderController {
 
         // Refresh the sheet display
         DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-        mainController.setSheet(dtoSheet);
+        mainController.setSheet(dtoSheet, true);
 
         originalCellValueProperty.set(newValue);
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
