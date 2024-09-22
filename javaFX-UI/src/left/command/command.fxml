@@ -6,10 +6,11 @@
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<VBox alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.command.CommandController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.command.CommandController">
    <children>
       <Label text="Cell Background Color:" />
       <ColorPicker fx:id="cellBackgroundColorPicker" onAction="#cellBackgroundColorPickerOnAction">
@@ -30,7 +31,7 @@
             <Color />
          </value>
       </ColorPicker>
-      <Button fx:id="resetCellDesignButton" mnemonicParsing="false" onAction="#resetCellDesignButtonOnAction" prefWidth="115.0" text="Reset Cell Design">
+      <Button fx:id="resetCellDesignButton" mnemonicParsing="false" onAction="#resetCellDesignButtonOnAction" text="Reset Cell Design">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
@@ -48,6 +49,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
+      <Label text="Column Width:">
+         <VBox.margin>
+            <Insets top="8.0" />
+         </VBox.margin>
+      </Label>
+      <Slider fx:id="columnWidthSlider" max="200.0" min="10.0" value="100.0" />
       <Button fx:id="dynamicAnalysisButton" mnemonicParsing="false" onAction="#dynamicAnalysisButtonAction" text="Dynamic Analysis">
          <VBox.margin>
             <Insets bottom="10.0" top="14.0" />

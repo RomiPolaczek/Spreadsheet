@@ -2,6 +2,7 @@ package sheet;
 
 import app.AppController;
 import dto.DTOcell;
+import dto.DTOlayout;
 import dto.DTOsheet;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -26,13 +27,21 @@ public class SheetController {
     private Map<String, Label> cellLabels;
     private Map<String, String> cellStyles;
     private Map<String, Pos> columnAlignments;
+    private Map<Integer, Integer> columnsWidth;
 
 
     @FXML
     public void initialize() {
         cellStyles = new HashMap<>();
         columnAlignments = new HashMap<>();
+        columnsWidth = new HashMap<>();
     }
+
+//    public void initializeSheetController(){
+//        setMainController(mainController);
+//        columnsWidth = new HashMap<>();
+//    //    dynamicGridPane = new GridPane();
+//    }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -54,11 +63,32 @@ public class SheetController {
         columnAlignments.put(column, alignment);
     }
 
+    public int getColumnWidth(String column) {
+        int columnIndex = column.charAt(0) - 'A' + 1;
+        return columnsWidth.get(columnIndex);
+    }
+
+
+    public void setColumnWidth(String column, Integer newWidth) {
+        int columnIndex = column.charAt(0) - 'A' + 1;
+        columnsWidth.put(columnIndex, newWidth);
+    }
+
+//    public void initialColumnWidth(DTOlayout layout){
+//        int colsNum = layout.getColumns();
+//        int colWidth = layout.getColumnsWidthUnits();
+//        for (int col = 0; col <= colsNum; col++) {
+//            //String column = Character.toString((char) ('A' + col + 1));
+//            columnsWidth.put(col, colWidth);  // Set the preferred width of the columns
+//        }
+//    }
+
+
     public void setSheet(DTOsheet dtoSheet, boolean applyCustomStyles) {
         cellLabels = new HashMap<>();
         int rows = dtoSheet.getLayout().getRows();
         int cols = dtoSheet.getLayout().getColumns();
-        int columnWidth = dtoSheet.getLayout().getColumnsWidthUnits();
+        int columnWidthOriginal = dtoSheet.getLayout().getColumnsWidthUnits();
         int rowsHeight = dtoSheet.getLayout().getRowsHeightUnits();
 
         dynamicGridPane.setGridLinesVisible(false); // Disable temporarily
@@ -78,8 +108,15 @@ public class SheetController {
 
         // Add new column constraints
         for (int j = 0; j <= cols; j++) {
+//            String column = Character.toString((char) ('A' + j - 1));
             ColumnConstraints col = new ColumnConstraints();
-            col.setPrefWidth(columnWidth);  // Set the preferred width of the columns
+            if(applyCustomStyles){
+                col.setPrefWidth(columnsWidth.get(j));
+            }
+            else{
+                columnsWidth.put(j, columnWidthOriginal);
+                col.setPrefWidth(columnWidthOriginal);
+            }
             dynamicGridPane.getColumnConstraints().add(col);
         }
 
@@ -152,7 +189,8 @@ public class SheetController {
 
         // Create a new SheetController instance for the pop-up
         SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(mainController);  // Pass the main controller
+        newSheetController.setMainController(this.mainController);
+        newSheetController.columnsWidth = new HashMap<>();
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
@@ -185,6 +223,18 @@ public class SheetController {
         }
 
         return labelsInColumn;
+    }
+
+    public ColumnConstraints getColumnConstraintsByColumn(String column) {
+        // Calculate the column index based on the letter (A -> 0, B -> 1, etc.)
+        int columnIndex = column.charAt(0) - 'A' + 1;
+
+        // Check if the column index is valid
+        if (columnIndex >= 0 && columnIndex < dynamicGridPane.getColumnConstraints().size()) {
+            return dynamicGridPane.getColumnConstraints().get(columnIndex);
+        } else {
+            return null;  // Return null if the column index is out of bounds
+        }
     }
 
 

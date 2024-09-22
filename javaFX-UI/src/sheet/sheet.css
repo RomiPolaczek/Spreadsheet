@@ -67,9 +67,6 @@
     -fx-effect: dropshadow(gaussian, rgba(79, 80, 83, 0.75), 5, 0.5, 0, 0); /* Blue drop shadow */
 }
 
- .Range-label{
-     -fx-background-color: #efef87;
- }
 
 /* Depends-on Cell Effect */
 .single-cell.depends-on-cell {
@@ -89,3 +86,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); /* Green shadow effect */
 }
 
+ .range-label{
+     -fx-border-color: #a72846;
+     -fx-border-width: 3px; /* Border width */
+
+ }
+
+ #default-cell {
+     -fx-background-color: white;
+     -fx-text-fill: black;
+ }

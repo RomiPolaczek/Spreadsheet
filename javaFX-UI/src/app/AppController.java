@@ -5,7 +5,6 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import header.HeaderController;
 import impl.EngineImpl;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -14,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.ColumnConstraints;
 import left.LeftController;
 import sheet.SheetController;
 
@@ -59,8 +59,8 @@ public class AppController {
         alert.showAndWait();
     }
 
-    public void setSheet(DTOsheet dtoSheet) {
-        sheetComponentController.setSheet(dtoSheet, true);
+    public void setSheet(DTOsheet dtoSheet, Boolean applyCustomStyles) {
+        sheetComponentController.setSheet(dtoSheet, applyCustomStyles);
     }
 
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
@@ -121,6 +121,26 @@ public class AppController {
 
     public void setColumnAlignment(String column, Pos alignment) {
         sheetComponentController.setColumnAlignment(column, alignment);
+    }
+
+    public void setColumnWidth(String column, Integer newWidth) {
+        sheetComponentController.setColumnWidth(column, newWidth);
+    }
+
+    public int getColumnWidth(String column) {
+        return sheetComponentController.getColumnWidth(column);
+    }
+
+    public void resetColumnSlider() {
+        leftComponentController.resetColumnSlider();
+    }
+
+//    public void initialColumnWidth(DTOlayout layout){
+//        sheetComponentController.initialColumnWidth(layout);
+//    }
+
+    public ColumnConstraints getColumnConstraintsByColumn(String column) {
+        return sheetComponentController.getColumnConstraintsByColumn(column);
     }
 
 //    public BooleanBinding isDefaultCellStyle() {

@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.paint.Color;
 
 public class CommandController {
@@ -17,6 +19,7 @@ public class CommandController {
     @FXML private ComboBox<String> columnAlignmentComboBox;
     @FXML private Label selectedColumnLabel;
     @FXML private Button dynamicAnalysisButton;
+    @FXML private Slider columnWidthSlider;
 
     private AppController mainController;
     private SimpleStringProperty selectedColumnProperty;
@@ -30,6 +33,12 @@ public class CommandController {
         resetCellDesignButton.disableProperty().bind(mainController.getSelectedCellProperty().isNull()
                 .or(mainController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
         columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
+        columnWidthSlider.disableProperty().bind(selectedColumnProperty.isNull());
+
+        // Add a listener to the column width slider to change the column width dynamically
+        columnWidthSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            changeColumnWidth(newValue.intValue());
+        });
     }
 
     public void setMainController(AppController mainController) {
@@ -221,6 +230,38 @@ public class CommandController {
     void dynamicAnalysisButtonAction(ActionEvent event) {
 
     }
+
+//    @FXML
+//    void columnWidthSliderOnDragDetected(MouseEvent event) {
+//
+//    }
+
+
+    public void changeColumnWidth(Integer newWidth) {
+        // Get the selected column from the label
+        String selectedColumn = selectedColumnLabel.getText();
+        if (selectedColumn == null || selectedColumn.isEmpty()) {
+            return;
+        }
+
+        // Iterate over all cells in the selected column and set their new width
+        ColumnConstraints column = mainController.getColumnConstraintsByColumn(selectedColumn);
+        column.setPrefWidth(newWidth);
+
+        // Optionally, store the new width in the mainController if you want to save the column's state
+        mainController.setColumnWidth(selectedColumn, newWidth);
+    }
+
+    public void resetColumnSlider(){
+        String selectedColumn = selectedColumnLabel.getText();
+        if (selectedColumn == null || selectedColumn.isEmpty()) {
+            return;
+        }
+
+        columnWidthSlider.setValue(mainController.getColumnWidth(selectedColumn));
+    }
+
+
 
 
 
