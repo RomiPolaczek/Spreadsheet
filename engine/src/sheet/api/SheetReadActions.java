@@ -17,7 +17,4 @@ public interface SheetReadActions {
     Cell getCell(Coordinate coordinate);
     int getNumberCellsThatHaveChanged();
     Map<String, Range> getStringToRange();
-    List<String> getExistingRangeNames();
-    List<String> getRangeCellsList(String name);
-
 }

@@ -26,7 +26,7 @@ public class LeftController {
         if (commandComponentController != null && rangeComponentController != null) {
             commandComponentController.setMainController(mainController);
             rangeComponentController.setMainController(mainController);
-            initializeCommandAndRangeControllers();
+            //initializeCommandAndRangeControllers();
         } else {
             System.out.println("null");
         }

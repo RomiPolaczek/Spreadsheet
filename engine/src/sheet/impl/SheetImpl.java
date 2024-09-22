@@ -346,20 +346,4 @@ public class SheetImpl implements Sheet, Serializable {
         stringToRange.remove(name);
     }
 
-    @Override
-    public List<String> getRangeCellsList(String name) {
-        Range range = stringToRange.get(name);
-        List<String> rangeCellsList = new ArrayList<>();
-        for(Coordinate coordinate: range.getCells())
-        {
-            rangeCellsList.add(coordinate.toString());
-        }
-        return rangeCellsList;
-    }
-
-    @Override
-    public List<String> getExistingRangeNames() {
-        return stringToRange.keySet().stream().collect(Collectors.toList());
-    }
-
 }

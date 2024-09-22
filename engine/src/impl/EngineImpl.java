@@ -3,6 +3,7 @@ package impl;
 import api.Engine;
 import dto.DTOcell;
 import dto.DTOlayout;
+import dto.DTOrange;
 import dto.DTOsheet;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -14,6 +15,7 @@ import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 import sheet.impl.SheetImpl;
 import sheet.layout.impl.LayoutImpl;
+import sheet.range.Range;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
@@ -109,8 +111,6 @@ public class EngineImpl implements Engine, Serializable {
             sheet.setCell(row, col, stlCell.getSTLOriginalValue());
         }
 
-
-
         versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet), sheet.getNumberCellsThatHaveChanged());
     }
 
@@ -122,16 +122,22 @@ public class EngineImpl implements Engine, Serializable {
         Map<Coordinate ,DTOcell> dtoCellsMap = new HashMap<>();
         DTOlayout dtoLayout = new DTOlayout(sheet.getLayout().getRowsHeightUnits(), sheet.getLayout().getColumnsWidthUnits(),
                 sheet.getLayout().getRows(), sheet.getLayout().getColumns());
+        Map<String, Range> rangesMap = sheet.getStringToRange();
+        Map<String, DTOrange> dtoRangeMap = new HashMap<>();
 
-        for(Cell cell : cellsMap.values())
-        {
+        for(Cell cell : cellsMap.values()) {
             DTOcell dtoCell = new DTOcell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn(),
                     cell.getEffectiveValue().getValue().toString(), cell.getOriginalValue(), cell.getVersion(), cell.getDependsOn(), cell.getInfluencingOn());
 
             dtoCellsMap.put(CoordinateFactory.createCoordinate(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn()), dtoCell);
         }
 
-        return new DTOsheet(name, version, dtoCellsMap, dtoLayout);
+        for(Range range : rangesMap.values()){
+            DTOrange dtoRange = new DTOrange(range.getCells(),range.getName());
+            dtoRangeMap.put(dtoRange.getName(),dtoRange);
+        }
+
+        return new DTOsheet(name, version, dtoCellsMap, dtoLayout, dtoRangeMap);
     }
 
     @Override
@@ -183,12 +189,14 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public List<String> getExistingRanges(){
-        return sheet.getExistingRangeNames();
+    public List<String> getExistingRanges() {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        return dtoSheet.getExistingRangeNames();
     }
 
     @Override
     public List<String> getRangeCellsList(String name){
-        return sheet.getRangeCellsList(name);
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        return dtoSheet.getRangeCellsList(name);
     }
 }

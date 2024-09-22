@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Range {
     private List<Coordinate> cells;
-    String name;
-    Layout layout;
+    private String name;
+    private Layout layout;
 
     public Range(String name, Layout layout) {
         this.cells = new ArrayList<Coordinate>();

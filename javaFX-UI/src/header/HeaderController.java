@@ -149,8 +149,9 @@ public class HeaderController {
                     isFileSelected.set(true);
                     DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
        //             mainController.initialColumnWidth(dtoSheet.getLayout());
-                    mainController.initializeCommandAndRangeControllers();
+
                     mainController.setSheet(dtoSheet, false);
+                     mainController.initializeCommandAndRangeControllers();
                 });
                 return null;
             }
