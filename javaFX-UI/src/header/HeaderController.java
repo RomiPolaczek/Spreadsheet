@@ -22,13 +22,10 @@ import javafx.scene.control.Alert;
 import sheet.coordinate.api.Coordinate;
 import dto.DTOsheet;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-
 
 public class HeaderController {
 
@@ -216,11 +213,14 @@ public class HeaderController {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
             selectedCellProperty.set(cellID);
+
+            mainController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
+            mainController.resetColumnAlignmentComboBox();
+            mainController.resetColumnSlider();
+
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
-
             mainController.updateColorPickersWithCellStyles(label);
-
 
             List<String> dependsOn = dtoCell.getDependsOn();
             for (String dependsOnCellID : dependsOn) {
@@ -241,7 +241,7 @@ public class HeaderController {
     public void addClickEventForSelectedColumn(Label label){
         label.setOnMouseClicked(event -> {
             mainController.selectedColumnProperty().set(label.getText());
-//            label.setStyle("-fx-font-size: 24px");
+            selectedCellProperty.set(label.getText() + 1);
             mainController.resetColumnAlignmentComboBox();
             mainController.resetColumnSlider();
         });
