@@ -333,7 +333,7 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public void addRange(String name, String rangeStr) {
         if(stringToRange.containsKey(name)) {
-            throw new RuntimeException("The name " + name + " already exists and can not be used again");
+            throw new RuntimeException("The name of the range " + name + " already exists and can not be used again");
         }
         Range range = new Range(name,layout);
         range.parseRange(rangeStr);

@@ -54,11 +54,16 @@ public class Range {
 
         // Iterate over the range of columns and rows
         for (int col = topLeftColumn; col <= bottomRightColumn; col++) {
-            int startRow = (col == topLeftColumn) ? topLeftRow : 1;
-            int endRow = (col == bottomRightColumn) ? bottomRightRow : layout.getRows();
+            if(topLeftRow == bottomRightRow) {
+                cells.add(CoordinateFactory.createCoordinate(topLeftRow, col));
+            }
+            else {
+                int startRow = (col == topLeftColumn) ? topLeftRow : 1;
+                int endRow = (col == bottomRightColumn) ? bottomRightRow : layout.getRows();
 
-            for (int row = startRow; row <= endRow ; row++ ){
-                cells.add(CoordinateFactory.createCoordinate(row,col));
+                for (int row = startRow; row <= endRow; row++) {
+                    cells.add(CoordinateFactory.createCoordinate(row, col));
+                }
             }
         }
     }

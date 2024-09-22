@@ -15,6 +15,7 @@ import sheet.coordinate.impl.CoordinateImpl;
 import sheet.impl.SheetImpl;
 import sheet.layout.impl.LayoutImpl;
 import xmlGenerated.STLCell;
+import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
 
 import java.io.*;
@@ -96,12 +97,19 @@ public class EngineImpl implements Engine, Serializable {
             }
         }
 
-        for(STLCell stlCell : stlSheet.getSTLCells().getSTLCell())
-        {
+        for(STLRange stlRange : stlSheet.getSTLRanges().getSTLRange()) {
+            String rangeName = stlRange.getName();
+            String rangeStr = stlRange.getSTLBoundaries().getFrom() + ".." + stlRange.getSTLBoundaries().getTo();
+            sheet.addRange(rangeName, rangeStr);
+        }
+
+        for(STLCell stlCell : stlSheet.getSTLCells().getSTLCell()) {
             int row = stlCell.getRow();
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
             sheet.setCell(row, col, stlCell.getSTLOriginalValue());
         }
+
+
 
         versionManager.AddSheetVersionToMap(createDTOSheetForDisplay(sheet), sheet.getNumberCellsThatHaveChanged());
     }

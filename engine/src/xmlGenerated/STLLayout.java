@@ -14,8 +14,6 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-import java.io.Serializable;
-
 
 /**
  * <p>Java class for anonymous complex type</p>.
@@ -43,7 +41,7 @@ import java.io.Serializable;
     "stlSize"
 })
 @XmlRootElement(name = "STL-Layout")
-public class STLLayout implements Serializable {
+public class STLLayout {
 
     @XmlElement(name = "STL-Size", required = true)
     protected STLSize stlSize;

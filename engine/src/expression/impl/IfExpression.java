@@ -32,12 +32,12 @@ public class IfExpression implements Expression {
         try {
             if(!thenType.equals(elseType))
                 throw new InputMismatchException("The types of <then> and <else> must match.");
-            conditionResult = conditionValue.extractValueWithExpectation(Boolean.class);
+           // conditionResult = conditionValue.extractValueWithExpectation(Boolean.class);
         } catch (Exception e) {
             return new EffectiveValueImpl(CellType.ERROR, "UNKNOWN");
         }
 
-        if (conditionResult) {
+        if (Boolean.parseBoolean(conditionValue.getValue().toString())) {
             return thenPart.eval(sheet);
         } else {
             return elsePart.eval(sheet);
