@@ -151,7 +151,8 @@ public class HeaderController {
        //             mainController.initialColumnWidth(dtoSheet.getLayout());
 
                     mainController.setSheet(dtoSheet, false);
-                     mainController.initializeCommandAndRangeControllers();
+                    //mainController.initializeCommandAndRangeControllers();
+                    mainController.populateRangeListView();
                 });
                 return null;
             }

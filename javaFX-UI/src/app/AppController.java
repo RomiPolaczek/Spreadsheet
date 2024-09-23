@@ -146,4 +146,8 @@ public class AppController {
 //    public BooleanBinding isDefaultCellStyle() {
 //   //     return headerComponentController.isDefaultCellStyle();
 //    }
+
+    public void populateRangeListView() {
+        leftComponentController.populateRangeListView();
+    }
 }

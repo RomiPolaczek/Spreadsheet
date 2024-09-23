@@ -35,8 +35,6 @@ public class RangeController {
     private List<ToggleButton> toggleButtons;
     private BooleanProperty anyRangePressedProperty;
 
-
-
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
         rangeObservableList = FXCollections.observableArrayList();
@@ -81,7 +79,6 @@ public class RangeController {
                 };
             }
         });
-        populateRangeListView();
     }
 
 
@@ -176,7 +173,7 @@ public class RangeController {
         resetAllToggleButtons();
     }
 
-    private void populateRangeListView() {
+    public void populateRangeListView() {
         List<String> ranges = mainController.getEngine().getExistingRanges();
         rangeObservableList.clear();
         rangeObservableList.addAll(ranges);

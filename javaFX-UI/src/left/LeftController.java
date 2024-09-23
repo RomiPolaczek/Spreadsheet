@@ -26,7 +26,7 @@ public class LeftController {
         if (commandComponentController != null && rangeComponentController != null) {
             commandComponentController.setMainController(mainController);
             rangeComponentController.setMainController(mainController);
-            //initializeCommandAndRangeControllers();
+            initializeCommandAndRangeControllers();
         } else {
             System.out.println("null");
         }
@@ -51,5 +51,9 @@ public class LeftController {
 
     public void resetColumnSlider() {
         commandComponentController.resetColumnSlider();
+    }
+
+    public void populateRangeListView() {
+        rangeComponentController.populateRangeListView();
     }
 }
