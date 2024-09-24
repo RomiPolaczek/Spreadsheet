@@ -36,8 +36,22 @@ public class LeftController {
         return commandComponentController.selectedColumnProperty();
     }
 
+    public SimpleStringProperty selectedRowProperty() { return commandComponentController.selectedRowProperty(); }
+
+    public void addClickEventForSelectedColumn(Label label) {
+        commandComponentController.addClickEventForSelectedColumn(label);
+    }
+
+    public void addClickEventForSelectedRow(Label label) {
+        commandComponentController.addClickEventForSelectedRow(label);
+    }
+
     public void resetColumnAlignmentComboBox() {
         commandComponentController.resetColumnAlignmentComboBox();
+    }
+
+    public void resetRowSlider() {
+        commandComponentController.resetRowSlider();
     }
 
     public void initializeCommandAndRangeControllers() {

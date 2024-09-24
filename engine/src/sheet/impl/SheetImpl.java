@@ -1,5 +1,6 @@
 package sheet.impl;
 
+import sheet.api.CellType;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
@@ -312,10 +313,6 @@ public class SheetImpl implements Sheet, Serializable {
         return new ArrayList<>(averageStringsSet);
     }
 
-
-
-
-
     @Override
     public void setEmptyCell(int row, int column){
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
@@ -344,6 +341,28 @@ public class SheetImpl implements Sheet, Serializable {
     public void removeRange(String name) {
         //check if there is a usage in the range in some function
         stringToRange.remove(name);
+    }
+
+    public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
+        // Create a new Range object and parse the provided range string
+        Range rangeObj = new Range("temp", layout);
+        rangeObj.parseRange(range); // Parses the input range (e.g., A1..A5)
+
+        List<Double> numericalValues = new ArrayList<>();
+
+        // Iterate over the coordinates within the parsed range
+        for (Coordinate coordinate : rangeObj.getCells()) {
+            // Retrieve the cell at the given coordinate
+            Cell cell = getCell(coordinate);
+
+            // Check if the cell contains a numerical value
+            if (cell != null && CellType.isNumeric(cell.getEffectiveValue().getValue().toString()))
+                numericalValues.add((Double) cell.getEffectiveValue().getValue());
+            else
+                throw new IllegalArgumentException("One or more cells in the range " + rangeObj.toString()+" do not contain valid numerical values.");
+        }
+
+        return numericalValues;
     }
 
 }

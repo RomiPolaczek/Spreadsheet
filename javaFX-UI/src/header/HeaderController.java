@@ -217,8 +217,11 @@ public class HeaderController {
             selectedCellProperty.set(cellID);
 
             mainController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
+            mainController.selectedRowProperty().set(cellID.replaceAll("[^\\d]", ""));
+
             mainController.resetColumnAlignmentComboBox();
             mainController.resetColumnSlider();
+            mainController.resetRowSlider();
 
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
@@ -237,15 +240,6 @@ public class HeaderController {
             lastHighlightedCells.clear();
             lastHighlightedCells.addAll(dependsOn);
             lastHighlightedCells.addAll(influencingOn);
-        });
-    }
-
-    public void addClickEventForSelectedColumn(Label label){
-        label.setOnMouseClicked(event -> {
-            mainController.selectedColumnProperty().set(label.getText());
-            selectedCellProperty.set(label.getText() + 1);
-            mainController.resetColumnAlignmentComboBox();
-            mainController.resetColumnSlider();
         });
     }
 

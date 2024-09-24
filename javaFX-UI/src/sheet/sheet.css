@@ -54,7 +54,7 @@
 /*}*/
 
 /* Hover Effect */
-.single-cell:hover, .column-cell:hover {
+.single-cell:hover, .header-cell:hover {
     -fx-background-color: #cdcdcd; /* Slightly gray background on hover */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 5, 0.5, 0, 0); /* Drop shadow effect */
 }
@@ -96,3 +96,8 @@
      -fx-background-color: white;
      -fx-text-fill: black;
  }
+
+ /*.label.highlight {*/
+ /*    -fx-effect: dropshadow(gaussian, rgb(175, 216, 213), 20, 0.2, 2, 2); !* מוסיף צל *!*/
+ /*    -fx-border-width: 5;*/
+ /*}*/

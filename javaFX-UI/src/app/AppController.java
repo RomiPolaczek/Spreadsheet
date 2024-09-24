@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
 import left.LeftController;
 import sheet.SheetController;
 
@@ -22,18 +23,12 @@ import java.util.Map;
 
 public class AppController {
 
-    @FXML
-    private ScrollPane headerComponent;
-    @FXML
-    private HeaderController headerComponentController;
-    @FXML
-    private ScrollPane sheetComponent;
-    @FXML
-    private SheetController sheetComponentController;
-    @FXML
-    private ScrollPane leftComponent;
-    @FXML
-    private LeftController leftComponentController;
+    @FXML private ScrollPane headerComponent;
+    @FXML private HeaderController headerComponentController;
+    @FXML private ScrollPane sheetComponent;
+    @FXML private SheetController sheetComponentController;
+    @FXML private ScrollPane leftComponent;
+    @FXML private LeftController leftComponentController;
 
     private Engine engine;
 
@@ -87,12 +82,18 @@ public class AppController {
         return leftComponentController.selectedColumnProperty();
     }
 
+    public SimpleStringProperty selectedRowProperty() { return leftComponentController.selectedRowProperty(); }
+
     public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         headerComponentController.addClickEventForSelectedCell(label, cellID, dtoCell);
     }
 
     public void addClickEventForSelectedColumn(Label label) {
-        headerComponentController.addClickEventForSelectedColumn(label);
+        leftComponentController.addClickEventForSelectedColumn(label);
+    }
+
+    public void addClickEventForSelectedRow(Label label) {
+        leftComponentController.addClickEventForSelectedRow(label);
     }
 
     public List<Label> getAllCellLabelsInColumn(String column) {
@@ -131,21 +132,29 @@ public class AppController {
         return sheetComponentController.getColumnWidth(column);
     }
 
+    public void setRowHeight(String row, Integer newHeight) {
+        sheetComponentController.setRowHeight(row, newHeight);
+    }
+
+    public int getRowHeight(String row) {
+        return sheetComponentController.getRowHeight(row);
+    }
+
     public void resetColumnSlider() {
         leftComponentController.resetColumnSlider();
     }
 
-//    public void initialColumnWidth(DTOlayout layout){
-//        sheetComponentController.initialColumnWidth(layout);
-//    }
+    public void resetRowSlider() {
+        leftComponentController.resetRowSlider();
+    }
 
     public ColumnConstraints getColumnConstraintsByColumn(String column) {
         return sheetComponentController.getColumnConstraintsByColumn(column);
     }
 
-//    public BooleanBinding isDefaultCellStyle() {
-//   //     return headerComponentController.isDefaultCellStyle();
-//    }
+    public RowConstraints getRowConstraintsByRow(String row) {
+        return sheetComponentController.getRowConstraintsByRow(row);
+    }
 
     public void populateRangeListView() {
         leftComponentController.populateRangeListView();

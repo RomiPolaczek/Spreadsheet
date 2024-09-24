@@ -35,4 +35,6 @@ public interface Engine {
     List<String> getExistingRanges();
 
     List<String> getRangeCellsList(String name);
+
+    List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
 }
