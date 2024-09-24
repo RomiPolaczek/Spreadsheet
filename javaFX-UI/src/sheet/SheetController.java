@@ -28,6 +28,7 @@ public class SheetController {
     private Map<String, String> cellStyles;
     private Map<String, Pos> columnAlignments;
     private Map<Integer, Integer> columnsWidth;
+    private Map<Integer, Integer> rowsHeight;
 
 
     @FXML
@@ -35,6 +36,7 @@ public class SheetController {
         cellStyles = new HashMap<>();
         columnAlignments = new HashMap<>();
         columnsWidth = new HashMap<>();
+        rowsHeight =  new HashMap<>();
     }
 
 //    public void initializeSheetController(){
@@ -68,10 +70,19 @@ public class SheetController {
         return columnsWidth.get(columnIndex);
     }
 
-
     public void setColumnWidth(String column, Integer newWidth) {
         int columnIndex = column.charAt(0) - 'A' + 1;
         columnsWidth.put(columnIndex, newWidth);
+    }
+
+    public int getRowHeight(String row) {
+        int rowIndex = Integer.parseInt(row);
+        return rowsHeight.get(rowIndex);
+    }
+
+    public void setRowHeight(String row, Integer newHeight) {
+        int rowIndex = Integer.parseInt(row);
+        rowsHeight.put(rowIndex, newHeight);
     }
 
 //    public void initialColumnWidth(DTOlayout layout){
@@ -89,7 +100,7 @@ public class SheetController {
         int rows = dtoSheet.getLayout().getRows();
         int cols = dtoSheet.getLayout().getColumns();
         int columnWidthOriginal = dtoSheet.getLayout().getColumnsWidthUnits();
-        int rowsHeight = dtoSheet.getLayout().getRowsHeightUnits();
+        int rowsHeightOriginal = dtoSheet.getLayout().getRowsHeightUnits();
 
         dynamicGridPane.setGridLinesVisible(false); // Disable temporarily
         dynamicGridPane.getStyleClass().add("grid-pane");
@@ -102,21 +113,20 @@ public class SheetController {
         // Add new row constraints
         for (int i = 0; i <= rows; i++) {
             RowConstraints row = new RowConstraints();
-            row.setPrefHeight(rowsHeight);  // Set the preferred height of the rows
+            if(!applyCustomStyles) {
+                rowsHeight.put(i, rowsHeightOriginal);
+            }
+            row.setPrefHeight(rowsHeight.get(i));
             dynamicGridPane.getRowConstraints().add(row);
         }
 
         // Add new column constraints
         for (int j = 0; j <= cols; j++) {
-//            String column = Character.toString((char) ('A' + j - 1));
             ColumnConstraints col = new ColumnConstraints();
-            if(applyCustomStyles){
-                col.setPrefWidth(columnsWidth.get(j));
-            }
-            else{
+            if(!applyCustomStyles){
                 columnsWidth.put(j, columnWidthOriginal);
-                col.setPrefWidth(columnWidthOriginal);
             }
+            col.setPrefWidth(columnsWidth.get(j));
             dynamicGridPane.getColumnConstraints().add(col);
         }
 
@@ -127,12 +137,9 @@ public class SheetController {
             if (col == 0) {
                 columnHeader = new Label();
             } else {
-                String column = Character.toString((char) ('A' + col - 1));
-                columnHeader = new Label(column);
+                columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
                 mainController.addClickEventForSelectedColumn(columnHeader);
-                columnHeader.getStyleClass().add("column-cell");
             }
-
             columnHeader.getStyleClass().add("header-cell");
             dynamicGridPane.add(columnHeader, col, 0);  // Column headers in the first row
         }
@@ -140,6 +147,7 @@ public class SheetController {
         // Add row headers (1, 2, 3, ...)
         for (int row = 1; row <= rows; row++) {
             Label rowHeader = new Label(Integer.toString(row));
+            mainController.addClickEventForSelectedRow(rowHeader);
             rowHeader.getStyleClass().add("header-cell");
             dynamicGridPane.add(rowHeader, 0, row);  // Row headers in the first column
         }
@@ -191,6 +199,7 @@ public class SheetController {
         SheetController newSheetController = new SheetController();
         newSheetController.setMainController(this.mainController);
         newSheetController.columnsWidth = new HashMap<>();
+        newSheetController.rowsHeight = new HashMap<>();
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
@@ -232,6 +241,18 @@ public class SheetController {
         // Check if the column index is valid
         if (columnIndex >= 0 && columnIndex < dynamicGridPane.getColumnConstraints().size()) {
             return dynamicGridPane.getColumnConstraints().get(columnIndex);
+        } else {
+            return null;  // Return null if the column index is out of bounds
+        }
+    }
+
+    public RowConstraints getRowConstraintsByRow(String row) {
+        // Calculate the column index based on the letter (A -> 0, B -> 1, etc.)
+        int rowIndex = Integer.parseInt(row);
+
+        // Check if the column index is valid
+        if (rowIndex >= 0 && rowIndex < dynamicGridPane.getRowConstraints().size()) {
+            return dynamicGridPane.getRowConstraints().get(rowIndex);
         } else {
             return null;  // Return null if the column index is out of bounds
         }

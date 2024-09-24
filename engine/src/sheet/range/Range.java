@@ -1,6 +1,5 @@
 package sheet.range;
 
-import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.layout.api.Layout;
@@ -66,5 +65,14 @@ public class Range {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(cells.getFirst().toString());
+        stringBuilder.append("..");
+        stringBuilder.append(cells.getLast().toString());
+        return stringBuilder.toString();
     }
 }

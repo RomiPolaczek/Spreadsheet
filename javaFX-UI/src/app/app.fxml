@@ -10,7 +10,7 @@
             <fx:include fx:id="headerComponent" source="../header/header.fxml" />
          </top>
          <center>
-            <fx:include fx:id="sheetComponent" source="../sheet/sheet.fxml" />
+            <fx:include fx:id="sheetComponent" source="../sheet/sheet.fxml" BorderPane.alignment="CENTER" />
          </center>
          <left>
             <fx:include fx:id="leftComponent" source="../left/left.fxml" />

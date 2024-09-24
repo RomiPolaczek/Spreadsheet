@@ -45,21 +45,27 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public Sheet getSheet(){
+    public Sheet getSheet() {
         return sheet;
     }
 
     @Override
-    public int getNumberOfVersions() { return versionManager.getVersionToChanges().size();}
+    public int getNumberOfVersions() {
+        return versionManager.getVersionToChanges().size();
+    }
 
     @Override
-    public int getChangesAccordingToVersionNumber(int version) { return versionManager.getVersionToChanges().get(version); }
+    public int getChangesAccordingToVersionNumber(int version) {
+        return versionManager.getVersionToChanges().get(version);
+    }
 
     @Override
-    public File getFile() { return file; }
+    public File getFile() {
+        return file;
+    }
 
     private File checkFileValidation(String fileName) throws Exception {
-        File newFile =  new File(fileName);
+        File newFile = new File(fileName);
 
         if (!newFile.exists()) {
             throw new FileNotFoundException("File does not exist at path: " + fileName);
@@ -93,19 +99,19 @@ public class EngineImpl implements Engine, Serializable {
 
         sheet.setName(stlSheet.getName());
 
-        for(int row = 1; row <= stlSheet.getSTLLayout().getRows(); row++) {
-            for(int column = 1; column <= stlSheet.getSTLLayout().getColumns(); column++) {
+        for (int row = 1; row <= stlSheet.getSTLLayout().getRows(); row++) {
+            for (int column = 1; column <= stlSheet.getSTLLayout().getColumns(); column++) {
                 sheet.setEmptyCell(row, column);
             }
         }
 
-        for(STLRange stlRange : stlSheet.getSTLRanges().getSTLRange()) {
+        for (STLRange stlRange : stlSheet.getSTLRanges().getSTLRange()) {
             String rangeName = stlRange.getName();
             String rangeStr = stlRange.getSTLBoundaries().getFrom() + ".." + stlRange.getSTLBoundaries().getTo();
             sheet.addRange(rangeName, rangeStr);
         }
 
-        for(STLCell stlCell : stlSheet.getSTLCells().getSTLCell()) {
+        for (STLCell stlCell : stlSheet.getSTLCells().getSTLCell()) {
             int row = stlCell.getRow();
             int col = CoordinateImpl.convertStringColumnToNumber(stlCell.getColumn());
             sheet.setCell(row, col, stlCell.getSTLOriginalValue());
@@ -119,22 +125,22 @@ public class EngineImpl implements Engine, Serializable {
         String name = sheet.getName();
         int version = sheet.getVersion();
         Map<Coordinate, Cell> cellsMap = sheet.getActiveCells();
-        Map<Coordinate ,DTOcell> dtoCellsMap = new HashMap<>();
+        Map<Coordinate, DTOcell> dtoCellsMap = new HashMap<>();
         DTOlayout dtoLayout = new DTOlayout(sheet.getLayout().getRowsHeightUnits(), sheet.getLayout().getColumnsWidthUnits(),
                 sheet.getLayout().getRows(), sheet.getLayout().getColumns());
         Map<String, Range> rangesMap = sheet.getStringToRange();
         Map<String, DTOrange> dtoRangeMap = new HashMap<>();
 
-        for(Cell cell : cellsMap.values()) {
+        for (Cell cell : cellsMap.values()) {
             DTOcell dtoCell = new DTOcell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn(),
                     cell.getEffectiveValue().getValue().toString(), cell.getOriginalValue(), cell.getVersion(), cell.getDependsOn(), cell.getInfluencingOn());
 
             dtoCellsMap.put(CoordinateFactory.createCoordinate(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn()), dtoCell);
         }
 
-        for(Range range : rangesMap.values()){
-            DTOrange dtoRange = new DTOrange(range.getCells(),range.getName());
-            dtoRangeMap.put(dtoRange.getName(),dtoRange);
+        for (Range range : rangesMap.values()) {
+            DTOrange dtoRange = new DTOrange(range.getCells(), range.getName());
+            dtoRangeMap.put(dtoRange.getName(), dtoRange);
         }
 
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout, dtoRangeMap);
@@ -148,7 +154,7 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public void EditCell(Coordinate coordinate, String inputValue){
+    public void EditCell(Coordinate coordinate, String inputValue) {
         sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
@@ -171,7 +177,7 @@ public class EngineImpl implements Engine, Serializable {
     public Coordinate checkAndConvertInputToCoordinate(String inputCell) {
         Coordinate coordinate = CoordinateFactory.from(inputCell);
 
-        if(coordinate == null)
+        if (coordinate == null)
             throw new IllegalArgumentException("Invalid coordinate provided, please provide a valid cell identity (e.g., A4 or B7).");
 
         CoordinateFactory.isValidCoordinate(coordinate, sheet.getLayout());
@@ -195,8 +201,13 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public List<String> getRangeCellsList(String name){
+    public List<String> getRangeCellsList(String name) {
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         return dtoSheet.getRangeCellsList(name);
+    }
+
+    @Override
+    public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
+        return sheet.getNumericalValuesFromRange(range);
     }
 }
