@@ -32,8 +32,7 @@ public class BiggerExpression implements Expression {
             return new EffectiveValueImpl(CellType.ERROR, "UNKNOWN");
         }
 
-        String resultStr = result.toString().toUpperCase();
-        return new EffectiveValueImpl(CellType.BOOLEAN, resultStr);
+        return new EffectiveValueImpl(CellType.BOOLEAN, result);
 
     }
 

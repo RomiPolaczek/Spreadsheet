@@ -1,6 +1,7 @@
 package sheet.impl;
 
 import sheet.api.CellType;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
@@ -198,6 +199,10 @@ public class SheetImpl implements Sheet, Serializable {
         }
     }
 
+//    private SheetImpl newCopySheet() {
+//
+//    }
+
     @Override
     public void IncreaseVersion () {
         version++;
@@ -343,6 +348,7 @@ public class SheetImpl implements Sheet, Serializable {
         stringToRange.remove(name);
     }
 
+    @Override
     public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
         // Create a new Range object and parse the provided range string
         Range rangeObj = new Range("temp", layout);
@@ -363,6 +369,35 @@ public class SheetImpl implements Sheet, Serializable {
         }
 
         return numericalValues;
+    }
+
+    @Override
+    public List<String> createListOfValuesForFilter(String column) {
+        List<String> values = new ArrayList<>();
+        int col = CoordinateImpl.convertStringColumnToNumber(column);
+        for(Cell cell : activeCells.values()) {
+            if (cell.getCoordinate().getColumn() == col) {
+                if (!cell.getEffectiveValue().getValue().equals("")) {
+                    values.add(cell.getEffectiveValue().getValue().toString());
+                }
+            }
+        }
+        return values;
+    }
+
+    @Override
+    public void copyRow(int selectedRow, int startColumn, int endColumn, int startRow, int endRow, Sheet originalSheet) {
+        //List<Cell> cells = getCellsByRow(selectedRow, startColumn, endColumn);
+        for(int col = startColumn; col <= endColumn; col++) {
+            for (int row = startRow; row <= endRow; row++) {
+                Coordinate coordinate = CoordinateFactory.createCoordinate(row, col);
+                String value = originalSheet.getActiveCells().get(coordinate).getEffectiveValue().getValue().toString();
+                Cell newCell = new CellImpl(selectedRow,col, value, getVersion(), this);
+                EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.STRING, value);
+                newCell.setEffectiveValueForDisplay(effectiveValue);
+                activeCells.put(coordinate, newCell);
+            }
+        }
     }
 
 }

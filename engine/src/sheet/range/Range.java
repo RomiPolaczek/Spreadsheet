@@ -4,13 +4,16 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.layout.api.Layout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Range {
+public class Range implements Serializable {
     private List<Coordinate> cells;
     private String name;
     private Layout layout;
+    private Coordinate topLeftCoordinate;
+    private Coordinate bottomRightCoordinate;
 
     public Range(String name, Layout layout) {
         this.cells = new ArrayList<Coordinate>();
@@ -20,6 +23,10 @@ public class Range {
     public List<Coordinate> getCells() { return cells; }
 
     public String getName() { return name; }
+
+    public Coordinate getTopLeftCoordinate() { return topLeftCoordinate; }
+
+    public Coordinate getBottomRightCoordinate() { return bottomRightCoordinate; }
 
     public void parseRange(String range) {
         // Split the input range into top-left and bottom-right cells
@@ -36,8 +43,8 @@ public class Range {
         }
 
         // Convert top-left and bottom-right cell references into column letters and row numbers
-        Coordinate topLeftCoordinate = CoordinateFactory.from(topLeft);
-        Coordinate bottomRightCoordinate = CoordinateFactory.from(bottomRight);
+        topLeftCoordinate = CoordinateFactory.from(topLeft);
+        bottomRightCoordinate = CoordinateFactory.from(bottomRight);
 
         CoordinateFactory.isValidCoordinate(topLeftCoordinate, layout);
         CoordinateFactory.isValidCoordinate(bottomRightCoordinate, layout);

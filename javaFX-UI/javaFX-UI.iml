@@ -7,8 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="engine" />
-    <orderEntry type="library" exported="" name="javafx-swt" level="project" />
-    <orderEntry type="library" name="angus-activatio" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="JAVA-FX" level="project" />
+    <orderEntry type="module" module-name="engine" exported="" />
   </component>
 </module>
