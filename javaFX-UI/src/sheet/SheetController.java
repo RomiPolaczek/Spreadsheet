@@ -4,6 +4,8 @@ import app.AppController;
 import dto.DTOcell;
 import dto.DTOlayout;
 import dto.DTOsheet;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,14 +43,19 @@ public class SheetController {
         rowsHeight =  new HashMap<>();
     }
 
-//    public void initializeSheetController(){
+    public void initializeSheetController(){
 //        setMainController(mainController);
-//        columnsWidth = new HashMap<>();
-//    //    dynamicGridPane = new GridPane();
-//    }
+        columnsWidth = new HashMap<>();
+        rowsHeight = new HashMap<>();
+//        dynamicGridPane = new GridPane();
+    }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setDynamicGridPane(GridPane dynamicGridPane) {
+        this.dynamicGridPane = dynamicGridPane;
     }
 
     public Label getCellLabel(String cellID) {
@@ -254,12 +263,16 @@ public class SheetController {
     public List<Label> getAllCellLabelsInColumn(String column) {
         List<Label> labelsInColumn = new ArrayList<>();
 
-        for (Map.Entry<String, Label> entry : cellLabels.entrySet()) {
-            String cellId = entry.getKey();
-            Label label = entry.getValue();
+        // Calculate the starting row index
+        int startingRow = 1; // Assuming rows start from 1
 
-            // Check if the cell's column matches the specified column
-            if (cellId.startsWith(column)) {
+        // Iterate through the rows to gather labels for the specified column
+        for (int row = startingRow; row <= rowsHeight.size(); row++) {
+            String cellId = column + row; // Construct the cell ID (e.g., "A1", "A2", ...)
+            Label label = cellLabels.get(cellId); // Retrieve the label from the map
+
+            // If the label is found, add it to the list
+            if (label != null) {
                 labelsInColumn.add(label);
             }
         }
@@ -289,6 +302,103 @@ public class SheetController {
         } else {
             return null;  // Return null if the column index is out of bounds
         }
+    }
+
+  //ANIMATIONS
+//    public void highlightColumn(String column) { //one after another
+//        List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
+//
+//        if (cellsInColumn.isEmpty()) {
+//            return; // No cells to highlight
+//        }
+//
+//        // Set the total animation duration to 2 seconds
+//        Duration totalAnimationDuration = Duration.seconds(0.75);
+//        Duration highlightDuration = totalAnimationDuration.divide(cellsInColumn.size()); // Duration for each cell highlight
+//
+//        // Create a Timeline to animate the highlighting
+//        Timeline timeline = new Timeline();
+//
+//        for (int i = 0; i < cellsInColumn.size(); i++) {
+//            Label cellLabel = cellsInColumn.get(i);
+//
+//            // Create a keyframe for highlighting the cell
+//            KeyFrame highlightKeyFrame = new KeyFrame(
+//                    highlightDuration.multiply(i), // Time offset for highlighting
+//                    event -> {
+//                        // Change cell color to grey to highlight
+//                        cellLabel.setStyle("-fx-background-color: #9e9d9d;");
+//                    }
+//            );
+//
+//            // Create a keyframe for resetting the cell color after highlighting
+//            KeyFrame resetKeyFrame = new KeyFrame(
+//                    highlightDuration.multiply(i).add(highlightDuration), // Time offset for resetting
+//                    event -> {
+//                        // Reset cell color
+//                        cellLabel.setStyle(""); // Remove highlighting
+//                    }
+//            );
+//
+//            timeline.getKeyFrames().addAll(highlightKeyFrame, resetKeyFrame);
+//        }
+//
+//        // Play the animation
+//        timeline.play();
+//    }
+
+    public void highlightColumn(String column) { //all in once
+        List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
+
+        if (cellsInColumn.isEmpty()) {
+            return; // No cells to highlight
+        }
+
+        // Set the total animation duration to 2 seconds
+        Duration highlightDuration = Duration.seconds(1.5); // Total duration for highlighting
+        Duration stepDuration = highlightDuration.divide(30); // Duration for each step (adjust for speed)
+
+        // Create a Timeline to animate the highlighting
+        Timeline timeline = new Timeline();
+
+        // Create keyframes for gradually darkening and then bringing back to original
+        for (int i = 0; i <= 10; i++) {
+            final double factor = (double) i / 10; // Create a factor from 0 to 1
+            KeyFrame keyFrame = new KeyFrame(
+                    stepDuration.multiply(i), // Use multiply to get the total time for this step
+                    event -> {
+                        for (Label cellLabel : cellsInColumn) {
+                            Color originalColor = (Color) cellLabel.getTextFill(); // Get the original text color
+                            Color darkerColor = originalColor.darker().interpolate(Color.LIGHTGREY, factor); // Darken gradually
+                            cellLabel.setStyle("-fx-background-color: " + toRgbString(darkerColor) + ";");
+                        }
+                    }
+            );
+            timeline.getKeyFrames().add(keyFrame);
+        }
+
+        // KeyFrame to bring back to the original color
+        KeyFrame resetKeyFrame = new KeyFrame(
+                highlightDuration, // Total duration for bringing back
+                event -> {
+                    for (Label cellLabel : cellsInColumn) {
+                        cellLabel.setStyle(""); // Reset to original color
+                    }
+                }
+        );
+
+        timeline.getKeyFrames().add(resetKeyFrame);
+
+        // Play the animation
+        timeline.play();
+    }
+
+    // Convert Color to RGB string for CSS
+    private String toRgbString(Color color) {
+        return String.format("rgb(%d, %d, %d)",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
     }
 
 
@@ -339,4 +449,30 @@ public class SheetController {
 //        popupStage.setScene(scene);
 //        popupStage.showAndWait();
 //    }
+
+    public GridPane displayReadOnlySheet(){
+        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+        GridPane versionGrid = new GridPane();
+
+        // Create a new SheetController instance for the pop-up
+        SheetController newSheetController = new SheetController();
+        newSheetController.setMainController(this.mainController);
+        newSheetController.columnsWidth = new HashMap<>();
+        newSheetController.rowsHeight = new HashMap<>();
+        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
+
+        // Use the existing setSheet() method to populate the grid with the version data
+        newSheetController.setSheet(dtoSheet, false);
+        return versionGrid;
+//        // Create a VBox to hold the GridPane
+//        VBox vbox = new VBox(versionGrid);
+//        vbox.setPadding(new javafx.geometry.Insets(20));
+//
+//        // Set the scene for the pop-up
+//        Scene scene = new Scene(vbox);
+    }
+
+    public GridPane getVersionGrid() {
+        return dynamicGridPane;
+    }
 }

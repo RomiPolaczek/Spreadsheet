@@ -87,9 +87,8 @@
 }
 
  .range-label{
-     -fx-border-color: #a72846;
+     -fx-border-color: #c82121;
      -fx-border-width: 3px; /* Border width */
-
  }
 
  #default-cell {

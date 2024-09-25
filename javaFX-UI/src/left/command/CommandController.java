@@ -6,9 +6,17 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -16,9 +24,13 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sheet.SheetController;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,11 +179,10 @@ public class CommandController {
             Label cellLabel = mainController.getCellLabel(selectedCell.get());
 
             // Reset the cell's style to the default
-            cellLabel.setStyle(DEFAULT_CELL_STYLE);
-            //         cellLabel.getStyleClass().add("default-cell");
+            cellLabel.setStyle("");
 
             // Save the reset style in the cellStyles map
-            mainController.getCellStyles().put(selectedCell.get(), DEFAULT_CELL_STYLE);
+            mainController.getCellStyles().put(selectedCell.get(), cellLabel.getStyle());
 
             // Optionally, reset the color pickers to reflect the default colors
             cellBackgroundColorPicker.setValue(Color.WHITE);
@@ -258,6 +269,7 @@ public class CommandController {
             selectedColumnProperty().set(label.getText());
             mainController.getSelectedCellProperty().set(label.getText() + 1);
             selectedRowProperty.set("1");
+            mainController.highlightColumn(selectedColumnLabel.getText());
             resetColumnAlignmentComboBox();
             resetColumnSlider();
             resetRowSlider();
@@ -409,13 +421,81 @@ public class CommandController {
     }
 
 
-
-
-
-
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
+        // Create the BorderPane as the root layout
+        BorderPane root = new BorderPane();
+      //  root.setPrefSize(600, 400);
 
+        // Left VBox
+        VBox leftVBox = new VBox(3);
+        leftVBox.setPadding(new Insets(8, 8, 8, 8));
+        leftVBox.setPrefSize(121, 400);
+
+        // Selected Cell Label
+        Label selectedCellLabel = new Label("Selected Cell:");
+        selectedCellLabel.setFont(Font.font("System Bold Italic", 13));
+
+        // Minimum Value Label and TextField
+        Label minValueLabel = new Label("Minimum Value:");
+        TextField minValueTextField = new TextField();
+        VBox.setMargin(minValueLabel, new Insets(10, 0, 0, 0));
+
+        // Maximum Value Label and TextField
+        Label maxValueLabel = new Label("Maximum Value:");
+        TextField maxValueTextField = new TextField();
+        VBox.setMargin(maxValueLabel, new Insets(10, 0, 0, 0));
+
+        // Step Size Label and TextField
+        Label stepSizeLabel = new Label("Step Size:");
+        TextField stepSizeTextField = new TextField();
+
+        // Slider
+        Slider valueSlider = new Slider();
+        VBox.setMargin(valueSlider, new Insets(10, 0, 0, 0));
+
+        // Add components to the VBox
+        leftVBox.getChildren().addAll(selectedCellLabel, minValueLabel, minValueTextField,
+                maxValueLabel, maxValueTextField, stepSizeLabel,
+                stepSizeTextField, valueSlider);
+
+        // Set VBox to the left of BorderPane
+        root.setLeft(leftVBox);
+
+        // Center ScrollPane with GridPane inside
+  //      ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+
+        // Use the setSheet method to populate the grid with the sheet data
+        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+
+        // Create a new SheetController instance for the pop-up
+        SheetController newSheetController = new SheetController();
+        newSheetController.setMainController(this.mainController);
+        newSheetController.setDynamicGridPane(gridPane); // Set gridPane to be used in the setSheet method
+        newSheetController.initializeSheetController();
+        newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
+
+//        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
+
+        // Use the existing setSheet() method to populate the grid with the version data
+//        newSheetController.setSheet(dtoSheet, false);
+        root.getStylesheets().add(getClass().getResource("/sheet/sheet.css").toExternalForm());
+
+
+        // Add GridPane to ScrollPane and set it in the center of BorderPane
+  //      scrollPane.setContent(gridPane);
+        root.setCenter(gridPane);
+
+        // Create a pop-up Stage
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Sheet Version Popup");
+
+        // Set the scene for the stage and show it
+        Scene scene = new Scene(root);
+        popupStage.setScene(scene);
+        popupStage.showAndWait();
     }
 
 

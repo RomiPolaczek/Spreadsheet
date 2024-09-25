@@ -33,7 +33,6 @@ public class LessExpression implements Expression {
         }
 
         return new EffectiveValueImpl(CellType.BOOLEAN, result);
-
     }
 
     @Override
