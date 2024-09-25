@@ -43,14 +43,19 @@ public class SheetController {
         rowsHeight =  new HashMap<>();
     }
 
-//    public void initializeSheetController(){
+    public void initializeSheetController(){
 //        setMainController(mainController);
-//        columnsWidth = new HashMap<>();
-//    //    dynamicGridPane = new GridPane();
-//    }
+        columnsWidth = new HashMap<>();
+        rowsHeight = new HashMap<>();
+//        dynamicGridPane = new GridPane();
+    }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setDynamicGridPane(GridPane dynamicGridPane) {
+        this.dynamicGridPane = dynamicGridPane;
     }
 
     public Label getCellLabel(String cellID) {

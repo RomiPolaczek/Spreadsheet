@@ -180,4 +180,8 @@ public class AppController {
     public GridPane getVersionGrid() {
         return sheetComponentController.getVersionGrid();
     }
+
+    public void setDynamicGridPane(GridPane dynamicGridPane) {
+        sheetComponentController.setDynamicGridPane(dynamicGridPane);
+    }
 }
