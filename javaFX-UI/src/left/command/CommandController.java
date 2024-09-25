@@ -16,6 +16,13 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -24,6 +31,7 @@ import sheet.SheetController;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandController {
@@ -41,14 +49,10 @@ public class CommandController {
     @FXML private Button dynamicAnalysisButton;
     @FXML private Button createGraphButton;
 
-
-
-
     private AppController mainController;
     private SimpleStringProperty selectedColumnProperty;
     private SimpleStringProperty selectedRowProperty;
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
-
 
     public void initializeCommandController(){
         selectedCellLabel.textProperty().bind(mainController.getSelectedCellProperty());
@@ -332,8 +336,90 @@ public class CommandController {
 
     @FXML
     void filterButtonOnAction(ActionEvent event) {
-
+       String column = selectedColumnLabel.getText();
+       showFilterPopup(column);
     }
+
+    private void showFilterPopup(String column) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Filter");
+
+        VBox vbox = new VBox();
+
+        vbox.setSpacing(10);  // Adds space between elements
+        vbox.setPadding(new Insets(15, 15, 15, 15));
+
+        vbox.getChildren().add(new Label("Enter range for filter: "));
+
+        // TextField to enter range
+        TextField rangeField = new TextField();
+        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
+        vbox.getChildren().add(rangeField);
+
+        // Create a list of unique values in the column
+        List<String> values = mainController.getEngine().createListOfValuesForFilter(column);
+
+        // A list to hold all checkboxes for the values
+        List<CheckBox> checkBoxes = new ArrayList<>();
+
+        // Add checkboxes for unique values
+        for (String uniqueValue : values) {
+            CheckBox checkBox = new CheckBox(uniqueValue);
+            //checkBox.setPadding(new Insets(5, 0, 5, 0));
+            vbox.getChildren().add(checkBox);
+            checkBoxes.add(checkBox); // Keep track of the checkboxes
+        }
+
+        // OK Button (initially disabled)
+        Button okButton = new Button("OK");
+        okButton.setDisable(true); // Disable the button initially
+        vbox.getChildren().add(okButton);
+
+        // Add listeners to the TextField and checkboxes to enable the OK button when conditions are met
+        rangeField.textProperty().addListener((observable, oldValue, newValue) ->
+                updateOkButtonState(rangeField, checkBoxes, okButton));
+
+        for (CheckBox checkBox : checkBoxes) {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) ->
+                    updateOkButtonState(rangeField, checkBoxes, okButton));
+        }
+
+        // OK Button action
+        okButton.setOnAction(e -> {
+            List<String> selectedValues = new ArrayList<>();
+
+            for (CheckBox checkBox : checkBoxes) {
+                if (checkBox.isSelected()) {
+                    selectedValues.add(checkBox.getText());
+                }
+            }
+
+            // Logic to filter based on selected values and range
+            //mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, column);
+
+            popupStage.close(); // Close the popup after filtering
+
+            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, column);
+            mainController.displaySheetVersionInPopup(dtoSheet);
+        });
+
+        // Set the scene and show the popup
+        Scene scene = new Scene(vbox, 300, 400);
+        popupStage.setScene(scene);
+        popupStage.sizeToScene();
+        popupStage.showAndWait();
+    }
+
+    private void updateOkButtonState(TextField rangeField, List<CheckBox> checkBoxes, Button okButton) {
+        // Check if the range is entered (not empty) and if at least one checkbox is selected
+        boolean rangeEntered = !rangeField.getText().trim().isEmpty();
+        boolean atLeastOneSelected = checkBoxes.stream().anyMatch(CheckBox::isSelected);
+
+        // Enable the OK button only if both conditions are true
+        okButton.setDisable(!(rangeEntered && atLeastOneSelected));
+    }
+
 
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {

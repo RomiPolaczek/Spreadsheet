@@ -13,4 +13,5 @@ public interface SheetUpdateActions {
     void setEmptyCell(int row, int column);
     void addRange(String name, String rangeStr);
     void removeRange(String name);
+    void copyRow(int selectedRow, int startColumn, int endColumn, int startRow, int endRow, Sheet originalSheet);
 }

@@ -115,4 +115,8 @@ public class CellImpl implements Cell, Serializable {
         return Objects.hash(coordinate, originalValue, effectiveValue, version);
     }
 
+    @Override
+    public void setEffectiveValueForDisplay(EffectiveValue effectiveValue){
+        this.effectiveValue = effectiveValue;
+    }
 }

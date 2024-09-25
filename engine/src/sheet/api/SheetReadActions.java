@@ -18,4 +18,5 @@ public interface SheetReadActions {
     int getNumberCellsThatHaveChanged();
     Map<String, Range> getStringToRange();
     List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
+    List<String> createListOfValuesForFilter(String column);
 }

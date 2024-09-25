@@ -14,4 +14,5 @@ public interface Cell {
     int getVersion();
     List<Coordinate> getDependsOn();
     List<Coordinate> getInfluencingOn();
+    void setEffectiveValueForDisplay(EffectiveValue effectiveValue);
 }

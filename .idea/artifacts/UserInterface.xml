@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="UserInterface">
-    <output-path>$PROJECT_DIR$/out/artifacts/UserInterface</output-path>
-    <root id="archive" name="UserInterface.jar">
-      <element id="module-output" name="user-interface" />
-    </root>
-  </artifact>
-</component>

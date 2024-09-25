@@ -8,8 +8,10 @@ import dto.DTOsheet;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
+import sheet.cell.impl.CellImpl;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
@@ -21,9 +23,8 @@ import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EngineImpl implements Engine, Serializable {
 
@@ -210,4 +211,66 @@ public class EngineImpl implements Engine, Serializable {
     public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
         return sheet.getNumericalValuesFromRange(range);
     }
+
+    @Override
+    public List<String> createListOfValuesForFilter(String column) {
+       return sheet.createListOfValuesForFilter(column);
+    }
+
+    @Override
+    public DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
+        Range range = new Range("filterRange", sheet.getLayout());
+        range.parseRange(rangeStr);
+
+        Sheet filteredSheet = getSheet().copySheet();
+//        for(Cell cell : filteredSheet.getActiveCells().values())
+//            filteredSheet.setEmptyCell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn());
+
+
+
+        int column = CoordinateImpl.convertStringColumnToNumber(selectedColumn);
+
+        List<Coordinate> columnCoordinates = range.getCells().stream().filter(coord -> coord.getColumn() == column)  // Filter coordinates by column
+                .collect(Collectors.toList());
+
+        List<Coordinate> filteredCoordinates = columnCoordinates.stream()
+                .filter(coord -> {
+                    // Retrieve the value in the specific cell (column, row)
+                    String cellValue = sheet.getCell(coord.getRow(), coord.getColumn()).getEffectiveValue().getValue().toString();
+
+                    // Check if the cell value is in the list of selected (checked) values
+                    return checkBoxesValues.contains(cellValue);  // Keep only matching values
+                })
+                .collect(Collectors.toList());
+
+        int startRow = range.getTopLeftCoordinate().getRow(); // Assuming you have methods to get the start row and end row
+        int endRow = range.getBottomRightCoordinate().getRow();
+        int startColumn = range.getTopLeftCoordinate().getColumn();
+        int endColumn = range.getBottomRightCoordinate().getColumn();
+
+        for(int col = startColumn; col <= endColumn; col++) {
+            for (int row = startRow; row <= endRow; row++) {
+                filteredSheet.setEmptyCell(row, col);
+            }
+        }
+
+        for(Coordinate coordinate : filteredCoordinates) {
+            filteredSheet.copyRow(coordinate.getRow(), startColumn, endColumn, startRow, endRow, sheet);
+        }
+
+
+        DTOsheet dtoSheet = createDTOSheetForDisplay(filteredSheet);
+        return dtoSheet;
+    }
+
+
+
+//    private List<Cell> getCellsByRow(int selectedRow, int startColumn, int endColumn ) {
+//        List<Cell> cells = new ArrayList<>();
+//        for(int col = startColumn; col <= endColumn; col++) {
+//            cells.add(sheet.getActiveCells().get(CoordinateFactory.createCoordinate(selectedRow,col)));
+//        }
+//        return cells;
+//    }
+
 }
