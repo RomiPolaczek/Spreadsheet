@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import left.LeftController;
 import sheet.SheetController;
@@ -23,12 +24,18 @@ import java.util.Map;
 
 public class AppController {
 
-    @FXML private ScrollPane headerComponent;
-    @FXML private HeaderController headerComponentController;
-    @FXML private ScrollPane sheetComponent;
-    @FXML private SheetController sheetComponentController;
-    @FXML private ScrollPane leftComponent;
-    @FXML private LeftController leftComponentController;
+    @FXML
+    private ScrollPane headerComponent;
+    @FXML
+    private HeaderController headerComponentController;
+    @FXML
+    private ScrollPane sheetComponent;
+    @FXML
+    private SheetController sheetComponentController;
+    @FXML
+    private ScrollPane leftComponent;
+    @FXML
+    private LeftController leftComponentController;
 
     private Engine engine;
 
@@ -82,7 +89,9 @@ public class AppController {
         return leftComponentController.selectedColumnProperty();
     }
 
-    public SimpleStringProperty selectedRowProperty() { return leftComponentController.selectedRowProperty(); }
+    public SimpleStringProperty selectedRowProperty() {
+        return leftComponentController.selectedRowProperty();
+    }
 
     public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         headerComponentController.addClickEventForSelectedCell(label, cellID, dtoCell);
@@ -158,5 +167,17 @@ public class AppController {
 
     public void populateRangeListView() {
         leftComponentController.populateRangeListView();
+    }
+
+    public void highlightColumn(String column) {
+        sheetComponentController.highlightColumn(column);
+    }
+
+    public GridPane displayReadOnlySheet() {
+        return sheetComponentController.displayReadOnlySheet();
+    }
+
+    public GridPane getVersionGrid() {
+        return sheetComponentController.getVersionGrid();
     }
 }

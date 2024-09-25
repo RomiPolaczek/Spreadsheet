@@ -1,23 +1,31 @@
 package left.command;
 
 import app.AppController;
+import dto.DTOsheet;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sheet.SheetController;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommandController {
@@ -169,11 +177,10 @@ public class CommandController {
             Label cellLabel = mainController.getCellLabel(selectedCell.get());
 
             // Reset the cell's style to the default
-            cellLabel.setStyle(DEFAULT_CELL_STYLE);
-            //         cellLabel.getStyleClass().add("default-cell");
+            cellLabel.setStyle("");
 
             // Save the reset style in the cellStyles map
-            mainController.getCellStyles().put(selectedCell.get(), DEFAULT_CELL_STYLE);
+            mainController.getCellStyles().put(selectedCell.get(), cellLabel.getStyle());
 
             // Optionally, reset the color pickers to reflect the default colors
             cellBackgroundColorPicker.setValue(Color.WHITE);
@@ -260,6 +267,7 @@ public class CommandController {
             selectedColumnProperty().set(label.getText());
             mainController.getSelectedCellProperty().set(label.getText() + 1);
             selectedRowProperty.set("1");
+            mainController.highlightColumn(selectedColumnLabel.getText());
             resetColumnAlignmentComboBox();
             resetColumnSlider();
             resetRowSlider();
@@ -329,11 +337,149 @@ public class CommandController {
 
     }
 
-
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
 
     }
+
+
+//    @FXML
+//    void dynamicAnalysisButtonAction(ActionEvent event) {
+//
+//        try {
+//            // Load FXML file
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("left/command/dynamicAnalysis/DynamicAnalysisController.java"));
+//
+//            // Load the root node from the FXML (could be any root element, such as VBox, HBox, etc.)
+//            Parent root = fxmlLoader.load();
+//
+//            // Create a new stage (pop-up window)
+//            Stage popupStage = new Stage();
+//            popupStage.initModality(Modality.APPLICATION_MODAL);  // Block interaction with other windows
+//            popupStage.setTitle("Your Pop-up Window Title");
+//
+//            // Set the scene for the stage
+//            Scene scene = new Scene(root);
+//            popupStage.setScene(scene);
+//
+//            // Optionally, add external stylesheets
+////            scene.getStylesheets().add(getClass().getResource("/path/to/your/style.css").toExternalForm());
+//
+//            // Show the pop-up window
+//            popupStage.showAndWait();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();  // Handle the exception (logging or showing an alert)
+//
+
+//        // Create a new Stage (popup window)
+//        Stage dynamicAnalysisStage = new Stage();
+//        dynamicAnalysisStage.initModality(Modality.APPLICATION_MODAL);
+//        dynamicAnalysisStage.setTitle("Dynamic Analysis");
+//
+//        // Create a VBox for the input form and sheet display
+//        VBox inputFormVBox = new VBox(10);
+//        inputFormVBox.setPadding(new Insets(20));
+//
+//        // Create and configure fields for min, max, and step size
+//        Label minValueLabel = new Label("Minimum Value:");
+//        TextField minValueField = new TextField();
+//        Label maxValueLabel = new Label("Maximum Value:");
+//        TextField maxValueField = new TextField();
+//        Label stepSizeLabel = new Label("Step Size:");
+//        TextField stepSizeField = new TextField();
+//
+//        // Add these input fields to the VBox
+//        inputFormVBox.getChildren().addAll(minValueLabel, minValueField, maxValueLabel, maxValueField, stepSizeLabel, stepSizeField);
+//
+//        // Create a slider for dynamic value adjustment
+//        Slider valueSlider = new Slider();
+//        inputFormVBox.getChildren().add(valueSlider);
+//
+//        // Create a Label to display the current value of the slider
+//        Label currentValueLabel = new Label("Current Value: 0");
+//        inputFormVBox.getChildren().add(currentValueLabel);
+//
+//        // Create a copy of the current sheet for temporary display
+//        GridPane copiedSheet =  mainController.displayReadOnlySheet();
+//
+//        // Add the copied sheet to the VBox
+//        inputFormVBox.getChildren().add(copiedSheet);
+//
+//        // Create a Button to start the dynamic analysis
+//        Button startButton = new Button("Start Dynamic Analysis");
+//        inputFormVBox.getChildren().add(startButton);
+//
+//
+//        // Create a scene for the dynamic analysis
+//        Scene inputScene = new Scene(inputFormVBox, 600, 400);
+//        inputScene.getStylesheets().add("/Users/romipolaczek/Documents/second_year/java_course/sheet-cell/javaFX-UI/src/sheet/sheet.css"); // Ensure the path is correct
+//
+//        dynamicAnalysisStage.setScene(inputScene);
+//
+//        mainController.displayReadOnlySheet();
+//
+//        // Add action to the start button
+//        startButton.setOnAction(e -> {
+//            // Get the min, max, and step values
+//            double minValue = Double.parseDouble(minValueField.getText());
+//            double maxValue = Double.parseDouble(maxValueField.getText());
+//            double stepSize = Double.parseDouble(stepSizeField.getText());
+//
+//            // Set up the slider with the range and step size
+//            valueSlider.setMin(minValue);
+//            valueSlider.setMax(maxValue);
+//            valueSlider.setValue(minValue); // Set initial value
+//            valueSlider.setBlockIncrement(stepSize);
+//
+//            // Update the current value label as the slider value changes
+//            valueSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+//                currentValueLabel.setText("Current Value: " + newValue.intValue());
+//
+//                // Update the corresponding cell in the copied sheet
+//                SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
+//                if (selectedCell != null && selectedCell.get() != null) {
+//                    Label cellLabel = (Label) copiedSheet.lookup("#" + selectedCell.get()); // Lookup copied cell by ID
+//                    if (cellLabel != null) {
+//                        cellLabel.setText(String.valueOf(newValue.intValue()));
+//                    }
+//                }
+//            });
+//        });
+//
+//        // Show the dynamic analysis window
+//        dynamicAnalysisStage.show();
+  //      }
+ //   }
+
+    /**
+     * Creates a copy of the current sheet (as GridPane) to be displayed in the popup.
+     * This ensures that changes are made to the copied version without affecting the original.
+     */
+//    private GridPane createSheetCopy() {
+//        GridPane originalSheet = mainController.getVersionGrid();  // Get the original sheet
+//        GridPane copiedSheet = new GridPane();
+//
+//        // Copy each cell from the original sheet to the copied sheet
+//        for (Node node : originalSheet.getChildren()) {
+//            if (node instanceof Label) {
+//                Label originalCell = (Label) node;
+//                Label copiedCell = new Label(originalCell.getText());
+//                copiedCell.setId(originalCell.getId());  // Copy cell ID to reference easily
+//                copiedCell.setPrefWidth(originalCell.getPrefWidth());
+//                copiedCell.setPrefHeight(originalCell.getPrefHeight());
+//                copiedCell.setStyle(originalCell.getStyle());
+//
+//                // Add the copied cell to the copied sheet
+//                GridPane.setRowIndex(copiedCell, GridPane.getRowIndex(originalCell));
+//                GridPane.setColumnIndex(copiedCell, GridPane.getColumnIndex(originalCell));
+//                copiedSheet.getChildren().add(copiedCell);
+//            }
+//        }
+//
+//        return copiedSheet;
+//    }
+
 
 
     @FXML

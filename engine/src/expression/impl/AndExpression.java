@@ -32,8 +32,8 @@ public class AndExpression implements Expression {
             return new EffectiveValueImpl(CellType.ERROR, "UNKNOWN");
         }
 
-        String resultStr = result.toString().toUpperCase();
-        return new EffectiveValueImpl(CellType.BOOLEAN, resultStr);
+      //  String resultStr = result.toString().toUpperCase();
+        return new EffectiveValueImpl(CellType.BOOLEAN, result);
     }
 
     @Override

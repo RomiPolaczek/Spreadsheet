@@ -51,4 +51,14 @@ public class EffectiveValueImpl implements EffectiveValue, Serializable {
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public EffectiveValue upperCaseIfBoolean() {
+        if (CellType.isBoolean(this.value.toString()))
+        {
+            String upperCaseStr = this.value.toString().toUpperCase();
+            return new EffectiveValueImpl(CellType.BOOLEAN, upperCaseStr);
+        }
+        return this;
+    }
 }
