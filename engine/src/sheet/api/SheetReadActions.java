@@ -19,4 +19,5 @@ public interface SheetReadActions {
     Map<String, Range> getStringToRange();
     List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
     List<String> createListOfValuesForFilter(String column);
+    List<Cell> getCellsThatHaveChanged();
 }

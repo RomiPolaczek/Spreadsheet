@@ -26,7 +26,8 @@ import java.util.Map;
 
 public class SheetController {
 
-    @FXML private GridPane dynamicGridPane;
+    @FXML
+    private GridPane dynamicGridPane;
     private AppController mainController;
     private Map<String, Label> cellLabels;
     private Map<String, String> cellStyles;
@@ -40,10 +41,10 @@ public class SheetController {
         cellStyles = new HashMap<>();
         columnAlignments = new HashMap<>();
         columnsWidth = new HashMap<>();
-        rowsHeight =  new HashMap<>();
+        rowsHeight = new HashMap<>();
     }
 
-    public void initializeSheetController(){
+    public void initializeSheetController() {
 //        setMainController(mainController);
         columnsWidth = new HashMap<>();
         rowsHeight = new HashMap<>();
@@ -62,7 +63,7 @@ public class SheetController {
         return cellLabels.get(cellID);
     }
 
-    public Map<String, String> getCellStyles(){
+    public Map<String, String> getCellStyles() {
         return cellStyles;
     }
 
@@ -122,7 +123,7 @@ public class SheetController {
         // Add new row constraints
         for (int i = 0; i <= rows; i++) {
             RowConstraints row = new RowConstraints();
-            if(!applyCustomStyles) {
+            if (!applyCustomStyles) {
                 rowsHeight.put(i, rowsHeightOriginal);
             }
             row.setPrefHeight(rowsHeight.get(i));
@@ -132,7 +133,7 @@ public class SheetController {
         // Add new column constraints
         for (int j = 0; j <= cols; j++) {
             ColumnConstraints col = new ColumnConstraints();
-            if(!applyCustomStyles){
+            if (!applyCustomStyles) {
                 columnsWidth.put(j, columnWidthOriginal);
             }
             col.setPrefWidth(columnsWidth.get(j));
@@ -165,7 +166,7 @@ public class SheetController {
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
                 // Get the effective value for the current cell from the DTOsheet
-                DTOcell cellData = dtoSheet.getCell(row ,col); // Assuming row/col are zero-indexed
+                DTOcell cellData = dtoSheet.getCell(row, col);
                 String cellValue = (cellData != null && cellData.getEffectiveValue() != null) ? cellData.getEffectiveValue() : "";
 
                 // Create the Label for the cell and set the value
@@ -219,7 +220,7 @@ public class SheetController {
 
         // Set the scene for the pop-up
         Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm()); // Ensure the path is correct
+        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
         popupStage.setScene(scene);
 
         // Show the pop-up window
@@ -243,7 +244,7 @@ public class SheetController {
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, false);
+        newSheetController.setSheet(mainController.getEngine().createDTOCopySheet(), false);
 
         // Create a VBox to hold the GridPane
         VBox vbox = new VBox(versionGrid);
@@ -257,8 +258,6 @@ public class SheetController {
         // Show the pop-up window
         popupStage.showAndWait();
     }
-
-
 
     public List<Label> getAllCellLabelsInColumn(String column) {
         List<Label> labelsInColumn = new ArrayList<>();
@@ -304,7 +303,7 @@ public class SheetController {
         }
     }
 
-  //ANIMATIONS
+    //ANIMATIONS
 //    public void highlightColumn(String column) { //one after another
 //        List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
 //
@@ -400,6 +399,7 @@ public class SheetController {
                 (int) (color.getGreen() * 255),
                 (int) (color.getBlue() * 255));
     }
+}
 
 
 //    public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
@@ -450,29 +450,4 @@ public class SheetController {
 //        popupStage.showAndWait();
 //    }
 
-    public GridPane displayReadOnlySheet(){
-        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-        GridPane versionGrid = new GridPane();
 
-        // Create a new SheetController instance for the pop-up
-        SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = new HashMap<>();
-        newSheetController.rowsHeight = new HashMap<>();
-        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
-
-        // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, false);
-        return versionGrid;
-//        // Create a VBox to hold the GridPane
-//        VBox vbox = new VBox(versionGrid);
-//        vbox.setPadding(new javafx.geometry.Insets(20));
-//
-//        // Set the scene for the pop-up
-//        Scene scene = new Scene(vbox);
-    }
-
-    public GridPane getVersionGrid() {
-        return dynamicGridPane;
-    }
-}

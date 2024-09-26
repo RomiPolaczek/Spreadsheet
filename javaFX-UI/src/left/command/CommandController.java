@@ -28,11 +28,14 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sheet.SheetController;
+import sheet.api.EffectiveValue;
+import sheet.coordinate.impl.CoordinateFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CommandController {
 
@@ -423,18 +426,12 @@ public class CommandController {
 
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
-        // Create the BorderPane as the root layout
         BorderPane root = new BorderPane();
-      //  root.setPrefSize(600, 400);
 
         // Left VBox
         VBox leftVBox = new VBox(3);
         leftVBox.setPadding(new Insets(8, 8, 8, 8));
-        leftVBox.setPrefSize(121, 400);
-
-        // Selected Cell Label
-        Label selectedCellLabel = new Label("Selected Cell:");
-        selectedCellLabel.setFont(Font.font("System Bold Italic", 13));
+        leftVBox.setPrefSize(127, 400);
 
         // Minimum Value Label and TextField
         Label minValueLabel = new Label("Minimum Value:");
@@ -449,15 +446,52 @@ public class CommandController {
         // Step Size Label and TextField
         Label stepSizeLabel = new Label("Step Size:");
         TextField stepSizeTextField = new TextField();
+        VBox.setMargin(stepSizeLabel, new Insets(10, 0, 0, 0));
 
         // Slider
         Slider valueSlider = new Slider();
         VBox.setMargin(valueSlider, new Insets(10, 0, 0, 0));
 
+        valueSlider.setDisable(true);  // Initially disabled
+
+
+        minValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
+                    maxValueTextField.getText().trim().isEmpty() ||
+                    stepSizeTextField.getText().trim().isEmpty());
+            if(!minValueTextField.getText().trim().isEmpty())
+            {
+                double minValue = Double.parseDouble(minValueTextField.getText());
+                valueSlider.setMin(minValue);
+            }
+        });
+
+        maxValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
+                    maxValueTextField.getText().trim().isEmpty() ||
+                    stepSizeTextField.getText().trim().isEmpty());
+            if(!maxValueTextField.getText().trim().isEmpty())
+            {
+                double maxValue = Double.parseDouble(maxValueTextField.getText());
+                valueSlider.setMax(maxValue);
+            }
+        });
+
+        stepSizeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
+                    maxValueTextField.getText().trim().isEmpty() ||
+                    stepSizeTextField.getText().trim().isEmpty());
+            if(!stepSizeTextField.getText().trim().isEmpty())
+            {
+                double stepSize = Double.parseDouble(stepSizeTextField.getText());
+                valueSlider.setBlockIncrement(stepSize);
+            }
+        });
+
         // Add components to the VBox
         leftVBox.getChildren().addAll(selectedCellLabel, minValueLabel, minValueTextField,
                 maxValueLabel, maxValueTextField, stepSizeLabel,
-                stepSizeTextField, valueSlider);
+                stepSizeTextField);
 
         // Set VBox to the left of BorderPane
         root.setLeft(leftVBox);
@@ -466,33 +500,48 @@ public class CommandController {
   //      ScrollPane scrollPane = new ScrollPane();
         GridPane gridPane = new GridPane();
 
-        // Use the setSheet method to populate the grid with the sheet data
-        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
 
         // Create a new SheetController instance for the pop-up
         SheetController newSheetController = new SheetController();
         newSheetController.setMainController(this.mainController);
         newSheetController.setDynamicGridPane(gridPane); // Set gridPane to be used in the setSheet method
         newSheetController.initializeSheetController();
-        newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
+        DTOsheet dtoSheet = mainController.getEngine().createDTOCopySheet();
+        mainController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
 
-//        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
-
-        // Use the existing setSheet() method to populate the grid with the version data
-//        newSheetController.setSheet(dtoSheet, false);
         root.getStylesheets().add(getClass().getResource("/sheet/sheet.css").toExternalForm());
+        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();;
 
+        selectedCell.addListener((observable, oldValue, newValue) -> {
+            newSheetController.getCellLabel(oldValue).setStyle("");
+            newSheetController.getCellLabel(newValue).setStyle("-fx-background-color: yellow");
+            minValueTextField.clear();
+            maxValueTextField.clear();
+            stepSizeTextField.clear();
 
-        // Add GridPane to ScrollPane and set it in the center of BorderPane
+        });
+
+        valueSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (selectedCell != null && selectedCell.get() != null) {
+                Map<String, EffectiveValue> cellsNewValues =  mainController.getEngine().getCellsThatHaveChangedAfterUpdateCell(selectedCellLabel.getText(), String.valueOf(newValue.intValue()));
+                for(Map.Entry<String, EffectiveValue> entry : cellsNewValues.entrySet())
+                {
+                    Label newCellLabel = newSheetController.getCellLabel(entry.getKey());
+                    newCellLabel.setText(cellsNewValues.get(entry.getKey()).getValue().toString());
+                }
+            }
+        });
+
   //      scrollPane.setContent(gridPane);
         root.setCenter(gridPane);
+        leftVBox.getChildren().add(valueSlider);
+        valueSlider.setShowTickMarks(true);
+        valueSlider.setShowTickLabels(true);
 
-        // Create a pop-up Stage
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Sheet Version Popup");
 
-        // Set the scene for the stage and show it
         Scene scene = new Scene(root);
         popupStage.setScene(scene);
         popupStage.showAndWait();
@@ -579,7 +628,8 @@ public class CommandController {
 //                    chart.setAnimated(); DO WHEN CREATE ANIMATIONS
                     chart.setAnimated(false);
 
-                } else if ("Bar Graph".equals(selectedGraphType)) {
+                }
+                else if ("Bar Graph".equals(selectedGraphType)) {
                     // Create a bar chart
                     CategoryAxis xAxis = new CategoryAxis();
                     xAxis.setLabel("X Axis");
