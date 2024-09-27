@@ -428,6 +428,9 @@ public class CommandController {
     void dynamicAnalysisButtonAction(ActionEvent event) {
         BorderPane root = new BorderPane();
 
+        Label cellToDynamicAnalysis = new Label( selectedCellLabel.getText());
+        cellToDynamicAnalysis.textProperty().bind(selectedCellLabel.textProperty());
+
         // Left VBox
         VBox leftVBox = new VBox(3);
         leftVBox.setPadding(new Insets(8, 8, 8, 8));
@@ -454,7 +457,6 @@ public class CommandController {
 
         valueSlider.setDisable(true);  // Initially disabled
 
-
         minValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
                     maxValueTextField.getText().trim().isEmpty() ||
@@ -472,8 +474,13 @@ public class CommandController {
                     stepSizeTextField.getText().trim().isEmpty());
             if(!maxValueTextField.getText().trim().isEmpty())
             {
-                double maxValue = Double.parseDouble(maxValueTextField.getText());
-                valueSlider.setMax(maxValue);
+                try {
+                    double maxValue = Double.parseDouble(maxValueTextField.getText());
+                    valueSlider.setMax(maxValue);
+                }
+                catch (NumberFormatException e) {
+                    maxValueTextField.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
             }
         });
 
@@ -488,13 +495,19 @@ public class CommandController {
             }
         });
 
+
         // Add components to the VBox
-        leftVBox.getChildren().addAll(selectedCellLabel, minValueLabel, minValueTextField,
+        leftVBox.getChildren().addAll(cellToDynamicAnalysis, minValueLabel, minValueTextField,
                 maxValueLabel, maxValueTextField, stepSizeLabel,
                 stepSizeTextField);
 
         // Set VBox to the left of BorderPane
         root.setLeft(leftVBox);
+
+        BooleanBinding allFieldsFilled = minValueTextField.textProperty().isNotEmpty()
+                .and(maxValueTextField.textProperty().isNotEmpty())
+                .and(stepSizeTextField.textProperty().isNotEmpty());
+
 
         // Center ScrollPane with GridPane inside
   //      ScrollPane scrollPane = new ScrollPane();
@@ -507,7 +520,7 @@ public class CommandController {
         newSheetController.setDynamicGridPane(gridPane); // Set gridPane to be used in the setSheet method
         newSheetController.initializeSheetController();
         DTOsheet dtoSheet = mainController.getEngine().createDTOCopySheet();
-        mainController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
+        newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
 
         root.getStylesheets().add(getClass().getResource("/sheet/sheet.css").toExternalForm());
         SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();;
