@@ -25,6 +25,7 @@ public class SheetImpl implements Sheet, Serializable {
     private String name;
     private int version = 1;
     private int numberCellsThatHaveChanged;
+    private List<Cell> cellsThatHaveChanged;
     private Map<String, Range> stringToRange;
 
     public SheetImpl(){
@@ -73,6 +74,11 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
 
+    @Override
+    public List<Cell> getCellsThatHaveChanged(){
+        return cellsThatHaveChanged;
+    }
+
 
     @Override
     public void setCell(int row, int column, String value) {
@@ -102,7 +108,7 @@ public class SheetImpl implements Sheet, Serializable {
             newSheetVersion.updateInfluenceAndDepends();
             List<Cell> orderedCells = newSheetVersion
                     .orderCellsForCalculation();
-            List <Cell> cellsThatHaveChanged = orderedCells
+            cellsThatHaveChanged = orderedCells
                                     .stream()
                                     .filter(Cell::calculateEffectiveValue)
                                     .collect(Collectors.toList());
@@ -459,7 +465,7 @@ public class SheetImpl implements Sheet, Serializable {
         return filteredSheet;
 
     }
-
+  
     @Override
     public Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns) {
         // Sort selected columns alphabetically (optional, if needed)
@@ -572,6 +578,5 @@ public class SheetImpl implements Sheet, Serializable {
         }
         return columns;
     }
-
 
 }

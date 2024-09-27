@@ -234,4 +234,27 @@ public class EngineImpl implements Engine, Serializable {
         return dtoSheet;
     }
 
+    @Override
+    public DTOsheet createDTOCopySheet()
+    {
+        Sheet copySheet = getSheet().copySheet();
+        DTOsheet dtoSheet = createDTOSheetForDisplay(copySheet);
+        return dtoSheet;
+    }
+
+    @Override
+    public Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue){
+        Sheet copySheet = getSheet().copySheet();
+        Coordinate coordinate = CoordinateFactory.from(cellID);
+        copySheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), newValue);
+        copySheet.getCellsThatHaveChanged();
+        Map<String, EffectiveValue> cellsValues = new HashMap<>();
+
+        for(Cell cell : copySheet.getCellsThatHaveChanged())
+        {
+            cellsValues.put(cell.getCoordinate().toString(), cell.getEffectiveValue());
+        }
+        return cellsValues;
+    }
+
 }

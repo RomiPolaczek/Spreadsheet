@@ -177,14 +177,6 @@ public class AppController {
         sheetComponentController.highlightColumn(column);
     }
 
-    public GridPane displayReadOnlySheet() {
-        return sheetComponentController.displayReadOnlySheet();
-    }
-
-    public GridPane getVersionGrid() {
-        return sheetComponentController.getVersionGrid();
-    }
-
     public void setDynamicGridPane(GridPane dynamicGridPane) {
         sheetComponentController.setDynamicGridPane(dynamicGridPane);
     }
