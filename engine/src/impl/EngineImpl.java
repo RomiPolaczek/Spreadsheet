@@ -213,64 +213,25 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public List<String> createListOfValuesForFilter(String column) {
-       return sheet.createListOfValuesForFilter(column);
+    public List<String> createListOfValuesForFilter(String column, String range) {
+       return sheet.createListOfValuesForFilter(column, range);
     }
 
     @Override
     public DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
-        Range range = new Range("filterRange", sheet.getLayout());
-        range.parseRange(rangeStr);
-
-        Sheet filteredSheet = getSheet().copySheet();
-//        for(Cell cell : filteredSheet.getActiveCells().values())
-//            filteredSheet.setEmptyCell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn());
-
-
-
-        int column = CoordinateImpl.convertStringColumnToNumber(selectedColumn);
-
-        List<Coordinate> columnCoordinates = range.getCells().stream().filter(coord -> coord.getColumn() == column)  // Filter coordinates by column
-                .collect(Collectors.toList());
-
-        List<Coordinate> filteredCoordinates = columnCoordinates.stream()
-                .filter(coord -> {
-                    // Retrieve the value in the specific cell (column, row)
-                    String cellValue = sheet.getCell(coord.getRow(), coord.getColumn()).getEffectiveValue().getValue().toString();
-
-                    // Check if the cell value is in the list of selected (checked) values
-                    return checkBoxesValues.contains(cellValue);  // Keep only matching values
-                })
-                .collect(Collectors.toList());
-
-        int startRow = range.getTopLeftCoordinate().getRow(); // Assuming you have methods to get the start row and end row
-        int endRow = range.getBottomRightCoordinate().getRow();
-        int startColumn = range.getTopLeftCoordinate().getColumn();
-        int endColumn = range.getBottomRightCoordinate().getColumn();
-
-        for(int col = startColumn; col <= endColumn; col++) {
-            for (int row = startRow; row <= endRow; row++) {
-                filteredSheet.setEmptyCell(row, col);
-            }
-        }
-
-        for(Coordinate coordinate : filteredCoordinates) {
-            filteredSheet.copyRow(coordinate.getRow(), startColumn, endColumn, startRow, endRow, sheet);
-        }
-
-
-        DTOsheet dtoSheet = createDTOSheetForDisplay(filteredSheet);
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, checkBoxesValues, selectedColumn));
         return dtoSheet;
     }
 
+    @Override
+    public List<String> getColumnsWithinRange(String range) {
+        return sheet.getColumnsWithinRange(range);
+    }
 
-
-//    private List<Cell> getCellsByRow(int selectedRow, int startColumn, int endColumn ) {
-//        List<Cell> cells = new ArrayList<>();
-//        for(int col = startColumn; col <= endColumn; col++) {
-//            cells.add(sheet.getActiveCells().get(CoordinateFactory.createCoordinate(selectedRow,col)));
-//        }
-//        return cells;
-//    }
+    @Override
+    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns));
+        return dtoSheet;
+    }
 
 }

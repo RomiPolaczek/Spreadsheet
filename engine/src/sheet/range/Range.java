@@ -64,10 +64,10 @@ public class Range implements Serializable {
                 cells.add(CoordinateFactory.createCoordinate(topLeftRow, col));
             }
             else {
-                int startRow = (col == topLeftColumn) ? topLeftRow : 1;
-                int endRow = (col == bottomRightColumn) ? bottomRightRow : layout.getRows();
+//                int startRow = (col == topLeftColumn) ? topLeftRow : 1;
+//                int endRow = (col == bottomRightColumn) ? bottomRightRow : layout.getRows();
 
-                for (int row = startRow; row <= endRow; row++) {
+                for (int row = topLeftRow; row <= bottomRightRow; row++) {
                     cells.add(CoordinateFactory.createCoordinate(row, col));
                 }
             }
