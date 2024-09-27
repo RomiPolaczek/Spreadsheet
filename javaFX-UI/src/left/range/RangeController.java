@@ -29,7 +29,6 @@ public class RangeController {
     @FXML
     private ListView<String> rangeListView;
 
-
     private AppController mainController;
     private ObservableList<String> rangeObservableList;
     private List<ToggleButton> toggleButtons;

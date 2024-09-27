@@ -1,5 +1,6 @@
 package sheet.impl;
 
+import dto.DTOsheet;
 import sheet.api.CellType;
 import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
@@ -178,7 +179,8 @@ public class SheetImpl implements Sheet, Serializable {
         }
 
         return sortedCells;
-}
+    }
+
 
     @Override
     public SheetImpl copySheet() {
@@ -378,11 +380,17 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public List<String> createListOfValuesForFilter(String column) {
+    public List<String> createListOfValuesForFilter(String column, String range) {
         List<String> values = new ArrayList<>();
+
+        Range newRange = new Range("temp", layout);
+        newRange.parseRange(range);
+        int startRow = newRange.getTopLeftCoordinate().getRow();
+        int endRow = newRange.getBottomRightCoordinate().getRow();
         int col = CoordinateImpl.convertStringColumnToNumber(column);
+
         for(Cell cell : activeCells.values()) {
-            if (cell.getCoordinate().getColumn() == col) {
+            if (cell.getCoordinate().getColumn() == col && cell.getCoordinate().getRow()>=startRow && cell.getCoordinate().getRow()<=endRow) {
                 if (!cell.getEffectiveValue().getValue().equals("")) {
                     values.add(cell.getEffectiveValue().getValue().toString());
                 }
@@ -391,18 +399,184 @@ public class SheetImpl implements Sheet, Serializable {
         return values;
     }
 
+
     @Override
-    public void copyRow(int selectedRow, int startColumn, int endColumn, int startRow, int endRow, Sheet originalSheet) {
-        //List<Cell> cells = getCellsByRow(selectedRow, startColumn, endColumn);
-        for(int col = startColumn; col <= endColumn; col++) {
-            for (int row = startRow; row <= endRow; row++) {
-                Coordinate coordinate = CoordinateFactory.createCoordinate(row, col);
-                String value = originalSheet.getActiveCells().get(coordinate).getEffectiveValue().getValue().toString();
-                Cell newCell = new CellImpl(selectedRow,col, value, getVersion(), this);
-                EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.STRING, value);
-                newCell.setEffectiveValueForDisplay(effectiveValue);
-                activeCells.put(coordinate, newCell);
+    public Sheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
+        Range range = new Range("filterRange", layout);
+        range.parseRange(rangeStr);
+
+        SheetImpl filteredSheet = this.copySheet();
+
+        int column = CoordinateImpl.convertStringColumnToNumber(selectedColumn);
+
+        int startRow = range.getTopLeftCoordinate().getRow();
+        int endRow = range.getBottomRightCoordinate().getRow();
+        int startCol = range.getTopLeftCoordinate().getColumn();
+        int endCol = range.getBottomRightCoordinate().getColumn();
+
+        // Create a list to hold the rows to be filtered
+        List<List<Cell>> rowsToFilter = new ArrayList<>();
+
+        // Extract the data from the specified range
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            List<Cell> row = new ArrayList<>();
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                Cell cell = filteredSheet.getCell(rowIndex, colIndex); // Retrieve the cell value
+                row.add(cell);
+            }
+            rowsToFilter.add(row);
+        }
+
+        // Create a list to hold the rows that match the filter
+        List<List<Cell>> matchingRows = new ArrayList<>();
+
+        // Extract and filter the data from the specified range
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            Cell cellInSelectedColumn = filteredSheet.getCell(rowIndex, column); // Get the cell in the selected column
+            String cellValue = cellInSelectedColumn.getEffectiveValue().getValue().toString(); // Get the cell's string value
+
+            if (checkBoxesValues.contains(cellValue)) {
+                // If the value is in the list of checkBoxesValues, keep the row
+                List<Cell> matchingRow = new ArrayList<>();
+                for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                    Cell cell = filteredSheet.getCell(rowIndex, colIndex);
+                    matchingRow.add(cell);
+                }
+                matchingRows.add(matchingRow); // Add the row to the list of matching rows
             }
         }
+
+        // Clear the entire range first
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                filteredSheet.setEmptyCell(rowIndex, colIndex);
+            }
+        }
+
+        // Now place the matching rows at the top of the range
+        for (int rowIndex = startRow; rowIndex < startRow + matchingRows.size(); rowIndex++) {
+            List<Cell> matchingRow = matchingRows.get(rowIndex - startRow);
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                Cell cell = matchingRow.get(colIndex - startCol);
+                filteredSheet.setCell(rowIndex, colIndex, cell.getEffectiveValue().getValue().toString()); // Set the matching row values back into the sheet
+            }
+        }
+
+        return filteredSheet;
+
     }
+  
+    @Override
+    public Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns) {
+        // Sort selected columns alphabetically (optional, if needed)
+        Collections.sort(selectedColumns);
+
+        Range range = new Range("filterRange", layout);
+        range.parseRange(rangeStr);
+
+        SheetImpl sortedSheet = copySheet();
+
+        int startRow = range.getTopLeftCoordinate().getRow();
+        int endRow = range.getBottomRightCoordinate().getRow();
+        int startCol = range.getTopLeftCoordinate().getColumn();
+        int endCol = range.getBottomRightCoordinate().getColumn();
+
+        // Create a list to hold the rows to be sorted
+        List<List<Cell>> rowsToSort = new ArrayList<>();
+
+        // Extract the data from the specified range
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            List<Cell> row = new ArrayList<>();
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                Cell cell = sortedSheet.getCell(rowIndex, colIndex); // Retrieve the cell value
+                row.add(cell);
+            }
+            rowsToSort.add(row);
+        }
+
+        // Define a comparator to sort the rows based on selected columns
+        Comparator<List<Cell>> comparator = (row1, row2) -> {
+            for (String column : selectedColumns) {
+                int columnIndex = CoordinateImpl.convertStringColumnToNumber(column); // Convert column letter to index
+
+                // Parse numeric value from cells in the column
+                Double value1 = parseNumericValue(row1.get(columnIndex-startCol));
+                Double value2 = parseNumericValue(row2.get(columnIndex-startCol));
+
+                // Handle cases where one or both values are non-numeric (represented by NaN)
+                if (value1.isNaN() && value2.isNaN()) {
+                    continue; // Both are non-numeric, go to the next column
+                } else if (value1.isNaN()) {
+                    return 1; // Non-numeric values should be placed after numeric values
+                } else if (value2.isNaN()) {
+                    return -1; // Non-numeric values should be placed after numeric values
+                }
+
+                int comparison = Double.compare(value1, value2);
+                if (comparison != 0) {
+                    return comparison; // If not equal, return comparison result
+                }
+            }
+            return 0; // If all compared values are equal, keep original order
+        };
+
+        // Sort the rows using the defined comparator
+        rowsToSort.sort(comparator);
+
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                sortedSheet.setEmptyCell(rowIndex,colIndex);
+            }
+        }
+
+        // Update the sorted values back to the original sheet (or create a new view)
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            List<Cell> sortedRow = rowsToSort.get(rowIndex - startRow);
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                sortedSheet.setCell(rowIndex, colIndex, sortedRow.get(colIndex - startCol).getEffectiveValue().getValue().toString()); // Set sorted values
+            }
+        }
+
+        // Return the sorted sheet
+        return sortedSheet;
+    }
+
+
+    private Double parseNumericValue(Cell cell) {
+        try {
+            return Double.valueOf(cell.getEffectiveValue().getValue().toString()); // Adjust based on your cell value type
+        } catch (NumberFormatException e) {
+            return Double.NaN; // Return NaN for non-numeric values
+        }
+    }
+
+
+//    @Override
+//    public void copyRow(int selectedRow, int startColumn, int endColumn, int startRow, int endRow, Sheet originalSheet) {
+////        //List<Cell> cells = getCellsByRow(selectedRow, startColumn, endColumn);
+////        for(int col = startColumn; col <= endColumn; col++) {
+////            for (int row = startRow; row <= endRow; row++) {
+////                Coordinate coordinate = CoordinateFactory.createCoordinate(selectedRow, col);
+////                String value = originalSheet.getActiveCells().get(coordinate).getEffectiveValue().getValue().toString();
+////                Cell newCell = new CellImpl(row,col, value, getVersion(), this);
+////                EffectiveValue effectiveValue = new EffectiveValueImpl(CellType.STRING, value);
+////                newCell.setEffectiveValueForDisplay(effectiveValue);
+////                activeCells.put(coordinate, newCell);
+////            }
+////        }
+//    }
+
+    @Override
+    public List<String> getColumnsWithinRange(String range) {
+        List<String> columns = new ArrayList<>();
+        Range newRange = new Range("temp", layout);
+        newRange.parseRange(range);
+        int startCol = newRange.getTopLeftCoordinate().getColumn();
+        int endCol = newRange.getBottomRightCoordinate().getColumn();
+        for(int i = startCol; i <= endCol; i++) {
+            columns.add(CoordinateImpl.convertNumberToAlphabetString(i));
+        }
+        return columns;
+    }
+
 }

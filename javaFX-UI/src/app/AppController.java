@@ -69,6 +69,10 @@ public class AppController {
         sheetComponentController.displaySheetVersionInPopup(dtoSheet);
     }
 
+    public void displayFilteredSheetInPopup(DTOsheet dtoSheet) {
+        sheetComponentController.displayFilteredSheetInPopup(dtoSheet);
+    }
+
     public SimpleStringProperty getSelectedCellProperty() {
         return headerComponentController.getSelectedCellProperty();
     }

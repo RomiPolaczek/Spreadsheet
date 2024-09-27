@@ -51,6 +51,7 @@ public class CommandController {
     @FXML private Button filterButton;
     @FXML private Button dynamicAnalysisButton;
     @FXML private Button createGraphButton;
+    @FXML private Button sortButton;
 
     private AppController mainController;
     private SimpleStringProperty selectedColumnProperty;
@@ -92,7 +93,6 @@ public class CommandController {
     public SimpleStringProperty selectedColumnProperty() {return selectedColumnProperty;}
 
     public SimpleStringProperty selectedRowProperty() {return selectedRowProperty;}
-
 
     @FXML
     void cellBackgroundColorPickerOnAction(ActionEvent event) {
@@ -173,7 +173,6 @@ public class CommandController {
         return null;
     }
 
-
     @FXML
     void resetCellDesignButtonOnAction(ActionEvent event) {
         // Get the selected cell property
@@ -223,7 +222,6 @@ public class CommandController {
         };
     }
 
-
     @FXML
     void columnAlignmentComboBoxOnAction(ActionEvent event) {
         // Get selected alignment from ComboBox
@@ -253,7 +251,6 @@ public class CommandController {
         mainController.setColumnAlignment(selectedColumnLabel.getText(), alignmentStyle);
     }
 
-
     public void resetColumnAlignmentComboBox(){
         columnAlignmentComboBox.getSelectionModel().clearSelection();
 //        selectedColumnLabel.setStyle("-fx-font-size: 14px;");
@@ -265,7 +262,6 @@ public class CommandController {
             }
         });
     }
-
 
     public void addClickEventForSelectedColumn(Label label){
         label.setOnMouseClicked(event -> {
@@ -339,88 +335,219 @@ public class CommandController {
 
     @FXML
     void filterButtonOnAction(ActionEvent event) {
-       String column = selectedColumnLabel.getText();
-       showFilterPopup(column);
+       //String column = selectedColumnLabel.getText();
+       showFilterPopup();
     }
 
-    private void showFilterPopup(String column) {
+    @FXML
+    private void sortButtonOnAction(ActionEvent event) {
+        showSortPopup();
+    }
+
+    //////Filtering one column
+    private void showFilterPopup() {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Filter");
 
         VBox vbox = new VBox();
-
-        vbox.setSpacing(10);  // Adds space between elements
+        vbox.setSpacing(10);
         vbox.setPadding(new Insets(15, 15, 15, 15));
 
-        vbox.getChildren().add(new Label("Enter range for filter: "));
+        Label rangeLabel = new Label("Enter range for filter: ");
+        vbox.getChildren().add(rangeLabel);
 
         // TextField to enter range
         TextField rangeField = new TextField();
         rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
-        vbox.getChildren().add(rangeField);
 
-        // Create a list of unique values in the column
-        List<String> values = mainController.getEngine().createListOfValuesForFilter(column);
+        // Add "Choose range" button
+        Button chooseRangeButton = new Button("Choose range");
+        chooseRangeButton.setDisable(false); // Initially enabled
 
-        // A list to hold all checkboxes for the values
-        List<CheckBox> checkBoxes = new ArrayList<>();
+        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
+        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
+        vbox.getChildren().add(rangeBox);
 
-        // Add checkboxes for unique values
-        for (String uniqueValue : values) {
-            CheckBox checkBox = new CheckBox(uniqueValue);
-            //checkBox.setPadding(new Insets(5, 0, 5, 0));
-            vbox.getChildren().add(checkBox);
-            checkBoxes.add(checkBox); // Keep track of the checkboxes
-        }
+        // ComboBox to select column (initially disabled)
+        Label columnLabel = new Label("Select column to filter:");
+        ComboBox<String> columnComboBox = new ComboBox<>();
+        columnComboBox.setDisable(true); // Initially disabled
+
+        vbox.getChildren().add(columnLabel);
+        vbox.getChildren().add(columnComboBox);
+
+        // VBox for checkboxes
+        VBox checkBoxContainer = new VBox();
+        vbox.getChildren().add(checkBoxContainer);
 
         // OK Button (initially disabled)
         Button okButton = new Button("OK");
         okButton.setDisable(true); // Disable the button initially
         vbox.getChildren().add(okButton);
 
-        // Add listeners to the TextField and checkboxes to enable the OK button when conditions are met
-        rangeField.textProperty().addListener((observable, oldValue, newValue) ->
-                updateOkButtonState(rangeField, checkBoxes, okButton));
+        // Add listener for the "Choose range" button
+        chooseRangeButton.setOnAction(e -> {
+            String rangeStr = rangeField.getText();
+            if (!rangeStr.isEmpty()) {
+                // Uncomment to validate range if needed
+                // boolean isValidRange = mainController.getEngine().validateRange(rangeStr);
+                // if (isValidRange) {
+                columnComboBox.setDisable(false);
 
-        for (CheckBox checkBox : checkBoxes) {
-            checkBox.selectedProperty().addListener((observable, oldValue, newValue) ->
-                    updateOkButtonState(rangeField, checkBoxes, okButton));
-        }
+                List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
+                columnComboBox.getItems().clear(); // Clear previous items
+                columnComboBox.getItems().addAll(availableColumns); // Populate ComboBox with columns
+                // }
+            }
+        });
+
+        // Add listener for the ComboBox to enable the OK button
+        columnComboBox.setOnAction(e -> {
+            // Clear the previous checkboxes
+            checkBoxContainer.getChildren().clear();
+
+            // Get selected column and populate checkboxes
+            String selectedColumn = columnComboBox.getValue();
+            List<String> uniqueValues = mainController.getEngine().createListOfValuesForFilter(selectedColumn, rangeField.getText());
+
+            for (String value : uniqueValues) {
+                CheckBox checkBox = new CheckBox(value);
+                checkBoxContainer.getChildren().add(checkBox); // Add checkbox to the container
+            }
+
+            // Enable the OK button if checkboxes are present
+            okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
+        });
 
         // OK Button action
         okButton.setOnAction(e -> {
             List<String> selectedValues = new ArrayList<>();
-
-            for (CheckBox checkBox : checkBoxes) {
-                if (checkBox.isSelected()) {
-                    selectedValues.add(checkBox.getText());
+            // Gather selected checkbox values
+            for (Node node : checkBoxContainer.getChildren()) {
+                if (node instanceof CheckBox) {
+                    CheckBox checkBox = (CheckBox) node;
+                    if (checkBox.isSelected()) {
+                        selectedValues.add(checkBox.getText());
+                    }
                 }
             }
 
-            // Logic to filter based on selected values and range
-            //mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, column);
-
             popupStage.close(); // Close the popup after filtering
 
-            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, column);
-            mainController.displaySheetVersionInPopup(dtoSheet);
+            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, columnComboBox.getValue());
+            mainController.displayFilteredSheetInPopup(dtoSheet);
         });
 
-        // Set the scene and show the popup
-        Scene scene = new Scene(vbox, 300, 400);
+        Scene scene = new Scene(vbox, 300, 500);
         popupStage.setScene(scene);
-        popupStage.sizeToScene();
         popupStage.showAndWait();
     }
 
-    private void updateOkButtonState(TextField rangeField, List<CheckBox> checkBoxes, Button okButton) {
-        // Check if the range is entered (not empty) and if at least one checkbox is selected
-        boolean rangeEntered = !rangeField.getText().trim().isEmpty();
-        boolean atLeastOneSelected = checkBoxes.stream().anyMatch(CheckBox::isSelected);
+    ////////Bonus for filtering another coloumn- not working
+//    private void showFilterPopup() {
+//        Stage popupStage = new Stage();
+//        popupStage.initModality(Modality.APPLICATION_MODAL);
+//        popupStage.setTitle("Filter");
+//
+//        VBox vbox = new VBox();
+//        vbox.setSpacing(10);
+//        vbox.setPadding(new Insets(15, 15, 15, 15));
+//
+//        Label rangeLabel = new Label("Enter range for filter: ");
+//        vbox.getChildren().add(rangeLabel);
+//
+//        // TextField to enter range
+//        TextField rangeField = new TextField();
+//        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
+//
+//        // Add "Choose range" button
+//        Button chooseRangeButton = new Button("Choose range");
+//        chooseRangeButton.setDisable(false); // Initially enabled
+//
+//        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
+//        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
+//        vbox.getChildren().add(rangeBox);
+//
+//        // VBox for columns and their checkboxes
+//        VBox columnSections = new VBox();
+//        vbox.getChildren().add(columnSections);
+//
+//        // Button to add additional columns for filtering
+//        Button addColumnButton = new Button("Add Column");
+//        vbox.getChildren().add(addColumnButton);
+//
+//        // OK Button (initially disabled)
+//        Button okButton = new Button("OK");
+//        okButton.setDisable(true); // Disable the button initially
+//        vbox.getChildren().add(okButton);
+//
+//        // Create the first column section
+//        createColumnSection(columnSections, okButton, rangeField);
+//
+//        // Add listener for the "Choose range" button
+//        chooseRangeButton.setOnAction(e -> {
+//            String rangeStr = rangeField.getText();
+//            if (!rangeStr.isEmpty()) {
+//                // Populate existing column sections with available columns
+//                List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
+//
+//                // Check if columns are available and update each column ComboBox
+//                for (Node section : columnSections.getChildren()) {
+//                    if (section instanceof HBox) {
+//                        ComboBox<String> columnComboBox = (ComboBox<String>) ((HBox) section).getChildren().get(1);
+//                        columnComboBox.getItems().clear(); // Clear previous items
+//                        columnComboBox.getItems().addAll(availableColumns); // Populate ComboBox with columns
+//                        columnComboBox.setDisable(availableColumns.isEmpty()); // Disable if no columns available
+//                    }
+//                }
+//            }
+//        });
+//
+//        // Add action to the "Add Column" button
+//        addColumnButton.setOnAction(e -> createColumnSection(columnSections, okButton, rangeField));
+//
+//        Scene scene = new Scene(vbox, 400, 600);
+//        popupStage.setScene(scene);
+//        popupStage.showAndWait();
+//    }
+//
+//    private void createColumnSection(VBox columnSections, Button okButton, TextField rangeField) {
+//        HBox columnSection = new HBox(10); // Horizontal box for column and checkboxes
+//        ComboBox<String> columnComboBox = new ComboBox<>(); // Create new ComboBox for the section
+//
+//        // VBox for checkboxes
+//        VBox checkBoxContainer = new VBox();
+//
+//        columnSection.getChildren().addAll(new Label("Select column:"), columnComboBox, checkBoxContainer);
+//        columnSections.getChildren().add(columnSection); // Add the section to the main VBox
+//
+//        // Add listener for the ComboBox to populate checkboxes
+//        columnComboBox.setOnAction(e -> {
+//            // Clear the previous checkboxes
+//            checkBoxContainer.getChildren().clear();
+//
+//            // Get selected column and populate checkboxes
+//            String selectedColumn = columnComboBox.getValue();
+//            List<String> uniqueValues = mainController.getEngine().createListOfValuesForFilter(selectedColumn, rangeField.getText());
+//
+//            for (String value : uniqueValues) {
+//                CheckBox checkBox = new CheckBox(value);
+//                checkBoxContainer.getChildren().add(checkBox); // Add checkbox to the container
+//            }
+//
+//            // Enable the OK button if there is at least one checkbox
+//            okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
+//        });
+//    }
 
-        // Enable the OK button only if both conditions are true
-        okButton.setDisable(!(rangeEntered && atLeastOneSelected));
+    private void updateOkButtonState(TextField rangeField, ComboBox<String> columnComboBox, List<CheckBox> checkBoxes, Button okButton) {
+        boolean isRangeFilled = !rangeField.getText().trim().isEmpty();
+        boolean isColumnSelected = columnComboBox.getValue() != null && !columnComboBox.getValue().trim().isEmpty();
+        boolean isCheckboxSelected = checkBoxes.stream().anyMatch(CheckBox::isSelected);
+
+        // Enable the OK button if all conditions are met
+        okButton.setDisable(!(isRangeFilled && isColumnSelected && isCheckboxSelected));
     }
 
 
@@ -560,7 +687,6 @@ public class CommandController {
         popupStage.showAndWait();
     }
 
-
     @FXML
     void createGraphButtonOnAction(ActionEvent event) {
         // Create a new Stage (popup window)
@@ -694,5 +820,98 @@ public class CommandController {
         chartScene.getStylesheets().add("/left/command/graph.css");
         popupStage.setScene(chartScene);
     }
+
+    private void showSortPopup() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Sort");
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(15, 15, 15, 15));
+
+        Label rangeLabel = new Label("Enter range for sorting: ");
+        vbox.getChildren().add(rangeLabel);
+
+        // TextField to enter range
+        TextField rangeField = new TextField();
+        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
+
+        // Add "Choose range" button
+        Button chooseRangeButton = new Button("Choose range");
+        chooseRangeButton.setDisable(false); // Initially enabled
+
+        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
+        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
+        vbox.getChildren().add(rangeBox);
+
+        // Add a label before checkboxes
+        Label selectColumnsLabel = new Label("Select columns to sort by: ");
+        vbox.getChildren().add(selectColumnsLabel);
+
+        // VBox for checkboxes
+        VBox checkBoxContainer = new VBox();
+        vbox.getChildren().add(checkBoxContainer);
+
+        // OK Button (initially disabled)
+        Button okButton = new Button("OK");
+        okButton.setDisable(true); // Disable the button initially
+        vbox.getChildren().add(okButton);
+
+        // Add listener for the "Choose range" button
+        chooseRangeButton.setOnAction(e -> {
+            String rangeStr = rangeField.getText();
+            if (!rangeStr.isEmpty()) {
+                // Uncomment to validate range if needed
+                // boolean isValidRange = mainController.getEngine().validateRange(rangeStr);
+                // if (isValidRange) {
+                List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
+                checkBoxContainer.getChildren().clear(); // Clear previous checkboxes
+
+                for (String column : availableColumns) {
+                    CheckBox checkBox = new CheckBox(column);
+                    checkBoxContainer.getChildren().add(checkBox);
+                }
+
+                // Enable the OK button if at least one checkbox is selected
+                okButton.setDisable(false);
+                // Add a listener to enable the OK button only if at least one checkbox is checked
+                checkBoxContainer.getChildren().forEach(node -> {
+                    if (node instanceof CheckBox checkBox) {
+                        checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                            okButton.setDisable(checkBoxContainer.getChildren().stream()
+                                    .filter(n -> n instanceof CheckBox)
+                                    .noneMatch(c -> ((CheckBox) c).isSelected()));
+                        });
+                    }
+                });
+                // }
+            }
+        });
+
+        // Set action for OK button
+        okButton.setOnAction(e -> {
+            // Handle sorting logic based on selected checkboxes
+            List<String> selectedColumns = new ArrayList<>();
+            for (Node node : checkBoxContainer.getChildren()) {
+                if (node instanceof CheckBox checkBox && checkBox.isSelected()) {
+                    selectedColumns.add(checkBox.getText());
+                }
+            }
+
+            popupStage.close(); // Close the popup after sorting
+
+            DTOsheet dtoSheet = mainController.getEngine().sortColumnBasedOnSelection(rangeField.getText(), selectedColumns);
+            mainController.displayFilteredSheetInPopup(dtoSheet);
+        });
+
+        // Set scene and show the popup
+        Scene scene = new Scene(vbox, 400, 300);
+        popupStage.setScene(scene);
+        popupStage.show();
+    }
+
+
+
 
 }
