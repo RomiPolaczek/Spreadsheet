@@ -4,22 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Spreadsheet.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_media.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/jaxb_core.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/JAVA_FX.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/JAXB.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/src.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sheet-cell.iml" beforeDir="false" />
+    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="reset to a point where everything works, all files pushed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetUpdateActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,31 +91,24 @@
       <option name="presentableId" value="Default" />
       <updated>1727452196909</updated>
       <workItem from="1727452198706" duration="53000" />
-      <workItem from="1727452276919" duration="5052000" />
+      <workItem from="1727452276919" duration="12779000" />
     </task>
+    <task id="LOCAL-00001" summary="reset to a point where everything works, all files pushed">
+      <option name="closed" value="true" />
+      <created>1727461681994</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727461681994</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
-          <line>402</line>
-          <properties class="sheet.impl.SheetImpl" method="filterColumnBasedOnSelection">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java</url>
-          <line>447</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="reset to a point where everything works, all files pushed" />
+    <option name="LAST_COMMIT_MESSAGE" value="reset to a point where everything works, all files pushed" />
   </component>
 </project>

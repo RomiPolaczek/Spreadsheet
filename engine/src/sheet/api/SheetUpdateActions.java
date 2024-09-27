@@ -4,6 +4,7 @@ import sheet.impl.SheetImpl;
 import sheet.layout.api.Layout;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SheetUpdateActions {
     void setCell(int row, int column, String value);
@@ -16,6 +17,7 @@ public interface SheetUpdateActions {
     void addRange(String name, String rangeStr);
     void removeRange(String name);
     //void copyRow(int selectedRow, int startColumn, int endColumn, int startRow, int endRow, Sheet originalSheet);
-    Sheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn);
+    //Sheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn);
+    Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues);
     Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns);
 }

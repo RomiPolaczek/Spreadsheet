@@ -217,11 +217,19 @@ public class EngineImpl implements Engine, Serializable {
        return sheet.createListOfValuesForFilter(column, range);
     }
 
+    //filter one column
+//    @Override
+//    public DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
+//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, checkBoxesValues, selectedColumn));
+//        return dtoSheet;
+//    }
+
     @Override
-    public DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
-        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, checkBoxesValues, selectedColumn));
+    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues));
         return dtoSheet;
     }
+
 
     @Override
     public List<String> getColumnsWithinRange(String range) {

@@ -120,21 +120,5 @@ public class CellImpl implements Cell, Serializable {
         this.effectiveValue = effectiveValue;
     }
 
-//    @Override
-//    public CellImpl copyCell() {
-//        // Create a new cell with the same row, column, original value, version, and sheet reference
-//        CellImpl copiedCell = new CellImpl(coordinate.getRow(), coordinate.getColumn(), originalValue, version, sheet);
-//
-//        // Copy the dependsOn and influencingOn lists (perform deep copy)
-//        copiedCell.dependsOn = new ArrayList<>(this.dependsOn);
-//        copiedCell.influencingOn = new ArrayList<>(this.influencingOn);
-//
-//        // Copy the effectiveValue if it's already calculated
-//        if (this.effectiveValue != null) {
-//            copiedCell.effectiveValue = new EffectiveValueImpl(this.effectiveValue.getCellType(), this.effectiveValue.getValue());
-//        }
-//
-//        return copiedCell;
-//    }
 
 }
