@@ -401,40 +401,63 @@ public class SheetImpl implements Sheet, Serializable {
 
         SheetImpl filteredSheet = this.copySheet();
 
-
         int column = CoordinateImpl.convertStringColumnToNumber(selectedColumn);
-
-        List<Coordinate> columnCoordinates = range.getCells().stream().filter(coord -> coord.getColumn() == column)  // Filter coordinates by column
-                .collect(Collectors.toList());
-
-        List<Coordinate> filteredCoordinates = columnCoordinates.stream()
-                .filter(coord -> {
-                    // Retrieve the value in the specific cell (column, row)
-                    String cellValue = getCell(coord.getRow(), coord.getColumn()).getEffectiveValue().getValue().toString();
-
-                    // Check if the cell value is in the list of selected (checked) values
-                    return checkBoxesValues.contains(cellValue);
-                })
-                .collect(Collectors.toList());
 
         int startRow = range.getTopLeftCoordinate().getRow();
         int endRow = range.getBottomRightCoordinate().getRow();
-        int startColumn = range.getTopLeftCoordinate().getColumn();
-        int endColumn = range.getBottomRightCoordinate().getColumn();
+        int startCol = range.getTopLeftCoordinate().getColumn();
+        int endCol = range.getBottomRightCoordinate().getColumn();
 
-        Set<Integer> filteredRows = filteredCoordinates.stream()
-                .map(Coordinate::getRow)
-                .collect(Collectors.toSet());
+        // Create a list to hold the rows to be filtered
+        List<List<Cell>> rowsToFilter = new ArrayList<>();
 
-        for (int row = startRow; row <= endRow; row++) {
-            if (!filteredRows.contains(row)) {
-                for (int col = startColumn; col <= endColumn; col++) {
-                    filteredSheet.setEmptyCell(row, col);
+        // Extract the data from the specified range
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            List<Cell> row = new ArrayList<>();
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                Cell cell = filteredSheet.getCell(rowIndex, colIndex); // Retrieve the cell value
+                row.add(cell);
+            }
+            rowsToFilter.add(row);
+        }
+
+        // Create a list to hold the rows that match the filter
+        List<List<Cell>> matchingRows = new ArrayList<>();
+
+        // Extract and filter the data from the specified range
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            Cell cellInSelectedColumn = filteredSheet.getCell(rowIndex, column); // Get the cell in the selected column
+            String cellValue = cellInSelectedColumn.getEffectiveValue().getValue().toString(); // Get the cell's string value
+
+            if (checkBoxesValues.contains(cellValue)) {
+                // If the value is in the list of checkBoxesValues, keep the row
+                List<Cell> matchingRow = new ArrayList<>();
+                for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                    Cell cell = filteredSheet.getCell(rowIndex, colIndex);
+                    matchingRow.add(cell);
                 }
+                matchingRows.add(matchingRow); // Add the row to the list of matching rows
+            }
+        }
+
+        // Clear the entire range first
+        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                filteredSheet.setEmptyCell(rowIndex, colIndex);
+            }
+        }
+
+        // Now place the matching rows at the top of the range
+        for (int rowIndex = startRow; rowIndex < startRow + matchingRows.size(); rowIndex++) {
+            List<Cell> matchingRow = matchingRows.get(rowIndex - startRow);
+            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+                Cell cell = matchingRow.get(colIndex - startCol);
+                filteredSheet.setCell(rowIndex, colIndex, cell.getEffectiveValue().getValue().toString()); // Set the matching row values back into the sheet
             }
         }
 
         return filteredSheet;
+
     }
 
     @Override
@@ -496,7 +519,7 @@ public class SheetImpl implements Sheet, Serializable {
 
         for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
             for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
-                sortedSheet.setEmptyCell(rowIndex,colIndex); // Set sorted values
+                sortedSheet.setEmptyCell(rowIndex,colIndex);
             }
         }
 
