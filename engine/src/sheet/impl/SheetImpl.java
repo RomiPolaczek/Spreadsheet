@@ -25,8 +25,8 @@ public class SheetImpl implements Sheet, Serializable {
     private String name;
     private int version = 1;
     private int numberCellsThatHaveChanged;
-    private List<Cell> cellsThatHaveChanged;
     private Map<String, Range> stringToRange;
+    private List<Cell> cellsThatHaveChanged;
 
     public SheetImpl(){
         this.activeCells = new HashMap<>();
@@ -75,10 +75,9 @@ public class SheetImpl implements Sheet, Serializable {
     public int getNumberCellsThatHaveChanged() { return numberCellsThatHaveChanged; }
 
     @Override
-    public List<Cell> getCellsThatHaveChanged(){
+    public List<Cell> getCellsThatHaveChanged() {
         return cellsThatHaveChanged;
     }
-
 
     @Override
     public void setCell(int row, int column, String value) {
@@ -109,9 +108,9 @@ public class SheetImpl implements Sheet, Serializable {
             List<Cell> orderedCells = newSheetVersion
                     .orderCellsForCalculation();
             cellsThatHaveChanged = orderedCells
-                                    .stream()
-                                    .filter(Cell::calculateEffectiveValue)
-                                    .collect(Collectors.toList());
+                    .stream()
+                    .filter(Cell::calculateEffectiveValue)
+                    .collect(Collectors.toList());
 
 
             // successful calculation. update sheet and relevant cells version
@@ -295,19 +294,19 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     private List<String> extractSumCells(String input) {
-    Set<String> sumStringsSet = new HashSet<>();
+        Set<String> sumStringsSet = new HashSet<>();
 
-    // Regular expression to match "SUM" (case-insensitive) followed by any string inside curly braces
-    Pattern pattern = Pattern.compile("\\{\\s*SUM\\s*,\\s*([^\\}]+)\\s*\\}", Pattern.CASE_INSENSITIVE);
-    Matcher matcher = pattern.matcher(input);
+        // Regular expression to match "SUM" (case-insensitive) followed by any string inside curly braces
+        Pattern pattern = Pattern.compile("\\{\\s*SUM\\s*,\\s*([^\\}]+)\\s*\\}", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
 
-    // Find all matches and add the extracted strings to the set (which avoids duplicates)
-    while (matcher.find()) {
-        sumStringsSet.add(matcher.group(1).trim());  // Trim to remove extra spaces around the string
-    }
+        // Find all matches and add the extracted strings to the set (which avoids duplicates)
+        while (matcher.find()) {
+            sumStringsSet.add(matcher.group(1).trim());  // Trim to remove extra spaces around the string
+        }
 
-    // Convert the set back to a list before returning (if you need a list)
-    return new ArrayList<>(sumStringsSet);
+        // Convert the set back to a list before returning (if you need a list)
+        return new ArrayList<>(sumStringsSet);
     }
 
     private List<String> extractAverageCells(String input) {
@@ -465,7 +464,7 @@ public class SheetImpl implements Sheet, Serializable {
         return filteredSheet;
 
     }
-  
+
     @Override
     public Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns) {
         // Sort selected columns alphabetically (optional, if needed)
@@ -578,5 +577,6 @@ public class SheetImpl implements Sheet, Serializable {
         }
         return columns;
     }
+
 
 }

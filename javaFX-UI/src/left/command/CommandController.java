@@ -911,7 +911,4 @@ public class CommandController {
         popupStage.show();
     }
 
-
-
-
 }

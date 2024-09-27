@@ -231,7 +231,7 @@ public class SheetController {
         // Create a new Stage (pop-up window)
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-        popupStage.setTitle("Filtered Sheet");
+        popupStage.setTitle("Filter");
 
         // Create a new GridPane for this version
         GridPane versionGrid = new GridPane();
@@ -244,7 +244,7 @@ public class SheetController {
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(mainController.getEngine().createDTOCopySheet(), false);
+        newSheetController.setSheet(dtoSheet, false);
 
         // Create a VBox to hold the GridPane
         VBox vbox = new VBox(versionGrid);
@@ -252,7 +252,7 @@ public class SheetController {
 
         // Set the scene for the pop-up
         Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm()); // Ensure the path is correct
+        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
         popupStage.setScene(scene);
 
         // Show the pop-up window

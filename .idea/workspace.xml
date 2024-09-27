@@ -4,23 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b89f03ef-c452-4b8c-aa7f-22fdb0214616" name="Changes" comment="add range to javaFX">
+    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/Spreadsheet.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_media.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jaxb_core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/JAVA_FX.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/JAXB.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/src.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sheet-cell.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/EqualExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/EqualExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/OrExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/OrExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/impl/RefExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/CellType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/coordinate/impl/CoordinateImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/api/SheetReadActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/sheet/range/Range.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/sheet/range/Range.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/LeftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/range/RangeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/range/RangeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,40 +26,46 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2mf0COCqFmYrYqDjAZgKSC5iCj3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/rotem/IdeaProjects/Spreadsheet/javafx-sdk-22.0.2/lib/javafx.web.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15234375",
+    "project.structure.side.proportion": "0.22408377",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/javaFX-UI/src" />
-      <recent name="$PROJECT_DIR$/engine/src/sheet" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="sheet.api" />
-      <recent name="expression.parser" />
-      <recent name="expression.impl" />
-      <recent name="" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="javaFX-UI" />
-      <option name="VM_PARAMETERS" value="--module-path $PROJECT_DIR$/javafx-sdk-22.0.2/lib  --add-modules javafx.controls,javafx.fxml " />
+      <option name="VM_PARAMETERS" value="--module-path C:\Users\rotem\IdeaProjects\Spreadsheet\javafx-sdk-22.0.2\lib --add-modules javafx.controls,javafx.fxml" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="app.*" />
@@ -78,72 +82,48 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="add range to javaFX">
-      <option name="closed" value="true" />
-      <created>1726584622941</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1726584622942</updated>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="" />
+      <created>1727452196909</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727452196909</updated>
+      <workItem from="1727452198706" duration="53000" />
+      <workItem from="1727452276919" duration="5052000" />
     </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="load file function and add engine class" />
-    <MESSAGE value="add parse expression" />
-    <MESSAGE value="add sub, abs and pow functions" />
-    <MESSAGE value="fix ref function and dto for display" />
-    <MESSAGE value="start of &quot;edit cell&quot;&#10;start of &quot;display version&quot;&#10;both unfinished" />
-    <MESSAGE value="add dependsOn and InfluencingOn in ref" />
-    <MESSAGE value="fix dependsOn anf InfluencingOn" />
-    <MESSAGE value="edit exceptions and add equals and hashCode for CoordinateImpl" />
-    <MESSAGE value="fix duplicates in dependsOn and influencesOn ,add printStack" />
-    <MESSAGE value="finish ref and change influ and depend to the sheet" />
-    <MESSAGE value="finish ref and move the edit of influence and depends to the sheet" />
-    <MESSAGE value="add menu" />
-    <MESSAGE value="fix cell version" />
-    <MESSAGE value="fix exceptions" />
-    <MESSAGE value="fix concat function" />
-    <MESSAGE value="delete notes and fix load system and updateInfluenceAndDepends func" />
-    <MESSAGE value="initialize all empty cells, add cellType and fix exception in all expressions" />
-    <MESSAGE value="add comboBox for selectedCells" />
-    <MESSAGE value="add progress bar and sheet component" />
-    <MESSAGE value="add setSheet including cellID and originalValue labels" />
-    <MESSAGE value="add influencingOn and dependsOn highlights to ui" />
-    <MESSAGE value="change highlights colors" />
-    <MESSAGE value="Fixed depends and influences and add the part 2 function (except for range functions)" />
-    <MESSAGE value="add column alignment" />
-    <MESSAGE value="add range to javaFX" />
-    <option name="LAST_COMMIT_MESSAGE" value="add range to javaFX" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <breakpoint type="java-exception">
-          <properties class="java.io.NotSerializableException" package="java.io" />
-          <option name="timeStamp" value="72" />
-        </breakpoint>
-        <line-breakpoint type="java-method">
-          <properties>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/engine/src/sheet/impl/SheetImpl.java</url>
+          <line>402</line>
+          <properties class="sheet.impl.SheetImpl" method="filterColumnBasedOnSelection">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java</url>
+          <line>447</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <pin-to-top-manager>
-      <pinned-members>
-        <PinnedItemInfo parentTag="sheet.cell.impl.CellImpl" memberName="sheet" />
-      </pinned-members>
-    </pin-to-top-manager>
   </component>
 </project>
