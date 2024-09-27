@@ -5,11 +5,13 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
    <content>
       <VBox alignment="TOP_CENTER" prefWidth="900.0">
          <children>
@@ -48,6 +50,34 @@
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
+            </HBox>
+            <Separator prefHeight="0.0" prefWidth="900.0" style="-fx-border-width: 3;" />
+            <HBox prefHeight="55.0" prefWidth="200.0">
+               <children>
+                  <Label text="Animation:" textAlignment="CENTER">
+                     <padding>
+                        <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <ToggleButton fx:id="animationOnOffToggleButton" mnemonicParsing="false" onAction="#animationOnOffToggleButtonOnAction" text="On/Off">
+                     <HBox.margin>
+                        <Insets bottom="6.0" top="6.0" />
+                     </HBox.margin>
+                  </ToggleButton>
+                  <Label text="Theme:">
+                     <HBox.margin>
+                        <Insets left="100.0" top="12.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ComboBox fx:id="themeSelectionComboBox" onAction="#themeSelectionComboBoxAction" prefWidth="150.0" promptText="Theme Selection">
+                     <HBox.margin>
+                        <Insets left="12.0" top="6.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
             </HBox>
          </children>
       </VBox>

@@ -43,6 +43,10 @@ public class HeaderController {
     private ComboBox<String> versionSelectorComboBox;
     @FXML
     private Label selectedCellIDLabel;
+    @FXML
+    private Button animationButton;
+    @FXML
+    private ComboBox<String> themeSelectorComboBox;
 
 
     private AppController mainController;
@@ -51,6 +55,7 @@ public class HeaderController {
     private SimpleStringProperty selectedCellProperty;
     private SimpleStringProperty originalCellValueProperty;
     private SimpleStringProperty lastUpdateVersionCellProperty;
+    private SimpleBooleanProperty isAnimationSelectedProperty;
     private List<String> lastHighlightedCells = new ArrayList<>();
 
 
@@ -61,6 +66,7 @@ public class HeaderController {
         originalCellValueProperty = new SimpleStringProperty();
         lastUpdateVersionCellProperty = new SimpleStringProperty();
         versionSelectorComboBox = new ComboBox<>();
+        themeSelectorComboBox = new ComboBox<>();
     }
 
     @FXML
@@ -68,6 +74,7 @@ public class HeaderController {
         fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
         versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
+        themeSelectorComboBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueLabel.textProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
@@ -369,4 +376,13 @@ public class HeaderController {
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
 
+    @FXML
+    void themeSelectionComboBoxAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void animationOnOffToggleButtonOnAction(ActionEvent event) {
+
+    }
 }
