@@ -43,8 +43,9 @@
                   <Label fx:id="selectedCellIDLabel" minWidth="50.0" />
                   <Label text="Original Cell Value:" />
                   <TextField fx:id="originalCellValueTextField" onAction="#originalCellValueTextFieldOnAction" />
+                  <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update" />
                   <Label fx:id="originalCellValueLabel" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update Value" />
+                  <Button fx:id="formatFunctionButton" mnemonicParsing="false" onAction="#formatFunctionButtonOnAction" text="Format Functions" />
                   <Label minWidth="100.0" text="Last update cell version: " />
                   <Label fx:id="lastUpdateVersionCellLabel" minWidth="29.0" />
                   <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box" />

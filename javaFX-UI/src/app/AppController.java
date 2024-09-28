@@ -211,4 +211,9 @@ public class AppController {
         themeManager.applyTheme(scene, selectedTheme);
     }
 
+    public void updateCellValue(String cellID, String newValue) {
+        headerComponentController.updateCellValue(cellID, newValue);
+    }
+  
     public Map<String,String> getNewCoordToOldCoord() {return leftComponentController.getNewCoordToOldCoord(); }
+}

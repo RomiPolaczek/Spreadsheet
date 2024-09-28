@@ -62,6 +62,9 @@ public class HeaderController {
     private ComboBox<String> themesComboBox;
     @FXML
     private TextField originalCellValueTextField;
+    @FXML
+    private Button formatFunctionButton;
+
 
 
 
@@ -103,7 +106,9 @@ public class HeaderController {
         animationsCheckBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueLabel.textProperty().bind(originalCellValueProperty);
+        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+        formatFunctionButton.disableProperty().bind(selectedCellProperty.isNull());
 
 
         // Add listener for changes to the selectedCellProperty
@@ -124,6 +129,19 @@ public class HeaderController {
                 }
             }
         });
+
+//        originalCellValueTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue) {
+//                // TextField lost focus, trigger the action
+//           //     originalCellValueTextFieldOnFocusLost();
+//            }
+//        });
+//
+//        originalCellValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if(newValue != null || !newValue.isEmpty()) {
+//                updateCellValue(selectedCellProperty.getValue(), newValue);
+//            }
+//        });
     }
 
     public void setMainController(AppController mainController) {
@@ -333,17 +351,34 @@ public class HeaderController {
     }
 
     private void resetPreviousStyles() {
-            // Reset styles for all previously highlighted cells
-            for (String cellID : lastHighlightedCells) {
-                Label cellLabel = mainController.getCellLabel(cellID);
-                cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
-            }
-            // Clear the list after resetting
-            lastHighlightedCells.clear();
+        // Reset styles for all previously highlighted cells
+        for (String cellID : lastHighlightedCells) {
+            Label cellLabel = mainController.getCellLabel(cellID);
+            cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
+        }
+        // Clear the list after resetting
+        lastHighlightedCells.clear();
     }
 
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
+        // Get the current value from the TextField
+        String newValue = originalCellValueTextField.getText();
+
+        // Ensure there is a selected cell
+        String selectedCellID = selectedCellProperty.get();
+        if (selectedCellID == null || selectedCellID.isEmpty()) {
+            mainController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
+            return;
+        }
+        updateCellValue(selectedCellID, newValue);
+        originalCellValueTextField.clear();
+        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+    }
+  
+
+    @FXML
+    void formatFunctionButtonOnAction(ActionEvent event) {
         String selectedCellID = selectedCellProperty.get();
         String currentValue = originalCellValueProperty.get();
 
@@ -356,8 +391,6 @@ public class HeaderController {
                 selectedCellID, mainController,originalCellValueProperty ,lastUpdateVersionCellProperty);
         updateCellFormat.display();
     }
-
-
 
     //original edit cell
 //    private void showEditCellPopup(String cellID, String currentValue) {
@@ -635,8 +668,20 @@ public class HeaderController {
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    void originalCellValueTextFieldOnAction(ActionEvent event) {
 
+    public void updateCellValue(String cellID, String newValue) {
+        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
+        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
+
+        // Call the engine's EditCell function to update the cell value
+        mainController.getEngine().EditCell(coordinate, newValue);
+
+        // Refresh the sheet display
+        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+        mainController.setSheet(dtoSheet, true);
+
+        originalCellValueProperty.set(newValue);
+        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
     }
+
 }

@@ -908,6 +908,8 @@ public class CommandController {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Sort");
 
+        ScrollPane scrollPane = new ScrollPane();
+
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(15, 15, 15, 15));
@@ -990,7 +992,8 @@ public class CommandController {
         });
 
         // Set scene and show the popup
-        Scene scene = new Scene(vbox, 400, 300);
+        scrollPane.setContent(vbox);
+        Scene scene = new Scene(scrollPane, 400, 300);
         mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.show();
