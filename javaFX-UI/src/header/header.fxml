@@ -2,16 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
    <content>
       <VBox alignment="TOP_CENTER" prefWidth="900.0">
          <children>
@@ -22,21 +21,33 @@
             </Label>
             <HBox alignment="CENTER_LEFT" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="750.0" spacing="12.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="loadFileButton" minWidth="100.0" mnemonicParsing="false" onAction="#loadFileButtonAction" prefHeight="27.0" prefWidth="119.0" text="Load file" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="loadFileButton" minWidth="100.0" mnemonicParsing="false" onAction="#loadFileButtonAction" prefHeight="27.0" prefWidth="100.0" text="Load file" HBox.hgrow="ALWAYS" />
                   <Label fx:id="fileNameLabel" maxWidth="1.7976931348623157E308" prefWidth="600.0" style="-fx-background-color: #DCDCDC;" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="7.0" />
                      </HBox.margin>
                   </Label>
+                  <ComboBox fx:id="themesComboBox" onAction="#themesComboBoxOnAction" prefWidth="130.0" promptText="Theme" />
+                  <CheckBox fx:id="animationsCheckBox" mnemonicParsing="false" onAction="#animationsCheckBoxOnAction" prefWidth="137.0" text="Animations">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </CheckBox>
                </children>
                <padding>
-                  <Insets left="12.0" />
+                  <Insets left="12.0" right="12.0" />
                </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="575.0" spacing="7.0">
                <children>
-                  <Label text="Selected Celll ID:" />
-                  <Label fx:id="selectedCellIDLabel" minWidth="50.0" />
+                  <Label text="Selected Cell ID:" />
+                  <Label fx:id="selectedCellIDLabel" minWidth="50.0">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font></Label>
                   <Label text="Original Cell Value:" />
                   <Label fx:id="originalCellValueLabel" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update Value" />
@@ -50,34 +61,6 @@
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
-            </HBox>
-            <Separator prefHeight="0.0" prefWidth="900.0" style="-fx-border-width: 3;" />
-            <HBox prefHeight="55.0" prefWidth="200.0">
-               <children>
-                  <Label text="Animation:" textAlignment="CENTER">
-                     <padding>
-                        <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <ToggleButton fx:id="animationOnOffToggleButton" mnemonicParsing="false" onAction="#animationOnOffToggleButtonOnAction" text="On/Off">
-                     <HBox.margin>
-                        <Insets bottom="6.0" top="6.0" />
-                     </HBox.margin>
-                  </ToggleButton>
-                  <Label text="Theme:">
-                     <HBox.margin>
-                        <Insets left="100.0" top="12.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBox fx:id="themeSelectionComboBox" onAction="#themeSelectionComboBoxAction" prefWidth="150.0" promptText="Theme Selection">
-                     <HBox.margin>
-                        <Insets left="12.0" top="6.0" />
-                     </HBox.margin>
-                  </ComboBox>
-               </children>
             </HBox>
          </children>
       </VBox>

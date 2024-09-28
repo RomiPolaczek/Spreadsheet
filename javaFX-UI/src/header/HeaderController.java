@@ -2,6 +2,8 @@ package header;
 
 import app.AppController;
 import dto.DTOcell;
+import javafx.animation.ScaleTransition;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -10,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.concurrent.Task;
@@ -19,6 +22,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.scene.control.Alert;
+import javafx.util.Duration;
 import sheet.coordinate.api.Coordinate;
 import dto.DTOsheet;
 
@@ -44,9 +48,9 @@ public class HeaderController {
     @FXML
     private Label selectedCellIDLabel;
     @FXML
-    private Button animationButton;
+    private CheckBox animationsCheckBox;
     @FXML
-    private ComboBox<String> themeSelectorComboBox;
+    private ComboBox<String> themesComboBox;
 
 
     private AppController mainController;
@@ -66,7 +70,8 @@ public class HeaderController {
         originalCellValueProperty = new SimpleStringProperty();
         lastUpdateVersionCellProperty = new SimpleStringProperty();
         versionSelectorComboBox = new ComboBox<>();
-        themeSelectorComboBox = new ComboBox<>();
+        themesComboBox = new ComboBox<>();
+        isAnimationSelectedProperty = new SimpleBooleanProperty(false);
     }
 
     @FXML
@@ -74,10 +79,12 @@ public class HeaderController {
         fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
         versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
-        themeSelectorComboBox.disableProperty().bind(isFileSelected.not());
+        themesComboBox.disableProperty().bind(isFileSelected.not());
+        animationsCheckBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueLabel.textProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
+
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
@@ -106,6 +113,8 @@ public class HeaderController {
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
+
+    public Boolean isAnimationSelectedProperty() { return isAnimationSelectedProperty.getValue(); }
 
 
 
@@ -155,10 +164,15 @@ public class HeaderController {
                     selectedFileProperty.set(absolutePath);
                     isFileSelected.set(true);
                     DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-       //             mainController.initialColumnWidth(dtoSheet.getLayout());
 
                     mainController.setSheet(dtoSheet, false);
-                    //mainController.initializeCommandAndRangeControllers();
+
+                    selectedCellProperty.set("A1");
+                    mainController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+                    mainController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+                    originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+                    lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+
                     mainController.populateRangeListView();
                 });
                 return null;
@@ -218,10 +232,22 @@ public class HeaderController {
         return progressBarStage;
     }
 
+    @FXML
+    void themesComboBoxOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void animationsCheckBoxOnAction(ActionEvent event) {
+        boolean isSelected = animationsCheckBox.isSelected();
+        isAnimationSelectedProperty.set(isSelected);
+    }
+
     public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
             selectedCellProperty.set(cellID);
+            animateSelectedCell(label);
 
             mainController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
             mainController.selectedRowProperty().set(cellID.replaceAll("[^\\d]", ""));
@@ -250,14 +276,44 @@ public class HeaderController {
         });
     }
 
-    private void resetPreviousStyles() {
-        // Reset styles for all previously highlighted cells
-        for (String cellID : lastHighlightedCells) {
-            Label cellLabel = mainController.getCellLabel(cellID);
-            cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
+    private void animateSelectedCell(Label label) {
+        // Create a new ScaleTransition
+        if(isAnimationSelectedProperty.get()) {
+            label.setStyle("-fx-padding: 30");
+//           label.setStyle("-fx-end-margin: 10");
+
+
+            ScaleTransition scaleTransition = new ScaleTransition();
+            scaleTransition.setNode(label);
+            scaleTransition.setDuration(Duration.millis(200));
+            scaleTransition.setFromX(1.0);
+            scaleTransition.setFromY(1.0);
+            scaleTransition.setToX(1.2);
+            scaleTransition.setToY(1.2);
+            scaleTransition.setCycleCount(2);
+            scaleTransition.setAutoReverse(true);
+
+//        label.setStyle("-fx-end-margin: 5");
+
+            // Set clip to avoid overflow
+            Rectangle clip = new Rectangle(label.getWidth(), label.getHeight());
+//        clip.setStyle("-fx-padding: 44 2 2 2");
+//        clip.setStyle("-fx-end-margin: 2 2 2 2");
+            label.setClip(clip);
+
+            // Play the animation
+            scaleTransition.play();
         }
-        // Clear the list after resetting
-        lastHighlightedCells.clear();
+    }
+
+    private void resetPreviousStyles() {
+            // Reset styles for all previously highlighted cells
+            for (String cellID : lastHighlightedCells) {
+                Label cellLabel = mainController.getCellLabel(cellID);
+                cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
+            }
+            // Clear the list after resetting
+            lastHighlightedCells.clear();
     }
 
     @FXML
@@ -376,13 +432,4 @@ public class HeaderController {
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    void themeSelectionComboBoxAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void animationOnOffToggleButtonOnAction(ActionEvent event) {
-
-    }
 }

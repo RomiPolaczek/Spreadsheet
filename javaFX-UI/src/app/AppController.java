@@ -5,6 +5,7 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import header.HeaderController;
 import impl.EngineImpl;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -180,4 +181,7 @@ public class AppController {
     public void setDynamicGridPane(GridPane dynamicGridPane) {
         sheetComponentController.setDynamicGridPane(dynamicGridPane);
     }
+
+    public Boolean isAnimationSelectedProperty() { return headerComponentController.isAnimationSelectedProperty(); }
+
 }

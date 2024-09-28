@@ -819,7 +819,6 @@ public class CommandController {
 
                 Chart chart = null;
                 if ("Line Graph".equals(selectedGraphType)) {
-                    // Create a line chart
                     NumberAxis xAxis = new NumberAxis();
                     xAxis.setLabel("X Axis");
 
@@ -835,12 +834,11 @@ public class CommandController {
                     lineChart.getData().add(dataSeries);
                     chart = lineChart;
                     lineChart.getStyleClass().add("visible");
-//                    chart.setAnimated(); DO WHEN CREATE ANIMATIONS
-                    chart.setAnimated(false);
+                    if(!mainController.isAnimationSelectedProperty())
+                        chart.setAnimated(false);
 
                 }
                 else if ("Bar Graph".equals(selectedGraphType)) {
-                    // Create a bar chart
                     CategoryAxis xAxis = new CategoryAxis();
                     xAxis.setLabel("X Axis");
 
@@ -848,7 +846,6 @@ public class CommandController {
                     yAxis.setLabel("Y Axis");
 
                     BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-//                    barChart.setTitle("Bar Graph");
 
                     XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
                     for (int i = 0; i < xAxisValues.size(); i++) {
@@ -857,7 +854,9 @@ public class CommandController {
 
                     barChart.getData().add(dataSeries);
                     chart = barChart;
-                    chart.setAnimated(false); //////changeeeee
+
+                    if(!mainController.isAnimationSelectedProperty())
+                        chart.setAnimated(false);
                 }
 
                 // Display the chart with a "Back" button

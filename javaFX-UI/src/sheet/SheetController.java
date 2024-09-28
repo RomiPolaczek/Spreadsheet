@@ -347,49 +347,51 @@ public class SheetController {
 //    }
 
     public void highlightColumn(String column) { //all in once
-        List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
+        if(mainController.isAnimationSelectedProperty()) {
+            List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
 
-        if (cellsInColumn.isEmpty()) {
-            return; // No cells to highlight
-        }
+            if (cellsInColumn.isEmpty()) {
+                return; // No cells to highlight
+            }
 
-        // Set the total animation duration to 2 seconds
-        Duration highlightDuration = Duration.seconds(1.5); // Total duration for highlighting
-        Duration stepDuration = highlightDuration.divide(30); // Duration for each step (adjust for speed)
+            // Set the total animation duration to 2 seconds
+            Duration highlightDuration = Duration.seconds(1.5); // Total duration for highlighting
+            Duration stepDuration = highlightDuration.divide(30); // Duration for each step (adjust for speed)
 
-        // Create a Timeline to animate the highlighting
-        Timeline timeline = new Timeline();
+            // Create a Timeline to animate the highlighting
+            Timeline timeline = new Timeline();
 
-        // Create keyframes for gradually darkening and then bringing back to original
-        for (int i = 0; i <= 10; i++) {
-            final double factor = (double) i / 10; // Create a factor from 0 to 1
-            KeyFrame keyFrame = new KeyFrame(
-                    stepDuration.multiply(i), // Use multiply to get the total time for this step
+            // Create keyframes for gradually darkening and then bringing back to original
+            for (int i = 0; i <= 10; i++) {
+                final double factor = (double) i / 10; // Create a factor from 0 to 1
+                KeyFrame keyFrame = new KeyFrame(
+                        stepDuration.multiply(i), // Use multiply to get the total time for this step
+                        event -> {
+                            for (Label cellLabel : cellsInColumn) {
+                                Color originalColor = (Color) cellLabel.getTextFill(); // Get the original text color
+                                Color darkerColor = originalColor.darker().interpolate(Color.LIGHTGREY, factor); // Darken gradually
+                                cellLabel.setStyle("-fx-background-color: " + toRgbString(darkerColor) + ";");
+                            }
+                        }
+                );
+                timeline.getKeyFrames().add(keyFrame);
+            }
+
+            // KeyFrame to bring back to the original color
+            KeyFrame resetKeyFrame = new KeyFrame(
+                    highlightDuration, // Total duration for bringing back
                     event -> {
                         for (Label cellLabel : cellsInColumn) {
-                            Color originalColor = (Color) cellLabel.getTextFill(); // Get the original text color
-                            Color darkerColor = originalColor.darker().interpolate(Color.LIGHTGREY, factor); // Darken gradually
-                            cellLabel.setStyle("-fx-background-color: " + toRgbString(darkerColor) + ";");
+                            cellLabel.setStyle(""); // Reset to original color
                         }
                     }
             );
-            timeline.getKeyFrames().add(keyFrame);
+
+            timeline.getKeyFrames().add(resetKeyFrame);
+
+            // Play the animation
+            timeline.play();
         }
-
-        // KeyFrame to bring back to the original color
-        KeyFrame resetKeyFrame = new KeyFrame(
-                highlightDuration, // Total duration for bringing back
-                event -> {
-                    for (Label cellLabel : cellsInColumn) {
-                        cellLabel.setStyle(""); // Reset to original color
-                    }
-                }
-        );
-
-        timeline.getKeyFrames().add(resetKeyFrame);
-
-        // Play the animation
-        timeline.play();
     }
 
     // Convert Color to RGB string for CSS
