@@ -32,4 +32,5 @@ public interface Engine {
     DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns);
     DTOsheet createDTOCopySheet();
     Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
+    Map<String, Integer> createListOfFunctions();
 }

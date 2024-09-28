@@ -446,7 +446,7 @@ public class CommandController {
 //        popupStage.showAndWait();
 //    }
 
-    ////////Bonus for filtering another coloumn- not working
+    ////////Bonus for filtering another coloumn
     private void showFilterPopup() {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
