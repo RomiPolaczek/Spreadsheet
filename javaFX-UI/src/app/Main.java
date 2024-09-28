@@ -28,6 +28,7 @@ public class Main extends Application {
 
         // set stage
         Scene scene = new Scene(root, 1000, 700);
+        appController.setTheme(scene);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

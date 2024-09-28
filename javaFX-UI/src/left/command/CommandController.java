@@ -59,16 +59,22 @@ public class CommandController {
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
 
     public void initializeCommandController(){
+        BooleanBinding noSelectedCell = mainController.getSelectedCellProperty().isNull();
+
         selectedCellLabel.textProperty().bind(mainController.getSelectedCellProperty());
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
         selectedRowLabel.textProperty().bind(selectedRowProperty);
-        cellBackgroundColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
-        cellTextColorPicker.disableProperty().bind(mainController.getSelectedCellProperty().isNull());
-        resetCellDesignButton.disableProperty().bind(mainController.getSelectedCellProperty().isNull()
+        cellBackgroundColorPicker.disableProperty().bind(noSelectedCell);
+        cellTextColorPicker.disableProperty().bind(noSelectedCell);
+        resetCellDesignButton.disableProperty().bind(noSelectedCell
                 .or(mainController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
         columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
         columnWidthSlider.disableProperty().bind(selectedColumnProperty.isNull());
         rowHeightSlider.disableProperty().bind(selectedRowProperty.isNull());
+        filterButton.disableProperty().bind(noSelectedCell);
+        dynamicAnalysisButton.disableProperty().bind(noSelectedCell);
+        sortButton.disableProperty().bind(noSelectedCell);
+        createGraphButton.disableProperty().bind(noSelectedCell);
 
         columnWidthSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             changeColumnWidth(newValue.intValue());
@@ -253,7 +259,6 @@ public class CommandController {
 
     public void resetColumnAlignmentComboBox(){
         columnAlignmentComboBox.getSelectionModel().clearSelection();
-//        selectedColumnLabel.setStyle("-fx-font-size: 14px;");
         columnAlignmentComboBox.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -541,6 +546,7 @@ public class CommandController {
         });
 
         Scene scene = new Scene(vbox, 300, 400);
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
@@ -648,14 +654,14 @@ public class CommandController {
         DTOsheet dtoSheet = mainController.getEngine().createDTOCopySheet();
         SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
         newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
-        newSheetController.getCellLabel(selectedCell.getValue()).setStyle("-fx-background-color: yellow");
+        newSheetController.getCellLabel(selectedCell.getValue()).setStyle("-fx-background-color: yellow; -fx-text-fill: black");
 
 
-        root.getStylesheets().add(getClass().getResource("/sheet/sheet.css").toExternalForm());
+        mainController.setTheme(root.getScene());
 
         selectedCell.addListener((observable, oldValue, newValue) -> {
             newSheetController.getCellLabel(oldValue).setStyle("");
-            newSheetController.getCellLabel(newValue).setStyle("-fx-background-color: yellow");
+            newSheetController.getCellLabel(newValue).setStyle("-fx-background-color: yellow; -fx-text-fill: black");
             minValueTextField.clear();
             maxValueTextField.clear();
             stepSizeTextField.clear();
@@ -684,6 +690,7 @@ public class CommandController {
         popupStage.setTitle("Sheet Version Popup");
 
         Scene scene = new Scene(root);
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
@@ -729,7 +736,7 @@ public class CommandController {
                     else if(textField == stepSizeTextField)
                         valueSlider.setBlockIncrement(value);
 
-                    textField.setStyle("-fx-border-color: green; -fx-background-color: #dcfbdc; -fx-border-width: 2px;");
+                    textField.setStyle("-fx-border-color: green; -fx-background-color: #dcfbdc; -fx-border-width: 2px; -fx-text-fill: black");
 
                     // Remove error label if the value is valid
                     if (parentVBox.getChildren().contains(errorLabel)) {
@@ -738,7 +745,7 @@ public class CommandController {
                 }
                 catch (NumberFormatException e) {
                     // Invalid number: show red border and add the error label
-                    textField.setStyle("-fx-border-color: red; -fx-background-color: #ffdddd; -fx-border-width: 2px ");
+                    textField.setStyle("-fx-border-color: red; -fx-background-color: #ffdddd; -fx-border-width: 2px; -fx-text-fill: black ");
                     errorLabel.setText(labelText);
 
                     // Add the error label if it's not already present
@@ -869,7 +876,7 @@ public class CommandController {
 
         inputFormVBox.getChildren().add(submitButton);
         popupStage.setScene(inputScene);
-        popupStage.getScene().getStylesheets().add("/left/command/graph.css");
+        mainController.setTheme(inputScene);
         popupStage.show();
     }
 
@@ -979,6 +986,7 @@ public class CommandController {
 
         // Set scene and show the popup
         Scene scene = new Scene(vbox, 400, 300);
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.show();
     }

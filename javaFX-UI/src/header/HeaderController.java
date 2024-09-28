@@ -62,7 +62,6 @@ public class HeaderController {
     private SimpleStringProperty lastUpdateVersionCellProperty;
     private SimpleBooleanProperty isAnimationSelectedProperty;
     private List<String> lastHighlightedCells = new ArrayList<>();
-    private ThemeManager themeManager;
 
 
     public HeaderController() {
@@ -74,7 +73,6 @@ public class HeaderController {
         versionSelectorComboBox = new ComboBox<>();
         themesComboBox = new ComboBox<>();
         isAnimationSelectedProperty = new SimpleBooleanProperty(false);
-        themeManager = new ThemeManager();
     }
 
     @FXML
@@ -82,7 +80,7 @@ public class HeaderController {
         fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
         versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
-        themesComboBox.getItems().addAll("Classic", "Pink", "Blue");
+        themesComboBox.getItems().addAll("Classic", "Pink", "Blue", "Dark");
         themesComboBox.setValue("Classic"); // Set default value
         themesComboBox.disableProperty().bind(isFileSelected.not());
         animationsCheckBox.disableProperty().bind(isFileSelected.not());
@@ -113,6 +111,7 @@ public class HeaderController {
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+        mainController.getThemeManager().setMainController(mainController);
     }
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
@@ -120,7 +119,6 @@ public class HeaderController {
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
 
     public Boolean isAnimationSelectedProperty() { return isAnimationSelectedProperty.getValue(); }
-
 
 
 //    private void resetHeaderControllerForNewFile(){
@@ -179,6 +177,7 @@ public class HeaderController {
                     lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
 
                     mainController.populateRangeListView();
+
                 });
                 return null;
             }
@@ -240,11 +239,10 @@ public class HeaderController {
     @FXML
     void themesComboBoxOnAction(ActionEvent event) {
         String selectedTheme = themesComboBox.getValue();
-
+        mainController.setSelectedTheme(selectedTheme);
         // Use ThemeManager to apply the selected theme
-        themeManager.applyTheme(fileNameLabel.getScene(), selectedTheme);
+        mainController.setTheme(fileNameLabel.getScene());
     }
-
 
     @FXML
     void animationsCheckBoxOnAction(ActionEvent event) {
@@ -286,32 +284,34 @@ public class HeaderController {
     }
 
     private void animateSelectedCell(Label label) {
-        // Create a new ScaleTransition
         if(isAnimationSelectedProperty.get()) {
-            label.setStyle("-fx-padding: 30");
-//           label.setStyle("-fx-end-margin: 10");
-
 
             ScaleTransition scaleTransition = new ScaleTransition();
-            scaleTransition.setNode(label);
-            scaleTransition.setDuration(Duration.millis(200));
-            scaleTransition.setFromX(1.0);
+            scaleTransition.setNode(label); // Set the label to animate
+            scaleTransition.setDuration(Duration.millis(200)); // Duration of the animation
+            scaleTransition.setFromX(1.0); // Starting scale (normal size)
             scaleTransition.setFromY(1.0);
-            scaleTransition.setToX(1.2);
-            scaleTransition.setToY(1.2);
-            scaleTransition.setCycleCount(2);
-            scaleTransition.setAutoReverse(true);
+            scaleTransition.setToX(1.12); // Scale factor (15% larger)
+            scaleTransition.setToY(1.12);
+            scaleTransition.setCycleCount(2); // 2 cycles: enlarge, then shrink
+            scaleTransition.setAutoReverse(true); // Reverse to shrink back to original size
 
-//        label.setStyle("-fx-end-margin: 5");
+            // Set translation adjustments to mimic a pivot from the center
+            double pivotX = label.getWidth() / 2;
+            double pivotY = label.getHeight() / 2;
 
-            // Set clip to avoid overflow
-            Rectangle clip = new Rectangle(label.getWidth(), label.getHeight());
-//        clip.setStyle("-fx-padding: 44 2 2 2");
-//        clip.setStyle("-fx-end-margin: 2 2 2 2");
-            label.setClip(clip);
+            // Apply translation before scaling to simulate pivot effect
+            label.setTranslateX(-pivotX * 0.075); // Adjust X to pivot from center
+            label.setTranslateY(-pivotY * 0.075); // Adjust Y to pivot from center
 
             // Play the animation
             scaleTransition.play();
+
+            // After animation, reset the translation to ensure it returns to normal position
+            scaleTransition.setOnFinished(e -> {
+                label.setTranslateX(0);
+                label.setTranslateY(0);
+            });
         }
     }
 
@@ -327,7 +327,6 @@ public class HeaderController {
 
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
-        // Assuming the selectedCellProperty contains the cell ID like "A1", "B2", etc.
         String selectedCellID = selectedCellProperty.get();
         String currentValue = originalCellValueProperty.get();
 

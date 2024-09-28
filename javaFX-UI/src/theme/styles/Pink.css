@@ -1,16 +1,42 @@
-/* Pink theme */
-
-/* Set the background color of the root */
+/* Pink Theme */
 .root {
+    -fx-background-color: #ffe6f2; /* Light pink background */
+    -fx-font-family: "Avenir"; /* Font family */
+    -fx-font-size: 12px; /* Default font size */
+    -fx-text-fill: #900000; /* Default text color */
+}
+
+/* Label Style */
+.label {
+    -fx-font-size: 14px; /* Label font size */
+    -fx-text-fill: #ff3385; /* Bold pink text */
+}
+
+/* ListView and ListCell Style */
+.list-view {
     -fx-background-color: #ffe6f2; /* Light pink background */
 }
 
-/* Style for buttons */
+.list-cell {
+    -fx-text-fill: #900000; /* Dark pink text color */
+    -fx-background-color: transparent; /* Ensure transparent background unless explicitly styled */
+}
+
+.list-cell:hover {
+    -fx-background-color: #ff80c1; /* Bright pink on hover */
+    -fx-text-fill: #900000; /* Ensure text remains dark pink */
+}
+
+.list-cell:selected {
+    -fx-background-color: #ff80c1; /* Bright pink for selected cells */
+    -fx-text-fill: white; /* Ensure selected text is white */
+}
+
+/* Button Style */
 .button {
     -fx-background-color: #ff99cc; /* Medium pink button */
     -fx-text-fill: white; /* White text */
-    -fx-font-size: 14px;
-    -fx-padding: 8 15 8 15; /* Add padding */
+    -fx-font-size: 13px; /* Button font size */
     -fx-background-radius: 5; /* Rounded corners */
 }
 
@@ -18,67 +44,111 @@
     -fx-background-color: #ff66b3; /* Darker pink on hover */
 }
 
-/* Style for labels */
-.label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #ff3385; /* Bold pink text */
-}
-
-/* Style for ScrollPane borders */
-.scroll-pane {
-    -fx-background-color: transparent; /* Make scroll pane background transparent */
-    -fx-border-color: #ff66b3; /* Pink border */
-    -fx-border-width: 2; /* Border width */
-}
-
-/* Style for GridPane */
-.grid-pane {
-    -fx-background-color: #fff0f5; /* Lavender pink background for grid */
-}
-
-/* Style for ComboBox */
-.combo-box {
-    -fx-background-color: #ffccdd; /* Light pink background for combo boxes */
-    -fx-text-fill: #900000; /* Dark pink text */
-}
-
-/* Style for TextFields */
+/* TextField Style */
 .text-field {
     -fx-background-color: #ffccdd; /* Light pink background */
     -fx-border-color: #ff99cc; /* Pink border */
     -fx-text-fill: #900000; /* Dark pink text */
 }
 
-/* Style for alerts */
-.alert {
-    -fx-background-color: #ffe6f2; /* Light pink background for alerts */
-    -fx-text-fill: #ff3385; /* Bold pink text for alerts */
+.text-field:focused {
+    -fx-border-color: #ff66b3; /* Focused text field border color */
 }
 
-/* Style for selected cells */
-.selected-cell {
-    -fx-background-color: #ff80c1; /* Bright pink for selected cells */
+/* ComboBox Style */
+.combo-box {
+    -fx-background-color: #ffccdd; /* Light pink background for combo boxes */
+    -fx-border-color: #ff99cc; /* Pink border */
+    -fx-text-fill: #900000; /* Dark pink text */
+    -fx-prompt-text-fill: #900000; /* Dark pink prompt text color */
 }
 
-/* Adjust table cell colors */
-.table-view .table-cell {
-    -fx-background-color: #ffe6f2; /* Light pink for table cells */
+.combo-box .list-cell {
+    -fx-background-color: #ffccdd; /* Background for combo box options */
+    -fx-text-fill: #900000; /* Text color for combo box options */
 }
 
-.table-view .table-cell:selected {
-    -fx-background-color: #ff80c1; /* Bright pink for selected table cells */
+/* ColorPicker Style */
+.color-picker {
+    -fx-background-color: #ffccdd; /* Background color for color picker */
 }
 
-/* Styles for sliders */
-.slider {
-    -fx-background-color: #ffccdd; /* Light pink background */
-}
-
-.slider:horizontal .thumb {
-    -fx-background-color: #ff66b3; /* Dark pink thumb */
-}
-
-/* Style for checkboxes */
-.checkbox {
+/* CheckBox Style */
+.check-box {
     -fx-text-fill: #ff3385; /* Bold pink text */
+}
+
+/* ProgressBar Style */
+.progress-bar {
+    -fx-accent: #ff66b3; /* Progress bar accent color */
+}
+
+/* Custom styles for selected cells */
+#selected-cell {
+    -fx-background-color: #ff80c1; /* Bright pink for selected cells */
+    -fx-text-fill: white; /* Text color for selected cell */
+}
+
+/* Styles for influencing and depended-on cells */
+.depends-on-cell {
+    -fx-background-color: #ffccdd; /* Light pink for depended-on cells */
+}
+
+.influence-on-cell {
+    -fx-background-color: #ff80c1; /* Bright pink for influencing cells */
+}
+
+/* Header Style */
+#header {
+    -fx-font-size: 31px; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: #ff09de; /* Header text color */
+}
+
+/* Accordion Style */
+.accordion .titled-pane {
+    -fx-background-color: #ff99cc; /* Medium pink for titled panes */
+    -fx-text-fill: #900000; /* Text color for title */
+}
+
+.accordion .titled-pane > .title {
+    -fx-font-weight: bold; /* Bold title font */
+    -fx-font-size: 14px; /* Title font size */
+    -fx-background-color: #ff99cc; /* Title background */
+    -fx-text-fill: #900000; /* Title text color */
+}
+
+.accordion .titled-pane > .content {
+    -fx-background-color: #ffe6f2; /* Content background */
+    -fx-padding: 10; /* Padding around content */
+}
+
+/* ToggleButton Styling for Pink Theme */
+.toggle-button {
+    -fx-background-color: linear-gradient(to bottom, #ffccdd, #ff99cc); /* Pink gradient */
+    -fx-text-fill: black; /* Black text */
+    -fx-padding: 5px; /* Padding */
+    -fx-border-color: #ff66b3; /* Pink border */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-background-radius: 5; /* Rounded background */
+    -fx-cursor: hand; /* Hand cursor */
+}
+
+/* Hover effect for Pink Theme */
+.toggle-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ff80c1, #ff66b3); /* Slightly darker pink gradient on hover */
+    -fx-border-color: #ff66b3; /* Lighter border on hover */
+}
+
+/* Styling when the ToggleButton is pressed (selected) in Pink Theme */
+.toggle-button:selected {
+    -fx-background-color: linear-gradient(to bottom, #80c7ff, #3399ff); /* Blue gradient when selected */
+    -fx-text-fill: white; /* White text */
+    -fx-border-color: #0066cc; /* Blue border */
+    -fx-border-width: 2; /* Thicker border */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Drop shadow for emphasis */
+}
+
+#fileNameLabel {
+    -fx-background-color:  #ffccdd; /* Light pink background */
 }

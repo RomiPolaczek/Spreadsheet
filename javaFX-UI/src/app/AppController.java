@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import left.LeftController;
 import sheet.SheetController;
+import theme.ThemeManager;
 
 import java.util.List;
 import java.util.Map;
@@ -39,17 +41,19 @@ public class AppController {
     private LeftController leftComponentController;
 
     private Engine engine;
+    private String selectedTheme = "Classic";
+    private ThemeManager themeManager;
 
 
     @FXML
     public void initialize() {
         engine = new EngineImpl();
+        themeManager = new ThemeManager();
+
         if (headerComponentController != null && sheetComponentController != null && leftComponentController != null) {
             headerComponentController.setMainController(this);
             sheetComponentController.setMainController(this);
             leftComponentController.setMainController(this);
-        } else {
-            System.out.println("nuullllll");//Delete
         }
     }
 
@@ -61,6 +65,12 @@ public class AppController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void setSelectedTheme(String selectedTheme) {
+        this.selectedTheme = selectedTheme;
+    }
+
+    public ThemeManager getThemeManager(){ return themeManager; }
 
     public void setSheet(DTOsheet dtoSheet, Boolean applyCustomStyles) {
         sheetComponentController.setSheet(dtoSheet, applyCustomStyles);
@@ -178,10 +188,15 @@ public class AppController {
         sheetComponentController.highlightColumn(column);
     }
 
-    public void setDynamicGridPane(GridPane dynamicGridPane) {
-        sheetComponentController.setDynamicGridPane(dynamicGridPane);
+    public Boolean isAnimationSelectedProperty() {
+        return headerComponentController.isAnimationSelectedProperty();
     }
 
-    public Boolean isAnimationSelectedProperty() { return headerComponentController.isAnimationSelectedProperty(); }
+    public void setSheetStyle(Scene scene, String theme) {
+        sheetComponentController.setSheetStyle(scene, theme);
+    }
 
+    public void setTheme(Scene scene) {
+        themeManager.applyTheme(scene, selectedTheme);
+    }
 }

@@ -1,17 +1,17 @@
- /*Overall GridPane Style */
+/* Overall GridPane Style */
 .grid-pane {
-    -fx-background-color: white; /* White background for the grid */
-    -fx-border-color: black; /* Black border color around the grid */
+    -fx-background-color: #e0f7fa; /* Bright blue background for the grid */
+    -fx-border-color: #66b3ff; /* Bright blue border around the grid */
     -fx-border-width: 1px;
     -fx-grid-lines-visible: true; /* Show grid lines */
 }
 
 /* Header Cell Style */
 .header-cell {
-    -fx-background-color: #e0e0e0; /* Light gray background for headers */
+    -fx-background-color: #99ccff; /* Bright blue for headers */
     -fx-font-size: 14px; /* Font size */
     -fx-font-weight: bold; /* Bold text */
-    -fx-text-fill: #000000; /* Black text color */
+    -fx-text-fill: #0964bd; /* Bright, dark blue text color */
     -fx-alignment: center; /* Center text alignment */
     -fx-text-alignment: center; /* Center text horizontally */
     -fx-padding: 0; /* Remove padding if necessary */
@@ -23,33 +23,31 @@
 
 /* Single Cell Style */
 .single-cell {
-    -fx-background-color: #ffffff; /* White background */
+    -fx-background-color: #e0f7fa; /* Bright soft blue background */
     -fx-padding: 0; /* Remove padding if necessary */
     -fx-max-width: Infinity; /* Allow label to expand horizontally */
     -fx-max-height: Infinity; /* Allow label to expand vertically */
     -fx-min-width: 0; /* Allow label to contract */
     -fx-min-height: 0; /* Allow label to contract */
-
 }
 
 /* Hover Effect */
 .single-cell:hover, .header-cell:hover {
-    -fx-background-color: #cdcdcd; /* Slightly gray background on hover */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 5, 0.5, 0, 0); /* Drop shadow effect */
+    -fx-background-color: #80bfff; /* Brighter blue on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 102, 255, 0.6), 5, 0.5, 0, 0); /* Bright blue drop shadow effect */
 }
 
-/*!* Selected Cell Effect *!*/
+/* Selected Cell Effect */
 #selected-cell {
-    -fx-background-color: rgba(251, 253, 253, 0.83); /* Light blue background for selected cell */
-    -fx-border-color: rgba(79, 80, 83, 0.75); /* Dark blue border for selection */
+    -fx-background-color: rgba(220, 233, 255, 0.9); /* Light blue for selected cell */
+    -fx-border-color: rgba(102, 179, 255, 0.9); /* Brighter blue border for selection */
     -fx-border-width: 2px; /* Border width */
-    -fx-effect: dropshadow(gaussian, rgba(79, 80, 83, 0.75), 5, 0.5, 0, 0); /* Blue drop shadow */
+    -fx-effect: dropshadow(gaussian, rgba(102, 179, 255, 0.9), 5, 0.5, 0, 0); /* Bright blue drop shadow */
 }
-
 
 /* Depends-on Cell Effect */
 .single-cell.depends-on-cell {
-    -fx-background-color: #e0f0ff; /* Light blue background */
+    -fx-background-color: #e0f0ff; /* Light blue background for depends-on cells */
     -fx-border-style: dotted; /* Dotted border */
     -fx-border-width: 2px; /* Border width */
     -fx-border-color: #007bff; /* Blue border color */
@@ -58,20 +56,23 @@
 
 /* Influence-on Cell Effect */
 .single-cell.influence-on-cell {
-    -fx-background-color: #e0ffe0; /* Light green background */
+    -fx-background-color: #e0ffe0; /* Light green background for influencing cells */
     -fx-border-style: dotted; /* Dotted border */
     -fx-border-width: 2px; /* Border width */
     -fx-border-color: #28a745; /* Green border color */
     -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); /* Green shadow effect */
 }
 
- .range-label{
-     -fx-border-color: #c82121;
-     -fx-border-width: 3px; /* Border width */
- }
+/* Range Label Effect */
+.range-label {
+    -fx-border-color: black; /* Bright blue border for range label */
+    -fx-border-width: 3px; /* Border width */
+}
 
- #default-cell {
-     -fx-background-color: white;
-     -fx-text-fill: black;
- }
+/* Default Cell */
+#default-cell {
+    -fx-background-color: #cce6ff; /* Bright blue background */
+    -fx-text-fill: black; /* Black text color */
+}
+
 

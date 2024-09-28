@@ -1,0 +1,157 @@
+/* Dark Theme */
+.root {
+    -fx-background-color: #2b2b2b; /* Dark background color */
+    -fx-font-family: "Avenir"; /* Font family */
+    -fx-font-size: 12px; /* Default font size */
+    -fx-text-fill: white; /* Default text color */
+}
+
+/* Label Style */
+.label {
+    -fx-text-fill: white; /* Label text color */
+}
+
+/* ListView and ListCell Style */
+.list-view {
+    -fx-background-color: #2b2b2b; /* Dark background */
+}
+
+.list-cell {
+    -fx-text-fill: white; /* List cell text color */
+    -fx-background-color: transparent; /* Ensure transparent background unless explicitly styled */
+}
+
+.list-cell:hover {
+    -fx-background-color: #3d3d3d; /* Darker on hover */
+    -fx-text-fill: white; /* Ensure text remains white */
+}
+
+.list-cell:selected {
+    -fx-background-color: #5d5d5d; /* Even darker on selection */
+    -fx-text-fill: white; /* Ensure selected text remains visible */
+}
+
+/* Button Style */
+.button {
+    -fx-background-color: #4d4d4d; /* Dark gray button background */
+    -fx-text-fill: white; /* Button text color */
+    -fx-border-color: #7a7a7a; /* Button border */
+    -fx-border-radius: 5; /* Rounded button corners */
+    -fx-background-radius: 5; /* Rounded button corners */
+}
+
+.button:hover {
+    -fx-background-color: #666666; /* Button hover background color */
+}
+
+/* TextField Style */
+.text-field {
+    -fx-background-color: #4d4d4d; /* Dark gray text field background */
+    -fx-border-color: #7a7a7a; /* Text field border */
+    -fx-text-fill: white; /* Text field text color */
+}
+
+.text-field:focused {
+    -fx-border-color: #007bff; /* Focused text field border color */
+}
+
+/* ComboBox Style */
+.combo-box {
+    -fx-background-color: #4d4d4d; /* Dark gray combo box background */
+    -fx-border-color: #7a7a7a; /* Combo box border */
+    -fx-prompt-text-fill: white; /* Prompt text color */
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #4d4d4d; /* Background for combo box options */
+    -fx-text-fill: white; /* Text color for combo box options */
+}
+
+/* ColorPicker Style */
+.color-picker {
+    -fx-background-color: #4d4d4d; /* Background color for color picker */
+}
+
+/* CheckBox Style */
+.check-box {
+    -fx-text-fill: white; /* Check box text color */
+}
+
+/* ProgressBar Style */
+.progress-bar {
+    -fx-accent: #007bff; /* Progress bar accent color */
+}
+
+/* Custom styles for selected cells */
+#selected-cell {
+    -fx-background-color: #666666; /* Darker gray background for selected cell */
+    -fx-text-fill: white; /* Text color for selected cell */
+}
+
+/* Styles for cells that are influencing or depended on */
+.depends-on-cell {
+    -fx-background-color: #ffff99; /* Bright yellow for depended-on cells */
+}
+
+.influence-on-cell {
+    -fx-background-color: #99ccff; /* Bright blue for influencing cells */
+}
+
+/* Header Style */
+#header {
+    -fx-font-size: 31px; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: white; /* Header text color */
+}
+
+#fileNameLabel {
+    -fx-text-fill: #4d4d4d; /* File name label text color */
+}
+
+/* Accordion Style */
+.accordion .titled-pane {
+    -fx-background-color: #3d3d3d; /* Darker background for titled panes */
+    -fx-text-fill: white; /* Text color for title */
+}
+
+.accordion .titled-pane > .title {
+    -fx-font-weight: bold; /* Bold title font */
+    -fx-font-size: 14px; /* Title font size */
+    -fx-background-color: #4d4d4d; /* Title background */
+    -fx-text-fill: white; /* Title text color */
+}
+
+.accordion .titled-pane > .content {
+    -fx-background-color: #2b2b2b; /* Content background */
+    -fx-padding: 10; /* Padding around content */
+}
+
+/* ToggleButton Styling for Dark Theme */
+.toggle-button {
+    -fx-background-color: linear-gradient(to bottom, #4d4d4d, #3d3d3d); /* Dark gradient */
+    -fx-text-fill: white; /* White text */
+    -fx-padding: 5px;
+    -fx-border-color: #707070; /* Darker border */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-background-radius: 5; /* Rounded background */
+    -fx-cursor: hand;
+}
+
+/* Hover effect for Dark Theme */
+.toggle-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5d5d5d, #4d4d4d); /* Slightly lighter gradient on hover */
+    -fx-border-color: #808080; /* Lighter border on hover */
+}
+
+/* Styling when the ToggleButton is pressed (selected) in Dark Theme */
+.toggle-button:selected {
+    -fx-background-color: linear-gradient(to bottom, #3399ff, #1a73e8); /* Blue gradient when selected */
+    -fx-text-fill: white; /* White text */
+    -fx-border-color: #0066cc; /* Blue border */
+    -fx-border-width: 2; /* Thicker border */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Drop shadow for emphasis */
+}
+
+#fileNameLabel {
+    -fx-background-color: #DCDCDC; /* Light pink background */
+}
