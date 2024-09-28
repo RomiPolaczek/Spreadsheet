@@ -1,0 +1,115 @@
+/* General styling for the chart */
+.chart {
+    -fx-background-color: #ffe8f2; /* Light pink background */
+    -fx-border-color: #ffabd2; /* Pink border around the chart */
+    -fx-border-width: 2;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.1), 8, 0, 0, 2);
+    -fx-background-insets: 5;
+}
+
+/* Styling for the chart title */
+.chart-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #660033; /* Dark pink text color */
+}
+
+/* Styling for the chart legend */
+.chart-legend {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-text-fill: #555;
+}
+
+/* Styling for the chart axis */
+.axis {
+    -fx-tick-label-fill: #660033; /* Dark pink for axis tick labels */
+    -fx-font-family: "Arial";
+    -fx-font-size: 11px;
+    -fx-tick-mark-length: 6;
+}
+
+.axis-label {
+    -fx-text-fill: #660033; /* Dark pink for axis labels */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #ff99cc; /* Light pink grid lines */
+}
+
+/* Styling for line charts */
+.default-color0.chart-series-line {
+    -fx-stroke: #ff5c93; /* Dark pink line color */
+    -fx-stroke-width: 2;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: #ff4081, white; /* Pink line symbol with white background */
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+
+/* Styling for data points in line charts */
+.chart-line-symbol:hover {
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.3), 8, 0, 0, 2);
+}
+
+/* Styling for bar charts */
+.default-color0.chart-bar {
+    -fx-bar-fill: #ff77a8; /* Pink bar color */
+}
+
+.default-color0.chart-bar:hover {
+    -fx-bar-fill: #ff5c93; /* Darker pink on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.3), 8, 0, 0, 2);
+}
+
+/* Styling for axis ticks and labels */
+.axis .axis-tick-mark {
+    -fx-stroke: #ff77a8; /* Pink for axis tick marks */
+}
+
+.axis .axis-tick-label {
+    -fx-text-fill: #660033; /* Dark pink for axis tick labels */
+}
+
+/* Tooltip for chart data points */
+.chart-line-symbol .chart-tooltip, .chart-bar .chart-tooltip {
+    -fx-background-color: white;
+    -fx-text-fill: #660033; /* Dark pink text */
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-padding: 5;
+    -fx-border-color: #660033; /* Dark pink border */
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.1), 8, 0, 0, 2);
+}
+
+/* Hover effects on data points */
+.chart-symbol:hover {
+    -fx-background-color: #ff5c93; /* Dark pink background */
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.3), 10, 0, 0, 3);
+}
+
+/* Optional: Button styling (like for the 'Back' button) */
+.button {
+    -fx-background-color: #ff5c93; /* Pink background */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5;
+    -fx-padding: 6 12;
+    -fx-alignment: center;
+}
+
+.button:hover {
+    -fx-background-color: #ff4081; /* Darker pink on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255, 105, 180, 0.15), 8, 0, 0, 2);
+}

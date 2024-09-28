@@ -70,7 +70,12 @@ public class AppController {
         this.selectedTheme = selectedTheme;
     }
 
+    public String getSelectedTheme() {
+        return selectedTheme;
+    }
+
     public ThemeManager getThemeManager(){ return themeManager; }
+
 
     public void setSheet(DTOsheet dtoSheet, Boolean applyCustomStyles) {
         sheetComponentController.setSheet(dtoSheet, applyCustomStyles);

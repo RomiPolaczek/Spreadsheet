@@ -6,32 +6,23 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
-import javafx.scene.Scene;
-import javafx.scene.chart.*;
-import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sheet.SheetController;
 import sheet.api.EffectiveValue;
-import sheet.coordinate.impl.CoordinateFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -457,6 +448,10 @@ public class CommandController {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Filter");
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(15, 15, 15, 15));
@@ -545,7 +540,8 @@ public class CommandController {
             mainController.displayFilteredSheetInPopup(dtoSheet);
         });
 
-        Scene scene = new Scene(vbox, 300, 400);
+        scrollPane.setContent(vbox);
+        Scene scene = new Scene(scrollPane, 300, 400);
         mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.showAndWait();
@@ -894,8 +890,14 @@ public class CommandController {
         chartVBox.getChildren().add(backButton);
 
         Scene chartScene = new Scene(chartVBox, 800, 500);
-        chartScene.getStylesheets().add("/left/command/graph.css");
+        mainController.setTheme(inputScene);
+        setGraphStyle(chartScene);
         popupStage.setScene(chartScene);
+    }
+
+    public void setGraphStyle(Scene scene){
+        String css = getClass().getResource(  "/left/command/graph/style/"+ mainController.getSelectedTheme() + "Graph.css").toExternalForm();
+        scene.getStylesheets().add(css);
     }
 
     private void showSortPopup() {

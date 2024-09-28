@@ -18,6 +18,7 @@ public class ThemeManager {
             mainController.setSheetStyle(scene, themeFileName);
         }
         catch (Exception e) {
+
         }
     }
 }

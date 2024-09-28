@@ -5,7 +5,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.LeftController">
    <content>
-      <VBox alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" minHeight="500.0" styleClass="root">
          <children>
             <fx:include fx:id="commandComponent" source="command/command.fxml" />
             <fx:include fx:id="rangeComponent" source="range/range.fxml" />

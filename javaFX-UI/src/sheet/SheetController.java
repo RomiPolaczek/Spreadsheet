@@ -239,12 +239,14 @@ public class SheetController {
         // Create a new SheetController instance for the pop-up
         SheetController newSheetController = new SheetController();
         newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = new HashMap<>();
-        newSheetController.rowsHeight = new HashMap<>();
+        newSheetController.columnsWidth = this.columnsWidth;
+        newSheetController.rowsHeight = this.rowsHeight;
+        newSheetController.columnAlignments = this.columnAlignments;
+        newSheetController.cellStyles = this.cellStyles;
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, false);
+        newSheetController.setSheet(dtoSheet, true);
 
         // Create a VBox to hold the GridPane
         VBox vbox = new VBox(versionGrid);
