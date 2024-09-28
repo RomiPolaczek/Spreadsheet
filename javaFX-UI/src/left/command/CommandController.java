@@ -589,8 +589,12 @@ public class CommandController {
     void dynamicAnalysisButtonAction(ActionEvent event) {
         BorderPane root = new BorderPane();
 
-        Label cellToDynamicAnalysis = new Label( selectedCellLabel.getText());
+        HBox selectedCellBox = new HBox();
+        Label introToSelectedCell = new Label("Cell: ");
+        Label cellToDynamicAnalysis = new Label(selectedCellLabel.getText());
+        cellToDynamicAnalysis.setStyle("-fx-font-weight: bold");
         cellToDynamicAnalysis.textProperty().bind(selectedCellLabel.textProperty());
+        selectedCellBox.getChildren().addAll(introToSelectedCell, cellToDynamicAnalysis);
 
         // Left VBox
         VBox leftVBox = new VBox(3);
@@ -618,57 +622,18 @@ public class CommandController {
 
         valueSlider.setDisable(true);  // Initially disabled
 
-        minValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
-                    maxValueTextField.getText().trim().isEmpty() ||
-                    stepSizeTextField.getText().trim().isEmpty());
-            if(!minValueTextField.getText().trim().isEmpty())
-            {
-                double minValue = Double.parseDouble(minValueTextField.getText());
-                valueSlider.setMin(minValue);
-            }
-        });
-
-        maxValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
-                    maxValueTextField.getText().trim().isEmpty() ||
-                    stepSizeTextField.getText().trim().isEmpty());
-            if(!maxValueTextField.getText().trim().isEmpty())
-            {
-                try {
-                    double maxValue = Double.parseDouble(maxValueTextField.getText());
-                    valueSlider.setMax(maxValue);
-                }
-                catch (NumberFormatException e) {
-                    maxValueTextField.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-            }
-        });
-
-        stepSizeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
-                    maxValueTextField.getText().trim().isEmpty() ||
-                    stepSizeTextField.getText().trim().isEmpty());
-            if(!stepSizeTextField.getText().trim().isEmpty())
-            {
-                double stepSize = Double.parseDouble(stepSizeTextField.getText());
-                valueSlider.setBlockIncrement(stepSize);
-            }
-        });
-
+        // Call the validate function for each text field, passing the other text fields for the slider enable/disable check
+        validateAndSetSlider(maxValueTextField, valueSlider, "Please enter a \nvalid max value.", minValueTextField, maxValueTextField, stepSizeTextField);
+        validateAndSetSlider(minValueTextField, valueSlider, "Please enter a \nvalid min value.", minValueTextField, maxValueTextField, stepSizeTextField);
+        validateAndSetSlider(stepSizeTextField, valueSlider, "Please enter a \nvalid step size.", minValueTextField, maxValueTextField, stepSizeTextField);
 
         // Add components to the VBox
-        leftVBox.getChildren().addAll(cellToDynamicAnalysis, minValueLabel, minValueTextField,
+        leftVBox.getChildren().addAll(selectedCellBox, minValueLabel, minValueTextField,
                 maxValueLabel, maxValueTextField, stepSizeLabel,
                 stepSizeTextField);
 
         // Set VBox to the left of BorderPane
         root.setLeft(leftVBox);
-
-        BooleanBinding allFieldsFilled = minValueTextField.textProperty().isNotEmpty()
-                .and(maxValueTextField.textProperty().isNotEmpty())
-                .and(stepSizeTextField.textProperty().isNotEmpty());
-
 
         // Center ScrollPane with GridPane inside
   //      ScrollPane scrollPane = new ScrollPane();
@@ -681,10 +646,12 @@ public class CommandController {
         newSheetController.setDynamicGridPane(gridPane); // Set gridPane to be used in the setSheet method
         newSheetController.initializeSheetController();
         DTOsheet dtoSheet = mainController.getEngine().createDTOCopySheet();
+        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
         newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
+        newSheetController.getCellLabel(selectedCell.getValue()).setStyle("-fx-background-color: yellow");
+
 
         root.getStylesheets().add(getClass().getResource("/sheet/sheet.css").toExternalForm());
-        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();;
 
         selectedCell.addListener((observable, oldValue, newValue) -> {
             newSheetController.getCellLabel(oldValue).setStyle("");
@@ -720,6 +687,76 @@ public class CommandController {
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
+
+
+    private void validateAndSetSlider(TextField textField, Slider valueSlider, String labelText, TextField minValueTextField, TextField maxValueTextField, TextField stepSizeTextField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
+                    maxValueTextField.getText().trim().isEmpty() ||
+                    stepSizeTextField.getText().trim().isEmpty());
+
+            VBox parentVBox = (VBox) textField.getParent();
+            Label errorLabel = null;
+
+            for (Node node : parentVBox.getChildren()) {
+                if (node instanceof Label && "errorLabel".equals(node.getId())) {
+                    errorLabel = (Label) node;
+                    break;
+                }
+            }
+
+            // Create a new error label if it doesn't already exist
+            if (errorLabel == null) {
+                errorLabel = new Label();
+                errorLabel.setId("errorLabel");
+                errorLabel.setTextFill(Color.RED);
+            }
+
+            // Clear previous styles
+            textField.setStyle("");
+
+            // Check if the TextField is not empty
+            if (!textField.getText().trim().isEmpty()) {
+                try {
+                    // Attempt to parse the double value from the TextField
+                    double value = Double.parseDouble(textField.getText());
+
+                    // Set the value as the slider's max and apply green border
+                    if(textField == maxValueTextField)
+                        valueSlider.setMax(value);
+                    else if(textField == minValueTextField)
+                        valueSlider.setMin(value);
+                    else if(textField == stepSizeTextField)
+                        valueSlider.setBlockIncrement(value);
+
+                    textField.setStyle("-fx-border-color: green; -fx-background-color: #dcfbdc; -fx-border-width: 2px;");
+
+                    // Remove error label if the value is valid
+                    if (parentVBox.getChildren().contains(errorLabel)) {
+                        parentVBox.getChildren().remove(errorLabel);
+                    }
+                }
+                catch (NumberFormatException e) {
+                    // Invalid number: show red border and add the error label
+                    textField.setStyle("-fx-border-color: red; -fx-background-color: #ffdddd; -fx-border-width: 2px ");
+                    errorLabel.setText(labelText);
+
+                    // Add the error label if it's not already present
+                    if (!parentVBox.getChildren().contains(errorLabel)) {
+                        parentVBox.getChildren().add(errorLabel);
+                    }
+                    valueSlider.setDisable(true);
+                }
+            } else {
+                // If the field is empty, reset the styles and remove any error label
+                textField.setStyle("");
+                if (parentVBox.getChildren().contains(errorLabel)) {
+                    parentVBox.getChildren().remove(errorLabel);
+                }
+            }
+        });
+    }
+
 
     @FXML
     void createGraphButtonOnAction(ActionEvent event) {
