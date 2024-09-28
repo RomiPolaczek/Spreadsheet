@@ -67,6 +67,7 @@ public class HeaderController {
 
 
 
+
     private AppController mainController;
     private SimpleStringProperty selectedFileProperty;
     private SimpleBooleanProperty isFileSelected;
@@ -370,12 +371,11 @@ public class HeaderController {
             mainController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
-
-        // Update the cell value using the existing updateCellValue method
         updateCellValue(selectedCellID, newValue);
         originalCellValueTextField.clear();
         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
     }
+  
 
     @FXML
     void formatFunctionButtonOnAction(ActionEvent event) {
@@ -668,29 +668,6 @@ public class HeaderController {
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    void originalCellValueTextFieldOnAction(ActionEvent event) {
-//        // Get the current value from the TextField
-//        String newValue = originalCellValueTextField.getText();
-//
-//        // Ensure there is a selected cell
-//        String selectedCellID = selectedCellProperty.get();
-//        if (selectedCellID == null || selectedCellID.isEmpty()) {
-//            mainController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
-//            return;
-//        }
-//
-//        // Ensure the value is not null or empty (optional validation)
-//        if (newValue == null || newValue.isEmpty()) {
-//            mainController.showAlert("Error", "Invalid Value", "Cell value cannot be empty.", Alert.AlertType.ERROR);
-//            return;
-//        }
-//
-//        // Update the cell value using the existing updateCellValue method
-//        updateCellValue(selectedCellID, newValue);
-//        originalCellValueTextField.clear();
-//        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
-    }
 
     public void updateCellValue(String cellID, String newValue) {
         // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
@@ -707,30 +684,4 @@ public class HeaderController {
         lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
     }
 
-//    private void originalCellValueTextFieldOnFocusLost() {
-//        // Get the current value from the TextField
-//        String newValue = originalCellValueTextField.getText();
-//
-//        if(newValue == null || newValue.isEmpty()) {
-//            return;
-//        }
-//
-//        // Ensure there is a selected cell
-//        String selectedCellID = selectedCellProperty.get();
-//        if (selectedCellID == null || selectedCellID.isEmpty()) {
-//            mainController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
-//            return;
-//        }
-//
-//        // Ensure the value is not null or empty (optional validation)
-//        if (newValue == null || newValue.isEmpty()) {
-//            mainController.showAlert("Error", "Invalid Value", "Cell value cannot be empty.", Alert.AlertType.ERROR);
-//            return;
-//        }
-//
-//        // Update the cell value using the existing updateCellValue method
-//        updateCellValue(selectedCellID, newValue);
-//        originalCellValueTextField.clear();
-//        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
-//    }
 }

@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import left.command.CommandController;
 import left.range.RangeController;
 
+import java.util.Map;
+
 public class LeftController {
     @FXML
     private VBox commandComponent;
@@ -67,4 +69,6 @@ public class LeftController {
     public void populateRangeListView() {
         rangeComponentController.populateRangeListView();
     }
+
+    public Map<String,String> getNewCoordToOldCoord() {return commandComponentController.getNewCoordToOldCoord(); }
 }

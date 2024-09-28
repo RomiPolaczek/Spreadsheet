@@ -5,6 +5,8 @@ import dto.DTOcell;
 import dto.DTOlayout;
 import dto.DTOrange;
 import dto.DTOsheet;
+import expression.api.Expression;
+import expression.parser.Operation;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -21,6 +23,9 @@ import sheet.range.Range;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
+import java.lang.reflect.Modifier;
+//import org.reflections.Reflections;
+import java.lang.reflect.*;
 
 import java.io.*;
 import java.util.*;
@@ -225,8 +230,8 @@ public class EngineImpl implements Engine, Serializable {
 //    }
 
     @Override
-    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues) {
-        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues));
+    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord));
         return dtoSheet;
     }
 
@@ -264,4 +269,66 @@ public class EngineImpl implements Engine, Serializable {
         return cellsValues;
     }
 
+    public Map<String, Integer> createListOfFunctions() {
+        Map<String, Integer> functionMap = new HashMap<>();
+        for (Operation operation : Operation.values()) {
+            functionMap.put(operation.name(), operation.getNumArgs()); // Add function name and argument count
+        }
+        return functionMap;
+    }
+
+//    @Override
+//    public List<String> createListOfFunctions() {
+//        List<String> functions = new ArrayList<>();
+//        functions.add("Abs");
+//        functions.add("And");
+//        functions.add("Average");
+//        functions.add("Bigger");
+//        functions.add("Concat");
+//        functions.add("Divide");
+//        functions.add("Equal");
+//        functions.add("If");
+//        functions.add("Less");
+//        functions.add("Minus");
+//        functions.add("Modulo");
+//        functions.add("Not");
+//        functions.add("Or");
+//        functions.add("Percent");
+//        functions.add("Plus");
+//        functions.add("Pow");
+//        functions.add("Ref");
+//        functions.add("Sub");
+//        functions.add("Sum");
+//        functions.add("Times");
+//        Collections.sort(functions);
+//
+//        //List<String> functions = getExpressionClassNames("expression.impl");
+//        return functions;
+//    }
+
+//    private List<String> getExpressionClassNames(String packageName) {
+//        List<String> classNames = new ArrayList<>();
+//
+//        // Convert package name to file path
+//        String path = packageName.replace('.', '/');
+//        File directory = new File(ClassLoader.getSystemClassLoader().getResource(path).getFile());
+//
+//        if (directory.exists()) {
+//            File[] files = directory.listFiles(new FilenameFilter() {
+//                @Override
+//                public boolean accept(File dir, String name) {
+//                    return name.endsWith(".class");
+//                }
+//            });
+//
+//            if (files != null) {
+//                for (File file : files) {
+//                    String className = packageName + '.' + file.getName().replace(".class", "");
+//                    classNames.add(className);
+//                }
+//            }
+//        }
+//
+//        return classNames;
 }
+

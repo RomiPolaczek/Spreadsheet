@@ -4,19 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="add format function button">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/angus_activation.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_media.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/jaxb_core.xml" beforeDir="false" />
+    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="added css files and theme manager">
+      <change afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionArgument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/expression/parser/Operation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/header/ExpressionBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/header/UpdateCellFormat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/header.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/sheet.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +57,8 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "themes",
+
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/rotem/IdeaProjects/sheetCell2",
     "node.js.detected.package.eslint": "true",
@@ -66,9 +66,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
+
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15234375",
+    "project.structure.side.proportion": "0.22408377",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -156,8 +157,7 @@
     <MESSAGE value="added bonus for filtering multiple columns, fixed the range delete and added error messages for range selection in filter and sort" />
     <MESSAGE value="added a button for animation and theme selction" />
     <MESSAGE value="added css files and theme manager" />
-    <MESSAGE value="add format function button" />
-    <option name="LAST_COMMIT_MESSAGE" value="add format function button" />
+    <option name="LAST_COMMIT_MESSAGE" value="added css files and theme manager" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

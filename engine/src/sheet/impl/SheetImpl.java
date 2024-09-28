@@ -476,8 +476,69 @@ public class SheetImpl implements Sheet, Serializable {
 //        return filteredSheet;
 //    }
 
+//    @Override
+//    public Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues) {
+//        Range range = new Range("filterRange", layout);
+//        range.parseRange(rangeStr);
+//
+//        SheetImpl filteredSheet = this.copySheet();
+//
+//        int startRow = range.getTopLeftCoordinate().getRow();
+//        int endRow = range.getBottomRightCoordinate().getRow();
+//        int startCol = range.getTopLeftCoordinate().getColumn();
+//        int endCol = range.getBottomRightCoordinate().getColumn();
+//
+//        // Create a list to hold the rows that match the filter
+//        List<List<Cell>> matchingRows = new ArrayList<>();
+//
+//        // Filter rows based on multiple column selections
+//        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+//            boolean matchAllColumns = true;
+//            for (Map.Entry<String, List<String>> entry : columnToValues.entrySet()) {
+//                String column = entry.getKey();
+//                List<String> values = entry.getValue();
+//
+//                int colIndex = CoordinateImpl.convertStringColumnToNumber(column);
+//                Cell cellInSelectedColumn = filteredSheet.getCell(rowIndex, colIndex);
+//                String cellValue = cellInSelectedColumn.getEffectiveValue().getValue().toString();
+//
+//                if (!values.contains(cellValue)) {
+//                    matchAllColumns = false;
+//                    break; // Stop checking other columns if one doesn't match
+//                }
+//            }
+//
+//            if (matchAllColumns) {
+//                List<Cell> matchingRow = new ArrayList<>();
+//                for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+//                    Cell cell = filteredSheet.getCell(rowIndex, colIndex);
+//                    matchingRow.add(cell);
+//                }
+//                matchingRows.add(matchingRow); // Add matching row
+//            }
+//        }
+//
+//        // Clear the entire range
+//        for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+//            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+//                filteredSheet.setEmptyCell(rowIndex, colIndex);
+//            }
+//        }
+//
+//        // Place matching rows at the top of the range
+//        for (int rowIndex = startRow; rowIndex < startRow + matchingRows.size(); rowIndex++) {
+//            List<Cell> matchingRow = matchingRows.get(rowIndex - startRow);
+//            for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
+//                Cell cell = matchingRow.get(colIndex - startCol);
+//                filteredSheet.setCell(rowIndex, colIndex, cell.getEffectiveValue().getValue().toString());
+//            }
+//        }
+//
+//        return filteredSheet;
+//    }
+
     @Override
-    public Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues) {
+    public Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> newCoordToOldCoord) {
         Range range = new Range("filterRange", layout);
         range.parseRange(rangeStr);
 
@@ -513,6 +574,12 @@ public class SheetImpl implements Sheet, Serializable {
                 for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
                     Cell cell = filteredSheet.getCell(rowIndex, colIndex);
                     matchingRow.add(cell);
+
+                    // Populate the oldCoordToNewCoord map
+                    String oldCoord = cell.getCoordinate().toString();
+                    Coordinate newCoordinate = CoordinateFactory.createCoordinate(rowIndex,colIndex);
+                    String newCoord = newCoordinate.toString();
+                    newCoordToOldCoord.put(newCoord, oldCoord);
                 }
                 matchingRows.add(matchingRow); // Add matching row
             }
@@ -531,6 +598,12 @@ public class SheetImpl implements Sheet, Serializable {
             for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
                 Cell cell = matchingRow.get(colIndex - startCol);
                 filteredSheet.setCell(rowIndex, colIndex, cell.getEffectiveValue().getValue().toString());
+
+                // Update the oldCoordToNewCoord map for each cell
+                String oldCoord = cell.getCoordinate().toString();
+                Coordinate newCoordinate = CoordinateFactory.createCoordinate(rowIndex,colIndex);
+                String newCoord = newCoordinate.toString();
+                newCoordToOldCoord.put(newCoord, oldCoord);
             }
         }
 
