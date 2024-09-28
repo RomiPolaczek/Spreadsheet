@@ -147,9 +147,9 @@ public class AppController {
         leftComponentController.initializeCommandAndRangeControllers();
     }
 
-    public Map<String, String> getCellStyles() {
-        return sheetComponentController.getCellStyles();
-    }
+//    public Map<String, String> getCellStyles() {
+//        return sheetComponentController.getCellStyles();
+//    }
 
     public void updateColorPickersWithCellStyles(Label cell) {
         leftComponentController.updateColorPickersWithCellStyles(cell);
@@ -210,4 +210,5 @@ public class AppController {
     public void setTheme(Scene scene) {
         themeManager.applyTheme(scene, selectedTheme);
     }
-}
+
+    public Map<String,String> getNewCoordToOldCoord() {return leftComponentController.getNewCoordToOldCoord(); }

@@ -27,7 +27,8 @@ public interface Engine {
     List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
     List<String> createListOfValuesForFilter(String column, String range);
     //DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn);
-    DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues);
+    //DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues);
+    DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);
     List<String> getColumnsWithinRange(String range);
     DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns);
     DTOsheet createDTOCopySheet();

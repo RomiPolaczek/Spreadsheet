@@ -230,8 +230,8 @@ public class EngineImpl implements Engine, Serializable {
 //    }
 
     @Override
-    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues) {
-        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues));
+    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord));
         return dtoSheet;
     }
 

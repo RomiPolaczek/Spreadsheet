@@ -47,6 +47,7 @@ public class CommandController {
     private AppController mainController;
     private SimpleStringProperty selectedColumnProperty;
     private SimpleStringProperty selectedRowProperty;
+    private Map<String, String> newCoordToOldCoord;
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
 
     public void initializeCommandController(){
@@ -85,6 +86,7 @@ public class CommandController {
         selectedColumnProperty = new SimpleStringProperty();
         selectedRowProperty = new SimpleStringProperty();
         columnAlignmentComboBox.getItems().addAll("Left","Center", "Right");
+        newCoordToOldCoord = new HashMap<>();
     }
 
     public SimpleStringProperty selectedColumnProperty() {return selectedColumnProperty;}
@@ -536,7 +538,8 @@ public class CommandController {
             popupStage.close();
 
             // Call the engine method to filter based on the selected columns and values
-            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), columnToValues);
+            newCoordToOldCoord.clear();
+            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), columnToValues, newCoordToOldCoord);
             mainController.displayFilteredSheetInPopup(dtoSheet);
         });
 
@@ -983,7 +986,7 @@ public class CommandController {
             popupStage.close(); // Close the popup after sorting
 
             DTOsheet dtoSheet = mainController.getEngine().sortColumnBasedOnSelection(rangeField.getText(), selectedColumns);
-            mainController.displayFilteredSheetInPopup(dtoSheet);
+            mainController.displaySortedSheetInPopup(dtoSheet);
         });
 
         // Set scene and show the popup
@@ -992,5 +995,7 @@ public class CommandController {
         popupStage.setScene(scene);
         popupStage.show();
     }
+
+    public Map<String,String> getNewCoordToOldCoord() {return newCoordToOldCoord; }
 
 }

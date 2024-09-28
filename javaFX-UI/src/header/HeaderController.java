@@ -60,6 +60,9 @@ public class HeaderController {
     private CheckBox animationsCheckBox;
     @FXML
     private ComboBox<String> themesComboBox;
+    @FXML
+    private TextField originalCellValueTextField;
+
 
 
     private AppController mainController;
@@ -354,6 +357,8 @@ public class HeaderController {
         updateCellFormat.display();
     }
 
+
+
     //original edit cell
 //    private void showEditCellPopup(String cellID, String currentValue) {
 //        // Create a new pop-up stage
@@ -630,4 +635,8 @@ public class HeaderController {
         versionSelectorComboBox.getSelectionModel().clearSelection();
     }
 
+    @FXML
+    void originalCellValueTextFieldOnAction(ActionEvent event) {
+
+    }
 }
