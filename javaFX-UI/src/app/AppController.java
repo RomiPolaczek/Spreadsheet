@@ -210,4 +210,9 @@ public class AppController {
     public void setTheme(Scene scene) {
         themeManager.applyTheme(scene, selectedTheme);
     }
+
+    public void updateCellValue(String cellID, String newValue) {
+        headerComponentController.updateCellValue(cellID, newValue);
+    }
+
 }
