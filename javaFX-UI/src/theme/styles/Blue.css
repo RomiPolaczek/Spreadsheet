@@ -1,0 +1,84 @@
+/* Blue theme */
+
+/* Set the background color of the root */
+.root {
+    -fx-background-color: #e0f7fa; /* Light blue background */
+}
+
+/* Style for buttons */
+.button {
+    -fx-background-color: #00bcd4; /* Medium blue button */
+    -fx-text-fill: white; /* White text */
+    -fx-font-size: 14px;
+    -fx-padding: 8 15 8 15; /* Add padding */
+    -fx-background-radius: 5; /* Rounded corners */
+}
+
+.button:hover {
+    -fx-background-color: #0097a7; /* Darker blue on hover */
+}
+
+/* Style for labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #00796b; /* Dark teal text */
+}
+
+/* Style for ScrollPane borders */
+.scroll-pane {
+    -fx-background-color: transparent; /* Make scroll pane background transparent */
+    -fx-border-color: #0097a7; /* Teal border */
+    -fx-border-width: 2; /* Border width */
+}
+
+/* Style for GridPane */
+.grid-pane {
+    -fx-background-color: #b3e5fc; /* Light blue background for grid */
+}
+
+/* Style for ComboBox */
+.combo-box {
+    -fx-background-color: #b3e5fc; /* Light blue background for combo boxes */
+    -fx-text-fill: #004d40; /* Dark teal text */
+}
+
+/* Style for TextFields */
+.text-field {
+    -fx-background-color: #b3e5fc; /* Light blue background */
+    -fx-border-color: #00bcd4; /* Medium blue border */
+    -fx-text-fill: #004d40; /* Dark teal text */
+}
+
+/* Style for alerts */
+.alert {
+    -fx-background-color: #e0f7fa; /* Light blue background for alerts */
+    -fx-text-fill: #00796b; /* Dark teal text for alerts */
+}
+
+/* Style for selected cells */
+.selected-cell {
+    -fx-background-color: #4fc3f7; /* Bright blue for selected cells */
+}
+
+/* Adjust table cell colors */
+.table-view .table-cell {
+    -fx-background-color: #e0f7fa; /* Light blue for table cells */
+}
+
+.table-view .table-cell:selected {
+    -fx-background-color: #4fc3f7; /* Bright blue for selected table cells */
+}
+
+/* Styles for sliders */
+.slider {
+    -fx-background-color: #b3e5fc; /* Light blue background */
+}
+
+.slider:horizontal .thumb {
+    -fx-background-color: #0097a7; /* Darker blue thumb */
+}
+
+/* Style for checkboxes */
+.checkbox {
+    -fx-text-fill: #00796b; /* Dark teal text */
+}

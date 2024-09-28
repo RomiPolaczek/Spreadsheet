@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.util.Duration;
 import sheet.coordinate.api.Coordinate;
 import dto.DTOsheet;
+import theme.ThemeManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class HeaderController {
     private SimpleStringProperty lastUpdateVersionCellProperty;
     private SimpleBooleanProperty isAnimationSelectedProperty;
     private List<String> lastHighlightedCells = new ArrayList<>();
+    private ThemeManager themeManager;
 
 
     public HeaderController() {
@@ -72,6 +74,7 @@ public class HeaderController {
         versionSelectorComboBox = new ComboBox<>();
         themesComboBox = new ComboBox<>();
         isAnimationSelectedProperty = new SimpleBooleanProperty(false);
+        themeManager = new ThemeManager();
     }
 
     @FXML
@@ -79,6 +82,8 @@ public class HeaderController {
         fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
         versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
+        themesComboBox.getItems().addAll("Classic", "Pink", "Blue");
+        themesComboBox.setValue("Classic"); // Set default value
         themesComboBox.disableProperty().bind(isFileSelected.not());
         animationsCheckBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
@@ -234,8 +239,12 @@ public class HeaderController {
 
     @FXML
     void themesComboBoxOnAction(ActionEvent event) {
+        String selectedTheme = themesComboBox.getValue();
 
+        // Use ThemeManager to apply the selected theme
+        themeManager.applyTheme(fileNameLabel.getScene(), selectedTheme);
     }
+
 
     @FXML
     void animationsCheckBoxOnAction(ActionEvent event) {
