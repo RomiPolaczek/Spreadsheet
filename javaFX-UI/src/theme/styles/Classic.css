@@ -1,0 +1,149 @@
+/* Classic Theme */
+.root {
+    -fx-background-color: white; /* Background color */
+    -fx-font-family: "System"; /* Font family */
+    -fx-font-size: 12px; /* Default font size */
+    -fx-text-fill: black; /* Text color */
+}
+
+/* Label Style */
+.label {
+    -fx-text-fill: black; /* Label text color */
+}
+
+/* ListView and ListCell Style */
+.list-view {
+    -fx-background-color: white; /* White background */
+}
+
+.list-cell {
+    -fx-text-fill: black; /* List cell text color */
+    -fx-background-color: transparent; /* Ensure transparent background unless explicitly styled */
+}
+
+.list-cell:hover {
+    -fx-background-color: lightgray; /* Light gray on hover */
+    -fx-text-fill: black; /* Ensure text remains black */
+}
+
+.list-cell:selected {
+    -fx-background-color: darkgray; /* Dark gray on selection */
+    -fx-text-fill: black; /* Ensure selected text remains visible */
+}
+
+/* Button Style */
+.button {
+    -fx-background-color: gray; /* Button background */
+    -fx-text-fill: white; /* Button text color */
+    -fx-border-color: black; /* Button border */
+    -fx-border-radius: 5; /* Rounded button corners */
+    -fx-background-radius: 5; /* Rounded button corners */
+}
+
+.button:hover {
+    -fx-background-color: darkgray; /* Button hover background color */
+}
+
+/* TextField Style */
+.text-field {
+    -fx-background-color: white; /* Text field background */
+    -fx-border-color: gray; /* Text field border */
+    -fx-text-fill: black; /* Text field text color */
+}
+
+.text-field:focused {
+    -fx-border-color: blue; /* Focused text field border color */
+}
+
+/* ComboBox Style */
+.combo-box {
+    -fx-background-color: gray; /* Dark gray combo box background */
+    -fx-border-color: black; /* Combo box border */
+    -fx-prompt-text-fill: black; /* Prompt text color */
+}
+
+.combo-box .list-cell {
+    -fx-background-color: white; /* Background for combo box options */
+    -fx-text-fill: black; /* Text color for combo box options */
+}
+
+/* CheckBox Style */
+.check-box {
+    -fx-text-fill: black; /* Check box text color */
+}
+
+/* ProgressBar Style */
+.progress-bar {
+    -fx-accent: gray; /* Progress bar accent color */
+}
+
+/* Custom styles for selected cells */
+#selected-cell {
+    -fx-background-color: lightgray; /* Background for selected cell */
+    -fx-text-fill: black; /* Text color for selected cell */
+}
+
+/* Styles for cells that are influencing or depended on */
+.depends-on-cell {
+    -fx-background-color: lightyellow; /* Color for depended-on cells */
+}
+
+.influence-on-cell {
+    -fx-background-color: lightblue; /* Color for influencing cells */
+}
+
+/* Header Style */
+#header {
+    -fx-font-size: 31; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: black; /* Header text color */
+}
+
+/* Accordion Style */
+.accordion .titled-pane {
+    -fx-background-color: white; /* White background for titled panes */
+    -fx-text-fill: black; /* Text color for title */
+}
+
+.accordion .titled-pane > .title {
+    -fx-font-weight: bold; /* Bold title font */
+    -fx-font-size: 14px; /* Title font size */
+    -fx-background-color: gray; /* Title background */
+    -fx-text-fill: black; /* Title text color */
+}
+
+.accordion .titled-pane > .content {
+    -fx-background-color: white; /* Content background */
+    -fx-padding: 10; /* Padding around content */
+}
+
+/* Default ToggleButton styling */
+.toggle-button {
+    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0); /* Light gradient */
+    -fx-text-fill: black; /* Text color */
+    -fx-padding: 5px; /* Padding */
+    -fx-border-color: #808080; /* Border color */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-background-radius: 5; /* Rounded background */
+    -fx-cursor: hand; /* Hand cursor */
+}
+
+/* Additional hover effect */
+.toggle-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #e0e0e0, #c0c0c0); /* Slightly darker gradient on hover */
+    -fx-border-color: #707070; /* Darker border on hover */
+}
+
+/* Styling when the ToggleButton is pressed (selected) */
+.toggle-button:selected {
+    -fx-background-color: linear-gradient(to bottom, #80c7ff, #3399ff); /* Blue gradient when selected */
+    -fx-text-fill: white; /* White text */
+    -fx-border-color: #0066cc; /* Blue border */
+    -fx-border-width: 2; /* Thicker border */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Drop shadow for emphasis */
+}
+
+#fileNameLabel {
+    -fx-background-color: #DCDCDC; /* Light pink background */
+}
+

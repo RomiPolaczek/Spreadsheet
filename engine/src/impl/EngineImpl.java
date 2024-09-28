@@ -235,7 +235,6 @@ public class EngineImpl implements Engine, Serializable {
         return dtoSheet;
     }
 
-
     @Override
     public List<String> getColumnsWithinRange(String range) {
         return sheet.getColumnsWithinRange(range);

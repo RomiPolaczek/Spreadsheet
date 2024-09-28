@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
@@ -8,13 +9,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<VBox alignment="TOP_CENTER" stylesheets="@range.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.range.RangeController">
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="left.range.RangeController">
    <children>
-      <Separator prefWidth="200.0" />
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="4.0" />
+         </VBox.margin></Separator>
       <ToolBar>
          <items>
-            <Button fx:id="addRangeButton" mnemonicParsing="false" onAction="#addRangeButtonOnAction" prefWidth="90.0" text="Add Range" />
-            <Button fx:id="deleteRangeButton" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" prefWidth="90.0" text="Delete Range">
+            <Button fx:id="addRangeButton" minWidth="100.0" mnemonicParsing="false" onAction="#addRangeButtonOnAction" prefWidth="95.0" text="Add Range" />
+            <Button fx:id="deleteRangeButton" minWidth="100.0" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" text="Delete Range">
                <effect>
                   <InnerShadow blurType="GAUSSIAN" height="0.0" radius="0.0" width="0.0">
                      <color>
@@ -23,7 +27,10 @@
                   </InnerShadow>
                </effect></Button>
          </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </ToolBar>
-      <ListView fx:id="rangeListView" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="rangeListView" prefHeight="200.0" prefWidth="200.0" styleClass="list-view" />
    </children>
 </VBox>

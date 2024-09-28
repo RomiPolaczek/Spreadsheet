@@ -6,28 +6,24 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
    <content>
-      <VBox alignment="TOP_CENTER" prefWidth="900.0">
+      <VBox alignment="TOP_CENTER" minWidth="700.0" prefWidth="900.0" styleClass="root">
          <children>
-            <Label alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="31.0" />
-               </font>
-            </Label>
+            <Label id="header" alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER" />
             <HBox alignment="CENTER_LEFT" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="750.0" spacing="12.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="loadFileButton" minWidth="100.0" mnemonicParsing="false" onAction="#loadFileButtonAction" prefHeight="27.0" prefWidth="100.0" text="Load file" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="fileNameLabel" maxWidth="1.7976931348623157E308" prefWidth="600.0" style="-fx-background-color: #DCDCDC;" HBox.hgrow="ALWAYS">
+                  <Label id="fileNameLabel" fx:id="fileNameLabel" maxWidth="1.7976931348623157E308" prefWidth="600.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="7.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="themesComboBox" onAction="#themesComboBoxOnAction" prefWidth="130.0" promptText="Theme" />
+                  <ComboBox fx:id="themesComboBox" onAction="#themesComboBoxOnAction" prefWidth="130.0" promptText="Theme" styleClass="combo-box" />
                   <CheckBox fx:id="animationsCheckBox" mnemonicParsing="false" onAction="#animationsCheckBoxOnAction" prefWidth="137.0" text="Animations">
                      <HBox.margin>
                         <Insets />
@@ -44,16 +40,14 @@
             <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="575.0" spacing="7.0">
                <children>
                   <Label text="Selected Cell ID:" />
-                  <Label fx:id="selectedCellIDLabel" minWidth="50.0">
-                     <font>
-                        <Font name="System Bold Italic" size="13.0" />
-                     </font></Label>
+                  <Label fx:id="selectedCellIDLabel" minWidth="50.0" />
                   <Label text="Original Cell Value:" />
+                  <TextField fx:id="originalCellValueTextField" onAction="#originalCellValueTextFieldOnAction" />
                   <Label fx:id="originalCellValueLabel" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update Value" />
                   <Label minWidth="100.0" text="Last update cell version: " />
                   <Label fx:id="lastUpdateVersionCellLabel" minWidth="29.0" />
-                  <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" />
+                  <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box" />
                </children>
                <VBox.margin>
                   <Insets left="10.0" />

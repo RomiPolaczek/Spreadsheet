@@ -131,6 +131,7 @@ public class RangeController {
 
         // Set the scene
         Scene scene = new Scene(vbox, 300, 200);
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
 
         // Show the pop-up window

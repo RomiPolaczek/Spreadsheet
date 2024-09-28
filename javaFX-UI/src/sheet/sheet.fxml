@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" stylesheets="@sheet.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sheet.SheetController">
+<ScrollPane hmin="300.0" minHeight="300.0" minViewportHeight="300.0" minViewportWidth="300.0" minWidth="300.0" vmin="300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sheet.SheetController">
    <content>
-      <GridPane fx:id="dynamicGridPane" alignment="TOP_CENTER">
+      <GridPane fx:id="dynamicGridPane" alignment="TOP_CENTER" minHeight="500.0" minWidth="600.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

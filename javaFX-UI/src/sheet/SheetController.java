@@ -220,7 +220,7 @@ public class SheetController {
 
         // Set the scene for the pop-up
         Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
 
         // Show the pop-up window
@@ -239,12 +239,14 @@ public class SheetController {
         // Create a new SheetController instance for the pop-up
         SheetController newSheetController = new SheetController();
         newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = new HashMap<>();
-        newSheetController.rowsHeight = new HashMap<>();
+        newSheetController.columnsWidth = this.columnsWidth;
+        newSheetController.rowsHeight = this.rowsHeight;
+        newSheetController.columnAlignments = this.columnAlignments;
+        newSheetController.cellStyles = this.cellStyles;
         newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
 
         // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, false);
+        newSheetController.setSheet(dtoSheet, true);
 
         // Create a VBox to hold the GridPane
         VBox vbox = new VBox(versionGrid);
@@ -252,7 +254,7 @@ public class SheetController {
 
         // Set the scene for the pop-up
         Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
 
         // Show the pop-up window
@@ -335,48 +337,6 @@ public class SheetController {
         }
     }
 
-    //ANIMATIONS
-//    public void highlightColumn(String column) { //one after another
-//        List<Label> cellsInColumn = getAllCellLabelsInColumn(column);
-//
-//        if (cellsInColumn.isEmpty()) {
-//            return; // No cells to highlight
-//        }
-//
-//        // Set the total animation duration to 2 seconds
-//        Duration totalAnimationDuration = Duration.seconds(0.75);
-//        Duration highlightDuration = totalAnimationDuration.divide(cellsInColumn.size()); // Duration for each cell highlight
-//
-//        // Create a Timeline to animate the highlighting
-//        Timeline timeline = new Timeline();
-//
-//        for (int i = 0; i < cellsInColumn.size(); i++) {
-//            Label cellLabel = cellsInColumn.get(i);
-//
-//            // Create a keyframe for highlighting the cell
-//            KeyFrame highlightKeyFrame = new KeyFrame(
-//                    highlightDuration.multiply(i), // Time offset for highlighting
-//                    event -> {
-//                        // Change cell color to grey to highlight
-//                        cellLabel.setStyle("-fx-background-color: #9e9d9d;");
-//                    }
-//            );
-//
-//            // Create a keyframe for resetting the cell color after highlighting
-//            KeyFrame resetKeyFrame = new KeyFrame(
-//                    highlightDuration.multiply(i).add(highlightDuration), // Time offset for resetting
-//                    event -> {
-//                        // Reset cell color
-//                        cellLabel.setStyle(""); // Remove highlighting
-//                    }
-//            );
-//
-//            timeline.getKeyFrames().addAll(highlightKeyFrame, resetKeyFrame);
-//        }
-//
-//        // Play the animation
-//        timeline.play();
-//    }
 
     public void highlightColumn(String column) { //all in once
         if(mainController.isAnimationSelectedProperty()) {
@@ -432,6 +392,11 @@ public class SheetController {
                 (int) (color.getRed() * 255),
                 (int) (color.getGreen() * 255),
                 (int) (color.getBlue() * 255));
+    }
+
+    public void setSheetStyle(Scene scene, String theme){
+        String css = getClass().getResource(  "/sheet/style/"+ theme + "Sheet.css").toExternalForm();
+        scene.getStylesheets().add(css);
     }
 }
 

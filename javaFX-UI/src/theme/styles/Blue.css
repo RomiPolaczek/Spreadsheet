@@ -1,84 +1,153 @@
-/* Blue theme */
-
-/* Set the background color of the root */
+/* Blue Theme */
 .root {
     -fx-background-color: #e0f7fa; /* Light blue background */
+    -fx-font-family: "System"; /* Font family */
+    -fx-font-size: 12px; /* Default font size */
+    -fx-text-fill: #00796b; /* Default text color (dark teal) */
 }
 
-/* Style for buttons */
+/* Label Style */
+.label {
+    -fx-text-fill: #00796b; /* Dark teal text color */
+}
+
+/* ListView and ListCell Style */
+.list-view {
+    -fx-background-color: #b3e5fc; /* Light blue background */
+}
+
+.list-cell {
+    -fx-text-fill: #004d40; /* Dark teal text color */
+    -fx-background-color: transparent; /* Ensure transparent background unless explicitly styled */
+}
+
+.list-cell:hover {
+    -fx-background-color: #81d4fa; /* Lighter blue on hover */
+    -fx-text-fill: #004d40; /* Ensure text remains dark teal */
+}
+
+.list-cell:selected {
+    -fx-background-color: #4fc3f7; /* Bright blue on selection */
+    -fx-text-fill: white; /* Ensure selected text remains visible */
+}
+
+/* Button Style */
 .button {
-    -fx-background-color: #00bcd4; /* Medium blue button */
-    -fx-text-fill: white; /* White text */
-    -fx-font-size: 14px;
-    -fx-padding: 8 15 8 15; /* Add padding */
-    -fx-background-radius: 5; /* Rounded corners */
+    -fx-background-color: #00bcd4; /* Medium blue button background */
+    -fx-text-fill: white; /* Button text color */
+    -fx-border-color: #00796b; /* Dark teal border */
+    -fx-border-radius: 5; /* Rounded button corners */
+    -fx-background-radius: 5; /* Rounded button corners */
 }
 
 .button:hover {
     -fx-background-color: #0097a7; /* Darker blue on hover */
 }
 
-/* Style for labels */
-.label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #00796b; /* Dark teal text */
-}
-
-/* Style for ScrollPane borders */
-.scroll-pane {
-    -fx-background-color: transparent; /* Make scroll pane background transparent */
-    -fx-border-color: #0097a7; /* Teal border */
-    -fx-border-width: 2; /* Border width */
-}
-
-/* Style for GridPane */
-.grid-pane {
-    -fx-background-color: #b3e5fc; /* Light blue background for grid */
-}
-
-/* Style for ComboBox */
-.combo-box {
-    -fx-background-color: #b3e5fc; /* Light blue background for combo boxes */
-    -fx-text-fill: #004d40; /* Dark teal text */
-}
-
-/* Style for TextFields */
+/* TextField Style */
 .text-field {
+    -fx-background-color: #b3e5fc; /* Light blue text field background */
+    -fx-border-color: #00bcd4; /* Medium blue border */
+    -fx-text-fill: #004d40; /* Dark teal text color */
+}
+
+.text-field:focused {
+    -fx-border-color: #00796b; /* Dark teal border when focused */
+}
+
+/* ComboBox Style */
+.combo-box {
     -fx-background-color: #b3e5fc; /* Light blue background */
     -fx-border-color: #00bcd4; /* Medium blue border */
-    -fx-text-fill: #004d40; /* Dark teal text */
+    -fx-prompt-text-fill: #004d40; /* Dark teal prompt text color */
 }
 
-/* Style for alerts */
-.alert {
-    -fx-background-color: #e0f7fa; /* Light blue background for alerts */
-    -fx-text-fill: #00796b; /* Dark teal text for alerts */
+.combo-box .list-cell {
+    -fx-background-color: #b3e5fc; /* Background for combo box options */
+    -fx-text-fill: #004d40; /* Dark teal text for combo box options */
 }
 
-/* Style for selected cells */
+/* ColorPicker Style */
+.color-picker {
+    -fx-background-color: #b3e5fc; /* Light blue background for color picker */
+}
+
+/* CheckBox Style */
+.check-box {
+    -fx-text-fill: #00796b; /* Dark teal text color */
+}
+
+/* ProgressBar Style */
+.progress-bar {
+    -fx-accent: #0097a7; /* Progress bar accent color (dark blue) */
+}
+
+/* Custom styles for selected cells */
 .selected-cell {
     -fx-background-color: #4fc3f7; /* Bright blue for selected cells */
+    -fx-text-fill: white; /* White text for selected cells */
 }
 
-/* Adjust table cell colors */
-.table-view .table-cell {
-    -fx-background-color: #e0f7fa; /* Light blue for table cells */
+/* Styles for cells that are influencing or depended on */
+.depends-on-cell {
+    -fx-background-color: #b2ebf2; /* Light teal for depended-on cells */
 }
 
-.table-view .table-cell:selected {
-    -fx-background-color: #4fc3f7; /* Bright blue for selected table cells */
+.influence-on-cell {
+    -fx-background-color: #4dd0e1; /* Bright teal for influencing cells */
 }
 
-/* Styles for sliders */
-.slider {
-    -fx-background-color: #b3e5fc; /* Light blue background */
+/* Header Style */
+#header {
+    -fx-font-size: 31px; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: #182caa; /* Dark teal text color */
 }
 
-.slider:horizontal .thumb {
-    -fx-background-color: #0097a7; /* Darker blue thumb */
+/* Accordion Style */
+.accordion .titled-pane {
+    -fx-background-color: #81d4fa; /* Lighter blue for titled panes */
+    -fx-text-fill: #004d40; /* Dark teal text color */
 }
 
-/* Style for checkboxes */
-.checkbox {
-    -fx-text-fill: #00796b; /* Dark teal text */
+.accordion .titled-pane > .title {
+    -fx-font-weight: bold; /* Bold title font */
+    -fx-font-size: 14px; /* Title font size */
+    -fx-background-color: #b3e5fc; /* Light blue title background */
+    -fx-text-fill: #004d40; /* Dark teal text color */
+}
+
+.accordion .titled-pane > .content {
+    -fx-background-color: #e0f7fa; /* Light blue content background */
+    -fx-padding: 10; /* Padding around content */
+}
+
+/* ToggleButton Style */
+.toggle-button {
+    -fx-background-color: linear-gradient(to bottom, #b3e5fc, #81d4fa); /* Light blue gradient */
+    -fx-text-fill: #004d40; /* Dark teal text color */
+    -fx-padding: 5px;
+    -fx-border-color: #00acc1; /* Medium teal border */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-background-radius: 5; /* Rounded background */
+    -fx-cursor: hand;
+}
+
+/* Hover effect for ToggleButton */
+.toggle-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #81d4fa, #4fc3f7); /* Slightly lighter gradient on hover */
+    -fx-border-color: #0097a7; /* Darker border on hover */
+}
+
+/* Styling when ToggleButton is selected */
+.toggle-button:selected {
+    -fx-background-color: linear-gradient(to bottom, #3399ff, #1a73e8); /* Blue gradient when selected */
+    -fx-text-fill: white; /* White text */
+    -fx-border-color: #0066cc; /* Blue border */
+    -fx-border-width: 2; /* Thicker border */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Drop shadow for emphasis */
+}
+
+#fileNameLabel {
+    -fx-background-color: #81d4fa;
 }
