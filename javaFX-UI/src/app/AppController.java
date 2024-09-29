@@ -5,7 +5,6 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import header.HeaderController;
 import impl.EngineImpl;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -16,7 +15,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import left.LeftController;
 import sheet.SheetController;
@@ -74,7 +72,9 @@ public class AppController {
         return selectedTheme;
     }
 
-    public ThemeManager getThemeManager(){ return themeManager; }
+    public ThemeManager getThemeManager() {
+        return themeManager;
+    }
 
 
     public void setSheet(DTOsheet dtoSheet, Boolean applyCustomStyles) {
@@ -84,16 +84,6 @@ public class AppController {
     public void displaySheetVersionInPopup(DTOsheet dtoSheet) {
         sheetComponentController.displaySheetVersionInPopup(dtoSheet);
     }
-
-    public void displayFilteredSheetInPopup(DTOsheet dtoSheet) {
-        sheetComponentController.displayFilteredSheetInPopup(dtoSheet);
-    }
-
-    public void displaySortedSheetInPopup(DTOsheet dtoSheet) {
-        sheetComponentController.displaySortedSheetInPopup(dtoSheet);
-    }
-
-
 
     public SimpleStringProperty getSelectedCellProperty() {
         return headerComponentController.getSelectedCellProperty();
@@ -143,13 +133,9 @@ public class AppController {
         return headerComponentController.isFileSelectedProperty();
     }
 
-    public void initializeCommandAndRangeControllers() {
-        leftComponentController.initializeCommandAndRangeControllers();
+    public Map<String, String> getCellStyles() {
+        return sheetComponentController.getCellStyles();
     }
-
-//    public Map<String, String> getCellStyles() {
-//        return sheetComponentController.getCellStyles();
-//    }
 
     public void updateColorPickersWithCellStyles(Label cell) {
         leftComponentController.updateColorPickersWithCellStyles(cell);
@@ -200,7 +186,7 @@ public class AppController {
     }
 
     public Boolean isAnimationSelectedProperty() {
-        return headerComponentController.isAnimationSelectedProperty();
+        return headerComponentController.isAnimationSelectedProperty().getValue();
     }
 
     public void setSheetStyle(Scene scene, String theme) {
@@ -211,9 +197,15 @@ public class AppController {
         themeManager.applyTheme(scene, selectedTheme);
     }
 
+    public Map<String, String> getNewCoordToOldCoord() {
+        return leftComponentController.getNewCoordToOldCoord();
+    }
+
+    public void displayFilteredSortedSheetInPopup(DTOsheet dtoSheet, String title, String range) {
+        sheetComponentController.displayFilteredSortedSheetInPopup(dtoSheet, title, range);
+    }
+
     public void updateCellValue(String cellID, String newValue) {
         headerComponentController.updateCellValue(cellID, newValue);
     }
-  
-    public Map<String,String> getNewCoordToOldCoord() {return leftComponentController.getNewCoordToOldCoord(); }
 }

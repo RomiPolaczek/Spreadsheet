@@ -113,7 +113,6 @@ public class CommandController {
 
         // Save the style in the cellStyles map
         mainController.getCellStyles().put(selectedCell.get(), newStyle);
-
         resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
 
@@ -137,7 +136,6 @@ public class CommandController {
 
         // Save the style in the cellStyles map
         mainController.getCellStyles().put(selectedCell.get(), newStyle);
-
         resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
 
@@ -342,109 +340,6 @@ public class CommandController {
         showSortPopup();
     }
 
-    //////Filtering one column
-//    private void showFilterPopup() {
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Filter");
-//
-//        VBox vbox = new VBox();
-//        vbox.setSpacing(10);
-//        vbox.setPadding(new Insets(15, 15, 15, 15));
-//
-//        Label rangeLabel = new Label("Enter range for filter: ");
-//        vbox.getChildren().add(rangeLabel);
-//
-//        // TextField to enter range
-//        TextField rangeField = new TextField();
-//        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
-//
-//        // Add "Choose range" button
-//        Button chooseRangeButton = new Button("Choose range");
-//        chooseRangeButton.setDisable(false); // Initially enabled
-//
-//        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
-//        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
-//        vbox.getChildren().add(rangeBox);
-//
-//        // ComboBox to select column (initially disabled)
-//        Label columnLabel = new Label("Select column to filter:");
-//        ComboBox<String> columnComboBox = new ComboBox<>();
-//        columnComboBox.setDisable(true); // Initially disabled
-//
-//        vbox.getChildren().add(columnLabel);
-//        vbox.getChildren().add(columnComboBox);
-//
-//        // VBox for checkboxes
-//        VBox checkBoxContainer = new VBox();
-//        vbox.getChildren().add(checkBoxContainer);
-//
-//        // OK Button (initially disabled)
-//        Button okButton = new Button("OK");
-//        okButton.setDisable(true); // Disable the button initially
-//        vbox.getChildren().add(okButton);
-//
-//        // Add listener for the "Choose range" button
-//        chooseRangeButton.setOnAction(e -> {
-//            String rangeStr = rangeField.getText();
-//            if (!rangeStr.isEmpty()) {
-//
-//                columnComboBox.setDisable(false);
-//
-//                try {
-//                    List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
-//                    columnComboBox.getItems().clear(); // Clear previous items
-//                    columnComboBox.getItems().addAll(availableColumns); // Populate ComboBox with columns
-//                }
-//                catch (Exception exception){
-//                    mainController.showAlert("Error", "Invalid input", exception.getMessage(), Alert.AlertType.ERROR);
-//                }
-//            }
-//        });
-//
-//        // Add listener for the ComboBox to enable the OK button
-//        columnComboBox.setOnAction(e -> {
-//            // Clear the previous checkboxes
-//            checkBoxContainer.getChildren().clear();
-//
-//            // Get selected column and populate checkboxes
-//            String selectedColumn = columnComboBox.getValue();
-//            List<String> uniqueValues = mainController.getEngine().createListOfValuesForFilter(selectedColumn, rangeField.getText());
-//
-//            for (String value : uniqueValues) {
-//                CheckBox checkBox = new CheckBox(value);
-//                checkBoxContainer.getChildren().add(checkBox); // Add checkbox to the container
-//            }
-//
-//            // Enable the OK button if checkboxes are present
-//            okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
-//        });
-//
-//        // OK Button action
-//        okButton.setOnAction(e -> {
-//            List<String> selectedValues = new ArrayList<>();
-//            // Gather selected checkbox values
-//            for (Node node : checkBoxContainer.getChildren()) {
-//                if (node instanceof CheckBox) {
-//                    CheckBox checkBox = (CheckBox) node;
-//                    if (checkBox.isSelected()) {
-//                        selectedValues.add(checkBox.getText());
-//                    }
-//                }
-//            }
-//
-//            popupStage.close(); // Close the popup after filtering
-//
-//            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), selectedValues, columnComboBox.getValue());
-//            mainController.displayFilteredSheetInPopup(dtoSheet);
-//        });
-//
-//        Scene scene = new Scene(vbox, 300, 400);
-//        popupStage.setScene(scene);
-//        popupStage.showAndWait();
-//    }
-
-    ////////Bonus for filtering another coloumn
     private void showFilterPopup() {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -534,13 +429,15 @@ public class CommandController {
                 }
             }
 
+            String rangeStr = rangeField.getText();
+
             // Close the popup after filtering
             popupStage.close();
 
             // Call the engine method to filter based on the selected columns and values
             newCoordToOldCoord.clear();
             DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), columnToValues, newCoordToOldCoord);
-            mainController.displayFilteredSheetInPopup(dtoSheet);
+            mainController.displayFilteredSortedSheetInPopup(dtoSheet, "Filtered Sheet", rangeStr);
         });
 
         scrollPane.setContent(vbox);
@@ -577,18 +474,6 @@ public class CommandController {
             okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
         });
     }
-
-
-
-//    private void updateOkButtonState(TextField rangeField, ComboBox<String> columnComboBox, List<CheckBox> checkBoxes, Button okButton) {
-//        boolean isRangeFilled = !rangeField.getText().trim().isEmpty();
-//        boolean isColumnSelected = columnComboBox.getValue() != null && !columnComboBox.getValue().trim().isEmpty();
-//        boolean isCheckboxSelected = checkBoxes.stream().anyMatch(CheckBox::isSelected);
-//
-//        // Enable the OK button if all conditions are met
-//        okButton.setDisable(!(isRangeFilled && isColumnSelected && isCheckboxSelected));
-//    }
-
 
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
@@ -639,11 +524,7 @@ public class CommandController {
 
         // Set VBox to the left of BorderPane
         root.setLeft(leftVBox);
-
-        // Center ScrollPane with GridPane inside
-  //      ScrollPane scrollPane = new ScrollPane();
         GridPane gridPane = new GridPane();
-
 
         // Create a new SheetController instance for the pop-up
         SheetController newSheetController = new SheetController();
@@ -678,7 +559,6 @@ public class CommandController {
             }
         });
 
-  //      scrollPane.setContent(gridPane);
         root.setCenter(gridPane);
         leftVBox.getChildren().add(valueSlider);
         valueSlider.setShowTickMarks(true);
@@ -985,10 +865,12 @@ public class CommandController {
                 }
             }
 
-            popupStage.close(); // Close the popup after sorting
+            String rangeStr = rangeField.getText();
 
-            DTOsheet dtoSheet = mainController.getEngine().sortColumnBasedOnSelection(rangeField.getText(), selectedColumns);
-            mainController.displaySortedSheetInPopup(dtoSheet);
+            popupStage.close(); // Close the popup after sorting
+            newCoordToOldCoord.clear();
+            DTOsheet dtoSheet = mainController.getEngine().sortColumnBasedOnSelection(rangeField.getText(), selectedColumns, newCoordToOldCoord);
+            mainController.displayFilteredSortedSheetInPopup(dtoSheet, "Sorted Sheet", rangeStr);
         });
 
         // Set scene and show the popup
@@ -1000,5 +882,4 @@ public class CommandController {
     }
 
     public Map<String,String> getNewCoordToOldCoord() {return newCoordToOldCoord; }
-
 }

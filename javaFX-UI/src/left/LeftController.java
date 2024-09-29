@@ -70,5 +70,7 @@ public class LeftController {
         rangeComponentController.populateRangeListView();
     }
 
-    public Map<String,String> getNewCoordToOldCoord() {return commandComponentController.getNewCoordToOldCoord(); }
+    public Map<String,String> getNewCoordToOldCoord() {
+        return commandComponentController.getNewCoordToOldCoord();
+    }
 }

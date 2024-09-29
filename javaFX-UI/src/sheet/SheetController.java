@@ -2,7 +2,6 @@ package sheet;
 
 import app.AppController;
 import dto.DTOcell;
-import dto.DTOlayout;
 import dto.DTOsheet;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.impl.CoordinateFactory;
+import sheet.range.Range;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +37,6 @@ public class SheetController {
     private Map<Integer, Integer> columnsWidth;
     private Map<Integer, Integer> rowsHeight;
 
-
     @FXML
     public void initialize() {
         cellStyles = new HashMap<>();
@@ -45,10 +46,8 @@ public class SheetController {
     }
 
     public void initializeSheetController() {
-//        setMainController(mainController);
         columnsWidth = new HashMap<>();
         rowsHeight = new HashMap<>();
-//        dynamicGridPane = new GridPane();
     }
 
     public void setMainController(AppController mainController) {
@@ -65,10 +64,6 @@ public class SheetController {
 
     public Map<String, String> getCellStyles() {
         return cellStyles;
-    }
-
-    public Map<String, Pos> getColumnAlignments() {
-        return columnAlignments;
     }
 
     public void setColumnAlignment(String column, Pos alignment) {
@@ -94,16 +89,6 @@ public class SheetController {
         int rowIndex = Integer.parseInt(row);
         rowsHeight.put(rowIndex, newHeight);
     }
-
-//    public void initialColumnWidth(DTOlayout layout){
-//        int colsNum = layout.getColumns();
-//        int colWidth = layout.getColumnsWidthUnits();
-//        for (int col = 0; col <= colsNum; col++) {
-//            //String column = Character.toString((char) ('A' + col + 1));
-//            columnsWidth.put(col, colWidth);  // Set the preferred width of the columns
-//        }
-//    }
-
 
     public void setSheet(DTOsheet dtoSheet, boolean applyCustomStyles) {
         cellLabels = new HashMap<>();
@@ -227,70 +212,6 @@ public class SheetController {
         popupStage.showAndWait();
     }
 
-    public void displayFilteredSheetInPopup(DTOsheet dtoSheet) {
-        // Create a new Stage (pop-up window)
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-        popupStage.setTitle("Filter");
-
-        // Create a new GridPane for this version
-        GridPane versionGrid = new GridPane();
-        // Create a new SheetController instance for the pop-up
-        SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = this.columnsWidth;
-        newSheetController.rowsHeight = this.rowsHeight;
-        newSheetController.columnAlignments = this.columnAlignments;
-        newSheetController.cellStyles = this.cellStyles;
-        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
-        // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, true);
-
-        // Create a VBox to hold the GridPane
-        VBox vbox = new VBox(versionGrid);
-        vbox.setPadding(new javafx.geometry.Insets(20));
-
-        // Set the scene for the pop-up
-        Scene scene = new Scene(vbox);
-        mainController.setTheme(scene);
-        popupStage.setScene(scene);
-
-        // Show the pop-up window
-        popupStage.showAndWait();
-    }
-
-    public void displaySortedSheetInPopup(DTOsheet dtoSheet) {
-        // Create a new Stage (pop-up window)
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-        popupStage.setTitle("Sort");
-
-        // Create a new GridPane for this version
-        GridPane versionGrid = new GridPane();
-
-        // Create a new SheetController instance for the pop-up
-        SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = new HashMap<>();
-        newSheetController.rowsHeight = new HashMap<>();
-        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
-
-        // Use the existing setSheet() method to populate the grid with the version data
-        newSheetController.setSheet(dtoSheet, false);
-
-        // Create a VBox to hold the GridPane
-        VBox vbox = new VBox(versionGrid);
-        vbox.setPadding(new javafx.geometry.Insets(20));
-
-        // Set the scene for the pop-up
-        Scene scene = new Scene(vbox);
-        scene.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
-        popupStage.setScene(scene);
-
-        // Show the pop-up window
-        popupStage.showAndWait();
-    }
-
     public List<Label> getAllCellLabelsInColumn(String column) {
         List<Label> labelsInColumn = new ArrayList<>();
 
@@ -334,7 +255,6 @@ public class SheetController {
             return null;  // Return null if the column index is out of bounds
         }
     }
-
 
     public void highlightColumn(String column) { //all in once
         if (mainController.isAnimationSelectedProperty()) {
@@ -398,23 +318,10 @@ public class SheetController {
     }
 
 
-    public void displayFilteredSortedSheetInPopup(DTOsheet dtoSheet, String title) {
+    public void displayFilteredSortedSheetInPopup(DTOsheet dtoSheet, String title, String range) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
         popupStage.setTitle(title);
-
-        // Create a new GridPane for this version
-        GridPane versionGrid = new GridPane();
-        // Create a new SheetController instance for the pop-up
-        SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(this.mainController);
-        newSheetController.columnsWidth = this.columnsWidth;
-        newSheetController.rowsHeight = this.rowsHeight;
-        newSheetController.columnAlignments = this.columnAlignments;
-        newSheetController.cellStyles = this.cellStyles;
-        newSheetController.dynamicGridPane = versionGrid; // Set the new GridPane
-
-
 
         // Create a VBox to hold the GridPane and display the sheet
         VBox vbox = new VBox(10);
@@ -424,39 +331,132 @@ public class SheetController {
         GridPane sheetGridPane = new GridPane();
         sheetGridPane.getStyleClass().add("gridpane");
 
+        // Create a new SheetController instance for the pop-up
+        SheetController newSheetController = new SheetController();
+        newSheetController.setMainController(this.mainController);
+        newSheetController.columnsWidth = this.columnsWidth;
+        newSheetController.rowsHeight = this.rowsHeight;
+        newSheetController.columnAlignments = this.columnAlignments;
+        Map<String, String> newCellStyles = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : cellStyles.entrySet()) {
+            String originalStr = entry.getValue();
+            String copiedStr = originalStr; // Create a new Label with the same properties
+            newCellStyles.put(entry.getKey(), copiedStr);
+        }
+        newSheetController.cellStyles = newCellStyles;
+
+        Range tempRange = new Range("temp", mainController.getEngine().getSheet().getLayout());
+        tempRange.parseRange(range);
+
         int rows = dtoSheet.getLayout().getRows();
         int cols = dtoSheet.getLayout().getColumns();
+        int columnWidthOriginal = dtoSheet.getLayout().getColumnsWidthUnits();
+        int rowsHeightOriginal = dtoSheet.getLayout().getRowsHeightUnits();
+
+        sheetGridPane.setGridLinesVisible(false); // Disable temporarily
+        sheetGridPane.getStyleClass().add("grid-pane");
+
+        // Clear existing constraints and children
+        sheetGridPane.getRowConstraints().clear();
+        sheetGridPane.getColumnConstraints().clear();
+        sheetGridPane.getChildren().clear();
+
+        // Add new row constraints
+        for (int i = 0; i <= rows; i++) {
+            RowConstraints row = new RowConstraints();
+            row.setPrefHeight(rowsHeight.get(i));
+            sheetGridPane.getRowConstraints().add(row);
+        }
+
+        // Add new column constraints
+        for (int j = 0; j <= cols; j++) {
+            ColumnConstraints col = new ColumnConstraints();
+            col.setPrefWidth(columnsWidth.get(j));
+            sheetGridPane.getColumnConstraints().add(col);
+        }
 
         // Add column headers (A, B, C, ...)
-        for (int col = 1; col <= cols; col++) {
-            Label columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
+        for (int col = 0; col <= cols; col++) {
+            Label columnHeader;
+
+            if (col == 0) {
+                columnHeader = new Label();
+            } else {
+                columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
+            }
+            columnHeader.getStyleClass().add("header-cell");
             sheetGridPane.add(columnHeader, col, 0);  // Column headers in the first row
         }
 
         // Add row headers (1, 2, 3, ...)
         for (int row = 1; row <= rows; row++) {
             Label rowHeader = new Label(Integer.toString(row));
+            rowHeader.getStyleClass().add("header-cell");
             sheetGridPane.add(rowHeader, 0, row);  // Row headers in the first column
         }
 
-        // Fill the grid with cell values from the DTO sheet
+        // Fill the rest of the grid with cell values from the DTOsheet
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
-                DTOcell cellData = dtoSheet.getCell(row, col); // Assuming row/col are zero-indexed
+                // Get the effective value for the current cell from the DTOsheet
+                DTOcell cellData = dtoSheet.getCell(row, col);
                 String cellValue = (cellData != null && cellData.getEffectiveValue() != null) ? cellData.getEffectiveValue() : "";
-                Label cellLabel = new Label(cellValue != null ? cellValue : "");
+
+                // Create the Label for the cell and set the value
+                String cellName = Character.toString((char) ('A' + col - 1)) + row;  // e.g., "A1", "B2", etc.
+                Label cellLabel = new Label(cellValue);
+
+
+                // Apply saved column alignment if it exists
+                String columnName = Character.toString((char) ('A' + col - 1)); // e.g., "A", "B", "C"
+                if (columnAlignments.containsKey(columnName)) {
+                    cellLabel.setAlignment(columnAlignments.get(columnName));
+                } else {
+                    cellLabel.setAlignment(Pos.CENTER); // Default alignment
+                }
+
+                // Apply custom styles only if the flag is true
+                if (mainController.getNewCoordToOldCoord().containsKey(cellName)) {
+                    String oldCoord = mainController.getNewCoordToOldCoord().get(cellName);
+                    if(oldCoord != null)
+                    {
+                        cellLabel.setStyle(newSheetController.cellStyles.get(oldCoord));
+                        newSheetController.cellStyles.remove(oldCoord);
+                    }
+                }
+                else{
+                    if(!isCellInRange(tempRange, cellName))
+                        cellLabel.setStyle(newSheetController.cellStyles.get(cellName));
+                }
+
                 cellLabel.getStyleClass().add("single-cell");
                 sheetGridPane.add(cellLabel, col, row);
             }
         }
 
+        newSheetController.dynamicGridPane = sheetGridPane; // Set the new GridPane
+
         vbox.getChildren().add(sheetGridPane);
 
         // Set the scene and display the pop-up window
         Scene scene = new Scene(vbox, 600, 400); // Adjust size as needed
+        mainController.setTheme(scene);
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
 
+    Boolean isCellInRange(Range range, String cell){
+        int startRow = range.getTopLeftCoordinate().getRow();
+        int endRow = range.getBottomRightCoordinate().getRow();
+        int startCol = range.getTopLeftCoordinate().getColumn();
+        int endCol = range.getBottomRightCoordinate().getColumn();
+
+        Coordinate coordinate = CoordinateFactory.from(cell);
+        int cellRow = coordinate.getRow();
+        int cellCol = coordinate.getColumn();
+
+        return (cellRow <= endRow && cellRow >= startRow && cellCol <= endCol && cellCol >= startCol);
+    }
 
 }

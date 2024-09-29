@@ -12,7 +12,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
    <content>
-      <VBox alignment="TOP_CENTER" minWidth="700.0" prefWidth="900.0" styleClass="root">
+      <VBox alignment="TOP_CENTER" minWidth="700.0" prefWidth="1000.0" styleClass="root">
          <children>
             <Label id="header" alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER" />
             <HBox alignment="CENTER_LEFT" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="750.0" spacing="12.0" VBox.vgrow="ALWAYS">
@@ -42,9 +42,8 @@
                   <Label text="Selected Cell ID:" />
                   <Label fx:id="selectedCellIDLabel" minWidth="50.0" />
                   <Label text="Original Cell Value:" />
-                  <TextField fx:id="originalCellValueTextField" onAction="#originalCellValueTextFieldOnAction" />
+                  <TextField fx:id="originalCellValueTextField" />
                   <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update" />
-                  <Label fx:id="originalCellValueLabel" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="formatFunctionButton" mnemonicParsing="false" onAction="#formatFunctionButtonOnAction" text="Format Functions" />
                   <Label minWidth="100.0" text="Last update cell version: " />
                   <Label fx:id="lastUpdateVersionCellLabel" minWidth="29.0" />

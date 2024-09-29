@@ -2,7 +2,6 @@ package header;
 
 import app.AppController;
 import dto.DTOcell;
-import expression.parser.Operation;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,13 +10,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.concurrent.Task;
@@ -30,22 +25,17 @@ import javafx.util.Duration;
 import sheet.coordinate.api.Coordinate;
 import dto.DTOsheet;
 import sheet.coordinate.impl.CoordinateFactory;
-import sheet.coordinate.impl.CoordinateImpl;
 import theme.ThemeManager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 public class HeaderController {
 
     @FXML
     private Label fileNameLabel;
-    @FXML
-    private Label originalCellValueLabel;
     @FXML
     private Button loadFileButton;
     @FXML
@@ -66,8 +56,6 @@ public class HeaderController {
     private Button formatFunctionButton;
 
 
-
-
     private AppController mainController;
     private SimpleStringProperty selectedFileProperty;
     private SimpleBooleanProperty isFileSelected;
@@ -77,7 +65,6 @@ public class HeaderController {
     private SimpleBooleanProperty isAnimationSelectedProperty;
     private List<String> lastHighlightedCells = new ArrayList<>();
     private ThemeManager themeManager;
-    private Map<String, Integer> functionMap;
     private StringBuilder currentExpression;
 
 
@@ -92,7 +79,6 @@ public class HeaderController {
         isAnimationSelectedProperty = new SimpleBooleanProperty(false);
         themeManager = new ThemeManager();
         currentExpression = new StringBuilder();
-
     }
 
     @FXML
@@ -105,7 +91,6 @@ public class HeaderController {
         themesComboBox.disableProperty().bind(isFileSelected.not());
         animationsCheckBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
-        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
         formatFunctionButton.disableProperty().bind(selectedCellProperty.isNull());
@@ -124,24 +109,13 @@ public class HeaderController {
             if (newValue != null) {
                 // Apply style to the newly selected cell
                 Label newCellLabel = mainController.getCellLabel(newValue);
+                originalCellValueTextField.clear();
+                originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
                 if (newCellLabel != null) {
                     newCellLabel.setId("selected-cell"); // Apply selected-cell style
                 }
             }
         });
-
-//        originalCellValueTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue) {
-//                // TextField lost focus, trigger the action
-//           //     originalCellValueTextFieldOnFocusLost();
-//            }
-//        });
-//
-//        originalCellValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if(newValue != null || !newValue.isEmpty()) {
-//                updateCellValue(selectedCellProperty.getValue(), newValue);
-//            }
-//        });
     }
 
     public void setMainController(AppController mainController) {
@@ -153,20 +127,7 @@ public class HeaderController {
 
     public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
 
-    public Boolean isAnimationSelectedProperty() { return isAnimationSelectedProperty.getValue(); }
-
-
-//    private void resetHeaderControllerForNewFile(){
-//        selectedCellProperty = new SimpleStringProperty();
-//        originalCellValueProperty = new SimpleStringProperty();
-//        lastUpdateVersionCellProperty = new SimpleStringProperty();
-//
-//        updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
-//        versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
-//        selectedCellIDLabel.textProperty().bind(selectedCellProperty);
-//        originalCellValueLabel.textProperty().bind(originalCellValueProperty);
-//        lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
-//    }
+    public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
 
     @FXML
     void loadFileButtonAction(ActionEvent event) {
@@ -391,239 +352,6 @@ public class HeaderController {
                 selectedCellID, mainController,originalCellValueProperty ,lastUpdateVersionCellProperty);
         updateCellFormat.display();
     }
-
-    //original edit cell
-//    private void showEditCellPopup(String cellID, String currentValue) {
-//        // Create a new pop-up stage
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Update Cell " + cellID);
-//
-//        // Create a VBox to hold the label, text field, and buttons
-//        VBox vbox = new VBox(10);
-//        vbox.setPadding(new Insets(20));
-//
-//        // Create and configure the label for the current cell value
-//        Label currentValueLabel;
-//
-//        if (Objects.equals(currentValue, ""))
-//            currentValueLabel = new Label("Current Value:  empty cell");
-//        else
-//            currentValueLabel = new Label("Current Value:  " + currentValue);
-//
-//        vbox.getChildren().add(currentValueLabel);
-//
-//        // Create and configure the text field for the new value
-//        vbox.getChildren().add(new Label("Enter new value: "));
-//
-//        TextField newValueTextField = new TextField();
-//        vbox.getChildren().add(newValueTextField);
-//
-//        // Create and configure the submit button
-//        Button submitButton = new Button("Update");
-//        submitButton.setOnAction(e -> {
-//            String newValue = newValueTextField.getText();
-//            try {
-//                updateCellValue(cellID, newValue);
-//                popupStage.close();
-//            } catch (Exception ex) {
-//                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
-//            }
-//        });
-//
-//        vbox.getChildren().add(submitButton);
-//
-//        // Set the scene
-//        Scene scene = new Scene(vbox, 300, 150);
-//        popupStage.setScene(scene);
-//
-//        // Show the pop-up window
-//        popupStage.showAndWait();
-//    }
-
-    //Bonus edit cell
-//    private void showEditCellPopup(String cellID, String currentValue) {
-//        // Create a new pop-up stage
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Update Cell " + cellID);
-//
-//        // Create a VBox to hold the elements
-//        VBox vbox = new VBox(10);
-//        vbox.setPadding(new Insets(20));
-//
-//        // Create and configure the label for the current cell value
-//        Label currentValueLabel = new Label(Objects.equals(currentValue, "")
-//                ? "Current Value: empty cell"
-//                : "Current Value: " + currentValue);
-//        vbox.getChildren().add(currentValueLabel);
-//
-//        // Create a label and ComboBox for selecting input type
-//        HBox inputTypeBox = new HBox(10);
-//        Label inputTypeLabel = new Label("Select input type:");
-//        ComboBox<String> inputTypeComboBox = new ComboBox<>();
-//        inputTypeComboBox.getItems().addAll("Function", "Argument");
-//        inputTypeBox.getChildren().addAll(inputTypeLabel, inputTypeComboBox);
-//        vbox.getChildren().add(inputTypeBox);
-//
-//        // Create a ComboBox for functions
-//        HBox functionBox = new HBox(10);
-//        Label functionLabel = new Label("Select Operation:");
-//        ComboBox<String> functionComboBox = new ComboBox<>();
-//        functionComboBox.setPromptText("Operation");
-//        functionBox.getChildren().addAll(functionLabel, functionComboBox);
-//        functionBox.setVisible(false);  // Initially hidden
-//
-//        // Populate function names from the engine's createListOfFunctions method
-//        Map<String, Integer> functionMap = mainController.getEngine().createListOfFunctions();
-//        functionComboBox.getItems().addAll(functionMap.keySet()); // Add function names to the combo box
-//
-//        // Add the function ComboBox to the VBox
-//        vbox.getChildren().add(functionBox);
-//
-//        // Create a VBox to hold argument selections
-//        VBox argumentsBox = new VBox(10);
-//        vbox.getChildren().add(argumentsBox);
-//
-//        // Create a Region to push the selected value text field to the bottom
-//        Region spacer = new Region();
-//        VBox.setVgrow(spacer, Priority.ALWAYS); // Allow spacer to grow and push other elements down
-//        vbox.getChildren().add(spacer);
-//
-//        // Create a TextField for user input (always visible)
-//        TextField selectedValueTextField = new TextField();
-//        selectedValueTextField.setPromptText("Selected value will appear here");
-//
-//        // Create a button to submit the new value
-//        Button submitButton = new Button("Update");
-//        submitButton.setOnAction(e -> {
-//            String newValue = selectedValueTextField.getText();  // Use value from the text field
-//            try {
-//                updateCellValue(cellID, newValue);
-//                popupStage.close();
-//            } catch (Exception ex) {
-//                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
-//            }
-//        });
-//
-//        // Add components to the VBox
-//        vbox.getChildren().addAll(selectedValueTextField, submitButton);
-//
-//        // Add listeners to the input type ComboBox
-//        inputTypeComboBox.setOnAction(e -> {
-//            String selectedType = inputTypeComboBox.getValue();
-//            if ("Function".equals(selectedType)) {
-//                functionBox.setVisible(true);
-//                selectedValueTextField.setText("");  // Clear selected value field
-//            } else {
-//                functionBox.setVisible(false);
-//                selectedValueTextField.setPromptText("Enter argument value");  // Prompt for argument
-//            }
-//        });
-//
-//        // Handle function selection
-//        functionComboBox.setOnAction(f -> {
-//            String selectedFunction = functionComboBox.getValue();
-//            int numArgs = functionMap.get(selectedFunction); // Get the number of arguments required
-//
-//            selectedValueTextField.setText(selectedFunction);  // Update selected value field
-//
-//            // Clear previous arguments
-//            argumentsBox.getChildren().clear();
-//
-//            // Create argument combo boxes based on the number of arguments
-//            for (int i = 0; i < numArgs; i++) {
-//                createArgumentSelector(argumentsBox, selectedValueTextField, functionMap);
-//            }
-//        });
-//
-//        // Set the scene with a preferred width and height
-//        Scene scene = new Scene(vbox, 400, 500);  // Set preferred size
-//        popupStage.setScene(scene);
-//
-//        // Optionally, you can set minimum size
-//        popupStage.setMinWidth(400);
-//        popupStage.setMinHeight(300);
-//
-//        // Show the pop-up window
-//        popupStage.showAndWait();
-//    }
-//
-//    private void createArgumentSelector(VBox argumentsBox, TextField selectedValueTextField, Map<String, Integer> functionMap) {
-//        HBox argBox = new HBox(10);
-//        Label argLabel = new Label("Argument:");
-//
-//        // Create a VBox to hold the argument type selector and nested arguments
-//        VBox nestedArgBox = new VBox(5);
-//        ComboBox<String> argComboBox = new ComboBox<>();
-//        argComboBox.getItems().addAll("Function", "Argument");
-//        nestedArgBox.getChildren().add(argComboBox);
-//
-//        argBox.getChildren().addAll(argLabel, nestedArgBox);
-//        argumentsBox.getChildren().add(argBox);
-//
-//        // Add action listener for the argument combo box
-//        argComboBox.setOnAction(argEvent -> {
-//            String selectedArgType = argComboBox.getValue();
-//
-//            if ("Function".equals(selectedArgType)) {
-//                // Show a function selection box for this argument
-//                ComboBox<String> innerFunctionComboBox = new ComboBox<>();
-//                innerFunctionComboBox.getItems().addAll(functionMap.keySet());
-//                nestedArgBox.getChildren().add(innerFunctionComboBox);
-//
-//                // Handle the inner function selection
-//                innerFunctionComboBox.setOnAction(innerEvent -> {
-//                    String innerFunction = innerFunctionComboBox.getValue();
-//                    // Update selected value field
-//                    String currentExpression = selectedValueTextField.getText();
-//                    selectedValueTextField.setText(currentExpression + "{" + innerFunction + "}"); // Concatenate the function
-//
-//                    // Clear previous arguments if any
-//                    nestedArgBox.getChildren().clear(); // Clear any previous inner arguments
-//                    nestedArgBox.getChildren().add(innerFunctionComboBox); // Keep the function combo
-//
-//                    // Recreate the argument selectors for this inner function if needed
-//                    int innerNumArgs = functionMap.get(innerFunction); // Get number of arguments
-//                    if (innerNumArgs > 0) {
-//                        for (int j = 0; j < innerNumArgs; j++) {
-//                            createArgumentSelector(nestedArgBox, selectedValueTextField, functionMap);
-//                        }
-//                    }
-//                });
-//            } else {
-//                // Show a text field for entering the argument value
-//                TextField argTextField = new TextField();
-//                argTextField.setPromptText("Enter argument value");
-//                nestedArgBox.getChildren().add(argTextField);
-//
-//                // Update selected value field when argument is entered
-//                argTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-//                    String currentExpression = selectedValueTextField.getText();
-//                    // Update the expression with the argument value
-//                    selectedValueTextField.setText(currentExpression + newValue); // Concatenate the argument value
-//                });
-//            }
-//        });
-//    }
-
-
-
-
-//    private void updateCellValue(String cellID, String newValue) {
-//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
-//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
-//
-//        // Call the engine's EditCell function to update the cell value
-//        mainController.getEngine().EditCell(coordinate, newValue);
-//
-//        // Refresh the sheet display
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//        mainController.setSheet(dtoSheet, true);
-//
-//        originalCellValueProperty.set(newValue);
-//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-//    }
 
     public void populateVersionSelector() {
         // Get available versions from the engine

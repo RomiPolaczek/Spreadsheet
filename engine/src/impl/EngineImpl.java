@@ -5,7 +5,6 @@ import dto.DTOcell;
 import dto.DTOlayout;
 import dto.DTOrange;
 import dto.DTOsheet;
-import expression.api.Expression;
 import expression.parser.Operation;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -13,7 +12,6 @@ import jakarta.xml.bind.Unmarshaller;
 import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
-import sheet.cell.impl.CellImpl;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
@@ -23,13 +21,9 @@ import sheet.range.Range;
 import xmlGenerated.STLCell;
 import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
-import java.lang.reflect.Modifier;
-//import org.reflections.Reflections;
-import java.lang.reflect.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EngineImpl implements Engine, Serializable {
 
@@ -219,15 +213,8 @@ public class EngineImpl implements Engine, Serializable {
 
     @Override
     public List<String> createListOfValuesForFilter(String column, String range) {
-       return sheet.createListOfValuesForFilter(column, range);
+        return sheet.createListOfValuesForFilter(column, range);
     }
-
-    //filter one column
-//    @Override
-//    public DTOsheet filterColumnBasedOnSelection(String rangeStr, List<String> checkBoxesValues, String selectedColumn) {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, checkBoxesValues, selectedColumn));
-//        return dtoSheet;
-//    }
 
     @Override
     public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
@@ -241,34 +228,33 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns) {
-        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns));
+    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord));
         return dtoSheet;
     }
 
     @Override
-    public DTOsheet createDTOCopySheet()
-    {
+    public DTOsheet createDTOCopySheet() {
         Sheet copySheet = getSheet().copySheet();
         DTOsheet dtoSheet = createDTOSheetForDisplay(copySheet);
         return dtoSheet;
     }
 
     @Override
-    public Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue){
+    public Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue) {
         Sheet copySheet = getSheet().copySheet();
         Coordinate coordinate = CoordinateFactory.from(cellID);
         copySheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), newValue);
         copySheet.getCellsThatHaveChanged();
         Map<String, EffectiveValue> cellsValues = new HashMap<>();
 
-        for(Cell cell : copySheet.getCellsThatHaveChanged())
-        {
+        for (Cell cell : copySheet.getCellsThatHaveChanged()) {
             cellsValues.put(cell.getCoordinate().toString(), cell.getEffectiveValue());
         }
         return cellsValues;
     }
 
+    @Override
     public Map<String, Integer> createListOfFunctions() {
         Map<String, Integer> functionMap = new HashMap<>();
         for (Operation operation : Operation.values()) {
@@ -276,59 +262,4 @@ public class EngineImpl implements Engine, Serializable {
         }
         return functionMap;
     }
-
-//    @Override
-//    public List<String> createListOfFunctions() {
-//        List<String> functions = new ArrayList<>();
-//        functions.add("Abs");
-//        functions.add("And");
-//        functions.add("Average");
-//        functions.add("Bigger");
-//        functions.add("Concat");
-//        functions.add("Divide");
-//        functions.add("Equal");
-//        functions.add("If");
-//        functions.add("Less");
-//        functions.add("Minus");
-//        functions.add("Modulo");
-//        functions.add("Not");
-//        functions.add("Or");
-//        functions.add("Percent");
-//        functions.add("Plus");
-//        functions.add("Pow");
-//        functions.add("Ref");
-//        functions.add("Sub");
-//        functions.add("Sum");
-//        functions.add("Times");
-//        Collections.sort(functions);
-//
-//        //List<String> functions = getExpressionClassNames("expression.impl");
-//        return functions;
-//    }
-
-//    private List<String> getExpressionClassNames(String packageName) {
-//        List<String> classNames = new ArrayList<>();
-//
-//        // Convert package name to file path
-//        String path = packageName.replace('.', '/');
-//        File directory = new File(ClassLoader.getSystemClassLoader().getResource(path).getFile());
-//
-//        if (directory.exists()) {
-//            File[] files = directory.listFiles(new FilenameFilter() {
-//                @Override
-//                public boolean accept(File dir, String name) {
-//                    return name.endsWith(".class");
-//                }
-//            });
-//
-//            if (files != null) {
-//                for (File file : files) {
-//                    String className = packageName + '.' + file.getName().replace(".class", "");
-//                    classNames.add(className);
-//                }
-//            }
-//        }
-//
-//        return classNames;
 }
-

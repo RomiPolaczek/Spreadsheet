@@ -45,8 +45,8 @@ public class UpdateCellFormat {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Update Value");
-        window.setWidth(600);
-        window.setHeight(800);
+        window.setWidth(500);
+        window.setHeight(400);
 
         Label cellIdLabel = createLabel("Cell ID: ", coord);
         Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "empty cell");
@@ -61,6 +61,8 @@ public class UpdateCellFormat {
         inputTypeComboBox.getItems().addAll("Number", "Text", "Function");
         inputTypeComboBox.setValue("Number");
 
+        ScrollPane scrollPane = new ScrollPane();
+
         VBox dynamicContentArea = new VBox(10);
         dynamicContentArea.setPadding(new Insets(10));
         dynamicContentArea.getStyleClass().add("vbox");
@@ -74,7 +76,7 @@ public class UpdateCellFormat {
         submitButton.setOnAction(e -> {
             confirmed = true;  // User confirmed the action
             handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window);
-            updateCellValue(coord, generatedString);
+            mainController.updateCellValue(coord, generatedString);
         });
 
         // Add a Cancel button
@@ -93,7 +95,9 @@ public class UpdateCellFormat {
         layout.getStyleClass().add("window");
         layout.getChildren().addAll(cellIdLabel,originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, buttonBox);
 
-        Scene scene = new Scene(layout);
+        scrollPane.setContent(layout);
+        Scene scene = new Scene(scrollPane);
+        mainController.setTheme(scene);
         window.setScene(scene);
 
         window.setOnCloseRequest(e -> {
@@ -102,21 +106,21 @@ public class UpdateCellFormat {
 
         window.showAndWait();
     }
-
-    private void updateCellValue(String cellID, String newValue) {
-        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
-        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
-
-        // Call the engine's EditCell function to update the cell value
-        mainController.getEngine().EditCell(coordinate, newValue);
-
-        // Refresh the sheet display
-        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-        mainController.setSheet(dtoSheet, true);
-
-        originalCellValueProperty.set(newValue);
-        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-    }
+//
+//    private void updateCellValue(String cellID, String newValue) {
+//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
+//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
+//
+//        // Call the engine's EditCell function to update the cell value
+//        mainController.getEngine().EditCell(coordinate, newValue);
+//
+//        // Refresh the sheet display
+//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+//        mainController.setSheet(dtoSheet, true);
+//
+//        originalCellValueProperty.set(newValue);
+//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
+//    }
 
     public String getGeneratedString() {
         return generatedString;
