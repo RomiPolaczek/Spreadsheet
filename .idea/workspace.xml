@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="webApp:Web exploded" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="added css files and theme manager">
-      <change afterPath="$PROJECT_DIR$/engine/src/expression/parser/FunctionArgument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/expression/parser/Operation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/header/ExpressionBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaFX-UI/src/header/UpdateCellFormat.java" afterDir="false" />
+    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="fix concat function">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/webApp_Web_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/angus_activation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/okHttp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/impl/EngineManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/src/users/UserManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/constants/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/servlets/LoginServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/utils/ServletUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/utils/SessionUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/web/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/web/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webApp/webApp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_media.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jaxb_core.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/api/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/api/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/impl/EngineImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/app/AppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/header/HeaderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/javaFX-UI.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/left/command/CommandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/javaFX-UI/src/sheet/SheetController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +47,29 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RomiPolaczek&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/RomiPolaczek/Spreadsheet.git&quot;,
+    &quot;accountId&quot;: &quot;b376b095-8031-495c-bf87-4e65986435fc&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -57,23 +95,35 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-
+    "Tomcat Server.server.executor": "Run",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rotem/IdeaProjects/sheetCell2",
+    "last_opened_file_path": "/Users/romipolaczek/Documents/second_year/java_course/Spreadsheet/webApp/web",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15234375",
-    "project.structure.side.proportion": "0.22408377",
+    "onboarding.tips.debug.path": "/Users/romipolaczek/Documents/second_year/java_course/Spreadsheet/client/src/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.applicationServers",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/webApp/web" />
+      <recent name="$PROJECT_DIR$/webApp/web/WEB-INF" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="spreadsheet.utils" />
+      <recent name="spreadsheet.constants" />
+      <recent name="users" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.server">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="javaFX-UI" />
@@ -88,6 +138,98 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="server" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 10.1.31" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="webApp:Web exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/spreadsheet" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="5f0e1745-9f75-45fc-b87a-a1622da94769" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="49955" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="webApp:Web exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Tomcat Server.server" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
@@ -97,8 +239,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
@@ -113,6 +255,8 @@
       <workItem from="1727452198706" duration="53000" />
       <workItem from="1727452276919" duration="16122000" />
       <workItem from="1727507487361" duration="39694000" />
+      <workItem from="1729449172868" duration="2099000" />
+      <workItem from="1729511730912" duration="19315000" />
     </task>
     <task id="LOCAL-00001" summary="reset to a point where everything works, all files pushed">
       <option name="closed" value="true" />
@@ -152,12 +296,32 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="HIGHLIGHTERS">
+                <map>
+                  <entry key="CURRENT_BRANCH" value="true" />
+                  <entry key="MERGE_COMMITS" value="true" />
+                  <entry key="MY_COMMITS" value="true" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="reset to a point where everything works, all files pushed" />
     <MESSAGE value="added bonus for filtering multiple columns, fixed the range delete and added error messages for range selection in filter and sort" />
     <MESSAGE value="added a button for animation and theme selction" />
     <MESSAGE value="added css files and theme manager" />
-    <option name="LAST_COMMIT_MESSAGE" value="added css files and theme manager" />
+    <MESSAGE value="fix concat function" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix concat function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -171,6 +335,16 @@
           <url>file://$PROJECT_DIR$/engine/src/sheet/cell/impl/CellImpl.java</url>
           <line>68</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client/src/Main.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/webApp/src/spreadsheet/servlets/LoginServlet.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
