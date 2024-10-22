@@ -9,20 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="fix concat function">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/webApp_Web_exploded.xml" afterDir="false" />
+    <list default="true" id="f6495567-48c1-4bd5-9408-9589088d9fdc" name="Changes" comment="Initial server">
       <change afterPath="$PROJECT_DIR$/.idea/libraries/angus_activation.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/okHttp.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/impl/EngineManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/src/users/UserManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/constants/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/servlets/LoginServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/utils/ServletUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/src/spreadsheet/utils/SessionUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/web/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webApp/web/index.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/webApp/webApp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_media.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/jaxb_core.xml" beforeDir="false" />
@@ -95,7 +86,7 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Tomcat Server.server.executor": "Run",
+    "Tomcat Server.server.executor": "Debug",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/romipolaczek/Documents/second_year/java_course/Spreadsheet/webApp/web",
@@ -256,7 +247,7 @@
       <workItem from="1727452276919" duration="16122000" />
       <workItem from="1727507487361" duration="39694000" />
       <workItem from="1729449172868" duration="2099000" />
-      <workItem from="1729511730912" duration="19315000" />
+      <workItem from="1729511730912" duration="20390000" />
     </task>
     <task id="LOCAL-00001" summary="reset to a point where everything works, all files pushed">
       <option name="closed" value="true" />
@@ -290,7 +281,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727519258782</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Initial server">
+      <option name="closed" value="true" />
+      <created>1729595622466</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729595622466</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -321,7 +320,8 @@
     <MESSAGE value="added a button for animation and theme selction" />
     <MESSAGE value="added css files and theme manager" />
     <MESSAGE value="fix concat function" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix concat function" />
+    <MESSAGE value="Initial server" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial server" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
