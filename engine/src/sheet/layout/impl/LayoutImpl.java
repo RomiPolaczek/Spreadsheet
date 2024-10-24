@@ -1,5 +1,6 @@
 package sheet.layout.impl;
 
+import exception.InvalidSheetException;
 import sheet.layout.api.Layout;
 
 import java.io.Serializable;
@@ -66,14 +67,14 @@ public class LayoutImpl implements Layout, Serializable {
     @Override
     public void CheckValidation (int value, int upperLimit, int lowerLimit, String str) {
         if(value > upperLimit || value < lowerLimit) {
-            throw new IllegalArgumentException(str + " must be between " + lowerLimit + " and " + upperLimit);
+            throw new InvalidSheetException(str + " must be between " + lowerLimit + " and " + upperLimit);
         }
     }
 
     @Override
     public void CheckValidation (int value, String str) {
         if(value <= 0)
-            throw new IllegalArgumentException(str + " must be greater than zero");
+            throw new InvalidSheetException(str + " must be greater than zero");
     }
 
     @Override
