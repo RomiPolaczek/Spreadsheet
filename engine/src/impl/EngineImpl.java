@@ -37,6 +37,10 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet = new HashMap<>();
     }
 
+    public Map<String, SingleSheetManager> getSheetNameToSheet() {
+        return sheetNameToSheet;
+    }
+
     public void LoadFile(String fileName) throws Exception {
         SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
         singleSheetManager.LoadFile(fileName);

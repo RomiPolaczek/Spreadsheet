@@ -1,5 +1,6 @@
 package api;
 
+import SingleSheetManager.api.SingleSheetManager;
 import dto.DTOsheet;
 import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
@@ -10,5 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface Engine {
+    Map<String, SingleSheetManager> getSheetNameToSheet();
     void LoadFile(String fileName) throws Exception;
 }
