@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.left.range.RangeController">
+   <children>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="4.0" />
+         </VBox.margin></Separator>
+      <ToolBar>
+         <items>
+            <Button fx:id="addRangeButton" minWidth="100.0" mnemonicParsing="false" onAction="#addRangeButtonOnAction" prefWidth="95.0" text="Add Range" />
+            <Button fx:id="deleteRangeButton" minWidth="100.0" mnemonicParsing="false" onAction="#deleteRangeButtonOnAction" text="Delete Range">
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" height="0.0" radius="0.0" width="0.0">
+                     <color>
+                        <Color red="0.7894737124443054" green="0.2229532152414322" blue="0.2229532152414322" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
+         </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </ToolBar>
+      <ListView fx:id="rangeListView" prefHeight="200.0" prefWidth="200.0" styleClass="list-view" />
+   </children>
+</VBox>

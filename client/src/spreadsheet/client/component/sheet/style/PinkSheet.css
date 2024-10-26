@@ -1,0 +1,78 @@
+/* Overall GridPane Style */
+.grid-pane {
+    -fx-background-color: #ffe8f2; /* Light pink background for the grid */
+    -fx-border-color: #ffabd2; /* Pink border around the grid */
+    -fx-border-width: 1px;
+    -fx-grid-lines-visible: true; /* Show grid lines */
+}
+
+/* Header Cell Style */
+.header-cell {
+    -fx-background-color: #ffc2e0; /* Light pink for headers */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-text-fill: #660033; /* Dark pink text color */
+    -fx-alignment: center; /* Center text alignment */
+    -fx-text-alignment: center; /* Center text horizontally */
+    -fx-padding: 0; /* Remove padding if necessary */
+    -fx-max-width: Infinity; /* Allow label to expand horizontally */
+    -fx-max-height: Infinity; /* Allow label to expand vertically */
+    -fx-min-width: 0; /* Allow label to contract */
+    -fx-min-height: 0; /* Allow label to contract */
+}
+
+/* Single Cell Style */
+.single-cell {
+    -fx-background-color: #ffe4e9; /* Soft pink background */
+    -fx-padding: 0; /* Remove padding if necessary */
+    -fx-max-width: Infinity; /* Allow label to expand horizontally */
+    -fx-max-height: Infinity; /* Allow label to expand vertically */
+    -fx-min-width: 0; /* Allow label to contract */
+    -fx-min-height: 0; /* Allow label to contract */
+}
+
+/* Hover Effect */
+.single-cell:hover, .header-cell:hover {
+    -fx-background-color: #ff99cc; /* Slightly darker pink on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255,105,180,0.5), 5, 0.5, 0, 0); /* Pink drop shadow effect */
+}
+
+/* Selected Cell Effect */
+#selected-cell {
+    -fx-background-color: rgba(255,182,193, 0.83); /* Light pink background for selected cell */
+    -fx-border-color: rgba(255,105,180, 0.75); /* Dark pink border for selection */
+    -fx-border-width: 2px; /* Border width */
+    -fx-effect: dropshadow(gaussian, rgba(255,105,180, 0.75), 5, 0.5, 0, 0); /* Pink drop shadow */
+}
+
+/* Depends-on Cell Effect */
+.single-cell.depends-on-cell {
+    -fx-background-color: #e0f0ff; /* Keep original light blue background */
+    -fx-border-style: dotted; /* Dotted border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-color: #007bff; /* Blue border color */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,255,0.5), 2, 0.5, 0, 0); /* Blue shadow effect */
+}
+
+/* Influence-on Cell Effect */
+.single-cell.influence-on-cell {
+    -fx-background-color: #e0ffe0; /* Keep original light green background */
+    -fx-border-style: dotted; /* Dotted border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-color: #28a745; /* Green border color */
+    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.5), 2, 0.5, 0, 0); /* Green shadow effect */
+}
+
+/* Range Label Effect */
+.range-label {
+    -fx-border-color: black;
+    -fx-border-width: 3px; /* Border width */
+}
+
+/* Default Cell */
+#default-cell {
+    -fx-background-color: #ffe6f2; /* Light pink background */
+    -fx-text-fill: black; /* Black text color */
+}
+
+

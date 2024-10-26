@@ -6,20 +6,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import spreadsheet.client.component.login.LoginController;
+import spreadsheet.client.component.main.DashboardController;
+import spreadsheet.client.component.main.MainSheetController;
 import spreadsheet.client.util.Constants;
-import spreadsheet.client.util.Constants.*;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class Main extends Application {
-    //private ChatAppMainController chatAppMainController;
+    private DashboardController dashboardController;
 
     @Override
     public void start(Stage primaryStage) {
 
-//        primaryStage.setMinHeight(600);
-//        primaryStage.setMinWidth(600);
         primaryStage.setTitle("Spread Sheet Client");
 
         URL loginPage = getClass().getResource(Constants.LOGIN_PAGE_FXML_RESOURCE_LOCATION);
@@ -31,6 +30,7 @@ public class Main extends Application {
             //chatAppMainController = fxmlLoader.getController();
 
             LoginController loginController = fxmlLoader.getController();
+            loginController.setDashboardController(dashboardController);
 
             Scene scene = new Scene(root, 300, 200);
             primaryStage.setScene(scene);

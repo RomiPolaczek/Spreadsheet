@@ -1,6 +1,10 @@
 package spreadsheet.client.component.login;
 
-//import spreadsheet.client.component.main.ChatAppMainController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import spreadsheet.client.component.main.DashboardController;
 import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.http.HttpClientUtil;
 import javafx.application.Platform;
@@ -13,8 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import spreadsheet.client.util.http.SimpleCookieManager;
 
 import java.io.IOException;
+import java.util.List;
+
+import static spreadsheet.client.util.Constants.*;
 
 public class LoginController {
 
@@ -24,9 +32,17 @@ public class LoginController {
     @FXML
     public Label errorMessageLabel;
 
-    //private ChatAppMainController chatAppMainController;
+    private DashboardController dashboardController;
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
+
+    // Create an instance of SimpleCookieManager
+    private SimpleCookieManager cookieManager = new SimpleCookieManager();
+
+    private OkHttpClient client = new OkHttpClient
+            .Builder()
+            .cookieJar(cookieManager)
+            .build();
 
     @FXML
     public void initialize() {
@@ -72,10 +88,42 @@ public class LoginController {
                             errorMessageProperty.set("Something went wrong: " + responseBody)
                     );
                 } else {
-//                    Platform.runLater(() -> {
-//                        chatAppMainController.updateUserName(userName);
-//                        chatAppMainController.switchToChatRoom();
-//                    });
+                    Platform.runLater(() -> {
+                        try {
+                            // Extract cookies from the response and save them
+                            HttpUrl loginUrl = HttpUrl.parse(finalUrl);
+                            List<Cookie> responseCookies = Cookie.parseAll(loginUrl, response.headers());
+                            cookieManager.saveFromResponse(loginUrl, responseCookies);
+
+                            // Set up the FXMLLoader for the main window
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
+                            Parent root = loader.load();
+
+                            DashboardController dashboardController = loader.getController();
+
+                            // Set the username in the menu window
+                            dashboardController.setUserName(userNameTextField.getText());
+
+                            // Pass the OkHttpClient instance
+                            dashboardController.setOkHttpClient(client);
+
+                            // Pass the SimpleCookieManager instance
+                            dashboardController.setCookieManager(cookieManager);
+
+                            // Open the main window in a new stage
+                            Stage mainStage = new Stage();
+                            mainStage.setScene(new Scene(root));
+                      //      dashboardController.setTheme(mainStage.getScene());
+                            mainStage.show();
+
+                            // Close the login window
+                            userNameTextField.getScene().getWindow().hide();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            errorMessageProperty.set("Failed to load the main window.");
+                        }
+                    });
                 }
             }
         });
@@ -95,7 +143,8 @@ public class LoginController {
 //        chatAppMainController.updateHttpLine(data);
 //    }
 //
-//    public void setChatAppMainController(ChatAppMainController chatAppMainController) {
-//        this.chatAppMainController = chatAppMainController;
-//    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
 }

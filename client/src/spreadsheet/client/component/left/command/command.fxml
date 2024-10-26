@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" styleClass="root" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.left.command.CommandController">
+   <children>
+      <Accordion>
+        <panes>
+          <TitledPane animated="false">
+               <content>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <Label text="Cell Background Color:" />
+                        <ColorPicker fx:id="cellBackgroundColorPicker" onAction="#cellBackgroundColorPickerOnAction">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ColorPicker>
+                        <Label text="Cell Text Color:">
+                           <VBox.margin>
+                              <Insets top="12.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ColorPicker fx:id="cellTextColorPicker" onAction="#cellTextColorPickerOnAction">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <value>
+                              <Color />
+                           </value>
+                        </ColorPicker>
+                        <Button fx:id="resetCellDesignButton" mnemonicParsing="false" onAction="#resetCellDesignButtonOnAction" text="Reset Cell Design">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+               </content>
+               <graphic>
+                  <Label fx:id="selectedCellLabel">
+                     <graphic>
+                        <Label text="Cell:" />
+                     </graphic>
+                  </Label>
+               </graphic>
+          </TitledPane>
+          <TitledPane animated="false">
+               <content>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <ComboBox fx:id="columnAlignmentComboBox" onAction="#columnAlignmentComboBoxOnAction" prefWidth="147.0" promptText="Column Alignment">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ComboBox>
+                        <Label text="Column Width:">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Slider fx:id="columnWidthSlider" blockIncrement="0.0" max="200.0" min="15.0" value="100.0">
+                           <VBox.margin>
+                              <Insets top="2.0" />
+                           </VBox.margin>
+                        </Slider>
+                     </children>
+                  </VBox>
+               </content>
+               <graphic>
+                  <Label fx:id="selectedColumnLabel" text=" ">
+                     <graphic>
+                        <Label text="Column: " />
+                     </graphic>
+                  </Label>
+               </graphic>
+          </TitledPane>
+          <TitledPane animated="false">
+               <content>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <Label text="Row Height: " />
+                        <Slider fx:id="rowHeightSlider" min="15.0" prefWidth="170.0" />
+                     </children>
+                  </VBox>
+               </content>
+               <graphic>
+                  <Label fx:id="selectedRowLabel">
+                     <graphic>
+                        <Label text="Row:">
+
+                        </Label>
+                     </graphic>
+                  </Label>
+               </graphic>
+          </TitledPane>
+        </panes>
+      </Accordion>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Separator>
+      <HBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Button fx:id="sortButton" mnemonicParsing="false" onAction="#sortButtonOnAction" prefWidth="50.0" text="Sort" textAlignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <Button fx:id="dynamicAnalysisButton" mnemonicParsing="false" onAction="#dynamicAnalysisButtonAction" prefWidth="125.0" text="Dynamic Analysis">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Button fx:id="filterButton" mnemonicParsing="false" onAction="#filterButtonOnAction" prefWidth="50.0" text="Filter" />
+          <Button fx:id="createGraphButton" mnemonicParsing="false" onAction="#createGraphButtonOnAction" prefWidth="125.0" text="Create Graph" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets left="5.0" right="5.0" top="10.0" />
+   </padding>
+</VBox>
