@@ -1,4 +1,5 @@
 package spreadsheet.client.component.main;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,8 +14,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import okhttp3.*;
 import javafx.concurrent.Task;
+import org.jetbrains.annotations.NotNull;
+import spreadsheet.client.util.http.HttpClientUtil;
 import static spreadsheet.client.util.Constants.*;
-import spreadsheet.client.util.http.SimpleCookieManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,25 +28,10 @@ public class DashboardController {
     private MainSheetController mainSheetController;
 
     private String userName;
-    private OkHttpClient client;
-    private SimpleCookieManager cookieManager;
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-    public void setOkHttpClient(OkHttpClient client) {
-        this.client = client;
-    }
-
-    public void setCookieManager(SimpleCookieManager cookieManager) {
-        this.cookieManager = cookieManager;
-    }
-
-//    @FXML
-//    void loadFileButtonOnAction(ActionEvent event) {
-//
-//    }
 
     @FXML
     void loadFileButtonOnAction(ActionEvent event) {
@@ -62,10 +49,10 @@ public class DashboardController {
 
         // Show progress bar pop-up
         Stage progressBarStage = createProgressBarStage();
-        showProgressBar(progressBarStage, absolutePath);
+        showProgressBar(selectedFile, progressBarStage, absolutePath);
     }
 
-    private void showProgressBar(Stage progressBarStage, String absolutePath) {
+    private void showProgressBar(File selectedFile, Stage progressBarStage, String absolutePath) {
         Task<Void> loadFileTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
@@ -81,37 +68,46 @@ public class DashboardController {
                         .build()
                         .toString();
 
-                OkHttpClient client = new OkHttpClient();
-                RequestBody formBody = new FormBody.Builder()
-                        .add("filePath", absolutePath)
+                RequestBody fileBody =  RequestBody.create(selectedFile, MediaType.parse("application/xml"));
+
+                MultipartBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM) // Ensure the type is set to FORM
+                        .addFormDataPart("file", selectedFile.getName(), fileBody)
                         .build();
 
-                Request request = new Request.Builder()
-                        .url(loadFileUrl)
-                        .post(formBody)
-                        .build();
-
-                try (Response response = client.newCall(request).execute()) {
-                    if (response.isSuccessful()) {
+                HttpClientUtil.runAsyncPost(loadFileUrl, requestBody, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() -> {
-                         //   selectedFileProperty.set(absolutePath);
-                       //     isFileSelected.set(true);
-                        //    mainController.refreshUIWithNewFile();
-                            progressBarStage.close();
-                        });
-                    } else {
-                        String errorMessage = response.body().string();
-                        Platform.runLater(() -> {
-                 //           mainController.showAlert("Error", "File Load Error", errorMessage, Alert.AlertType.ERROR);
+                            // Handle error, e.g., show an alert
+                            System.err.println("File Load Error: " + e.getMessage());
                             progressBarStage.close();
                         });
                     }
-                } catch (IOException e) {
-                    Platform.runLater(() -> {
-                  //      mainController.showAlert("Error", "File Load Error", "An error occurred: " + e.getMessage(), Alert.AlertType.ERROR);
-                        progressBarStage.close();
-                    });
-                }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) {
+                        try {
+                            Platform.runLater(() -> {
+                                if (response.isSuccessful()) {
+                                    // Handle successful response
+                                    // You can update the UI or process the response here
+                                    System.out.println("File loaded successfully.");
+                                } else {
+                                    System.err.println("File Load Error: " + response.code());
+                                }
+                                progressBarStage.close();
+                            });
+                        } catch (Exception e) {
+                            Platform.runLater(() -> {
+                                System.err.println("Error processing response: " + e.getMessage());
+                                progressBarStage.close();
+                            });
+                        } finally {
+                            response.close(); // Ensure the response is closed to free resources
+                        }
+                    }
+                });
 
                 return null;
             }
@@ -154,6 +150,4 @@ public class DashboardController {
 
         return progressBarStage;
     }
-
-
 }

@@ -3,10 +3,12 @@ package spreadsheet.servlets;
 import api.Engine;
 import exception.InvalidFileFormatException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import spreadsheet.utils.ServletUtils;
 import spreadsheet.utils.SessionUtils;
 import users.UserManager;
@@ -15,11 +17,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @WebServlet(name = "LoadFileServlet", urlPatterns = "/loadFile")
+@MultipartConfig
 public class LoadFileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("application/json");
 
         String usernameFromSession = SessionUtils.getUsername(request);
         Engine engine = ServletUtils.getEngine(getServletContext());
@@ -30,18 +33,18 @@ public class LoadFileServlet extends HttpServlet {
             return;
         }
 
-        String filePathFromParameter = request.getParameter("filePath");
-        if (filePathFromParameter == null || filePathFromParameter.isEmpty()) {
+        Part filePart = request.getPart("file");
+
+        if (filePart == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("File path is missing or empty.");
+            response.getWriter().write("File part is missing.");
             return;
         }
 
-        filePathFromParameter = filePathFromParameter.trim();
 
         synchronized (this) {
             try {
-                engine.LoadFile(filePathFromParameter);
+                engine.LoadFile(filePart.getInputStream());
 
                 String successResponse = String.format(filePathFromParameter);
                 response.setStatus(HttpServletResponse.SC_OK);

@@ -41,9 +41,9 @@ public class EngineImpl implements Engine, Serializable {
         return sheetNameToSheet;
     }
 
-    public void LoadFile(String fileName) throws Exception {
+    public void LoadFile(InputStream inputStream) throws Exception {
         SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
-        singleSheetManager.LoadFile(fileName);
+        singleSheetManager.LoadFile(inputStream);
         String sheetName = singleSheetManager.getSheet().getName();
 
         if(sheetNameToSheet.containsKey(sheetName)){

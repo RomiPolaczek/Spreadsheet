@@ -36,14 +36,6 @@ public class LoginController {
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
 
-    // Create an instance of SimpleCookieManager
-    private SimpleCookieManager cookieManager = new SimpleCookieManager();
-
-    private OkHttpClient client = new OkHttpClient
-            .Builder()
-            .cookieJar(cookieManager)
-            .build();
-
     @FXML
     public void initialize() {
         errorMessageLabel.textProperty().bind(errorMessageProperty);
@@ -91,9 +83,9 @@ public class LoginController {
                     Platform.runLater(() -> {
                         try {
                             // Extract cookies from the response and save them
-                            HttpUrl loginUrl = HttpUrl.parse(finalUrl);
-                            List<Cookie> responseCookies = Cookie.parseAll(loginUrl, response.headers());
-                            cookieManager.saveFromResponse(loginUrl, responseCookies);
+//                            HttpUrl loginUrl = HttpUrl.parse(finalUrl);
+//                            List<Cookie> responseCookies = Cookie.parseAll(loginUrl, response.headers());
+//                            cookieManager.saveFromResponse(loginUrl, responseCookies);
 
                             // Set up the FXMLLoader for the main window
                             FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
@@ -105,10 +97,10 @@ public class LoginController {
                             dashboardController.setUserName(userNameTextField.getText());
 
                             // Pass the OkHttpClient instance
-                            dashboardController.setOkHttpClient(client);
+                          //  dashboardController.setOkHttpClient(new OkHttpClient());
 
                             // Pass the SimpleCookieManager instance
-                            dashboardController.setCookieManager(cookieManager);
+                         //   dashboardController.setCookieManager(cookieManager);
 
                             // Open the main window in a new stage
                             Stage mainStage = new Stage();

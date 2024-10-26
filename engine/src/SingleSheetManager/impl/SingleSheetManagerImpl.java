@@ -40,8 +40,8 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     }
 
     @Override
-    public void LoadFile(String fileName) throws Exception {
-        File newFile = checkFileValidation(fileName);
+    public void LoadFile(InputStream inputStream) throws Exception {
+        File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(newFile);
         fromStlSheetToOurSheet();
         file = newFile;
@@ -67,7 +67,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        return file;
 //    }
 
-    private File checkFileValidation(String fileName) throws Exception {
+    private File checkFileValidation(InputStream inputStream) throws Exception {
         File newFile = new File(fileName);
 
         if (!newFile.exists()) {
