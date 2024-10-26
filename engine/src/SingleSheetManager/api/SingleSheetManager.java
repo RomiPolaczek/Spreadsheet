@@ -7,11 +7,12 @@ import sheet.coordinate.api.Coordinate;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 public interface SingleSheetManager {
-    void LoadFile(String fileName) throws Exception;
+    void LoadFile(InputStream inputStream) throws Exception;
     Sheet getSheet();
    DTOsheet createDTOSheetForDisplay(Sheet sheet);
 //    DTOsheet GetVersionForDisplay(String version);

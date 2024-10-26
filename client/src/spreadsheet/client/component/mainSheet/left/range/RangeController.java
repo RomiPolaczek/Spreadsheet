@@ -1,6 +1,6 @@
-package spreadsheet.client.component.left.range;
+package spreadsheet.client.component.mainSheet.left.range;
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;

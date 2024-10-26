@@ -1,6 +1,6 @@
-package spreadsheet.client.component.header;
+package spreadsheet.client.component.mainSheet.header;
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import expression.parser.FunctionArgument;
 import expression.parser.Operation;

@@ -6,8 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import spreadsheet.client.component.login.LoginController;
-import spreadsheet.client.component.main.DashboardController;
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.util.Constants;
 
 import java.io.IOException;

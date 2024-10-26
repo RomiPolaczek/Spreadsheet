@@ -1,7 +1,7 @@
 package spreadsheet.client.theme;
 
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.scene.Scene;
 
 public class ThemeManager {

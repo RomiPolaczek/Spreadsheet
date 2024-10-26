@@ -3,7 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.header.HeaderController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.header.HeaderController">
    <content>
       <VBox alignment="TOP_CENTER" minWidth="700.0" prefWidth="1000.0" styleClass="root">
          <children>

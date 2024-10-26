@@ -1,6 +1,6 @@
-package spreadsheet.client.component.left.command;
+package spreadsheet.client.component.mainSheet.left.command;
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;

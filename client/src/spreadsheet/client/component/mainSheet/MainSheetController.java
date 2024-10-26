@@ -1,10 +1,9 @@
-package spreadsheet.client.component.main;
+package spreadsheet.client.component.mainSheet;
 
 import api.Engine;
 import dto.DTOcell;
 import dto.DTOsheet;
-import okhttp3.OkHttpClient;
-import spreadsheet.client.component.header.HeaderController;
+import spreadsheet.client.component.mainSheet.header.HeaderController;
 import impl.EngineImpl;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,10 +16,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
-import spreadsheet.client.component.left.LeftController;
-import spreadsheet.client.component.sheet.SheetController;
+import spreadsheet.client.component.mainSheet.left.LeftController;
+import spreadsheet.client.component.mainSheet.sheet.SheetController;
 import spreadsheet.client.theme.ThemeManager;
-import spreadsheet.client.util.http.SimpleCookieManager;
 
 import java.util.List;
 import java.util.Map;

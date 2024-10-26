@@ -1,4 +1,4 @@
-package spreadsheet.client.component.main;
+package spreadsheet.client.component.dashboard;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import okhttp3.*;
 import javafx.concurrent.Task;
 import org.jetbrains.annotations.NotNull;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import spreadsheet.client.util.http.HttpClientUtil;
 import static spreadsheet.client.util.Constants.*;
 

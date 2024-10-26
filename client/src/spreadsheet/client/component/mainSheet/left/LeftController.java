@@ -1,12 +1,12 @@
-package spreadsheet.client.component.left;
+package spreadsheet.client.component.mainSheet.left;
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import spreadsheet.client.component.left.command.CommandController;
-import spreadsheet.client.component.left.range.RangeController;
+import spreadsheet.client.component.mainSheet.left.command.CommandController;
+import spreadsheet.client.component.mainSheet.left.range.RangeController;
 
 import java.util.Map;
 

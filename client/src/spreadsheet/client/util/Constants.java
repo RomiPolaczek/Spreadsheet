@@ -10,8 +10,8 @@ public class Constants {
     public final static String CHAT_LINE_FORMATTING = "%tH:%tM:%tS | %.10s: %s%n";
 
     // fxml locations
-    public final static String DASHBOARD_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/main/dashboard.fxml";
-    public final static String MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/main/mainSheet.fxml";
+    public final static String DASHBOARD_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/dashboard/dashboard.fxml";
+    public final static String MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/mainSheet/mainSheet.fxml";
     public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/login/login.fxml";
 //    public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/client/component/chatroom/chat-room-main.fxml";
 

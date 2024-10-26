@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" hmin="300.0" minHeight="300.0" minWidth="300.0" vmin="300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.sheet.SheetController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hmin="300.0" minHeight="300.0" minWidth="300.0" vmin="300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.sheet.SheetController">
    <content>
       <GridPane fx:id="dynamicGridPane" alignment="TOP_CENTER">
         <columnConstraints>

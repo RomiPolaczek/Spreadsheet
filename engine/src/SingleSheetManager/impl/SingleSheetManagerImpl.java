@@ -32,7 +32,7 @@ import java.util.Map;
 public class SingleSheetManagerImpl implements SingleSheetManager, Serializable {
     private Sheet sheet;
     private STLSheet stlSheet;
-    private File file;
+   // private File file;
     private VersionManager versionManager;
 
     public SingleSheetManagerImpl() {
@@ -41,10 +41,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 
     @Override
     public void LoadFile(InputStream inputStream) throws Exception {
-        File newFile = checkFileValidation(inputStream);
-        fromXmlFileToObject(newFile);
+       // File newFile = checkFileValidation(inputStream);
+        fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
-        file = newFile;
+       // file = newFile;
     }
 
     @Override
@@ -67,27 +67,27 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        return file;
 //    }
 
-    private File checkFileValidation(InputStream inputStream) throws Exception {
-        File newFile = new File(fileName);
+//    private File checkFileValidation(InputStream inputStream) throws Exception {
+//        File newFile = new File(fileName);
+//
+//        if (!newFile.exists()) {
+//            throw new FileNotFoundException("File does not exist at path: " + fileName);
+//        }
+//        if (!newFile.canRead()) {
+//            throw new IOException("File cannot be read at path: " + fileName);
+//        }
+//        // Check if file has .xml extension
+//        if (!fileName.toLowerCase().endsWith(".xml")) {
+//            throw new InvalidFileFormatException("The file does not have an XML extension.");
+//        }
+//
+//        return newFile;
+//    }
 
-        if (!newFile.exists()) {
-            throw new FileNotFoundException("File does not exist at path: " + fileName);
-        }
-        if (!newFile.canRead()) {
-            throw new IOException("File cannot be read at path: " + fileName);
-        }
-        // Check if file has .xml extension
-        if (!fileName.toLowerCase().endsWith(".xml")) {
-            throw new InvalidFileFormatException("The file does not have an XML extension.");
-        }
-
-        return newFile;
-    }
-
-    private void fromXmlFileToObject(File file) throws JAXBException {
+    private void fromXmlFileToObject(InputStream inputStream) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(STLSheet.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
+        stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(inputStream);
     }
 
     private void fromStlSheetToOurSheet() {

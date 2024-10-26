@@ -1,6 +1,6 @@
-package spreadsheet.client.component.sheet;
+package spreadsheet.client.component.mainSheet.sheet;
 
-import spreadsheet.client.component.main.MainSheetController;
+import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import dto.DTOsheet;
 import javafx.animation.KeyFrame;
@@ -313,7 +313,7 @@ public class SheetController {
     }
 
     public void setSheetStyle(Scene scene, String theme) {
-        String css = getClass().getResource("/spreadsheet/client/component/sheet/style/" + theme + "Sheet.css").toExternalForm();
+        String css = getClass().getResource("/spreadsheet/client/component/mainSheet/sheet/style/" + theme + "Sheet.css").toExternalForm();
         scene.getStylesheets().add(css);
     }
 

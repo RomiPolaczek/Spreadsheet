@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.MainSheetController">
+   <content>
+      <BorderPane>
+         <top>
+            <fx:include fx:id="headerComponent" source="header/header.fxml" />
+         </top>
+         <center>
+            <fx:include fx:id="sheetComponent" source="sheet/sheet.fxml" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <fx:include fx:id="leftComponent" source="left/left.fxml" />
+         </left>
+      </BorderPane>
+   </content>
+</ScrollPane>

@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import spreadsheet.client.component.main.DashboardController;
+import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.http.HttpClientUtil;
 import javafx.application.Platform;
@@ -17,10 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import spreadsheet.client.util.http.SimpleCookieManager;
 
 import java.io.IOException;
-import java.util.List;
 
 import static spreadsheet.client.util.Constants.*;
 

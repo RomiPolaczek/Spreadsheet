@@ -41,12 +41,18 @@ public class LoadFileServlet extends HttpServlet {
             return;
         }
 
+        String fileName = filePart.getSubmittedFileName();
+        if (fileName == null || !fileName.toLowerCase().endsWith(".xml")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Uploaded file must be an XML file.");
+            return;
+        }
 
         synchronized (this) {
             try {
                 engine.LoadFile(filePart.getInputStream());
 
-                String successResponse = String.format(filePathFromParameter);
+                String successResponse = String.format(filePart.getName());
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(successResponse);
 
