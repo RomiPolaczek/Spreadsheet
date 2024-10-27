@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface SingleSheetManager {
-    void LoadFile(InputStream inputStream) throws Exception;
+    void LoadFile(InputStream inputStream, String owner) throws Exception;
     Sheet getSheet();
+    String getOwner();
    DTOsheet createDTOSheetForDisplay(Sheet sheet);
 //    DTOsheet GetVersionForDisplay(String version);
 //    void EditCell(Coordinate coordinate, String inputValue);

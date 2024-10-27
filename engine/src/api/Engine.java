@@ -2,6 +2,7 @@ package api;
 
 import SingleSheetManager.api.SingleSheetManager;
 import dto.DTOsheet;
+import dto.DTOsheetTableDetails;
 import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
@@ -13,5 +14,6 @@ import java.util.Map;
 
 public interface Engine {
     Map<String, SingleSheetManager> getSheetNameToSheet();
-    void LoadFile(InputStream inputStream) throws Exception;
+    void LoadFile(InputStream inputStream, String owner) throws Exception;
+    List<DTOsheetTableDetails> getDTOsheetTableDetailsList();
 }

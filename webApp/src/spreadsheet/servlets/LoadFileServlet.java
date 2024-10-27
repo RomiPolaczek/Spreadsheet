@@ -50,9 +50,9 @@ public class LoadFileServlet extends HttpServlet {
 
         synchronized (this) {
             try {
-                engine.LoadFile(filePart.getInputStream());
+                engine.LoadFile(filePart.getInputStream(), usernameFromSession);
 
-                String successResponse = String.format(filePart.getName());
+                String successResponse = String.format(fileName);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(successResponse);
 

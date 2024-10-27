@@ -7,12 +7,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.dashboard.DashboardController">
    <content>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <top>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="796.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Sheet-cell" />
                   <ToolBar prefHeight="40.0" prefWidth="200.0">
@@ -23,6 +22,12 @@
                </children>
             </VBox>
          </top>
+         <center>
+            <fx:include fx:id="tabelsComponent" source="tables/tabels.fxml" />
+         </center>
+         <right>
+            <fx:include fx:id="dashboardCommandsComponent" source="commands/dashboardCommands.fxml" />
+         </right>
       </BorderPane>
    </content>
 </ScrollPane>

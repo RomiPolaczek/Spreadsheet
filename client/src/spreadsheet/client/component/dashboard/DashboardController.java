@@ -1,5 +1,6 @@
 package spreadsheet.client.component.dashboard;
 
+import impl.EngineImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -15,6 +17,8 @@ import javafx.stage.Stage;
 import okhttp3.*;
 import javafx.concurrent.Task;
 import org.jetbrains.annotations.NotNull;
+import spreadsheet.client.component.dashboard.commands.DashboardCommandsController;
+import spreadsheet.client.component.dashboard.tables.TabelsController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import spreadsheet.client.util.http.HttpClientUtil;
 import static spreadsheet.client.util.Constants.*;
@@ -24,11 +28,23 @@ import java.io.IOException;
 
 public class DashboardController {
 
-    @FXML
-    private Button loadFileButton;
+    @FXML private Button loadFileButton;
     private MainSheetController mainSheetController;
 
+    @FXML private VBox tabelsComponent;
+    @FXML private TabelsController tabelsComponentController;
+    @FXML private VBox dashboardCommandsComponent;
+    @FXML private DashboardCommandsController dashboardCommandsComponentController;
+
     private String userName;
+
+    @FXML
+    public void initialize() {
+        if (tabelsComponentController != null && dashboardCommandsComponentController != null) {
+            tabelsComponentController.setDashboardController(this);
+            dashboardCommandsComponentController.setDashboardController(this);
+        }
+    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -94,6 +110,7 @@ public class DashboardController {
                                     // Handle successful response
                                     // You can update the UI or process the response here
                                     System.out.println("File loaded successfully.");
+                                    tabelsComponentController.fetchSheetDetails();
                                 } else {
                                     System.err.println("File Load Error: " + response.code());
                                 }

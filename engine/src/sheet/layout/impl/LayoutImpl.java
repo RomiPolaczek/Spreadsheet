@@ -89,4 +89,13 @@ public class LayoutImpl implements Layout, Serializable {
     public int hashCode() {
         return Objects.hash(rowsHeightUnits, columnsWidthUnits, rows, columns, ROWS_LOWER_LIMIT, COLUMNS_LOWER_LIMIT, ROWS_UPPER_LIMIT, COLUMNS_UPPER_LIMIT);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(rows);
+        str.append("x");
+        str.append(columns);
+        return str.toString();
+    }
 }

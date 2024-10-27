@@ -33,6 +33,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     private Sheet sheet;
     private STLSheet stlSheet;
    // private File file;
+    private String owner;
     private VersionManager versionManager;
 
     public SingleSheetManagerImpl() {
@@ -40,10 +41,11 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     }
 
     @Override
-    public void LoadFile(InputStream inputStream) throws Exception {
+    public void LoadFile(InputStream inputStream, String owner) throws Exception {
        // File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
+        this.owner = owner;
        // file = newFile;
     }
 
@@ -51,6 +53,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     public Sheet getSheet() {
         return sheet;
     }
+
+    @Override
+    public String getOwner()
+    { return owner; }
 //
 //    @Override
 //    public int getNumberOfVersions() {

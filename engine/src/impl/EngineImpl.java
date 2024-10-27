@@ -4,10 +4,7 @@ import SingleSheetManager.api.SingleSheetManager;
 import SingleSheetManager.impl.SingleSheetManagerImpl;
 import SingleSheetManager.impl.VersionManager;
 import api.Engine;
-import dto.DTOcell;
-import dto.DTOlayout;
-import dto.DTOrange;
-import dto.DTOsheet;
+import dto.*;
 import expression.parser.Operation;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -41,9 +38,23 @@ public class EngineImpl implements Engine, Serializable {
         return sheetNameToSheet;
     }
 
-    public void LoadFile(InputStream inputStream) throws Exception {
+    @Override
+    public List<DTOsheetTableDetails> getDTOsheetTableDetailsList() {
+        List<DTOsheetTableDetails> list = new ArrayList<>();
+
+        for(SingleSheetManager singleSheetManager : sheetNameToSheet.values()) {
+            String sheetName = singleSheetManager.getSheet().getName();
+            String owner =  singleSheetManager.getOwner();
+            String size = singleSheetManager.getSheet().getLayout().toString();
+            list.add(new DTOsheetTableDetails(sheetName, owner, size, "owner"));
+        }
+
+        return list;
+    }
+
+    public void LoadFile(InputStream inputStream, String owner) throws Exception {
         SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
-        singleSheetManager.LoadFile(inputStream);
+        singleSheetManager.LoadFile(inputStream, owner);
         String sheetName = singleSheetManager.getSheet().getName();
 
         if(sheetNameToSheet.containsKey(sheetName)){
