@@ -28,6 +28,9 @@ public class Constants {
 
 //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
 //    public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";
+
+    public final static String LOAD_SHEET = FULL_SERVER_PATH + DASHBOARD_PAGE + "/loadSheet";
+
     public final static String GET_SHEET_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getSheetDetails";
 //    public final static String SEND_CHAT_LINE = FULL_SERVER_PATH + "/pages/chatroom/sendChat";
 //    public final static String CHAT_LINES_LIST = FULL_SERVER_PATH + "/chat";

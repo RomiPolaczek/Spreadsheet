@@ -59,7 +59,6 @@ public class LoginController {
                 .build()
                 .toString();
 
-       // updateHttpStatusLine("New request is launched for: " + finalUrl);
 
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
@@ -80,30 +79,14 @@ public class LoginController {
                 } else {
                     Platform.runLater(() -> {
                         try {
-                            // Extract cookies from the response and save them
-//                            HttpUrl loginUrl = HttpUrl.parse(finalUrl);
-//                            List<Cookie> responseCookies = Cookie.parseAll(loginUrl, response.headers());
-//                            cookieManager.saveFromResponse(loginUrl, responseCookies);
-
-                            // Set up the FXMLLoader for the main window
                             FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
                             Parent root = loader.load();
 
                             DashboardController dashboardController = loader.getController();
-
-                            // Set the username in the menu window
                             dashboardController.setUserName(userNameTextField.getText());
 
-                            // Pass the OkHttpClient instance
-                          //  dashboardController.setOkHttpClient(new OkHttpClient());
-
-                            // Pass the SimpleCookieManager instance
-                         //   dashboardController.setCookieManager(cookieManager);
-
-                            // Open the main window in a new stage
                             Stage mainStage = new Stage();
                             mainStage.setScene(new Scene(root));
-                      //      dashboardController.setTheme(mainStage.getScene());
                             mainStage.show();
 
                             // Close the login window
@@ -128,11 +111,6 @@ public class LoginController {
     private void quitButtonClicked(ActionEvent e) {
         Platform.exit();
     }
-
-//    private void updateHttpStatusLine(String data) {
-//        chatAppMainController.updateHttpLine(data);
-//    }
-//
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;

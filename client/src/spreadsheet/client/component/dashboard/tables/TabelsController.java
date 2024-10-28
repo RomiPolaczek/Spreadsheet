@@ -82,6 +82,12 @@ public class TabelsController {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 // Handle failure
+
+
+                //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
             }
 
             @Override
@@ -97,6 +103,11 @@ public class TabelsController {
                     });
                 } else {
                     System.err.println("Request failed: " + response.code());
+
+
+
+                    //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 }
                 response.close();
             }

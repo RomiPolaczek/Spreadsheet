@@ -1,6 +1,19 @@
 package spreadsheet.client.component.mainSheet.header;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
+import dto.DTOsheetTableDetails;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
+import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -10,14 +23,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadsheet.client.theme.ThemeManager;
+import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.http.HttpClientUtil;
 
-import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import static spreadsheet.client.util.Constants.DASHBOARD_PAGE_FXML_RESOURCE_LOCATION;
 
 
 public class HeaderController {
@@ -40,7 +57,7 @@ public class HeaderController {
     private Button formatFunctionButton;
 
 
-    private MainSheetController mainController;
+    private MainSheetController mainSheetController;
     private SimpleStringProperty selectedCellProperty;
     private SimpleStringProperty originalCellValueProperty;
     private SimpleStringProperty lastUpdateVersionCellProperty;
@@ -76,7 +93,7 @@ public class HeaderController {
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
                 // Reset the style of the previously selected cell
-                Label prevCellLabel = mainController.getCellLabel(oldValue);
+                Label prevCellLabel = mainSheetController.getCellLabel(oldValue);
                 if (prevCellLabel != null) {
                     prevCellLabel.setId(null); // Reset to previous style
                 }
@@ -84,7 +101,7 @@ public class HeaderController {
 
             if (newValue != null) {
                 // Apply style to the newly selected cell
-                Label newCellLabel = mainController.getCellLabel(newValue);
+                Label newCellLabel = mainSheetController.getCellLabel(newValue);
                 originalCellValueTextField.clear();
                 originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
                 if (newCellLabel != null) {
@@ -94,9 +111,9 @@ public class HeaderController {
         });
     }
 
-    public void setMainController(MainSheetController mainController) {
-        this.mainController = mainController;
-        mainController.getThemeManager().setMainController(mainController);
+    public void setMainSheetController(MainSheetController mainSheetController) {
+        this.mainSheetController = mainSheetController;
+        mainSheetController.getThemeManager().setMainController(mainSheetController);
     }
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
@@ -206,22 +223,67 @@ public class HeaderController {
     }
 
     public void viewSheet(String selectedSheet){
-        DTOsheet dtoSheet = mainController.getEngine().createDTOSheet(selectedSheet);
-        mainController.setSheet(dtoSheet, false);
-        selectedCellProperty.set("A1");
-        mainController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-        mainController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-        originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-        mainController.populateRangeListView();
+        if (selectedSheet==null ||selectedSheet.isEmpty()) {
+            mainSheetController.showAlert("Error", "No sheet selected","Please choose a file from the available sheets table.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        //noinspection ConstantConditions
+        String finalUrl = HttpUrl
+                .parse(Constants.LOAD_SHEET)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", selectedSheet)
+                .build()
+                .toString();
+
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        mainSheetController.showAlert("Error","","Something went wrong: " + e.getMessage(), Alert.AlertType.WARNING)
+                );
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() ->
+                            mainSheetController.showAlert("Error","","Something went wrong: " + responseBody, Alert.AlertType.WARNING)
+                    );
+                } else {
+                    Platform.runLater(() -> {
+                        try {
+                            String json = response.body().string();
+                            Gson gson = new Gson();
+                            Type sheet = new TypeToken<DTOsheet>(){}.getType();
+                            DTOsheet dtoSheet  = gson.fromJson(json, sheet);
+                            mainSheetController.setSheet(dtoSheet, false);
+                            selectedCellProperty.set("A1");
+                            mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+                            mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+                            originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+                            lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+                            mainSheetController.populateRangeListView();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            mainSheetController.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @FXML
     void themesComboBoxOnAction(ActionEvent event) {
         String selectedTheme = themesComboBox.getValue();
-        mainController.setSelectedTheme(selectedTheme);
+        mainSheetController.setSelectedTheme(selectedTheme);
         // Use ThemeManager to apply the selected theme
-        mainController.setTheme(lastUpdateVersionCellLabel.getScene());
+        mainSheetController.setTheme(lastUpdateVersionCellLabel.getScene());
     }
 
     @FXML
@@ -236,25 +298,25 @@ public class HeaderController {
             selectedCellProperty.set(cellID);
             animateSelectedCell(label);
 
-            mainController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
-            mainController.selectedRowProperty().set(cellID.replaceAll("[^\\d]", ""));
+            mainSheetController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
+            mainSheetController.selectedRowProperty().set(cellID.replaceAll("[^\\d]", ""));
 
-            mainController.resetColumnAlignmentComboBox();
-            mainController.resetColumnSlider();
-            mainController.resetRowSlider();
+            mainSheetController.resetColumnAlignmentComboBox();
+            mainSheetController.resetColumnSlider();
+            mainSheetController.resetRowSlider();
 
             originalCellValueProperty.set(dtoCell.getOriginalValue());
             lastUpdateVersionCellProperty.set(String.valueOf(dtoCell.getVersion()));
-            mainController.updateColorPickersWithCellStyles(label);
+            mainSheetController.updateColorPickersWithCellStyles(label);
 
             List<String> dependsOn = dtoCell.getDependsOn();
             for (String dependsOnCellID : dependsOn) {
-                mainController.getCellLabel(dependsOnCellID).getStyleClass().add("depends-on-cell");
+                mainSheetController.getCellLabel(dependsOnCellID).getStyleClass().add("depends-on-cell");
             }
 
             List<String> influencingOn = dtoCell.getInfluencingOn();
             for (String influencingCellID : influencingOn) {
-                mainController.getCellLabel(influencingCellID).getStyleClass().add("influence-on-cell");
+                mainSheetController.getCellLabel(influencingCellID).getStyleClass().add("influence-on-cell");
             }
 
             lastHighlightedCells.clear();
@@ -298,7 +360,7 @@ public class HeaderController {
     private void resetPreviousStyles() {
         // Reset styles for all previously highlighted cells
         for (String cellID : lastHighlightedCells) {
-            Label cellLabel = mainController.getCellLabel(cellID);
+            Label cellLabel = mainSheetController.getCellLabel(cellID);
             cellLabel.getStyleClass().removeAll("depends-on-cell", "influence-on-cell");
         }
         // Clear the list after resetting
@@ -313,7 +375,7 @@ public class HeaderController {
         // Ensure there is a selected cell
         String selectedCellID = selectedCellProperty.get();
         if (selectedCellID == null || selectedCellID.isEmpty()) {
-            mainController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
+            mainSheetController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
         updateCellValue(selectedCellID, newValue);

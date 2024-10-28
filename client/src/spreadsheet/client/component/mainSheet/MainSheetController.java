@@ -5,7 +5,6 @@ import dto.DTOcell;
 import dto.DTOsheet;
 import spreadsheet.client.component.mainSheet.header.HeaderController;
 import impl.EngineImpl;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -49,7 +48,7 @@ public class MainSheetController {
         themeManager = new ThemeManager();
 
         if (headerComponentController != null && sheetComponentController != null && leftComponentController != null) {
-            headerComponentController.setMainController(this);
+            headerComponentController.setMainSheetController(this);
             sheetComponentController.setMainController(this);
             leftComponentController.setMainController(this);
         }
