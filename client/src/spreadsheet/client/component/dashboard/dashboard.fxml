@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.dashboard.DashboardController">
+<ScrollPane fx:id="dashboardScrollPane" fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.dashboard.DashboardController">
    <content>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+      <BorderPane prefHeight="590.0" prefWidth="1050.0">
          <top>
-            <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="796.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Sheet-cell" />
-                  <ToolBar prefHeight="40.0" prefWidth="200.0">
+                  <ToolBar>
                     <items>
                       <Button fx:id="loadFileButton" mnemonicParsing="false" onAction="#loadFileButtonOnAction" text="Load File" />
                     </items>

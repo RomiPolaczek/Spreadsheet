@@ -51,7 +51,13 @@ public class TabelsController {
     public void initialize() {
 //        availableSheetsTable = new TableView<>();
         availableSheetsTable.setItems(FXCollections.observableArrayList()); // Initialize items list
-
+        // Listener to handle row click events
+        availableSheetsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                String selectedSheet = newSelection.getSheetName();
+                dashboardController.setSelectedSheet(selectedSheet);
+            }
+        });
         setupTableColumns();
 //        fetchSheetDetails();
     }

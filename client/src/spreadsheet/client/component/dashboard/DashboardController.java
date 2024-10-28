@@ -28,8 +28,9 @@ import java.io.IOException;
 
 public class DashboardController {
 
+
+    @FXML private ScrollPane dashboardScrollPane;
     @FXML private Button loadFileButton;
-    private MainSheetController mainSheetController;
 
     @FXML private VBox tabelsComponent;
     @FXML private TabelsController tabelsComponentController;
@@ -37,6 +38,8 @@ public class DashboardController {
     @FXML private DashboardCommandsController dashboardCommandsComponentController;
 
     private String userName;
+    private MainSheetController mainSheetController;
+    private String selectedSheet;
 
     @FXML
     public void initialize() {
@@ -48,6 +51,14 @@ public class DashboardController {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setSelectedSheet(String selectedSheet) {
+        this.selectedSheet = selectedSheet;
+    }
+
+    public String getSelectedSheet() {
+        return selectedSheet;
     }
 
     @FXML
