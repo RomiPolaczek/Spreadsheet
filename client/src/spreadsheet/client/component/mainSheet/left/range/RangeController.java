@@ -35,7 +35,6 @@ public class RangeController {
     }
 
     public void initializeRangeController() {
-        addRangeButton.disableProperty().bind(mainController.isFileSelectedProperty().not());
         deleteRangeButton.disableProperty().bind(anyRangePressedProperty.not());
 
         // Set a custom CellFactory to display a label for each range

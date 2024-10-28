@@ -47,6 +47,9 @@ public class DashboardController {
             tabelsComponentController.setDashboardController(this);
             dashboardCommandsComponentController.setDashboardController(this);
         }
+        else{
+            System.out.println("nullll");
+        }
     }
 
     public void setUserName(String userName) {
@@ -55,10 +58,15 @@ public class DashboardController {
 
     public void setSelectedSheet(String selectedSheet) {
         this.selectedSheet = selectedSheet;
+        System.out.println(selectedSheet);
     }
 
     public String getSelectedSheet() {
         return selectedSheet;
+    }
+
+    public void setMainSheetController(MainSheetController mainSheetController) {
+        this.mainSheetController = mainSheetController;
     }
 
     @FXML
@@ -120,7 +128,6 @@ public class DashboardController {
                                 if (response.isSuccessful()) {
                                     // Handle successful response
                                     // You can update the UI or process the response here
-                                    System.out.println("File loaded successfully.");
                                     tabelsComponentController.fetchSheetDetails();
                                 } else {
                                     System.err.println("File Load Error: " + response.code());
@@ -178,5 +185,9 @@ public class DashboardController {
         progressBarStage.setScene(scene);
 
         return progressBarStage;
+    }
+
+    public void viewSheet(){
+        mainSheetController.viewSheet(selectedSheet);
     }
 }

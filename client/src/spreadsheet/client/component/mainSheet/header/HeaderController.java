@@ -1,5 +1,6 @@
 package spreadsheet.client.component.mainSheet.header;
 
+import dto.DTOsheet;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -22,10 +23,6 @@ import java.util.List;
 public class HeaderController {
 
     @FXML
-    private Label fileNameLabel;
-    @FXML
-    private Button loadFileButton;
-    @FXML
     private Button updateCellValueButton;
     @FXML
     private Label lastUpdateVersionCellLabel;
@@ -44,8 +41,6 @@ public class HeaderController {
 
 
     private MainSheetController mainController;
-    private SimpleStringProperty selectedFileProperty;
-    private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedCellProperty;
     private SimpleStringProperty originalCellValueProperty;
     private SimpleStringProperty lastUpdateVersionCellProperty;
@@ -56,8 +51,6 @@ public class HeaderController {
 
 
     public HeaderController() {
-        selectedFileProperty = new SimpleStringProperty();
-        isFileSelected = new SimpleBooleanProperty(false);
         selectedCellProperty = new SimpleStringProperty();
         originalCellValueProperty = new SimpleStringProperty();
         lastUpdateVersionCellProperty = new SimpleStringProperty();
@@ -70,13 +63,9 @@ public class HeaderController {
 
     @FXML
     private void initialize() {
-        fileNameLabel.textProperty().bind(selectedFileProperty);
         updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
-        versionSelectorComboBox.disableProperty().bind(isFileSelected.not());
         themesComboBox.getItems().addAll("Classic", "Pink", "Blue", "Dark");
         themesComboBox.setValue("Classic"); // Set default value
-        themesComboBox.disableProperty().bind(isFileSelected.not());
-        animationsCheckBox.disableProperty().bind(isFileSelected.not());
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
@@ -112,27 +101,25 @@ public class HeaderController {
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
-    public SimpleBooleanProperty isFileSelectedProperty() { return isFileSelected; }
-
     public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
 
     @FXML
     void loadFileButtonAction(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select words file");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-        Stage stage = (Stage) fileNameLabel.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
-        if (selectedFile == null) {
-            return;
-        }
-
-        String absolutePath = selectedFile.getAbsolutePath();
-
-        // Show progress bar pop-up
-      //  Stage progressBarStage = createProgressBarStage();
-     //   showProgressBar(progressBarStage, absolutePath);
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Select words file");
+//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
+//        Stage stage = (Stage) fileNameLabel.getScene().getWindow();
+//        File selectedFile = fileChooser.showOpenDialog(stage);
+//
+//        if (selectedFile == null) {
+//            return;
+//        }
+//
+//        String absolutePath = selectedFile.getAbsolutePath();
+//
+//        // Show progress bar pop-up
+//      //  Stage progressBarStage = createProgressBarStage();
+//     //   showProgressBar(progressBarStage, absolutePath);
     }
 
     private void showProgressBar(Stage progressBarStage, String absolutePath) {
@@ -218,12 +205,23 @@ public class HeaderController {
 //        return progressBarStage;
     }
 
+    public void viewSheet(String selectedSheet){
+        DTOsheet dtoSheet = mainController.getEngine().createDTOSheet(selectedSheet);
+        mainController.setSheet(dtoSheet, false);
+        selectedCellProperty.set("A1");
+        mainController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+        mainController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+        originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+        mainController.populateRangeListView();
+    }
+
     @FXML
     void themesComboBoxOnAction(ActionEvent event) {
         String selectedTheme = themesComboBox.getValue();
         mainController.setSelectedTheme(selectedTheme);
         // Use ThemeManager to apply the selected theme
-        mainController.setTheme(fileNameLabel.getScene());
+        mainController.setTheme(lastUpdateVersionCellLabel.getScene());
     }
 
     @FXML

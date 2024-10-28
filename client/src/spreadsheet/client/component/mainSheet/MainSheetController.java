@@ -129,9 +129,6 @@ public class MainSheetController {
         leftComponentController.resetColumnAlignmentComboBox();
     }
 
-    public SimpleBooleanProperty isFileSelectedProperty() {
-        return headerComponentController.isFileSelectedProperty();
-    }
 
     public Map<String, String> getCellStyles() {
         return sheetComponentController.getCellStyles();
@@ -207,6 +204,10 @@ public class MainSheetController {
 
     public void updateCellValue(String cellID, String newValue) {
         headerComponentController.updateCellValue(cellID, newValue);
+    }
+
+    public void viewSheet(String selectedSheet){
+        headerComponentController.viewSheet(selectedSheet);
     }
 
 //    public void showMainWindow(){

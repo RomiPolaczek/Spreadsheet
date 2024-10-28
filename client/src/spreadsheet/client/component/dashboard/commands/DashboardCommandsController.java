@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 
@@ -29,6 +30,7 @@ public class DashboardCommandsController {
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+
     }
 
     @FXML
@@ -46,7 +48,7 @@ public class DashboardCommandsController {
         try {
             // Load the FXML file for MainSheetController (mainSheet.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource(MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION));
-            ScrollPane mainSheetRoot = loader.load();
+            BorderPane mainSheetRoot = loader.load();
 
             // Get the MainSheetController instance and initialize it if needed
             MainSheetController mainSheetController = loader.getController();
@@ -60,6 +62,8 @@ public class DashboardCommandsController {
 
             // Optionally apply the selected theme or any other settings
             mainSheetController.setTheme(dashboardScrollPane.getScene());
+            dashboardController.setMainSheetController(mainSheetController);
+            dashboardController.viewSheet();
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -64,4 +64,10 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.put(sheetName, singleSheetManager);
     }
 
+    @Override
+    public DTOsheet createDTOSheet(String sheetName) {
+        Sheet sheet = sheetNameToSheet.get(sheetName).getSheet();
+        return sheetNameToSheet.get(sheetName).createDTOSheetForDisplay(sheet);
+    }
+
 }

@@ -16,4 +16,5 @@ public interface Engine {
     Map<String, SingleSheetManager> getSheetNameToSheet();
     void LoadFile(InputStream inputStream, String owner) throws Exception;
     List<DTOsheetTableDetails> getDTOsheetTableDetailsList();
+    DTOsheet createDTOSheet(String sheetName);
 }
