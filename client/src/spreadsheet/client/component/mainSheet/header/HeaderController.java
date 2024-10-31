@@ -1,19 +1,18 @@
 package spreadsheet.client.component.mainSheet.header;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
-import dto.DTOsheetTableDetails;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import spreadsheet.client.component.dashboard.DashboardController;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -257,7 +256,13 @@ public class HeaderController {
                     Platform.runLater(() -> {
                         try {
                             String json = response.body().string();
-                            Gson gson = new Gson();
+//                            Gson gson = new Gson();
+
+                            Gson gson = new GsonBuilder()
+                                    .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                                    .create();
+//                            DTOsheet dtoSheet = gson.fromJson(json, DTOsheet.class);
+
                             Type sheet = new TypeToken<DTOsheet>(){}.getType();
                             DTOsheet dtoSheet  = gson.fromJson(json, sheet);
                             mainSheetController.setSheet(dtoSheet, false);

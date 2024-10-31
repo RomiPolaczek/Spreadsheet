@@ -42,11 +42,13 @@ public class EngineImpl implements Engine, Serializable {
     public List<DTOsheetTableDetails> getDTOsheetTableDetailsList() {
         List<DTOsheetTableDetails> list = new ArrayList<>();
 
-        for(SingleSheetManager singleSheetManager : sheetNameToSheet.values()) {
-            String sheetName = singleSheetManager.getSheet().getName();
-            String owner =  singleSheetManager.getOwner();
-            String size = singleSheetManager.getSheet().getLayout().toString();
-            list.add(new DTOsheetTableDetails(sheetName, owner, size, "owner"));
+        synchronized (this) {
+            for (SingleSheetManager singleSheetManager : sheetNameToSheet.values()) {
+                String sheetName = singleSheetManager.getSheet().getName();
+                String owner = singleSheetManager.getOwner();
+                String size = singleSheetManager.getSheet().getLayout().toString();
+                list.add(new DTOsheetTableDetails(sheetName, owner, size, "owner"));
+            }
         }
 
         return list;
@@ -66,8 +68,10 @@ public class EngineImpl implements Engine, Serializable {
 
     @Override
     public DTOsheet createDTOSheet(String sheetName) {
-        Sheet sheet = sheetNameToSheet.get(sheetName).getSheet();
-        return sheetNameToSheet.get(sheetName).createDTOSheetForDisplay(sheet);
+        synchronized (this) {
+            Sheet sheet = sheetNameToSheet.get(sheetName).getSheet();
+            return sheetNameToSheet.get(sheetName).createDTOSheetForDisplay(sheet);
+        }
     }
 
 }

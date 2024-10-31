@@ -14,6 +14,12 @@ public class CoordinateImpl implements Coordinate, Serializable {
         this.column = column;
     }
 
+    public CoordinateImpl(String coordinateString) {
+        Coordinate coordinate = CoordinateFactory.from(coordinateString);
+        this.row = coordinate.getRow();
+        this.column = coordinate.getColumn();
+    }
+
     @Override
     public int getRow() {
         return row;

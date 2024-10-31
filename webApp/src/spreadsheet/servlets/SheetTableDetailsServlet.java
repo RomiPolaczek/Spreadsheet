@@ -32,7 +32,6 @@ public class SheetTableDetailsServlet extends HttpServlet {
 
         List<DTOsheetTableDetails> sheetsDetailsList = engine.getDTOsheetTableDetailsList();
 
-
         try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
             String json = gson.toJson(sheetsDetailsList);
@@ -45,7 +44,5 @@ public class SheetTableDetailsServlet extends HttpServlet {
             response.getWriter().write(errorResponse);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-
-        ////SYNCHRO???????????????
     }
 }

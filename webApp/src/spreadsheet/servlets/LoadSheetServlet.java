@@ -2,13 +2,14 @@ package spreadsheet.servlets;
 
 import api.Engine;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dto.DTOsheet;
-import exception.InvalidFileFormatException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.utils.ServletUtils;
 import spreadsheet.utils.SessionUtils;
 
@@ -40,22 +41,20 @@ public class LoadSheetServlet extends HttpServlet {
             return;
         }
 
-        ////synchronized???
-
-        synchronized (this) {
-            try (PrintWriter out = response.getWriter()) {
-                DTOsheet dtoSheet = engine.createDTOSheet(selectedSheetName);
-                Gson gson = new Gson();
-                String json = gson.toJson(dtoSheet);
-                out.println(json);
-                out.flush();
-                response.setStatus(HttpServletResponse.SC_OK);
-            }
-            catch (Exception e){
-                String errorResponse = String.format(e.getMessage());
-                response.getWriter().write(errorResponse);
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
+        try (PrintWriter out = response.getWriter()) {
+            DTOsheet dtoSheet = engine.createDTOSheet(selectedSheetName);
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                    .create();
+            String json = gson.toJson(dtoSheet);;
+            out.println(json);
+            out.flush();
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        catch (Exception e){
+            String errorResponse = String.format(e.getMessage());
+            response.getWriter().write(errorResponse);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
