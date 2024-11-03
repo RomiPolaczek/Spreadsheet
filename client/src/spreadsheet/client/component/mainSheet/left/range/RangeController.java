@@ -1,5 +1,15 @@
 package spreadsheet.client.component.mainSheet.left.range;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,9 +19,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.http.HttpClientUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static spreadsheet.client.util.Constants.*;
 
 public class RangeController {
 
@@ -75,61 +97,153 @@ public class RangeController {
 
     @FXML
     void addRangeButtonOnAction(ActionEvent event) {
-//        // Create a new Stage (popup window)
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Add Range");
+        // Create a new Stage (popup window)
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Add Range");
+
+        // Create a VBox to hold the label, text fields, and buttons
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(20));
+
+        // Create and configure the text fields for user input
+        Label nameLabel = new Label("Range's Name: ");
+        TextField nameField = new TextField();
+        vbox.getChildren().addAll(nameLabel, nameField);
+
+        Label rangeLabel = new Label("Range: ");
+        TextField rangeField = new TextField();
+        rangeField.setPromptText("e.g., \"A1..A3\", \"B3..D4\"");
+        vbox.getChildren().addAll(rangeLabel, rangeField);
+
+        // Create and configure the submit button
+        Button submitButton = new Button("Submit");
+        submitButton.setDisable(true);  // Initially disabled
+
+        // Enable the submit button only when both fields are not empty
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(nameField.getText().trim().isEmpty() || rangeField.getText().trim().isEmpty());
+        });
+
+        rangeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(nameField.getText().trim().isEmpty() || rangeField.getText().trim().isEmpty());
+        });
+
+        submitButton.setOnAction(e -> {
+            String name = nameField.getText();
+            String rangeStr = rangeField.getText();
+            try {
+                addRangeInEngine(name, rangeStr);
+                resetAllToggleButtons(); // Unpress all toggle buttons when a new range is added
+                popupStage.close();
+            } catch (Exception ex) {
+                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        });
+
+        vbox.getChildren().add(submitButton);
+
+        // Set the scene
+        Scene scene = new Scene(vbox, 300, 200);
+        mainController.setTheme(scene);
+        popupStage.setScene(scene);
+
+        // Show the pop-up window
+        popupStage.showAndWait();
+        populateRangeListView();
+    }
+
+//    private void addRangeInEngine(String rangeName, String rangeStr) {
+//        // Create a Map to hold the parameters
+//        Map<String, String> rangeData = new HashMap<>();
+//        rangeData.put("rangeName", rangeName);
+//        rangeData.put("rangeStr", rangeStr);
 //
-//        // Create a VBox to hold the label, text fields, and buttons
-//        VBox vbox = new VBox(10);
-//        vbox.setPadding(new Insets(20));
+//        // Convert the map to JSON
+//        Gson gson = new Gson();
+//        String jsonBody = gson.toJson(rangeData);
 //
-//        // Create and configure the text fields for user input
-//        Label nameLabel = new Label("Range's Name: ");
-//        TextField nameField = new TextField();
-//        vbox.getChildren().addAll(nameLabel, nameField);
+//        String finalUrl = HttpUrl
+//                .parse(ADD_RANGE)
+//                .newBuilder()
+//                .build()
+//                .toString();
 //
-//        Label rangeLabel = new Label("Range: ");
-//        TextField rangeField = new TextField();
-//        rangeField.setPromptText("e.g., \"A1..A3\", \"B3..D4\"");
-//        vbox.getChildren().addAll(rangeLabel, rangeField);
+//        // Execute the request asynchronously
+//        HttpClientUtil.runAsync(finalUrl, new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                // Handle failure (e.g., network error)
+//                System.err.println("Request failed: " + e.getMessage());
+//            }
 //
-//        // Create and configure the submit button
-//        Button submitButton = new Button("Submit");
-//        submitButton.setDisable(true);  // Initially disabled
-//
-//        // Enable the submit button only when both fields are not empty
-//        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            submitButton.setDisable(nameField.getText().trim().isEmpty() || rangeField.getText().trim().isEmpty());
-//        });
-//
-//        rangeField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            submitButton.setDisable(nameField.getText().trim().isEmpty() || rangeField.getText().trim().isEmpty());
-//        });
-//
-//        submitButton.setOnAction(e -> {
-//            String name = nameField.getText();
-//            String rangeStr = rangeField.getText();
-//            try {
-//                mainController.getEngine().addRange(name, rangeStr);
-//                resetAllToggleButtons(); // Unpress all toggle buttons when a new range is added
-//                popupStage.close();
-//            } catch (Exception ex) {
-//                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    // Parse the response body if needed
+//                    String responseBody = response.body().string();
+//                    System.out.println("Response: " + responseBody);
+//                } else {
+//                    // Handle the unsuccessful response
+//                    System.err.println("Failed to add range: " + response.body().string());
+//                }
 //            }
 //        });
-//
-//        vbox.getChildren().add(submitButton);
-//
-//        // Set the scene
-//        Scene scene = new Scene(vbox, 300, 200);
-//        mainController.setTheme(scene);
-//        popupStage.setScene(scene);
-//
-//        // Show the pop-up window
-//        popupStage.showAndWait();
-//        populateRangeListView();
+//    }
+
+    private void addRangeInEngine(String rangeName, String rangeStr) {
+        // Create a Map to hold the parameters
+        Map<String, String> rangeData = new HashMap<>();
+        rangeData.put("selectedSheet", mainController.getSheetName());
+        rangeData.put("rangeName", rangeName);
+        rangeData.put("rangeStr", rangeStr);
+
+        // Convert the map to JSON
+        Gson gson = new Gson();
+        String jsonBody = gson.toJson(rangeData);
+
+        String finalUrl = HttpUrl
+                .parse(ADD_RANGE)
+                .newBuilder()
+                .build()
+                .toString();
+
+        // Create the request body
+        RequestBody body = RequestBody.create(
+                jsonBody,
+                MediaType.get("application/json; charset=utf-8")
+        );
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(body) // POST request
+                .build();
+
+        // Execute the request asynchronously
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Handle failure (e.g., network error)
+                System.err.println("Request failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Parse the response body if needed
+                    String responseBody = response.body().string();
+                    System.out.println("Response: " + responseBody);
+                } else {
+                    // Handle the unsuccessful response
+                    System.err.println("Failed to add range: " + response.body().string());
+
+                }
+            }
+        });
     }
+
 
     @FXML
     void deleteRangeButtonOnAction(ActionEvent event) {
@@ -166,11 +280,46 @@ public class RangeController {
     }
 
     public void populateRangeListView() {
-//        List<String> ranges = mainController.getEngine().getExistingRanges();
-//        rangeObservableList.clear();
-//        rangeObservableList.addAll(ranges);
-//        rangeListView.setItems(rangeObservableList);
+        // Construct the URL with query parameters for a GET request
+        String finalUrl = HttpUrl
+                .parse(GET_ALL_RANGES)
+                .newBuilder()
+               // .addQueryParameter("userName", mainController.getUserName())
+                .addQueryParameter("selectedSheet", mainController.getSheetName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    mainController.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Parse the response body as a JSON string
+                    String responseBody = response.body().string();
+                    Gson gson = new Gson();
+                    List<String> ranges = gson.fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
+
+                    // Update the ListView on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        rangeObservableList.clear();
+                        rangeObservableList.addAll(ranges);
+                        rangeListView.setItems(rangeObservableList);
+                    });
+                } else {
+                    // Handle unsuccessful response
+                    ///////// FIX !!
+                    System.err.println("Failed to get ranges: " + response.body().string());
+                }
+            }
+        });
     }
+
 
 
     private void displayRange(String rangeName) {

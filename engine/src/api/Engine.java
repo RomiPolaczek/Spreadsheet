@@ -17,4 +17,6 @@ public interface Engine {
     void LoadFile(InputStream inputStream, String owner) throws Exception;
     List<DTOsheetTableDetails> getDTOsheetTableDetailsList();
     DTOsheet createDTOSheet(String sheetName);
+    List<String> getExistingRangesBySheetName(String sheetName);
+    void addRange(String sheetName, String rangeName, String rangeStr);
 }

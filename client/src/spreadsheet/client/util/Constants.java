@@ -22,6 +22,7 @@ public class Constants {
     private final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
 
     public final static String DASHBOARD_PAGE = "/dashboard";
+    public final static String MAIN_SHEET_PAGE = "/mainSheet";
 
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
     public final static String LOAD_FILE = FULL_SERVER_PATH + "/loadFile";
@@ -32,8 +33,8 @@ public class Constants {
     public final static String LOAD_SHEET = FULL_SERVER_PATH + DASHBOARD_PAGE + "/loadSheet";
 
     public final static String GET_SHEET_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getSheetDetails";
-//    public final static String SEND_CHAT_LINE = FULL_SERVER_PATH + "/pages/chatroom/sendChat";
-//    public final static String CHAT_LINES_LIST = FULL_SERVER_PATH + "/chat";
+    public final static String GET_ALL_RANGES = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRanges";
+    public final static String ADD_RANGE = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/addRange";
 
     // GSON instance
     //public final static Gson GSON_INSTANCE = new Gson();

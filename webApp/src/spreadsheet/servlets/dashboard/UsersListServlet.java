@@ -1,4 +1,4 @@
-package spreadsheet.servlets;
+package spreadsheet.servlets.dashboard;
 
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;

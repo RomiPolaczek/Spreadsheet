@@ -15,7 +15,8 @@ public interface SingleSheetManager {
     void LoadFile(InputStream inputStream, String owner) throws Exception;
     Sheet getSheet();
     String getOwner();
-   DTOsheet createDTOSheetForDisplay(Sheet sheet);
+    DTOsheet createDTOSheetForDisplay(Sheet sheet);
+    List<String> getExistingRanges();
 //    DTOsheet GetVersionForDisplay(String version);
 //    void EditCell(Coordinate coordinate, String inputValue);
 //    int getNumberOfVersions();
@@ -23,7 +24,7 @@ public interface SingleSheetManager {
 //    File getFile();
 //    void saveSystemState(String filePath) throws IOException;
 //    Coordinate checkAndConvertInputToCoordinate(String inputCell);
-//    void addRange(String name, String rangeStr);
+    void addRange(String name, String rangeStr);
 //    void removeRange(String name);
 //    List<String> getExistingRanges();
 //    List<String> getRangeCellsList(String name);

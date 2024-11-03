@@ -52,7 +52,7 @@ public class DashboardCommandsController {
 
             // Get the MainSheetController instance and initialize it if needed
             MainSheetController mainSheetController = loader.getController();
-            mainSheetController.initialize();  // Ensures any required setup
+            mainSheetController.initialize(dashboardController.getSelectedSheet());  // Ensures any required setup
 
             // Find the ScrollPane in the dashboard scene
             ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");

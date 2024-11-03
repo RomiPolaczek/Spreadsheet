@@ -74,4 +74,14 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
+    @Override
+    public List<String> getExistingRangesBySheetName(String sheetName) {
+        return sheetNameToSheet.get(sheetName).getExistingRanges();
+    }
+
+    @Override
+    public void addRange(String sheetName, String rangeName, String rangeStr) {
+        sheetNameToSheet.get(sheetName).addRange(rangeName, rangeStr);
+    }
+
 }

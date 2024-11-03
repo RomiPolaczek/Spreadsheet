@@ -1,4 +1,4 @@
-package spreadsheet.servlets;
+package spreadsheet.servlets.dashboard;
 
 import api.Engine;
 import exception.InvalidFileFormatException;
@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import spreadsheet.utils.ServletUtils;
 import spreadsheet.utils.SessionUtils;
-import users.UserManager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @WebServlet(name = "LoadFileServlet", urlPatterns = "/loadFile")

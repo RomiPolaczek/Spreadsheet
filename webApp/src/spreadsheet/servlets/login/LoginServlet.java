@@ -1,4 +1,4 @@
-package spreadsheet.servlets;
+package spreadsheet.servlets.login;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,10 +8,9 @@ import users.UserManager;
 import spreadsheet.utils.SessionUtils;
 import spreadsheet.utils.ServletUtils;
 
-import static spreadsheet.constants.Constants.USERNAME;
+import static spreadsheet.constants.Constants.USER_NAME;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet{
@@ -24,7 +23,7 @@ public class LoginServlet extends HttpServlet{
 
         if (usernameFromSession == null) { //user is not logged in yet
 
-            String usernameFromParameter = request.getParameter(USERNAME);
+            String usernameFromParameter = request.getParameter(USER_NAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter - not standard situation. it's a conflict
 
@@ -48,7 +47,7 @@ public class LoginServlet extends HttpServlet{
                         //set the username in a session so it will be available on each request
                         //the true parameter means that if a session object does not exists yet
                         //create a new one
-                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
+                        request.getSession(true).setAttribute(USER_NAME, usernameFromParameter);
 
                         //redirect the request to the chat room - in order to actually change the URL
                         System.out.println("On login, request URI is: " + request.getRequestURI());

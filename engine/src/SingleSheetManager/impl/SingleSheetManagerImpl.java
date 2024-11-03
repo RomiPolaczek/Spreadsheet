@@ -193,21 +193,21 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        return coordinate;
 //    }
 //
-//    @Override
-//    public void addRange(String name, String rangeStr) {
-//        sheet.addRange(name, rangeStr);
-//    }
+    @Override
+    public void addRange(String name, String rangeStr) {
+        sheet.addRange(name, rangeStr);
+    }
 //
 //    @Override
 //    public void removeRange(String name) {
 //        sheet.removeRange(name);
 //    }
 //
-//    @Override
-//    public List<String> getExistingRanges() {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-//        return dtoSheet.getExistingRangeNames();
-//    }
+    @Override
+    public List<String> getExistingRanges() {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        return dtoSheet.getExistingRangeNames();
+    }
 //
 //    @Override
 //    public List<String> getRangeCellsList(String name) {

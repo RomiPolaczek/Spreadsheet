@@ -3,6 +3,7 @@ package spreadsheet.client.component.mainSheet;
 import api.Engine;
 import dto.DTOcell;
 import dto.DTOsheet;
+import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.header.HeaderController;
 import impl.EngineImpl;
 import javafx.beans.property.SimpleStringProperty;
@@ -38,12 +39,15 @@ public class MainSheetController {
     private LeftController leftComponentController;
 
     private Engine engine;
+    private DashboardController dashboardController;
     private String selectedTheme = "Classic";
     private ThemeManager themeManager;
+    private String sheetName;
+    //private String userName;
 
 
     @FXML
-    public void initialize() {
+    public void initialize(String sheetName /*, String userName*/) {
         engine = new EngineImpl();
         themeManager = new ThemeManager();
 
@@ -51,6 +55,8 @@ public class MainSheetController {
             headerComponentController.setMainSheetController(this);
             sheetComponentController.setMainController(this);
             leftComponentController.setMainController(this);
+            this.sheetName = sheetName;
+            //this.userName = userName;
         }
     }
 
@@ -95,6 +101,8 @@ public class MainSheetController {
     public Engine getEngine() {
         return engine;
     }
+
+    public String getSheetName() {return sheetName; }
 
     public void populateVersionSelector() {
         headerComponentController.populateVersionSelector();
