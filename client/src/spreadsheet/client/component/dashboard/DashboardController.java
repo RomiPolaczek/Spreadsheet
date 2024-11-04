@@ -1,15 +1,13 @@
 package spreadsheet.client.component.dashboard;
 
+import com.google.gson.Gson;
 import impl.EngineImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -20,11 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import spreadsheet.client.component.dashboard.commands.DashboardCommandsController;
 import spreadsheet.client.component.dashboard.tables.TabelsController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
+import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import static spreadsheet.client.util.Constants.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class DashboardController {
 
@@ -111,12 +111,12 @@ public class DashboardController {
                         .addFormDataPart("file", selectedFile.getName(), fileBody)
                         .build();
 
+
                 HttpClientUtil.runAsyncPost(loadFileUrl, requestBody, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() -> {
-                            // Handle error, e.g., show an alert
-                            System.err.println("File Load Error: " + e.getMessage());
+                            ShowAlert.showAlert("Error", "1File Load Error", e.getMessage(), Alert.AlertType.ERROR);
                             progressBarStage.close();
                         });
                     }
@@ -124,23 +124,28 @@ public class DashboardController {
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) {
                         try {
+                            String jsonResponse = response.body().string();
+                            Gson gson = new Gson();
+                            Map<String, Object> result = gson.fromJson(jsonResponse, Map.class);
+
+//                            int status = ((Double) result.get("status")).intValue(); // JSON numbers are parsed as Double
+                            String message = (String) result.get("message");
+
                             Platform.runLater(() -> {
                                 if (response.isSuccessful()) {
-                                    // Handle successful response
-                                    // You can update the UI or process the response here
                                     tabelsComponentController.fetchSheetDetails();
                                 } else {
-                                    System.err.println("File Load Error: " + response.code());
+                                    ShowAlert.showAlert("Error", "File Load Error", message, Alert.AlertType.ERROR);
                                 }
                                 progressBarStage.close();
                             });
                         } catch (Exception e) {
                             Platform.runLater(() -> {
-                                System.err.println("Error processing response: " + e.getMessage());
+                                ShowAlert.showAlert("Error", "File Load Error", "Error processing response: " + e.getMessage(), Alert.AlertType.ERROR);
                                 progressBarStage.close();
                             });
                         } finally {
-                            response.close(); // Ensure the response is closed to free resources
+                            response.close();
                         }
                     }
                 });

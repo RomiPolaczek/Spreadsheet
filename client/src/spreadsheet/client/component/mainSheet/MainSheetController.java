@@ -60,14 +60,6 @@ public class MainSheetController {
         }
     }
 
-    // Utility method to show alerts
-    public void showAlert(String title, String header, String message, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     public void setSelectedTheme(String selectedTheme) {
         this.selectedTheme = selectedTheme;

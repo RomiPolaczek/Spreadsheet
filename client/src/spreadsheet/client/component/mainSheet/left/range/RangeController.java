@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 
 import java.io.BufferedReader;
@@ -137,7 +138,7 @@ public class RangeController {
                 resetAllToggleButtons(); // Unpress all toggle buttons when a new range is added
                 popupStage.close();
             } catch (Exception ex) {
-                mainController.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
+                ShowAlert.showAlert("Error", "Invalid input", ex.getMessage(), Alert.AlertType.ERROR);
             }
         });
 
@@ -150,7 +151,6 @@ public class RangeController {
 
         // Show the pop-up window
         popupStage.showAndWait();
-        populateRangeListView();
     }
 
 //    private void addRangeInEngine(String rangeName, String rangeStr) {
@@ -235,6 +235,7 @@ public class RangeController {
                     // Parse the response body if needed
                     String responseBody = response.body().string();
                     System.out.println("Response: " + responseBody);
+                    populateRangeListView();
                 } else {
                     // Handle the unsuccessful response
                     System.err.println("Failed to add range: " + response.body().string());
@@ -293,7 +294,7 @@ public class RangeController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
-                    mainController.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
+                    ShowAlert.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
                 });
             }
 

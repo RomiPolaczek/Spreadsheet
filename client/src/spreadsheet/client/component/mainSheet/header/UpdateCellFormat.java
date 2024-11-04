@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import spreadsheet.client.util.ShowAlert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -283,7 +284,7 @@ public class UpdateCellFormat {
                     Double.parseDouble(inputValue);
                     generatedString = inputValue;
                 } catch (NumberFormatException e) {
-                    mainController.showAlert("Invalid Input", "Please enter a valid number.", "The value entered is not a valid number.", Alert.AlertType.ERROR);
+                    ShowAlert.showAlert("Invalid Input", "Please enter a valid number.", "The value entered is not a valid number.", Alert.AlertType.ERROR);
                     return;
                 }
             } else {

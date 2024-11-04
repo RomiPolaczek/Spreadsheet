@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadsheet.client.theme.ThemeManager;
 import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 
 import java.io.IOException;
@@ -223,7 +224,7 @@ public class HeaderController {
 
     public void viewSheet(String selectedSheet){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
-            mainSheetController.showAlert("Error", "No sheet selected","Please choose a file from the available sheets table.", Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "No sheet selected","Please choose a file from the available sheets table.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -241,7 +242,7 @@ public class HeaderController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
-                        mainSheetController.showAlert("Error","","Something went wrong: " + e.getMessage(), Alert.AlertType.WARNING)
+                        ShowAlert.showAlert("Error","","Something went wrong: " + e.getMessage(), Alert.AlertType.WARNING)
                 );
             }
 
@@ -250,19 +251,15 @@ public class HeaderController {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
                     Platform.runLater(() ->
-                            mainSheetController.showAlert("Error","","Something went wrong: " + responseBody, Alert.AlertType.WARNING)
+                            ShowAlert.showAlert("Error","","Something went wrong: " + responseBody, Alert.AlertType.WARNING)
                     );
                 } else {
                     Platform.runLater(() -> {
                         try {
                             String json = response.body().string();
-//                            Gson gson = new Gson();
-
                             Gson gson = new GsonBuilder()
                                     .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
                                     .create();
-//                            DTOsheet dtoSheet = gson.fromJson(json, DTOsheet.class);
-
                             Type sheet = new TypeToken<DTOsheet>(){}.getType();
                             DTOsheet dtoSheet  = gson.fromJson(json, sheet);
                             mainSheetController.setSheet(dtoSheet, false);
@@ -275,7 +272,7 @@ public class HeaderController {
 
                         } catch (IOException e) {
                             e.printStackTrace();
-                            mainSheetController.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
+                            ShowAlert.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
                         }
                     });
                 }
@@ -380,7 +377,7 @@ public class HeaderController {
         // Ensure there is a selected cell
         String selectedCellID = selectedCellProperty.get();
         if (selectedCellID == null || selectedCellID.isEmpty()) {
-            mainSheetController.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
         updateCellValue(selectedCellID, newValue);
