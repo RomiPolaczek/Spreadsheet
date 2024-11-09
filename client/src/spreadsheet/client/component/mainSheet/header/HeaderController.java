@@ -115,112 +115,9 @@ public class HeaderController {
 
     public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
 
-    @FXML
-    void loadFileButtonAction(ActionEvent event) {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Select words file");
-//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-//        Stage stage = (Stage) fileNameLabel.getScene().getWindow();
-//        File selectedFile = fileChooser.showOpenDialog(stage);
-//
-//        if (selectedFile == null) {
-//            return;
-//        }
-//
-//        String absolutePath = selectedFile.getAbsolutePath();
-//
-//        // Show progress bar pop-up
-//      //  Stage progressBarStage = createProgressBarStage();
-//     //   showProgressBar(progressBarStage, absolutePath);
-    }
-
-    private void showProgressBar(Stage progressBarStage, String absolutePath) {
-//        // Create a Task for loading the file in the background
-//        Task<Void> loadFileTask = new Task<>() {
-//            @Override
-//            protected Void call() throws Exception {
-//                // Simulate loading process with progress
-//                for (int i = 0; i <= 10; i++) {
-//                    updateProgress(i, 10);
-//                    Thread.sleep(100); // Simulate delay
-//                }
-//                mainController.getEngine().LoadFile(absolutePath);
-//                Platform.runLater(() -> {
-//                    selectedFileProperty.set(absolutePath);
-//                    isFileSelected.set(true);
-//                    DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//                    mainController.setSheet(dtoSheet, false);
-//
-//                    selectedCellProperty.set("A1");
-//                    mainController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-//                    mainController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-//                    originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-//                    lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-//
-//                    mainController.populateRangeListView();
-//
-//                });
-//                return null;
-//            }
-//
-//            @Override
-//            protected void succeeded() {
-//                super.succeeded();
-//                progressBarStage.close(); // Close progress bar pop-up after success
-//            }
-//
-//            @Override
-//            protected void failed() {
-//                super.failed();
-//                progressBarStage.close(); // Close progress bar pop-up if failed
-//                mainController.showAlert("Error", "File Load Error", "An error occurred while loading the file: \n" + getException().getMessage(), Alert.AlertType.ERROR);
-//            }
-//        };
-//
-//        // Bind the progress of the progress bar to the task progress
-//        ProgressBar progressBar = (ProgressBar) progressBarStage.getScene().lookup("#progressBar");
-//        progressBar.progressProperty().bind(loadFileTask.progressProperty());
-//
-//        // Run the task in a background thread
-//        Thread loadFileThread = new Thread(loadFileTask);
-//        loadFileThread.setDaemon(true); // Ensure the thread will exit when the application exits
-//        loadFileThread.start();
-//
-//        // Show the progress bar pop-up window
-//        progressBarStage.show();
-//    }
-//
-//    private Stage createProgressBarStage() {
-//        // Create a new pop-up stage
-//        Stage progressBarStage = new Stage();
-//        progressBarStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-//        progressBarStage.setTitle("Loading File");
-//
-//        // Create a VBox to hold the label and progress bar
-//        VBox vbox = new VBox(10);
-//        vbox.setPadding(new Insets(20));
-//
-//        // Create and configure the label
-//        Label label = new Label("Loading file, please wait...");
-//        vbox.getChildren().add(label);
-//
-//        // Create and configure the progress bar
-//        ProgressBar progressBar = new ProgressBar();
-//        progressBar.setId("progressBar");
-//        progressBar.setPrefWidth(400); // Set the preferred width of the progress bar
-//        vbox.getChildren().add(progressBar);
-//
-//        // Set the scene
-//        Scene scene = new Scene(vbox, 450, 100);
-//        progressBarStage.setScene(scene);
-//
-//        return progressBarStage;
-    }
-
-    public void viewSheet(String selectedSheet){
+    public void displaySheet(String selectedSheet, Boolean loadSheetFromDashboard){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
             ShowAlert.showAlert("Error", "No sheet selected","Please choose a file from the available sheets table.", Alert.AlertType.ERROR);
-            return;
         }
 
         //noinspection ConstantConditions
@@ -257,16 +154,19 @@ public class HeaderController {
                                     .create();
                             Type sheet = new TypeToken<DTOsheet>(){}.getType();
                             DTOsheet dtoSheet  = gson.fromJson(json, sheet);
-                            mainSheetController.setSheet(dtoSheet, false);
-                            selectedCellProperty.set("A1");
-                            mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-                            mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-                            originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-                            lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-                            mainSheetController.populateRangeListView();
 
+                            if(loadSheetFromDashboard){
+                                selectedCellProperty.set("A1");
+                                mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+                                mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+                                originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+                                lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+                                mainSheetController.populateRangeListView();
+                                mainSheetController.setSheet(dtoSheet, false);
+                            } else{
+                                mainSheetController.setSheet(dtoSheet, true);
+                            }
                         } catch (IOException e) {
-                            e.printStackTrace();
                             ShowAlert.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
                         }
                     });
@@ -380,7 +280,7 @@ public class HeaderController {
 //        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
 //    }
 
-    public void updateCellValue(String cellID, String newValue) {
+//    public void updateCellValue(String cellID, String newValue) {
 //        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
 //        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
 //
@@ -393,7 +293,7 @@ public class HeaderController {
 //
 //        originalCellValueProperty.set(newValue);
 //        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-    }
+//    }
 
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
@@ -406,11 +306,6 @@ public class HeaderController {
         }
 
         String updateCellUrl = Constants.UPDATE_CELL; // Replace with your endpoint URL
-
-//        System.out.println("Sheet Name: " + mainSheetController.getSheetName());
-//        System.out.println("Selected Cell ID: " + selectedCellID);
-//        System.out.println("New Value: " + newValue);
-
 
         // Create JSON body
         JsonObject jsonBody = new JsonObject();
@@ -428,9 +323,6 @@ public class HeaderController {
                 .put(body)
                 .build();
 
-//        System.out.println("JSON Body: " + jsonBody.toString());
-
-
         HttpClientUtil.runAsyncPut(updateCellUrl, request, new Callback(){
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -444,7 +336,8 @@ public class HeaderController {
                         originalCellValueProperty.set(newValue);
                         originalCellValueTextField.clear();
                         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
-//                        mainSheetController.viewSheet();
+//                        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
+                        mainSheetController.displaySheet(false);
                     });
                 } else {
                     String responseBody = response.body().string();

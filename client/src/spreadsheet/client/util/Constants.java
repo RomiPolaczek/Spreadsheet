@@ -31,7 +31,7 @@ public class Constants {
 
     // Dashboard commands
     public final static String LOAD_FILE = FULL_SERVER_PATH + "/loadFile";
-    public final static String LOAD_SHEET = FULL_SERVER_PATH + DASHBOARD_PAGE + "/loadSheet";
+    public final static String LOAD_SHEET = FULL_SERVER_PATH + DASHBOARD_PAGE + "/displaySheet";
     public final static String REQUEST_PERMISSION = FULL_SERVER_PATH + "/requestPermission";
     public final static String GET_SHEET_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getSheetDetails";
     public final static String GET_PERMISSION_TABLE_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getPermissionTableDetails";

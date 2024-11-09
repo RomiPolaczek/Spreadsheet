@@ -199,7 +199,7 @@ public class DashboardController {
         return progressBarStage;
     }
 
-    public void viewSheet(){
-        mainSheetController.viewSheet(selectedSheet.getValue());
+    public void displaySheet(Boolean loadSheetFromDashboard){
+        mainSheetController.displaySheet(loadSheetFromDashboard);
     }
 }

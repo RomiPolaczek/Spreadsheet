@@ -200,11 +200,11 @@ public class MainSheetController {
     }
 
     public void updateCellValue(String cellID, String newValue) {
-        headerComponentController.updateCellValue(cellID, newValue);
+//        headerComponentController.updateCellValue(cellID, newValue);
     }
 
-    public void viewSheet(String selectedSheet){
-        headerComponentController.viewSheet(sheetName);
+    public void displaySheet(Boolean loadSheetFromDashboard){
+        headerComponentController.displaySheet(sheetName, loadSheetFromDashboard);
     }
 
 //    public void showMainWindow(){

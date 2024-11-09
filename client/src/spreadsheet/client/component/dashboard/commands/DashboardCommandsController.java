@@ -7,8 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -96,7 +95,7 @@ public class DashboardCommandsController {
                 String finalUrl = Constants.REQUEST_PERMISSION;
                 RequestBody body = new FormBody.Builder()
                         .add("username", dashboardController.getUserName())
-                        .add("selectedSheet", dashboardController.getSelectedSheet())
+                        .add("selectedSheet", dashboardController.getSelectedSheet().getValue())
                         .add("permissionType", selectedPermission.getPermission())
                         .build();
 
@@ -118,7 +117,7 @@ public class DashboardCommandsController {
                             Map<String, String> result = gson.fromJson(jsonResponse, Map.class);
 
                             if (response.isSuccessful()) {
-                                dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet());
+                                dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
                             } else {
                                 //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
                             }
@@ -159,7 +158,7 @@ public class DashboardCommandsController {
             // Optionally apply the selected theme or any other settings
             mainSheetController.setTheme(dashboardScrollPane.getScene());
             dashboardController.setMainSheetController(mainSheetController);
-            dashboardController.viewSheet();
+            dashboardController.displaySheet(true);
 
         } catch (IOException e) {
             e.printStackTrace();

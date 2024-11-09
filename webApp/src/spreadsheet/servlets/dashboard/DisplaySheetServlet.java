@@ -18,9 +18,9 @@ import java.io.PrintWriter;
 
 import static spreadsheet.constants.Constants.SELECTED_SHEET_NAME;
 
-@WebServlet(name = "LoadSheetServlet", urlPatterns = "/dashboard/loadSheet")
+@WebServlet(name = "DisplaySheetServlet", urlPatterns = "/dashboard/displaySheet")
 
-public class LoadSheetServlet extends HttpServlet {
+public class DisplaySheetServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
