@@ -2,26 +2,11 @@ package impl;
 
 import SingleSheetManager.api.SingleSheetManager;
 import SingleSheetManager.impl.SingleSheetManagerImpl;
-import SingleSheetManager.impl.VersionManager;
 import api.Engine;
 import dto.*;
-import expression.parser.Operation;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
-import sheet.api.EffectiveValue;
+import permissions.PermissionType;
 import sheet.api.Sheet;
-import sheet.cell.api.Cell;
-import sheet.coordinate.api.Coordinate;
-import sheet.coordinate.impl.CoordinateFactory;
-import sheet.coordinate.impl.CoordinateImpl;
-import sheet.impl.SheetImpl;
-import sheet.layout.impl.LayoutImpl;
-import sheet.range.Range;
 import users.UserManager;
-import xmlGenerated.STLCell;
-import xmlGenerated.STLRange;
-import xmlGenerated.STLSheet;
 
 import java.io.*;
 import java.util.*;
@@ -54,8 +39,13 @@ public class EngineImpl implements Engine, Serializable {
         return list;
     }
 
+    @Override
+    public List<DTOpermissionRequest> getDTOpermissionTableDetailsList(String sheetName) {
+        return sheetNameToSheet.get(sheetName).getPermissionManager().getAllPermissionsRequests();
+    }
+
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
-        SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
+        SingleSheetManager singleSheetManager = new SingleSheetManagerImpl(owner);
         singleSheetManager.LoadFile(inputStream, owner);
         String sheetName = singleSheetManager.getSheet().getName();
 
@@ -84,4 +74,8 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.get(sheetName).addRange(rangeName, rangeStr);
     }
 
+    @Override
+    public void askForPermission(String userName, String selectedSheet, PermissionType permissionType) {
+        sheetNameToSheet.get(selectedSheet).askForPermission(userName, permissionType);
+    }
 }

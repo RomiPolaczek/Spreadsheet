@@ -69,6 +69,10 @@ public class DashboardController {
         this.mainSheetController = mainSheetController;
     }
 
+    public String getUserName() { return userName; }
+
+    public TabelsController getTabelsController() {return tabelsComponentController; }
+
     @FXML
     void loadFileButtonOnAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -116,7 +120,7 @@ public class DashboardController {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() -> {
-                            ShowAlert.showAlert("Error", "1File Load Error", e.getMessage(), Alert.AlertType.ERROR);
+                            ShowAlert.showAlert("Error", "File Load Error", e.getMessage(), Alert.AlertType.ERROR);
                             progressBarStage.close();
                         });
                     }
@@ -133,7 +137,7 @@ public class DashboardController {
 
                             Platform.runLater(() -> {
                                 if (response.isSuccessful()) {
-                                    tabelsComponentController.fetchSheetDetails();
+                                    tabelsComponentController.fetchSheetTableDetails();
                                 } else {
                                     ShowAlert.showAlert("Error", "File Load Error", message, Alert.AlertType.ERROR);
                                 }

@@ -2,39 +2,43 @@ package spreadsheet.servlets.dashboard;
 
 import api.Engine;
 import com.google.gson.Gson;
+import dto.DTOpermissionRequest;
 import dto.DTOsheetTableDetails;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import spreadsheet.constants.Constants;
 import spreadsheet.utils.ServletUtils;
 import spreadsheet.utils.SessionUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 
-@WebServlet(name = "SheetTableDetailsServlet", urlPatterns = "/dashboard/getSheetDetails")
+@WebServlet(name = "PermissionTableDetailsServlet", urlPatterns = "/dashboard/getPermissionTableDetails")
 
-public class SheetTableDetailsServlet extends HttpServlet {
+public class PermissionTableDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
         String usernameFromSession = SessionUtils.getUsername(request);
+        String selectedSheet = request.getParameter(Constants.SELECTED_SHEET_NAME);
         Engine engine = ServletUtils.getEngine(getServletContext());
 
-        if (usernameFromSession == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("You must log in before loading a file."); //change the sentence?
-            return;
-        }
+//        if (usernameFromSession == null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().write("You must log in before loading a file.");
+//            return;
+//        }
 
-        List<DTOsheetTableDetails> sheetsDetailsList = engine.getDTOsheetTableDetailsList();
+        List<DTOpermissionRequest> permissionsDetailsList = engine.getDTOpermissionTableDetailsList(selectedSheet);
 
         try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
-            String json = gson.toJson(sheetsDetailsList);
+            String json = gson.toJson(permissionsDetailsList);
             out.println(json);
             out.flush();
             response.setStatus(HttpServletResponse.SC_OK);

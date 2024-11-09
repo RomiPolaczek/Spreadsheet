@@ -1,17 +1,12 @@
 package SingleSheetManager.impl;
 
 import SingleSheetManager.api.SingleSheetManager;
-import dto.DTOcell;
-import dto.DTOlayout;
-import dto.DTOrange;
-import dto.DTOsheet;
-import exception.InvalidFileFormatException;
-import expression.parser.Operation;
-import impl.EngineImpl;
+import dto.*;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import sheet.api.EffectiveValue;
+import permissions.PermissionManager;
+import permissions.PermissionType;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
@@ -25,6 +20,7 @@ import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,21 +28,20 @@ import java.util.Map;
 public class SingleSheetManagerImpl implements SingleSheetManager, Serializable {
     private Sheet sheet;
     private STLSheet stlSheet;
-   // private File file;
     private String owner;
     private VersionManager versionManager;
+    private PermissionManager permissionManager;
 
-    public SingleSheetManagerImpl() {
+    public SingleSheetManagerImpl(String owner) {
+        this.owner = owner;
         versionManager = new VersionManager();
+        permissionManager = new PermissionManager(owner);
     }
 
     @Override
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
-       // File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
-        this.owner = owner;
-       // file = newFile;
     }
 
     @Override
@@ -57,6 +52,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     @Override
     public String getOwner()
     { return owner; }
+
+    @Override
+    public PermissionManager getPermissionManager() {return permissionManager; }
+
 //
 //    @Override
 //    public int getNumberOfVersions() {
@@ -271,4 +270,11 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        }
 //        return functionMap;
 //    }
+
+    @Override
+    public void askForPermission(String userName, PermissionType permissionType) {
+        permissionManager.askForPermission(userName, permissionType);
+    }
+
+
 }
