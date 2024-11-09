@@ -162,12 +162,13 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        return dtoSheet;
 //    }
 //
-//    @Override
-//    public void EditCell(Coordinate coordinate, String inputValue) {
-//        sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-//        versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
-//    }
+    @Override
+    public void EditCell(String coordinateStr, String inputValue) {
+        Coordinate coordinate = CoordinateFactory.from(coordinateStr);
+        sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
+    }
 //
 //    @Override
 //    public void saveSystemState(String filePath) throws IOException {

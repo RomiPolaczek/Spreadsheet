@@ -3,6 +3,7 @@ package spreadsheet.client.component.dashboard;
 import com.google.gson.Gson;
 import impl.EngineImpl;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -39,10 +40,12 @@ public class DashboardController {
 
     private String userName;
     private MainSheetController mainSheetController;
-    private String selectedSheet;
+    private SimpleStringProperty selectedSheet;
 
     @FXML
     public void initialize() {
+        selectedSheet = new SimpleStringProperty();
+
         if (tabelsComponentController != null && dashboardCommandsComponentController != null) {
             tabelsComponentController.setDashboardController(this);
             dashboardCommandsComponentController.setDashboardController(this);
@@ -57,11 +60,11 @@ public class DashboardController {
     }
 
     public void setSelectedSheet(String selectedSheet) {
-        this.selectedSheet = selectedSheet;
+        this.selectedSheet.set(selectedSheet);
         System.out.println(selectedSheet);
     }
 
-    public String getSelectedSheet() {
+    public SimpleStringProperty getSelectedSheet() {
         return selectedSheet;
     }
 
@@ -193,6 +196,6 @@ public class DashboardController {
     }
 
     public void viewSheet(){
-        mainSheetController.viewSheet(selectedSheet);
+        mainSheetController.viewSheet(selectedSheet.getValue());
     }
 }

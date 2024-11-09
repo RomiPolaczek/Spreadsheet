@@ -1,4 +1,4 @@
-package spreadsheet.servlets;
+package spreadsheet.servlets.dashboard;
 
 import api.Engine;
 import com.google.gson.Gson;

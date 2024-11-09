@@ -2,14 +2,12 @@ package spreadsheet.client.component.mainSheet.header;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
 import javafx.application.Platform;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
@@ -33,9 +31,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static spreadsheet.client.util.Constants.DASHBOARD_PAGE_FXML_RESOURCE_LOCATION;
-
 
 public class HeaderController {
 
@@ -369,22 +364,97 @@ public class HeaderController {
         lastHighlightedCells.clear();
     }
 
+//    @FXML
+//    void updateCellValueButtonAction(ActionEvent event) {
+//        // Get the current value from the TextField
+//        String newValue = originalCellValueTextField.getText();
+//
+//        // Ensure there is a selected cell
+//        String selectedCellID = selectedCellProperty.get();
+//        if (selectedCellID == null || selectedCellID.isEmpty()) {
+//            ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
+//            return;
+//        }
+//        updateCellValue(selectedCellID, newValue);
+//        originalCellValueTextField.clear();
+//        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+//    }
+
+    public void updateCellValue(String cellID, String newValue) {
+//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
+//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
+//
+//        // Call the engine's EditCell function to update the cell value
+//        mainController.getEngine().EditCell(coordinate, newValue);
+//
+//        // Refresh the sheet display
+//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
+//        mainController.setSheet(dtoSheet, true);
+//
+//        originalCellValueProperty.set(newValue);
+//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
+    }
+
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
-        // Get the current value from the TextField
         String newValue = originalCellValueTextField.getText();
-
-        // Ensure there is a selected cell
         String selectedCellID = selectedCellProperty.get();
+
         if (selectedCellID == null || selectedCellID.isEmpty()) {
             ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
-        updateCellValue(selectedCellID, newValue);
-        originalCellValueTextField.clear();
-        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+
+        String updateCellUrl = Constants.UPDATE_CELL; // Replace with your endpoint URL
+
+//        System.out.println("Sheet Name: " + mainSheetController.getSheetName());
+//        System.out.println("Selected Cell ID: " + selectedCellID);
+//        System.out.println("New Value: " + newValue);
+
+
+        // Create JSON body
+        JsonObject jsonBody = new JsonObject();
+        jsonBody.addProperty("sheetName", mainSheetController.getSheetName());
+        jsonBody.addProperty("cellID", selectedCellID);
+        jsonBody.addProperty("newValue", newValue);
+
+        RequestBody body = RequestBody.create(
+                jsonBody.toString(),
+                okhttp3.MediaType.parse("application/json")
+        );
+
+        Request request = new Request.Builder()
+                .url(updateCellUrl)
+                .put(body)
+                .build();
+
+//        System.out.println("JSON Body: " + jsonBody.toString());
+
+
+        HttpClientUtil.runAsyncPut(updateCellUrl, request, new Callback(){
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Failed to update cell: " + e.getMessage(), Alert.AlertType.ERROR));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == 200) {
+                    Platform.runLater(() -> {
+                        originalCellValueProperty.set(newValue);
+                        originalCellValueTextField.clear();
+                        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+//                        mainSheetController.viewSheet();
+                    });
+                } else {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + responseBody, Alert.AlertType.ERROR));
+                }
+            }
+        });
     }
-  
+
+
 
     @FXML
     void formatFunctionButtonOnAction(ActionEvent event) {
@@ -442,22 +512,6 @@ public class HeaderController {
 //
 //        // Prevent re-triggering the action after resetting the prompt
 //        versionSelectorComboBox.getSelectionModel().clearSelection();
-    }
-
-
-    public void updateCellValue(String cellID, String newValue) {
-//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
-//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
-//
-//        // Call the engine's EditCell function to update the cell value
-//        mainController.getEngine().EditCell(coordinate, newValue);
-//
-//        // Refresh the sheet display
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//        mainController.setSheet(dtoSheet, true);
-//
-//        originalCellValueProperty.set(newValue);
-//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
     }
 
 }

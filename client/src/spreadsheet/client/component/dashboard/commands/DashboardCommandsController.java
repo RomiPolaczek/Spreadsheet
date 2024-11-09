@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -28,9 +27,13 @@ public class DashboardCommandsController {
 
     private DashboardController dashboardController;
 
+//    @FXML
+//    public void initialize() {
+//    }
+
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
-
+        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
     }
 
     @FXML
@@ -52,7 +55,7 @@ public class DashboardCommandsController {
 
             // Get the MainSheetController instance and initialize it if needed
             MainSheetController mainSheetController = loader.getController();
-            mainSheetController.initialize(dashboardController.getSelectedSheet());  // Ensures any required setup
+            mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
 
             // Find the ScrollPane in the dashboard scene
             ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");

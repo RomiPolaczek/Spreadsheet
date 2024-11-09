@@ -19,4 +19,5 @@ public interface Engine {
     DTOsheet createDTOSheet(String sheetName);
     List<String> getExistingRangesBySheetName(String sheetName);
     void addRange(String sheetName, String rangeName, String rangeStr);
+    void EditCell(String coordinateStr, String inputValue, String sheetName);
 }

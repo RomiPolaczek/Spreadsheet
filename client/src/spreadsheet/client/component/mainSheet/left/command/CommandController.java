@@ -38,22 +38,22 @@ public class CommandController {
     @FXML private Button createGraphButton;
     @FXML private Button sortButton;
 
-    private MainSheetController mainController;
+    private MainSheetController mainSheetController;
     private SimpleStringProperty selectedColumnProperty;
     private SimpleStringProperty selectedRowProperty;
     private Map<String, String> newCoordToOldCoord;
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
 
     public void initializeCommandController(){
-        BooleanBinding noSelectedCell = mainController.getSelectedCellProperty().isNull();
+        BooleanBinding noSelectedCell = mainSheetController.getSelectedCellProperty().isNull();
 
-        selectedCellLabel.textProperty().bind(mainController.getSelectedCellProperty());
+        selectedCellLabel.textProperty().bind(mainSheetController.getSelectedCellProperty());
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
         selectedRowLabel.textProperty().bind(selectedRowProperty);
         cellBackgroundColorPicker.disableProperty().bind(noSelectedCell);
         cellTextColorPicker.disableProperty().bind(noSelectedCell);
         resetCellDesignButton.disableProperty().bind(noSelectedCell
-                .or(mainController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
+                .or(mainSheetController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
         columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
         columnWidthSlider.disableProperty().bind(selectedColumnProperty.isNull());
         rowHeightSlider.disableProperty().bind(selectedRowProperty.isNull());
@@ -71,8 +71,8 @@ public class CommandController {
         });
     }
 
-    public void setMainController(MainSheetController mainController) {
-        this.mainController = mainController;
+    public void setMainSheetController(MainSheetController mainSheetController) {
+        this.mainSheetController = mainSheetController;
     }
 
     @FXML
@@ -97,8 +97,8 @@ public class CommandController {
                 (int) (selectedColor.getBlue() * 255));
 
         // Get selected cell property
-        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
-        Label cellLabel = mainController.getCellLabel(selectedCell.get());
+        SimpleStringProperty selectedCell = mainSheetController.getSelectedCellProperty();
+        Label cellLabel = mainSheetController.getCellLabel(selectedCell.get());
 
         // Update the background color of the cell
         String currentStyle = cellLabel.getStyle();
@@ -106,7 +106,7 @@ public class CommandController {
         cellLabel.setStyle(newStyle);
 
         // Save the style in the cellStyles map
-        mainController.getCellStyles().put(selectedCell.get(), newStyle);
+        mainSheetController.getCellStyles().put(selectedCell.get(), newStyle);
         resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
 
@@ -120,8 +120,8 @@ public class CommandController {
                 (int) (selectedColor.getBlue() * 255));
 
         // Get selected cell property
-        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
-        Label cellLabel = mainController.getCellLabel(selectedCell.get());
+        SimpleStringProperty selectedCell = mainSheetController.getSelectedCellProperty();
+        Label cellLabel = mainSheetController.getCellLabel(selectedCell.get());
 
         // Update the text color of the cell
         String currentStyle = cellLabel.getStyle();
@@ -129,7 +129,7 @@ public class CommandController {
         cellLabel.setStyle(newStyle);
 
         // Save the style in the cellStyles map
-        mainController.getCellStyles().put(selectedCell.get(), newStyle);
+        mainSheetController.getCellStyles().put(selectedCell.get(), newStyle);
         resetCellDesignButton.disableProperty().bind(isDefaultCellStyle());
     }
 
@@ -167,15 +167,15 @@ public class CommandController {
     @FXML
     void resetCellDesignButtonOnAction(ActionEvent event) {
         // Get the selected cell property
-        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
+        SimpleStringProperty selectedCell = mainSheetController.getSelectedCellProperty();
         if (selectedCell != null && selectedCell.get() != null) {
-            Label cellLabel = mainController.getCellLabel(selectedCell.get());
+            Label cellLabel = mainSheetController.getCellLabel(selectedCell.get());
 
             // Reset the cell's style to the default
             cellLabel.setStyle("");
 
             // Save the reset style in the cellStyles map
-            mainController.getCellStyles().put(selectedCell.get(), cellLabel.getStyle());
+            mainSheetController.getCellStyles().put(selectedCell.get(), cellLabel.getStyle());
 
             // Optionally, reset the color pickers to reflect the default colors
             cellBackgroundColorPicker.setValue(Color.WHITE);
@@ -187,17 +187,17 @@ public class CommandController {
     public BooleanBinding isDefaultCellStyle() {
         return new BooleanBinding() {
             {
-                super.bind(mainController.getSelectedCellProperty());
+                super.bind(mainSheetController.getSelectedCellProperty());
             }
 
             @Override
             protected boolean computeValue() {
-                SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
+                SimpleStringProperty selectedCell = mainSheetController.getSelectedCellProperty();
                 if (selectedCell == null || selectedCell.get() == null) {
                     return true; // Disable if no cell is selected
                 }
 
-                Label cellLabel = mainController.getCellLabel(selectedCell.get());
+                Label cellLabel = mainSheetController.getCellLabel(selectedCell.get());
                 if (cellLabel == null) {
                     return true;
                 }
@@ -235,11 +235,11 @@ public class CommandController {
                 alignmentStyle = Pos.CENTER;
         }
 
-        for (Label cellLabel : mainController.getAllCellLabelsInColumn(selectedColumnLabel.getText())) {
+        for (Label cellLabel : mainSheetController.getAllCellLabelsInColumn(selectedColumnLabel.getText())) {
             cellLabel.setAlignment(alignmentStyle);
         }
 
-        mainController.setColumnAlignment(selectedColumnLabel.getText(), alignmentStyle);
+        mainSheetController.setColumnAlignment(selectedColumnLabel.getText(), alignmentStyle);
     }
 
     public void resetColumnAlignmentComboBox(){
@@ -256,9 +256,9 @@ public class CommandController {
     public void addClickEventForSelectedColumn(Label label){
         label.setOnMouseClicked(event -> {
             selectedColumnProperty().set(label.getText());
-            mainController.getSelectedCellProperty().set(label.getText() + 1);
+            mainSheetController.getSelectedCellProperty().set(label.getText() + 1);
             selectedRowProperty.set("1");
-            mainController.highlightColumn(selectedColumnLabel.getText());
+            mainSheetController.highlightColumn(selectedColumnLabel.getText());
             resetColumnAlignmentComboBox();
             resetColumnSlider();
             resetRowSlider();
@@ -268,7 +268,7 @@ public class CommandController {
     public void addClickEventForSelectedRow(Label label){
         label.setOnMouseClicked(event -> {
             selectedRowProperty().set(label.getText());
-            mainController.getSelectedCellProperty().set('A' + label.getText());
+            mainSheetController.getSelectedCellProperty().set('A' + label.getText());
             selectedColumnProperty.set("A");
             resetRowSlider();
             resetColumnSlider();
@@ -283,11 +283,11 @@ public class CommandController {
         }
 
         // Iterate over all cells in the selected column and set their new width
-        ColumnConstraints column = mainController.getColumnConstraintsByColumn(selectedColumn);
+        ColumnConstraints column = mainSheetController.getColumnConstraintsByColumn(selectedColumn);
         column.setPrefWidth(newWidth);
 
         // Optionally, store the new width in the mainController if you want to save the column's state
-        mainController.setColumnWidth(selectedColumn, newWidth);
+        mainSheetController.setColumnWidth(selectedColumn, newWidth);
     }
 
     public void resetColumnSlider(){
@@ -296,7 +296,7 @@ public class CommandController {
             return;
         }
 
-        columnWidthSlider.setValue(mainController.getColumnWidth(selectedColumn));
+        columnWidthSlider.setValue(mainSheetController.getColumnWidth(selectedColumn));
     }
 
     public void changeRowHeight(Integer newHeight) {
@@ -307,11 +307,11 @@ public class CommandController {
         }
 
         // Iterate over all cells in the selected column and set their new width
-        RowConstraints row = mainController.getRowConstraintsByRow(selectedRow);
+        RowConstraints row = mainSheetController.getRowConstraintsByRow(selectedRow);
         row.setPrefHeight(newHeight);
 
         // Optionally, store the new width in the mainController if you want to save the column's state
-        mainController.setRowHeight(selectedRow, newHeight);
+        mainSheetController.setRowHeight(selectedRow, newHeight);
     }
 
     public void resetRowSlider(){
@@ -320,7 +320,7 @@ public class CommandController {
             return;
         }
 
-        rowHeightSlider.setValue(mainController.getRowHeight(selectedRow));
+        rowHeightSlider.setValue(mainSheetController.getRowHeight(selectedRow));
     }
 
     @FXML
@@ -767,13 +767,13 @@ public class CommandController {
         chartVBox.getChildren().add(backButton);
 
         Scene chartScene = new Scene(chartVBox, 800, 500);
-        mainController.setTheme(inputScene);
+        mainSheetController.setTheme(inputScene);
         setGraphStyle(chartScene);
         popupStage.setScene(chartScene);
     }
 
     public void setGraphStyle(Scene scene){
-        String css = getClass().getResource(  "/left/command/graph/style/"+ mainController.getSelectedTheme() + "Graph.css").toExternalForm();
+        String css = getClass().getResource(  "/left/command/graph/style/"+ mainSheetController.getSelectedTheme() + "Graph.css").toExternalForm();
         scene.getStylesheets().add(css);
     }
 

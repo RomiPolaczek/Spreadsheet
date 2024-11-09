@@ -18,7 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setTitle("Spread Sheet Client");
+        primaryStage.setTitle("Spreadsheet Client");
 
         URL loginPage = getClass().getResource(Constants.LOGIN_PAGE_FXML_RESOURCE_LOCATION);
 
@@ -31,7 +31,7 @@ public class Main extends Application {
             LoginController loginController = fxmlLoader.getController();
             loginController.setDashboardController(dashboardController);
 
-            Scene scene = new Scene(root, 300, 200);
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
 

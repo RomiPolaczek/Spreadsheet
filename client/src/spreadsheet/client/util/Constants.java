@@ -35,6 +35,8 @@ public class Constants {
     public final static String GET_SHEET_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getSheetDetails";
     public final static String GET_ALL_RANGES = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRanges";
     public final static String ADD_RANGE = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/addRange";
+    public final static String UPDATE_CELL = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/updateCellValue";
+
 
     // GSON instance
     //public final static Gson GSON_INSTANCE = new Gson();
