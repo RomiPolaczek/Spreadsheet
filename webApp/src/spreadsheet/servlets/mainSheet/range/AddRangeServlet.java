@@ -71,10 +71,12 @@ public class AddRangeServlet extends HttpServlet {
             // If successful, return a success response
             response.setStatus(HttpServletResponse.SC_OK);
             out.write(gson.toJson("Range added successfully."));
+
+            //If not successful
         } catch (RuntimeException e) {
-            // Handle custom exceptions, such as duplicate range names
+            // Handle custom exceptions, such as duplicate range names or invalid format for range
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.write(gson.toJson("Error: " + e.getMessage()));
+            out.write(gson.toJson(e.getMessage()));
         } catch (Exception e) {
             // Handle any unexpected exceptions
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -45,13 +45,13 @@ public class RangeController {
     @FXML
     private ListView<String> rangeListView;
 
-    private MainSheetController mainController;
+    private MainSheetController mainSheetController;
     private ObservableList<String> rangeObservableList;
     private List<ToggleButton> toggleButtons;
     private BooleanProperty anyRangePressedProperty;
 
-    public void setMainController(MainSheetController mainController) {
-        this.mainController = mainController;
+    public void setMainController(MainSheetController mainSheetController) {
+        this.mainSheetController = mainSheetController;
         rangeObservableList = FXCollections.observableArrayList();
         toggleButtons = new ArrayList<>();
         anyRangePressedProperty = new SimpleBooleanProperty(false);
@@ -146,7 +146,7 @@ public class RangeController {
 
         // Set the scene
         Scene scene = new Scene(vbox, 300, 200);
-        mainController.setTheme(scene);
+        mainSheetController.setTheme(scene);
         popupStage.setScene(scene);
 
         // Show the pop-up window
@@ -194,7 +194,7 @@ public class RangeController {
     private void addRangeInEngine(String rangeName, String rangeStr) {
         // Create a Map to hold the parameters
         Map<String, String> rangeData = new HashMap<>();
-        rangeData.put("selectedSheet", mainController.getSheetName());
+        rangeData.put("selectedSheet", mainSheetController.getSheetName());
         rangeData.put("rangeName", rangeName);
         rangeData.put("rangeStr", rangeStr);
 
@@ -234,12 +234,14 @@ public class RangeController {
                 if (response.isSuccessful()) {
                     // Parse the response body if needed
                     String responseBody = response.body().string();
-                    System.out.println("Response: " + responseBody);
+                   // System.out.println("Response: " + responseBody);
                     populateRangeListView();
                 } else {
                     // Handle the unsuccessful response
-                    System.err.println("Failed to add range: " + response.body().string());
-
+                    String responseBody = response.body().string();
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to add range: ", responseBody , Alert.AlertType.ERROR);
+                    });
                 }
             }
         });
@@ -286,7 +288,7 @@ public class RangeController {
                 .parse(GET_ALL_RANGES)
                 .newBuilder()
                // .addQueryParameter("userName", mainController.getUserName())
-                .addQueryParameter("selectedSheet", mainController.getSheetName())
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
                 .build()
                 .toString();
 
