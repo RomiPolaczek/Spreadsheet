@@ -10,8 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -54,7 +52,7 @@ public class MainSheetController {
         if (headerComponentController != null && sheetComponentController != null && leftComponentController != null) {
             headerComponentController.setMainSheetController(this);
             sheetComponentController.setMainController(this);
-            leftComponentController.setMainController(this);
+            leftComponentController.setMainSheetController(this);
             this.sheetName = sheetName;
             //this.userName = userName;
         }
@@ -206,7 +204,7 @@ public class MainSheetController {
     }
 
     public void viewSheet(String selectedSheet){
-        headerComponentController.viewSheet(selectedSheet);
+        headerComponentController.viewSheet(sheetName);
     }
 
 //    public void showMainWindow(){

@@ -19,14 +19,14 @@ public class LeftController {
     private VBox rangeComponent;
     @FXML
     private RangeController rangeComponentController;
-    private MainSheetController mainController;
+    private MainSheetController mainSheetController;
 
 
-    public void setMainController(MainSheetController mainController) {
-        this.mainController = mainController;
+    public void setMainSheetController(MainSheetController mainSheetController) {
+        this.mainSheetController = mainSheetController;
         if (commandComponentController != null && rangeComponentController != null) {
-            commandComponentController.setMainController(mainController);
-            rangeComponentController.setMainController(mainController);
+            commandComponentController.setMainSheetController(mainSheetController);
+            rangeComponentController.setMainController(mainSheetController);
             initializeCommandAndRangeControllers();
         }
     }

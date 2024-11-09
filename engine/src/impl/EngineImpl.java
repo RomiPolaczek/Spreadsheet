@@ -74,6 +74,10 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.get(sheetName).addRange(rangeName, rangeStr);
     }
 
+    public void EditCell(String coordinateStr, String inputValue, String sheetName){
+        sheetNameToSheet.get(sheetName).EditCell(coordinateStr, inputValue);
+    }
+
     @Override
     public void askForPermission(String userName, String selectedSheet, PermissionType permissionType) {
         sheetNameToSheet.get(selectedSheet).askForPermission(userName, permissionType);

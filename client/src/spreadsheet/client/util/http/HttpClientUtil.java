@@ -44,6 +44,12 @@ public class HttpClientUtil {
         call.enqueue(callback); // Enqueue the call for execution
     }
 
+    public static void runAsyncPut(String finalUrl, Request request, Callback callback) {
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback); // Enqueue the call for execution
+    }
+
 
     public static void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
