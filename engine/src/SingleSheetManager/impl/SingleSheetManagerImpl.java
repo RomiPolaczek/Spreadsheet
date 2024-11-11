@@ -6,6 +6,7 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import permissions.PermissionManager;
+import permissions.PermissionStatus;
 import permissions.PermissionType;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
@@ -275,6 +276,22 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     @Override
     public void askForPermission(String userName, PermissionType permissionType) {
         permissionManager.askForPermission(userName, permissionType);
+    }
+
+    @Override
+    public PermissionType getPermissionTypeForUser(String userName) {
+        PermissionType permissionType;
+        if (owner.equals(userName)) {
+            permissionType = PermissionType.OWNER;
+        }
+        else {
+            permissionType = PermissionType.NONE;
+        }
+        return permissionType;
+    }
+
+    public void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission) {
+        permissionManager.handlePermissionRequest(userName, newStatus, requestedPermission);
     }
 
 

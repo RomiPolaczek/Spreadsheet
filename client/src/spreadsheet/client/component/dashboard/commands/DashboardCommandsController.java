@@ -1,7 +1,11 @@
 package spreadsheet.client.component.dashboard.commands;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import dto.DTOpermissionRequest;
+import dto.DTOsheetTableDetails;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import permissions.PermissionStatus;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import spreadsheet.client.enums.PermissionType;
@@ -21,6 +26,7 @@ import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static spreadsheet.client.util.Constants.MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION;
@@ -28,28 +34,65 @@ import static spreadsheet.client.util.Constants.MAIN_SHEET_PAGE_FXML_RESOURCE_LO
 public class DashboardCommandsController {
 
     @FXML
-    private Button askDenyPermissionRequestButton;
-
-    @FXML
     private Button requestPermissionButton;
 
     @FXML
     private Button viewSheetButton;
 
+    @FXML
+    private Button approvePermissionRequestButton;
+
+    @FXML
+    private Button rejectPermissionRequestButton;
+
+    @FXML
+    private Button RefreshRequestButton;
+
     private DashboardController dashboardController;
+
 
 //    @FXML
 //    public void initialize() {
 //    }
 
+
+//    public void setDashboardController(DashboardController dashboardController) {
+//        this.dashboardController = dashboardController;
+//        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
+//        requestPermissionButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
+////        approvePermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequest().isNull() && !isOwner());
+////        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequest().isNull());
+//    }
+//
+//    private Boolean isOwner() {
+//        Boolean isOwner = false;
+////        if(dashboardController.getUserName().equals(dashboardController.getSelectedRequest())){
+////            isOwner = true;
+////        }
+//        return isOwner;
+//    }
+
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+
         viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
+        requestPermissionButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
+//        approvePermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
+//        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
+
+        setApproveAndRejectButtons();
     }
 
-    @FXML
-    void askDenyPermissionRequestButtonOnAction(ActionEvent event) {
+    public void setApproveAndRejectButtons() {
+        BooleanBinding canApproveOrRejectRequest = dashboardController.getSelectedRequestUserName().isNotNull()
+                .and(isOwner());
 
+        approvePermissionRequestButton.disableProperty().bind(canApproveOrRejectRequest.not());
+        rejectPermissionRequestButton.disableProperty().bind(canApproveOrRejectRequest.not());
+    }
+
+    private BooleanBinding isOwner() {
+        return dashboardController.getUserName().isEqualTo(dashboardController.getTabelsController().getSelectedSheetOwnerName());
     }
 
     @FXML
@@ -94,7 +137,7 @@ public class DashboardCommandsController {
                 // POST request body
                 String finalUrl = Constants.REQUEST_PERMISSION;
                 RequestBody body = new FormBody.Builder()
-                        .add("username", dashboardController.getUserName())
+                        .add("username", dashboardController.getUserName().get())
                         .add("selectedSheet", dashboardController.getSelectedSheet().getValue())
                         .add("permissionType", selectedPermission.getPermission())
                         .build();
@@ -105,7 +148,7 @@ public class DashboardCommandsController {
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         Platform.runLater(() -> {
                             // Handle failure
-                            ShowAlert.showAlert("Error","Failed to request permission: ", e.getMessage(), Alert.AlertType.ERROR);
+                            ShowAlert.showAlert("Error", "Failed to request permission: ", e.getMessage(), Alert.AlertType.ERROR);
                         });
                     }
 
@@ -115,14 +158,10 @@ public class DashboardCommandsController {
                             Gson gson = new Gson();
                             String jsonResponse = response.body().string();
                             Map<String, String> result = gson.fromJson(jsonResponse, Map.class);
-
-                            if (response.isSuccessful()) {
-                                dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
-                            } else {
-                                //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
-                            }
-
-
+                            dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
+                        }
+                        else {
+                            //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
 
 //                            Platform.runLater(() -> {
 //                                if ("PERMISSION_REQUESTED".equals(result.get("status"))) {
@@ -165,5 +204,73 @@ public class DashboardCommandsController {
 //            showAlert("Error", "Failed to load sheet view", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+
+    @FXML
+    void approvePermissionRequestButtonOnAction(ActionEvent event) {
+        approveAndRejectHelper(PermissionStatus.APPROVED);
+    }
+
+
+    @FXML
+    void rejectPermissionRequestButtonOnAction(ActionEvent event) {
+        approveAndRejectHelper(PermissionStatus.REJECTED);
+    }
+
+    private void approveAndRejectHelper(PermissionStatus permissionStatus) {
+        DTOpermissionRequest currentRequest = dashboardController.getTabelsController().getSelectedRequest();
+
+        String finalUrl = Constants.HANDLE_PERMISSION_REQUEST;
+        RequestBody body = new FormBody.Builder()
+                .add("username", currentRequest.getUserName())
+                .add("ownerName", dashboardController.getTabelsController().getSelectedSheetOwnerName())
+                .add("sheetName", dashboardController.getSelectedSheet().getValue())
+                .add("permissionStatus", permissionStatus.getStatus().toUpperCase())
+                .add("permissionType", currentRequest.getRequestedPermissionType().getPermission().toUpperCase())
+                .build();
+
+
+        // Run the async POST request
+        HttpClientUtil.runAsyncPost(finalUrl, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    // Handle failure
+                    ShowAlert.showAlert("Error", "Failed to hande permission request: ", e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                try {
+                    String jsonResponse = response.body().string(); // Get the response as a raw string
+
+                    Platform.runLater(() -> {
+                        if (response.isSuccessful()) {
+                            Platform.runLater(() -> {
+                                dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
+                            });
+                        } else {
+                            ShowAlert.showAlert("Error", "Permission Request Handling Error", jsonResponse, Alert.AlertType.ERROR);
+                        }
+                    });
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Permission Request Handling Error", "Error processing response: " + e.getMessage(), Alert.AlertType.ERROR);
+                    });
+                }
+            }
+        });
+    }
+
+    @FXML
+    void RefreshRequestButtonOnAction(ActionEvent event) {
+        dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
+    }
+
+
+
+
+
 
 }

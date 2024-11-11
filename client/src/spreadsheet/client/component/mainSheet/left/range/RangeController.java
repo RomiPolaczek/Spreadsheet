@@ -247,7 +247,6 @@ public class RangeController {
         });
     }
 
-
     @FXML
     void deleteRangeButtonOnAction(ActionEvent event) {
 //        List<ToggleButton> pressedButtons = new ArrayList<>();

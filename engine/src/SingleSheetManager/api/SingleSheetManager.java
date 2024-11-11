@@ -3,6 +3,7 @@ package SingleSheetManager.api;
 import dto.DTOpermissionRequest;
 import dto.DTOsheet;
 import permissions.PermissionManager;
+import permissions.PermissionStatus;
 import permissions.PermissionType;
 import sheet.api.Sheet;
 
@@ -37,4 +38,7 @@ public interface SingleSheetManager {
 //    Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
 //    Map<String, Integer> createListOfFunctions();
     void askForPermission(String userName, PermissionType permissionType);
+    PermissionType getPermissionTypeForUser(String userName);
+    void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission);
+
 }
