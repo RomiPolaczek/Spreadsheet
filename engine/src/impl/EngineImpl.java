@@ -47,11 +47,11 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
-        SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
+        SingleSheetManager singleSheetManager = new SingleSheetManagerImpl(owner);
         singleSheetManager.LoadFile(inputStream, owner);
         String sheetName = singleSheetManager.getSheet().getName();
 
-        if(sheetNameToSheet.containsKey(sheetName)) {
+        if (sheetNameToSheet.containsKey(sheetName)) {
             throw new RuntimeException("The sheet " + sheetName + " already exists");
         }
 

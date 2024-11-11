@@ -28,19 +28,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadsheet.client.theme.ThemeManager;
 import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static spreadsheet.client.util.Constants.*;
+import static spreadsheet.client.util.Constants.DASHBOARD_PAGE_FXML_RESOURCE_LOCATION;
 
 public class HeaderController {
 
@@ -97,7 +95,7 @@ public class HeaderController {
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
-            if (oldValue != null) {
+            if (oldValue != null && !oldValue.equals(newValue)) {
                 // Reset the style of the previously selected cell
                 Label prevCellLabel = mainSheetController.getCellLabel(oldValue);
                 if (prevCellLabel != null) {
@@ -342,11 +340,10 @@ public class HeaderController {
                     String responseBody = response.body().string();
                     Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + responseBody, Alert.AlertType.ERROR));
                 }
+                response.close();
             }
         });
     }
-
-
 
     @FXML
     void formatFunctionButtonOnAction(ActionEvent event) {
