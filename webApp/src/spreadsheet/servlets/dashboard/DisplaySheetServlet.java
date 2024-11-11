@@ -49,6 +49,7 @@ public class DisplaySheetServlet extends HttpServlet {
             String json = gson.toJson(dtoSheet);;
             out.println(json);
             out.flush();
+            out.close(); // Ensure the writer is closed
             response.setStatus(HttpServletResponse.SC_OK);
         }
         catch (Exception e){

@@ -13,14 +13,12 @@ public class Constants {
     public final static String DASHBOARD_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/dashboard/dashboard.fxml";
     public final static String MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/mainSheet/mainSheet.fxml";
     public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/spreadsheet/client/component/login/login.fxml";
-//    public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/client/component/chatroom/chat-room-main.fxml";
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/spreadsheet";
     private final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
-
 
     // Pages
     public final static String DASHBOARD_PAGE = "/dashboard";
@@ -32,6 +30,7 @@ public class Constants {
     // Dashboard commands
     public final static String LOAD_FILE = FULL_SERVER_PATH + "/loadFile";
     public final static String LOAD_SHEET = FULL_SERVER_PATH + DASHBOARD_PAGE + "/displaySheet";
+    public final static String REQUEST_PERMISSION = FULL_SERVER_PATH + "/requestPermission";
     public final static String REQUEST_PERMISSION = FULL_SERVER_PATH + DASHBOARD_PAGE + "/requestPermission";
     public final static String GET_SHEET_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getSheetDetails";
     public final static String GET_PERMISSION_TABLE_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getPermissionTableDetails";
@@ -43,7 +42,8 @@ public class Constants {
     public final static String GET_ALL_RANGES = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRanges";
     public final static String ADD_RANGE = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/addRange";
     public final static String UPDATE_CELL = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/updateCellValue";
-
+    public final static String GET_NUM_VERSIONS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getNumSheetVersions";
+    public final static String GET_DTO_SHEET_VERSION = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getDTOSheetVersion";
 
 
 

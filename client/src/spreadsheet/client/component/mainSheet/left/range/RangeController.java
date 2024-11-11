@@ -286,7 +286,6 @@ public class RangeController {
         String finalUrl = HttpUrl
                 .parse(GET_ALL_RANGES)
                 .newBuilder()
-               // .addQueryParameter("userName", mainController.getUserName())
                 .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
                 .build()
                 .toString();

@@ -17,10 +17,10 @@ public interface SingleSheetManager {
     PermissionManager getPermissionManager();
     DTOsheet createDTOSheetForDisplay(Sheet sheet);
     List<String> getExistingRanges();
-    void EditCell(String coordinateStr, String inputValue);
-//    DTOsheet GetVersionForDisplay(String version);
+    DTOsheet EditCell(String coordinateStr, String inputValue);
+    DTOsheet GetVersionForDisplay(String version);
 //    void EditCell(Coordinate coordinate, String inputValue);
-//    int getNumberOfVersions();
+    int getNumberOfVersions();
 //    int getChangesAccordingToVersionNumber(int version);
 //    File getFile();
 //    void saveSystemState(String filePath) throws IOException;

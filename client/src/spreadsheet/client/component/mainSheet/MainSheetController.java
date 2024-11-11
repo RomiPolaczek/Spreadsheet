@@ -42,6 +42,7 @@ public class MainSheetController {
     private ThemeManager themeManager;
     private String sheetName;
     //private String userName;
+    private DTOsheet currentDTOSheet;
 
 
     @FXML
@@ -58,6 +59,21 @@ public class MainSheetController {
         }
     }
 
+    public DashboardController getDashboardController() {
+        return dashboardController;
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
+
+    public void setCurrentDTOSheet(DTOsheet currentDTOSheet) {
+        this.currentDTOSheet = currentDTOSheet;
+    }
+
+    public DTOsheet getCurrentDTOSheet() {
+        return currentDTOSheet;
+    }
 
     public void setSelectedTheme(String selectedTheme) {
         this.selectedTheme = selectedTheme;

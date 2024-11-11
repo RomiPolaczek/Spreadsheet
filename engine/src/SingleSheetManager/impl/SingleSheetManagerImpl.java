@@ -1,10 +1,17 @@
 package SingleSheetManager.impl;
 
 import SingleSheetManager.api.SingleSheetManager;
-import dto.*;
+import dto.DTOcell;
+import dto.DTOlayout;
+import dto.DTOrange;
+import dto.DTOsheet;
+import exception.InvalidFileFormatException;
+import expression.parser.Operation;
+import impl.EngineImpl;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import sheet.api.EffectiveValue;
 import permissions.PermissionManager;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
@@ -21,7 +28,6 @@ import xmlGenerated.STLRange;
 import xmlGenerated.STLSheet;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,20 +35,21 @@ import java.util.Map;
 public class SingleSheetManagerImpl implements SingleSheetManager, Serializable {
     private Sheet sheet;
     private STLSheet stlSheet;
+   // private File file;
     private String owner;
     private VersionManager versionManager;
-    private PermissionManager permissionManager;
 
-    public SingleSheetManagerImpl(String owner) {
-        this.owner = owner;
+    public SingleSheetManagerImpl() {
         versionManager = new VersionManager();
-        permissionManager = new PermissionManager(owner);
     }
 
     @Override
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
+       // File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
+        this.owner = owner;
+       // file = newFile;
     }
 
     @Override
@@ -55,13 +62,9 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     { return owner; }
 
     @Override
-    public PermissionManager getPermissionManager() {return permissionManager; }
-
-//
-//    @Override
-//    public int getNumberOfVersions() {
-//        return versionManager.getVersionToChanges().size();
-//    }
+    public int getNumberOfVersions() {
+        return versionManager.getVersionToChanges().size();
+    }
 //
 //    @Override
 //    public int getChangesAccordingToVersionNumber(int version) {
@@ -155,19 +158,20 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout, dtoRangeMap);
     }
 
-//    @Override
-//    public DTOsheet GetVersionForDisplay(String version) {
-//        Integer versionNumber = Integer.parseInt(version);
-//        DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
-//        return dtoSheet;
-//    }
-//
     @Override
-    public void EditCell(String coordinateStr, String inputValue) {
+    public DTOsheet GetVersionForDisplay(String version) {
+        Integer versionNumber = Integer.parseInt(version);
+        DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
+        return dtoSheet;
+    }
+
+    @Override
+    public DTOsheet EditCell(String coordinateStr, String inputValue) {
         Coordinate coordinate = CoordinateFactory.from(coordinateStr);
         sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
+        return dtoSheet;
     }
 //
 //    @Override
@@ -293,6 +297,4 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     public void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission) {
         permissionManager.handlePermissionRequest(userName, newStatus, requestedPermission);
     }
-
-
 }

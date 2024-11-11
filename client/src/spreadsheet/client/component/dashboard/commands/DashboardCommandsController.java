@@ -50,12 +50,6 @@ public class DashboardCommandsController {
 
     private DashboardController dashboardController;
 
-
-//    @FXML
-//    public void initialize() {
-//    }
-
-
 //    public void setDashboardController(DashboardController dashboardController) {
 //        this.dashboardController = dashboardController;
 //        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
@@ -137,7 +131,7 @@ public class DashboardCommandsController {
                 // POST request body
                 String finalUrl = Constants.REQUEST_PERMISSION;
                 RequestBody body = new FormBody.Builder()
-                        .add("username", dashboardController.getUserName().get())
+                        .add("username", dashboardController.getUserName())
                         .add("selectedSheet", dashboardController.getSelectedSheet().getValue())
                         .add("permissionType", selectedPermission.getPermission())
                         .build();
@@ -158,10 +152,12 @@ public class DashboardCommandsController {
                             Gson gson = new Gson();
                             String jsonResponse = response.body().string();
                             Map<String, String> result = gson.fromJson(jsonResponse, Map.class);
-                            dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
-                        }
-                        else {
-                            //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
+
+                            if (response.isSuccessful()) {
+                                dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
+                            } else {
+                                //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
+                            }
 
 //                            Platform.runLater(() -> {
 //                                if ("PERMISSION_REQUESTED".equals(result.get("status"))) {
@@ -187,7 +183,7 @@ public class DashboardCommandsController {
             // Get the MainSheetController instance and initialize it if needed
             MainSheetController mainSheetController = loader.getController();
             mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
-
+            mainSheetController.setDashboardController(dashboardController);
             // Find the ScrollPane in the dashboard scene
             ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
 

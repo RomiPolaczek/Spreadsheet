@@ -45,7 +45,7 @@ public class DTOsheet implements Serializable {
         return cells.get(CoordinateFactory.createCoordinate(row, col));
     }
 
-    public DTOcell getCell(Coordinate coordinate) { return cells.get(coordinate); }
+    public DTOcell getCell(String cellID) { return cells.get(CoordinateFactory.from(cellID)); }
 
     public List<String> getExistingRangeNames() {
          return stringToRange.keySet().stream().collect(Collectors.toList());
