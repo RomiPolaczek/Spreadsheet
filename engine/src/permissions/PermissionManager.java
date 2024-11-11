@@ -6,12 +6,12 @@ import java.util.*;
 public class PermissionManager {
     private final String owner;
     private final Map<String, PermissionType> permissionsForUser;  // Maps a username to their permission type
-    private final List<DTOpermissionRequest> allPermissionsRequests;  // Holds all permission requests (including duplicates)
+    private final Map<String, DTOpermissionRequest> allPermissionsRequests;  // Holds all permission requests (including duplicates)
 
     public PermissionManager(String owner) {
         this.owner = owner;
         this.permissionsForUser = new HashMap<>();
-        this.allPermissionsRequests = new ArrayList<>();
+        this.allPermissionsRequests = new HashMap<>();
 
         // By default, the owner is added to the permissions map with OWNER permission
         permissionsForUser.put(owner, PermissionType.OWNER);
@@ -25,49 +25,50 @@ public class PermissionManager {
         return permissionsForUser;
     }
 
-    public synchronized List<DTOpermissionRequest> getAllPermissionsRequests() {
+    public synchronized Map<String, DTOpermissionRequest> getAllPermissionsRequests() {
         return allPermissionsRequests;
     }
 
     // Method to submit a new permission request
     public synchronized void askForPermission(String username, PermissionType permissionType) {
+        if(allPermissionsRequests.containsKey(username)) {
+            throw new IllegalStateException("You can only ask for permissions once.");
+        }
+        if(username.equals(owner)) {
+            throw new IllegalStateException("The owner of a spreadsheet does not need permissions.");
+        }
         DTOpermissionRequest newRequest = new DTOpermissionRequest(username, permissionType, PermissionStatus.PENDING);
-        allPermissionsRequests.add(newRequest);
+        allPermissionsRequests.put(username, newRequest);
     }
 
-//    public synchronized void handlePermissionRequest(String applicantName, String handlerName, int requestNumber, PermissionStatus status, PermissionType requestedPermission) {
-//        // Check if the handler is the owner
-//        if (!owner.equals(handlerName)) {
-//            throw new IllegalStateException("Only the owner can handle permission requests.");
-//        }
-//
-//        // Validate if the request exists in the allPermissionsRequests by its number
-//        if (requestNumber < 0 || requestNumber >= allPermissionsRequests.size()) {
-//            throw new IllegalArgumentException("Invalid request number.");
-//        }
-//
-//        // Get the request from the requestHistory
-//        PermissionRequestDTO request = requestHistory.get(requestNumber);
-//
-//        // Check if the request corresponds to the applicant
-//        if (!request.getUsername().equals(applicantName)) {
-//            throw new IllegalArgumentException("Applicant name does not match the request.");
-//        }
-//
-//        // Handle the permission status update
-//        if (status == PermissionStatus.APPROVED) {
-//            // Insert or update the user in the permissions map with the approved permission type
-//            permissionsForUser.put(applicantName, requestedPermission);
-//
-//            // Update the request status to APPROVED in the request history
-//            request.setStatus(PermissionStatus.APPROVED);
-//        } else if (status == PermissionStatus.REJECTED) {
-//            // Only update the request status to REJECTED in the request history
-//            request.setStatus(PermissionStatus.REJECTED);
-//        } else {
-//            throw new IllegalArgumentException("Invalid permission status.");
-//        }
-//    }
+    public synchronized void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission) {
+        // Check if the handler is the owner
+        if (!owner.equals(userName)) {
+            throw new IllegalStateException("Only the owner can handle permission requests.");
+        }
+
+        if(allPermissionsRequests.get(userName).getRequestPermissionStatus().equals(PermissionStatus.APPROVED)) {
+            throw new IllegalStateException("This request is already approved.");
+        }
+
+        // Get the request from the requestHistory
+        DTOpermissionRequest request = allPermissionsRequests.get(userName);
+
+           // Handle the permission status update
+        if (newStatus.equals(PermissionStatus.APPROVED)) {
+            // Insert or update the user in the permissions map with the approved permission type
+            permissionsForUser.put(userName, requestedPermission);
+
+            // Update the request status to APPROVED in the request history
+            request.setRequestPermissionStatus(PermissionStatus.APPROVED);
+
+        } else if (newStatus.equals(PermissionStatus.REJECTED)) {
+            // Only update the request status to REJECTED in the request history
+            request.setRequestPermissionStatus(PermissionStatus.REJECTED);
+        } else {
+            throw new IllegalArgumentException("Invalid permission status.");
+        }
+    }
 
     // Helper method to check if a user has a specific permission
     public synchronized PermissionType getUserPermission(String username) {

@@ -1,12 +1,14 @@
 package dto;
 
+import permissions.PermissionType;
+
 public class DTOsheetTableDetails {
     private String sheetName;
     private String owner;
     private String size;
-    private String permission;
+    private PermissionType permission;
 
-    public DTOsheetTableDetails(String sheetName, String owner, String size, String permission) {
+    public DTOsheetTableDetails(String sheetName, String owner, String size, PermissionType permission) {
         this.sheetName = sheetName;
         this.owner = owner;
         this.size = size;
@@ -25,7 +27,7 @@ public class DTOsheetTableDetails {
         return size;
     }
 
-    public String getPermission() {
+    public PermissionType getPermission() {
         return permission;
     }
 

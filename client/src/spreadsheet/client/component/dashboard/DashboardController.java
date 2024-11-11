@@ -1,8 +1,11 @@
 package spreadsheet.client.component.dashboard;
 
 import com.google.gson.Gson;
+import dto.DTOpermissionRequest;
 import impl.EngineImpl;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,13 +41,20 @@ public class DashboardController {
     @FXML private VBox dashboardCommandsComponent;
     @FXML private DashboardCommandsController dashboardCommandsComponentController;
 
-    private String userName;
     private MainSheetController mainSheetController;
+    private SimpleStringProperty userName;
     private SimpleStringProperty selectedSheet;
+    private SimpleStringProperty selectedRequestUserName;
+    //private SimpleStringProperty selectedRequestOwnerName;
+    private BooleanProperty isOwner;
 
     @FXML
     public void initialize() {
+        userName = new SimpleStringProperty();
         selectedSheet = new SimpleStringProperty();
+        selectedRequestUserName = new SimpleStringProperty();
+        //selectedRequestOwnerName = new SimpleStringProperty();
+        isOwner = new SimpleBooleanProperty();
 
         if (tabelsComponentController != null && dashboardCommandsComponentController != null) {
             tabelsComponentController.setDashboardController(this);
@@ -56,12 +66,11 @@ public class DashboardController {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName.set(userName);
     }
 
     public void setSelectedSheet(String selectedSheet) {
         this.selectedSheet.set(selectedSheet);
-        System.out.println(selectedSheet);
     }
 
     public SimpleStringProperty getSelectedSheet() {
@@ -72,9 +81,29 @@ public class DashboardController {
         this.mainSheetController = mainSheetController;
     }
 
-    public String getUserName() { return userName; }
+    public SimpleStringProperty getUserName() {
+        return userName;
+    }
 
-    public TabelsController getTabelsController() {return tabelsComponentController; }
+    public TabelsController getTabelsController() {
+        return tabelsComponentController;
+    }
+
+    public void setSelectedRequestUserName(String selectedRequestUserName) {
+        this.selectedRequestUserName.set(selectedRequestUserName);
+    }
+
+    public SimpleStringProperty getSelectedRequestUserName() {
+        return selectedRequestUserName;
+    }
+
+//    public void setSelectedRequestOwnerName(String owner) {
+//        this.selectedRequestOwnerName.set(owner);
+//    }
+
+    public DashboardCommandsController getDashboardCommandsComponentController() {
+        return dashboardCommandsComponentController;
+    }
 
     @FXML
     void loadFileButtonOnAction(ActionEvent event) {
@@ -199,7 +228,7 @@ public class DashboardController {
         return progressBarStage;
     }
 
-    public void viewSheet(){
-        mainSheetController.viewSheet(selectedSheet.getValue());
+    public void displaySheet(Boolean loadSheetFromDashboard){
+        mainSheetController.displaySheet(loadSheetFromDashboard);
     }
 }

@@ -163,16 +163,15 @@ public class HeaderController {
                                     .create();
                             Type sheet = new TypeToken<DTOsheet>(){}.getType();
                             DTOsheet dtoSheet  = gson.fromJson(json, sheet);
-                            mainSheetController.setCurrentDTOSheet(dtoSheet);
 
                             if(loadSheetFromDashboard){
-                                mainSheetController.setSheet(dtoSheet, false);
                                 selectedCellProperty.set("A1");
                                 mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
                                 mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
                                 originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
                                 lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
                                 mainSheetController.populateRangeListView();
+                                mainSheetController.setSheet(dtoSheet, false);
                             } else{
                                 mainSheetController.setSheet(dtoSheet, true);
                             }

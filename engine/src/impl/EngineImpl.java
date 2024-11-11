@@ -4,6 +4,7 @@ import SingleSheetManager.api.SingleSheetManager;
 import SingleSheetManager.impl.SingleSheetManagerImpl;
 import api.Engine;
 import dto.*;
+import permissions.PermissionStatus;
 import permissions.PermissionType;
 import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
@@ -26,7 +27,7 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public List<DTOsheetTableDetails> getDTOsheetTableDetailsList() {
+    public List<DTOsheetTableDetails> getDTOsheetTableDetailsList(String userName) {
         List<DTOsheetTableDetails> list = new ArrayList<>();
 
         synchronized (this) {
@@ -34,16 +35,21 @@ public class EngineImpl implements Engine, Serializable {
                 String sheetName = singleSheetManager.getSheet().getName();
                 String owner = singleSheetManager.getOwner();
                 String size = singleSheetManager.getSheet().getLayout().toString();
-                list.add(new DTOsheetTableDetails(sheetName, owner, size, "owner"));
+                PermissionType permissionType = getPermissionTypeOfUser(sheetName, userName);
+                list.add(new DTOsheetTableDetails(sheetName, owner, size, permissionType));
             }
         }
 
         return list;
     }
 
+    private PermissionType getPermissionTypeOfUser(String sheetName, String userName) {
+       return sheetNameToSheet.get(sheetName).getPermissionTypeForUser(userName);
+    }
+
     @Override
-    public List<DTOpermissionRequest> getDTOpermissionTableDetailsList(String sheetName) {
-        return sheetNameToSheet.get(sheetName).getPermissionManager().getAllPermissionsRequests();
+    public synchronized List<DTOpermissionRequest> getDTOpermissionTableDetailsList(String sheetName) {
+        return sheetNameToSheet.get(sheetName).getPermissionManager().getAllPermissionsRequests().values().stream().toList();
     }
 
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
@@ -124,5 +130,10 @@ public class EngineImpl implements Engine, Serializable {
         if (!sheetNameToSheet.containsKey(sheetName)) {
             throw new NoSuchElementException("The sheet '" + sheetName + "' does not exist");
         }
+    }
+
+    @Override
+    public void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName) {
+        sheetNameToSheet.get(sheetName).handlePermissionRequest(userName, newStatus, requestedPermission);
     }
 }

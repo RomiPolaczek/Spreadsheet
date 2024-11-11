@@ -50,9 +50,9 @@ public class TabelsController {
     @FXML
     private TableColumn<DTOpermissionRequest, String> requestStatusColumn;
 
-
-
     private DashboardController dashboardController;
+
+
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
@@ -62,15 +62,24 @@ public class TabelsController {
     public void initialize() {
         availableSheetsTable.setItems(FXCollections.observableArrayList()); // Initialize items list
         permissionsTable.setItems(FXCollections.observableArrayList());
+        setupAvailableSheetsTableColumns();
+        setupPermissionTableColumns();
         // Listener to handle row click events
         availableSheetsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 String selectedSheet = newSelection.getSheetName();
                 dashboardController.setSelectedSheet(selectedSheet);
+                fetchPermissionTableDetails(selectedSheet);
             }
         });
-        setupAvailableSheetsTableColumns();
-        setupPermissionTableColumns();
+
+        permissionsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                String selectedRequest = newSelection.getUserName();
+                dashboardController.setSelectedRequestUserName(selectedRequest);
+                dashboardController.getDashboardCommandsComponentController().setApproveAndRejectButtons();
+            }
+        });
 //        fetchSheetDetails();
     }
 
@@ -87,6 +96,19 @@ public class TabelsController {
         requestStatusColumn.setCellValueFactory(new PropertyValueFactory<>("requestPermissionStatus"));
     }
 
+    public String getSelectedSheetOwnerName() {
+        DTOsheetTableDetails selectedSheet = availableSheetsTable.getSelectionModel().getSelectedItem(); // Get the selected item
+
+        if (selectedSheet != null) {
+            return selectedSheet.getOwner(); // Return the sheet name of the selected item
+        }
+
+        return null; // Return null if no row is selected
+    }
+
+    public DTOpermissionRequest getSelectedRequest() {
+        return permissionsTable.getSelectionModel().getSelectedItem();
+    }
 
     public void fetchSheetTableDetails() {
         String url = HttpUrl

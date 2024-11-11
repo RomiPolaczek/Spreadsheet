@@ -4,6 +4,7 @@ import SingleSheetManager.api.SingleSheetManager;
 import dto.DTOpermissionRequest;
 import dto.DTOsheet;
 import dto.DTOsheetTableDetails;
+import permissions.PermissionStatus;
 import permissions.PermissionType;
 
 import java.io.InputStream;
@@ -13,7 +14,7 @@ import java.util.Map;
 public interface Engine {
     Map<String, SingleSheetManager> getSheetNameToSheet();
     void LoadFile(InputStream inputStream, String owner) throws Exception;
-    List<DTOsheetTableDetails> getDTOsheetTableDetailsList();
+    List<DTOsheetTableDetails> getDTOsheetTableDetailsList(String userName);
     List<DTOpermissionRequest> getDTOpermissionTableDetailsList(String sheetName);
     DTOsheet createDTOSheet(String sheetName);
     List<String> getExistingRangesBySheetName(String sheetName);
@@ -22,4 +23,6 @@ public interface Engine {
     void askForPermission(String userName, String selectedSheet, PermissionType permissionType);
     int getNumberOfVersions(String sheetName);
     DTOsheet GetVersionForDisplay(String sheetName, String version);
-}
+    void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
+
+    }

@@ -30,7 +30,7 @@ public class SheetTableDetailsServlet extends HttpServlet {
             return;
         }
 
-        List<DTOsheetTableDetails> sheetsDetailsList = engine.getDTOsheetTableDetailsList();
+        List<DTOsheetTableDetails> sheetsDetailsList = engine.getDTOsheetTableDetailsList(usernameFromSession);
 
         try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();

@@ -216,7 +216,7 @@ public class MainSheetController {
     }
 
     public void updateCellValue(String cellID, String newValue) {
-        headerComponentController.updateCellValue(cellID, newValue);
+//        headerComponentController.updateCellValue(cellID, newValue);
     }
 
     public void displaySheet(Boolean loadSheetFromDashboard){
