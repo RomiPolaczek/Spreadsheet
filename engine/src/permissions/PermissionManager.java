@@ -41,23 +41,23 @@ public class PermissionManager {
         allPermissionsRequests.put(username, newRequest);
     }
 
-    public synchronized void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission) {
+    public synchronized void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission) {
         // Check if the handler is the owner
-        if (!owner.equals(userName)) {
+        if (!owner.equals(connectedUserName)) {
             throw new IllegalStateException("Only the owner can handle permission requests.");
         }
 
-        if(allPermissionsRequests.get(userName).getRequestPermissionStatus().equals(PermissionStatus.APPROVED)) {
+        if(allPermissionsRequests.get(applicantUsername).getRequestPermissionStatus().equals(PermissionStatus.APPROVED)) {
             throw new IllegalStateException("This request is already approved.");
         }
 
         // Get the request from the requestHistory
-        DTOpermissionRequest request = allPermissionsRequests.get(userName);
+        DTOpermissionRequest request = allPermissionsRequests.get(applicantUsername);
 
            // Handle the permission status update
         if (newStatus.equals(PermissionStatus.APPROVED)) {
             // Insert or update the user in the permissions map with the approved permission type
-            permissionsForUser.put(userName, requestedPermission);
+            permissionsForUser.put(applicantUsername, requestedPermission);
 
             // Update the request status to APPROVED in the request history
             request.setRequestPermissionStatus(PermissionStatus.APPROVED);

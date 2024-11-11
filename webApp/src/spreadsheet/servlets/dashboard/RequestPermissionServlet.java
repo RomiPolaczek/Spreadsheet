@@ -12,6 +12,7 @@ import spreadsheet.constants.Constants;
 import spreadsheet.utils.ServletUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,19 +26,25 @@ public class RequestPermissionServlet extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
 
         // Get the engine instace
         Engine engine = ServletUtils.getEngine(getServletContext());
 
         // Prepare GSON
-        Gson gson = new Gson();
         Map<String, String> jsonResponse = new HashMap<>();
 
         // Ask for permission
-        synchronized (this) {
+        try {
             engine.askForPermission(username, selectedSheet, PermissionType.valueOf(permissionType.toUpperCase()));
-            //jsonResponse.put("status", "PERMISSION_REQUESTED");
+            response.setStatus(HttpServletResponse.SC_OK);
+            out.write(gson.toJson("Success"));
         }
-        response.getWriter().write(gson.toJson(jsonResponse));
+        catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write(gson.toJson(e.getMessage()));
+        }
+
     }
 }

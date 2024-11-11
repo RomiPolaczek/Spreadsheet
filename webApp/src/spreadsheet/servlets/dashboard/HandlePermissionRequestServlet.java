@@ -24,7 +24,8 @@ public class HandlePermissionRequestServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
 
-        String username = req.getParameter("username");
+        String connectedUsername = req.getParameter("username");
+        String applicantName = req.getParameter("applicantName");
         String ownerName = req.getParameter("ownerName");
         String sheetName = req.getParameter("sheetName");
         String permissionStatusStr = req.getParameter("permissionStatus");
@@ -38,7 +39,7 @@ public class HandlePermissionRequestServlet extends HttpServlet {
         Engine engine = ServletUtils.getEngine(getServletContext());
 
         try {
-            engine.handlePermissionRequest(username, permissionStatus, permissionType, sheetName);
+            engine.handlePermissionRequest(connectedUsername,applicantName, permissionStatus, permissionType, sheetName);
             response.setStatus(HttpServletResponse.SC_OK);
             out.write(gson.toJson("Success"));
         } catch (Exception e) {

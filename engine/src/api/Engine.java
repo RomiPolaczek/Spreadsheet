@@ -23,6 +23,5 @@ public interface Engine {
     void askForPermission(String userName, String selectedSheet, PermissionType permissionType);
     int getNumberOfVersions(String sheetName);
     DTOsheet GetVersionForDisplay(String sheetName, String version);
-    void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
-
+    void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
     }

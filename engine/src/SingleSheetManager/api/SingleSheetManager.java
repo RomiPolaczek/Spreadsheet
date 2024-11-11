@@ -39,6 +39,6 @@ public interface SingleSheetManager {
 //    Map<String, Integer> createListOfFunctions();
     void askForPermission(String userName, PermissionType permissionType);
     PermissionType getPermissionTypeForUser(String userName);
-    void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission);
+    void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission);
 
 }

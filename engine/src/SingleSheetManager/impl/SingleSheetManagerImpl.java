@@ -35,12 +35,14 @@ import java.util.Map;
 public class SingleSheetManagerImpl implements SingleSheetManager, Serializable {
     private Sheet sheet;
     private STLSheet stlSheet;
-   // private File file;
     private String owner;
     private VersionManager versionManager;
+    private PermissionManager permissionManager;
 
-    public SingleSheetManagerImpl() {
+    public SingleSheetManagerImpl(String owner) {
+        this.owner = owner;
         versionManager = new VersionManager();
+        permissionManager = new PermissionManager(owner);
     }
 
     @Override
@@ -60,6 +62,11 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     @Override
     public String getOwner()
     { return owner; }
+
+    @Override
+    public PermissionManager getPermissionManager(){
+        return permissionManager;
+    }
 
     @Override
     public int getNumberOfVersions() {
@@ -294,7 +301,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         return permissionType;
     }
 
-    public void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission) {
-        permissionManager.handlePermissionRequest(userName, newStatus, requestedPermission);
+
+    @Override
+    public void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission) {
+        permissionManager.handlePermissionRequest(connectedUserName, applicantUsername, newStatus, requestedPermission);
     }
+
 }

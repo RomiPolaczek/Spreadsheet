@@ -133,7 +133,8 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     @Override
-    public void handlePermissionRequest(String userName, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName) {
-        sheetNameToSheet.get(sheetName).handlePermissionRequest(userName, newStatus, requestedPermission);
+    public void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName) {
+        sheetNameToSheet.get(sheetName).handlePermissionRequest(connectedUserName, applicantUsername, newStatus, requestedPermission);
     }
+
 }

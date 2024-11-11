@@ -131,7 +131,7 @@ public class DashboardCommandsController {
                 // POST request body
                 String finalUrl = Constants.REQUEST_PERMISSION;
                 RequestBody body = new FormBody.Builder()
-                        .add("username", dashboardController.getUserName())
+                        .add("username", dashboardController.getUserName().get())
                         .add("selectedSheet", dashboardController.getSelectedSheet().getValue())
                         .add("permissionType", selectedPermission.getPermission())
                         .build();
@@ -148,24 +148,16 @@ public class DashboardCommandsController {
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String jsonResponse = response.body().string();
                         if (response.isSuccessful()) {
-                            Gson gson = new Gson();
-                            String jsonResponse = response.body().string();
-                            Map<String, String> result = gson.fromJson(jsonResponse, Map.class);
-
-                            if (response.isSuccessful()) {
+                            Platform.runLater(() -> {
                                 dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
-                            } else {
-                                //ShowAlert.showAlert("Error", "", message, Alert.AlertType.ERROR);
-                            }
-
-//                            Platform.runLater(() -> {
-//                                if ("PERMISSION_REQUESTED".equals(result.get("status"))) {
-//                                    AlertUtils.showAlert(Alert.AlertType.INFORMATION, "Success", "Permission request sent successfully.");
-//                                } else if ("ERROR".equals(result.get("status"))) {
-//                                    showAlert(Alert.AlertType.ERROR, "Error", result.get("message"));
-//                                }
-//                            });
+                            });
+                        }
+                        else {
+                            Platform.runLater(() -> {
+                                ShowAlert.showAlert("Error", "Failed to request permission: ", jsonResponse, Alert.AlertType.ERROR);
+                            });
                         }
                     }
                 });
@@ -218,7 +210,8 @@ public class DashboardCommandsController {
 
         String finalUrl = Constants.HANDLE_PERMISSION_REQUEST;
         RequestBody body = new FormBody.Builder()
-                .add("username", currentRequest.getUserName())
+                .add("username", dashboardController.getUserName().get()) //connected user
+                .add("applicantName",currentRequest.getUserName()) //applicant name
                 .add("ownerName", dashboardController.getTabelsController().getSelectedSheetOwnerName())
                 .add("sheetName", dashboardController.getSelectedSheet().getValue())
                 .add("permissionStatus", permissionStatus.getStatus().toUpperCase())

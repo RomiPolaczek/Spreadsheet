@@ -6,6 +6,7 @@ import dto.DTOsheetTableDetails;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,6 +16,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -156,7 +158,7 @@ public class TabelsController {
 
     public void fetchPermissionTableDetails(String sheetName) {
         String url = HttpUrl
-                .parse(Constants.GET_PERMISSION_TABLE_DETAILS) // e.g., "http://localhost:8080/dashboard/getPermissionTableDetails"
+                .parse(Constants.GET_PERMISSION_TABLE_DETAILS)
                 .newBuilder()
                 .addQueryParameter("selectedSheet", sheetName) // Pass the selected sheet name if required
                 .build()
@@ -165,12 +167,11 @@ public class TabelsController {
         HttpClientUtil.runAsync(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-
+                //e.printStackTrace();
                 // Display a popup alert for failure
-//                Platform.runLater(() -> {
-//
-//                });
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", "Failed to load permissions: ", e.getMessage(), Alert.AlertType.ERROR);
+                });
             }
 
             @Override
@@ -185,16 +186,9 @@ public class TabelsController {
                         permissionsTable.getItems().setAll(permissionsDetailsList);
                     });
                 } else {
-                    System.err.println("Request failed: " + response.code());
-
-//                    // Display a popup alert for error response
-//                    Platform.runLater(() -> {
-//                        Alert alert = new Alert(Alert.AlertType.ERROR);
-//                        alert.setTitle("Request Error");
-//                        alert.setHeaderText("Error fetching permission details.");
-//                        alert.setContentText("Server responded with: " + response.code());
-//                        alert.showAndWait();
-//                    });
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to load permissions: ", response.message(), Alert.AlertType.ERROR);
+                    });
                 }
                 response.close();
             }
