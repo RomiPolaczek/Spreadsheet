@@ -1,20 +1,19 @@
 package SingleSheetManager.api;
 
+import dto.DTOpermissionRequest;
 import dto.DTOsheet;
-import sheet.api.EffectiveValue;
+import permissions.PermissionManager;
+import permissions.PermissionType;
 import sheet.api.Sheet;
-import sheet.coordinate.api.Coordinate;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 public interface SingleSheetManager {
     void LoadFile(InputStream inputStream, String owner) throws Exception;
     Sheet getSheet();
     String getOwner();
+    PermissionManager getPermissionManager();
     DTOsheet createDTOSheetForDisplay(Sheet sheet);
     List<String> getExistingRanges();
     DTOsheet EditCell(String coordinateStr, String inputValue);
@@ -37,4 +36,5 @@ public interface SingleSheetManager {
 //    DTOsheet createDTOCopySheet();
 //    Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
 //    Map<String, Integer> createListOfFunctions();
+    void askForPermission(String userName, PermissionType permissionType);
 }
