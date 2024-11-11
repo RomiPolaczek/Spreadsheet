@@ -67,7 +67,6 @@ public class UpdateCellValueServlet extends HttpServlet {
             String json = gson.toJson(dtoSheet);;
             out.println(json);
             out.flush();
-            out.close();
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
