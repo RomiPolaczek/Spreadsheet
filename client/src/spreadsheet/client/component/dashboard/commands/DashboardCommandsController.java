@@ -97,7 +97,7 @@ public class DashboardCommandsController {
 
         // Create description text
         Label descriptionLabel = new Label(
-                "Requesting permission for spreadsheet: " + dashboardController.getSelectedSheet() + "\n" +
+                "Requesting permission for spreadsheet: " + dashboardController.getSelectedSheet().get() + "\n" +
                         "Choose the type of permission you would like to request:\n\n" +
                         "• READER - Read-Only Permission:\n" +
                         "• WRITER - Edit Permission:\n"

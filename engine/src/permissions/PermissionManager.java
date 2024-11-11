@@ -75,4 +75,10 @@ public class PermissionManager {
         return permissionsForUser.getOrDefault(username, PermissionType.NONE);
     }
 
+    public void addOwnerToPermissions(String owner) {
+        permissionsForUser.put(owner, PermissionType.OWNER);
+        DTOpermissionRequest request = new DTOpermissionRequest(owner, PermissionType.OWNER, PermissionStatus.APPROVED);
+        allPermissionsRequests.put(owner, request);
+    }
+
 }

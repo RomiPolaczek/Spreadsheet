@@ -51,6 +51,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
         this.owner = owner;
+        permissionManager.addOwnerToPermissions(owner);
        // file = newFile;
     }
 
