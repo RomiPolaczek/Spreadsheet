@@ -2,19 +2,25 @@ package spreadsheet.servlets.mainSheet.header;
 
 import api.Engine;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import dto.DTOsheet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.utils.ServletUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+
+import static spreadsheet.constants.Constants.*;
 
 @WebServlet(name = "UpdateCellValueServlet", urlPatterns = "/mainSheet/updateCellValue")
 public class UpdateCellValueServlet extends HttpServlet {
@@ -23,7 +29,6 @@ public class UpdateCellValueServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
 
         try {
             BufferedReader reader = request.getReader();
@@ -34,33 +39,39 @@ public class UpdateCellValueServlet extends HttpServlet {
             }
             String jsonBody = jsonBuilder.toString();
 
-            Map<String, String> cellData = null;
+            Map<String, String> cellData;
+
             try {
-                cellData = gson.fromJson(jsonBody, new TypeToken<Map<String, String>>(){}.getType());
+                cellData = GSON_INSTANCE.fromJson(jsonBody, new TypeToken<Map<String, String>>(){}.getType());
             } catch (JsonSyntaxException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.write(gson.toJson("Invalid JSON format."));
+                out.write(GSON_INSTANCE.toJson("Invalid JSON format."));
                 return;
             }
 
-            String sheetName = cellData.get("sheetName");
-            String cellID = cellData.get("cellID");
-            String newValue = cellData.get("newValue");
+            String sheetName = cellData.get(SELECTED_SHEET_NAME);
+            String cellID = cellData.get(CELL_ID);
+            String newValue = cellData.get(NEW_VALUE);
 
             if (sheetName == null || cellID == null || newValue == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.write(gson.toJson("Missing required fields: sheetName, cellID, or newValue"));
+                out.write(GSON_INSTANCE.toJson("Missing required fields: sheetName, cellID, or newValue"));
                 return;
             }
 
             Engine engine = ServletUtils.getEngine(getServletContext());
-            engine.EditCell(cellID, newValue, sheetName);
-
+            DTOsheet dtoSheet = engine.EditCell(cellID, newValue, sheetName);
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                    .create();
+            String json = gson.toJson(dtoSheet);;
+            out.println(json);
+            out.flush();
+            out.close();
             response.setStatus(HttpServletResponse.SC_OK);
-            out.write(gson.toJson("Cell updated successfully."));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.write(gson.toJson("An error occurred while updating the cell: " + e.getMessage()));
+            out.write(GSON_INSTANCE.toJson("An error occurred while updating the cell: " + e.getMessage()));
         } finally {
             out.close(); // Ensure the writer is closed
         }

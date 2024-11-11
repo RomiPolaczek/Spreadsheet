@@ -28,15 +28,15 @@ public class UpdateCellFormat {
     private DTOcell selectedCell;
     private String generatedString;
     private boolean confirmed = false;
-    MainSheetController mainController;
+    MainSheetController mainSheetController;
     SimpleStringProperty originalCellValueProperty;
     SimpleStringProperty lastUpdateVersionCellProperty;
 
-    public UpdateCellFormat(DTOcell dtoCell, String coord, MainSheetController mainController,
+    public UpdateCellFormat(DTOcell dtoCell, String coord, MainSheetController mainSheetController,
                             SimpleStringProperty originalCellValueProperty, SimpleStringProperty lastUpdateVersionCellProperty) {
         this.selectedCell = dtoCell;
         this.coord = coord;
-        this.mainController = mainController;
+        this.mainSheetController = mainSheetController;
         this.originalCellValueProperty = originalCellValueProperty;
         this.lastUpdateVersionCellProperty = lastUpdateVersionCellProperty;
     }
@@ -76,7 +76,7 @@ public class UpdateCellFormat {
         submitButton.setOnAction(e -> {
             confirmed = true;  // User confirmed the action
             handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window);
-            mainController.updateCellValue(coord, generatedString);
+            mainSheetController.updateCellValue(coord, generatedString);
         });
 
         // Add a Cancel button
@@ -97,7 +97,7 @@ public class UpdateCellFormat {
 
         scrollPane.setContent(layout);
         Scene scene = new Scene(scrollPane);
-        mainController.setTheme(scene);
+        mainSheetController.setTheme(scene);
         window.setScene(scene);
 
         window.setOnCloseRequest(e -> {
@@ -106,26 +106,10 @@ public class UpdateCellFormat {
 
         window.showAndWait();
     }
-//
-//    private void updateCellValue(String cellID, String newValue) {
-//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
-//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
-//
-//        // Call the engine's EditCell function to update the cell value
-//        mainController.getEngine().EditCell(coordinate, newValue);
-//
-//        // Refresh the sheet display
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//        mainController.setSheet(dtoSheet, true);
-//
-//        originalCellValueProperty.set(newValue);
-//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-//    }
 
     public String getGeneratedString() {
         return generatedString;
     }
-
 
     private Label createLabel(String prefix, String value) {
         return new Label(prefix + value);

@@ -2,26 +2,13 @@ package impl;
 
 import SingleSheetManager.api.SingleSheetManager;
 import SingleSheetManager.impl.SingleSheetManagerImpl;
-import SingleSheetManager.impl.VersionManager;
 import api.Engine;
 import dto.*;
-import expression.parser.Operation;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
-import sheet.api.EffectiveValue;
+import permissions.PermissionType;
 import sheet.api.Sheet;
-import sheet.cell.api.Cell;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
-import sheet.coordinate.impl.CoordinateImpl;
-import sheet.impl.SheetImpl;
-import sheet.layout.impl.LayoutImpl;
-import sheet.range.Range;
 import users.UserManager;
-import xmlGenerated.STLCell;
-import xmlGenerated.STLRange;
-import xmlGenerated.STLSheet;
 
 import java.io.*;
 import java.util.*;
@@ -54,12 +41,17 @@ public class EngineImpl implements Engine, Serializable {
         return list;
     }
 
+    @Override
+    public List<DTOpermissionRequest> getDTOpermissionTableDetailsList(String sheetName) {
+        return sheetNameToSheet.get(sheetName).getPermissionManager().getAllPermissionsRequests();
+    }
+
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
         SingleSheetManager singleSheetManager = new SingleSheetManagerImpl();
         singleSheetManager.LoadFile(inputStream, owner);
         String sheetName = singleSheetManager.getSheet().getName();
 
-        if(sheetNameToSheet.containsKey(sheetName)){
+        if(sheetNameToSheet.containsKey(sheetName)) {
             throw new RuntimeException("The sheet " + sheetName + " already exists");
         }
 
@@ -68,24 +60,69 @@ public class EngineImpl implements Engine, Serializable {
 
     @Override
     public DTOsheet createDTOSheet(String sheetName) {
+        ensureSheetExists(sheetName);
         synchronized (this) {
             Sheet sheet = sheetNameToSheet.get(sheetName).getSheet();
             return sheetNameToSheet.get(sheetName).createDTOSheetForDisplay(sheet);
         }
     }
 
+//    @Override
+//    public DTOcell getDTOcell(String sheetName, String cellID) {
+//        synchronized (this) {
+//            Sheet sheet = sheetNameToSheet.get(sheetName).getSheet();
+//            Coordinate coordinate = CoordinateFactory.from(cellID);
+//            return sheetNameToSheet.get(sheetName).createDTOSheetForDisplay(sheet).getCell(coordinate.getRow(), coordinate.getColumn());
+//        }
+//    }
+
     @Override
     public List<String> getExistingRangesBySheetName(String sheetName) {
+        ensureSheetExists(sheetName);
         return sheetNameToSheet.get(sheetName).getExistingRanges();
     }
 
     @Override
     public void addRange(String sheetName, String rangeName, String rangeStr) {
+        ensureSheetExists(sheetName);
         sheetNameToSheet.get(sheetName).addRange(rangeName, rangeStr);
     }
 
-    public void EditCell(String coordinateStr, String inputValue, String sheetName){
-        sheetNameToSheet.get(sheetName).EditCell(coordinateStr, inputValue);
+    public DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).EditCell(coordinateStr, inputValue);
+        }
     }
 
+    @Override
+    public void askForPermission(String userName, String sheetName, PermissionType permissionType) {
+        ensureSheetExists(sheetName);
+        sheetNameToSheet.get(sheetName).askForPermission(userName, permissionType);
+    }
+
+    @Override
+    public int getNumberOfVersions(String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).getNumberOfVersions();
+        }
+    }
+
+    @Override
+    public DTOsheet GetVersionForDisplay(String sheetName, String version) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).GetVersionForDisplay(version);
+        }
+    }
+
+    private void ensureSheetExists(String sheetName){
+        if (sheetName == null || sheetName.isEmpty()) {
+            throw new IllegalArgumentException("Sheet name cannot be null or empty");
+        }
+        if (!sheetNameToSheet.containsKey(sheetName)) {
+            throw new NoSuchElementException("The sheet '" + sheetName + "' does not exist");
+        }
+    }
 }

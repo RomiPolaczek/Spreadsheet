@@ -43,6 +43,7 @@ public class SheetController {
         columnAlignments = new HashMap<>();
         columnsWidth = new HashMap<>();
         rowsHeight = new HashMap<>();
+        cellLabels = new HashMap<>();
     }
 
     public void initializeSheetController() {

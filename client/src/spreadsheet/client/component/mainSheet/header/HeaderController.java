@@ -7,10 +7,18 @@ import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
 import javafx.application.Platform;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
+import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -32,6 +40,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static spreadsheet.client.util.Constants.*;
+
 public class HeaderController {
 
     @FXML
@@ -50,7 +60,8 @@ public class HeaderController {
     private TextField originalCellValueTextField;
     @FXML
     private Button formatFunctionButton;
-
+    @FXML
+    private Button backButton;
 
     private MainSheetController mainSheetController;
     private SimpleStringProperty selectedCellProperty;
@@ -115,112 +126,9 @@ public class HeaderController {
 
     public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
 
-    @FXML
-    void loadFileButtonAction(ActionEvent event) {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Select words file");
-//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-//        Stage stage = (Stage) fileNameLabel.getScene().getWindow();
-//        File selectedFile = fileChooser.showOpenDialog(stage);
-//
-//        if (selectedFile == null) {
-//            return;
-//        }
-//
-//        String absolutePath = selectedFile.getAbsolutePath();
-//
-//        // Show progress bar pop-up
-//      //  Stage progressBarStage = createProgressBarStage();
-//     //   showProgressBar(progressBarStage, absolutePath);
-    }
-
-    private void showProgressBar(Stage progressBarStage, String absolutePath) {
-//        // Create a Task for loading the file in the background
-//        Task<Void> loadFileTask = new Task<>() {
-//            @Override
-//            protected Void call() throws Exception {
-//                // Simulate loading process with progress
-//                for (int i = 0; i <= 10; i++) {
-//                    updateProgress(i, 10);
-//                    Thread.sleep(100); // Simulate delay
-//                }
-//                mainController.getEngine().LoadFile(absolutePath);
-//                Platform.runLater(() -> {
-//                    selectedFileProperty.set(absolutePath);
-//                    isFileSelected.set(true);
-//                    DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//                    mainController.setSheet(dtoSheet, false);
-//
-//                    selectedCellProperty.set("A1");
-//                    mainController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-//                    mainController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-//                    originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-//                    lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-//
-//                    mainController.populateRangeListView();
-//
-//                });
-//                return null;
-//            }
-//
-//            @Override
-//            protected void succeeded() {
-//                super.succeeded();
-//                progressBarStage.close(); // Close progress bar pop-up after success
-//            }
-//
-//            @Override
-//            protected void failed() {
-//                super.failed();
-//                progressBarStage.close(); // Close progress bar pop-up if failed
-//                mainController.showAlert("Error", "File Load Error", "An error occurred while loading the file: \n" + getException().getMessage(), Alert.AlertType.ERROR);
-//            }
-//        };
-//
-//        // Bind the progress of the progress bar to the task progress
-//        ProgressBar progressBar = (ProgressBar) progressBarStage.getScene().lookup("#progressBar");
-//        progressBar.progressProperty().bind(loadFileTask.progressProperty());
-//
-//        // Run the task in a background thread
-//        Thread loadFileThread = new Thread(loadFileTask);
-//        loadFileThread.setDaemon(true); // Ensure the thread will exit when the application exits
-//        loadFileThread.start();
-//
-//        // Show the progress bar pop-up window
-//        progressBarStage.show();
-//    }
-//
-//    private Stage createProgressBarStage() {
-//        // Create a new pop-up stage
-//        Stage progressBarStage = new Stage();
-//        progressBarStage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-//        progressBarStage.setTitle("Loading File");
-//
-//        // Create a VBox to hold the label and progress bar
-//        VBox vbox = new VBox(10);
-//        vbox.setPadding(new Insets(20));
-//
-//        // Create and configure the label
-//        Label label = new Label("Loading file, please wait...");
-//        vbox.getChildren().add(label);
-//
-//        // Create and configure the progress bar
-//        ProgressBar progressBar = new ProgressBar();
-//        progressBar.setId("progressBar");
-//        progressBar.setPrefWidth(400); // Set the preferred width of the progress bar
-//        vbox.getChildren().add(progressBar);
-//
-//        // Set the scene
-//        Scene scene = new Scene(vbox, 450, 100);
-//        progressBarStage.setScene(scene);
-//
-//        return progressBarStage;
-    }
-
-    public void viewSheet(String selectedSheet){
+    public void displaySheet(String selectedSheet, Boolean loadSheetFromDashboard){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
             ShowAlert.showAlert("Error", "No sheet selected","Please choose a file from the available sheets table.", Alert.AlertType.ERROR);
-            return;
         }
 
         //noinspection ConstantConditions
@@ -257,16 +165,20 @@ public class HeaderController {
                                     .create();
                             Type sheet = new TypeToken<DTOsheet>(){}.getType();
                             DTOsheet dtoSheet  = gson.fromJson(json, sheet);
-                            mainSheetController.setSheet(dtoSheet, false);
-                            selectedCellProperty.set("A1");
-                            mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-                            mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-                            originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-                            lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-                            mainSheetController.populateRangeListView();
+                            mainSheetController.setCurrentDTOSheet(dtoSheet);
 
+                            if(loadSheetFromDashboard){
+                                mainSheetController.setSheet(dtoSheet, false);
+                                selectedCellProperty.set("A1");
+                                mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+                                mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+                                originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+                                lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+                                mainSheetController.populateRangeListView();
+                            } else{
+                                mainSheetController.setSheet(dtoSheet, true);
+                            }
                         } catch (IOException e) {
-                            e.printStackTrace();
                             ShowAlert.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
                         }
                     });
@@ -364,37 +276,6 @@ public class HeaderController {
         lastHighlightedCells.clear();
     }
 
-//    @FXML
-//    void updateCellValueButtonAction(ActionEvent event) {
-//        // Get the current value from the TextField
-//        String newValue = originalCellValueTextField.getText();
-//
-//        // Ensure there is a selected cell
-//        String selectedCellID = selectedCellProperty.get();
-//        if (selectedCellID == null || selectedCellID.isEmpty()) {
-//            ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
-//            return;
-//        }
-//        updateCellValue(selectedCellID, newValue);
-//        originalCellValueTextField.clear();
-//        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
-//    }
-
-    public void updateCellValue(String cellID, String newValue) {
-//        // Parse the cell ID (e.g., "A1", "B2") to get row and column coordinates
-//        Coordinate coordinate = mainController.getEngine().checkAndConvertInputToCoordinate(cellID);
-//
-//        // Call the engine's EditCell function to update the cell value
-//        mainController.getEngine().EditCell(coordinate, newValue);
-//
-//        // Refresh the sheet display
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet());
-//        mainController.setSheet(dtoSheet, true);
-//
-//        originalCellValueProperty.set(newValue);
-//        lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(coordinate).getVersion()));
-    }
-
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
         String newValue = originalCellValueTextField.getText();
@@ -404,18 +285,15 @@ public class HeaderController {
             ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
+        updateCellValue(selectedCellID, newValue);
+    }
 
+    public void updateCellValue(String cellID, String newValue) {
         String updateCellUrl = Constants.UPDATE_CELL; // Replace with your endpoint URL
 
-//        System.out.println("Sheet Name: " + mainSheetController.getSheetName());
-//        System.out.println("Selected Cell ID: " + selectedCellID);
-//        System.out.println("New Value: " + newValue);
-
-
-        // Create JSON body
         JsonObject jsonBody = new JsonObject();
-        jsonBody.addProperty("sheetName", mainSheetController.getSheetName());
-        jsonBody.addProperty("cellID", selectedCellID);
+        jsonBody.addProperty("selectedSheet", mainSheetController.getSheetName());
+        jsonBody.addProperty("cellID", cellID);
         jsonBody.addProperty("newValue", newValue);
 
         RequestBody body = RequestBody.create(
@@ -428,9 +306,6 @@ public class HeaderController {
                 .put(body)
                 .build();
 
-//        System.out.println("JSON Body: " + jsonBody.toString());
-
-
         HttpClientUtil.runAsyncPut(updateCellUrl, request, new Callback(){
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -440,13 +315,30 @@ public class HeaderController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
-                    Platform.runLater(() -> {
-                        originalCellValueProperty.set(newValue);
-                        originalCellValueTextField.clear();
-                        originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
-//                        mainSheetController.viewSheet();
-                    });
-                } else {
+                    try {
+                        String json = response.body().string();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                                .create();
+                        Type sheet = new TypeToken<DTOsheet>() {}.getType();
+                        DTOsheet dtoSheet = gson.fromJson(json, sheet);
+                        Platform.runLater(() -> {
+                            mainSheetController.setCurrentDTOSheet(dtoSheet);
+                            originalCellValueProperty.set(newValue);
+                            mainSheetController.setSheet(dtoSheet, true);
+                            lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(cellID).getVersion()));
+
+                            mainSheetController.getCellLabel(cellID).setId(null);
+                            mainSheetController.getCellLabel(cellID).setId("selected-cell");
+
+                            originalCellValueTextField.clear();
+                            originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+                        });
+                    }catch (IOException e) {
+                            Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + e.getMessage(), Alert.AlertType.ERROR));
+                    }
+                }
+                else {
                     String responseBody = response.body().string();
                     Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + responseBody, Alert.AlertType.ERROR));
                 }
@@ -458,60 +350,129 @@ public class HeaderController {
 
     @FXML
     void formatFunctionButtonOnAction(ActionEvent event) {
-//        String selectedCellID = selectedCellProperty.get();
-//        String currentValue = originalCellValueProperty.get();
-//
-//        Coordinate coordinate = CoordinateFactory.from(selectedCellID);
-//        int row = coordinate.getRow();
-//        int col = coordinate.getColumn();
-//
-//        // Show pop-up window to allow user to edit cell value
-//        UpdateCellFormat updateCellFormat = new UpdateCellFormat(mainController.getEngine().createDTOSheetForDisplay(mainController.getEngine().getSheet()).getCell(row, col),
-//                selectedCellID, mainController,originalCellValueProperty ,lastUpdateVersionCellProperty);
-//        updateCellFormat.display();
+        String selectedCellID = selectedCellProperty.get();
+
+        // Show pop-up window to allow user to edit cell value
+        UpdateCellFormat updateCellFormat = new UpdateCellFormat(mainSheetController.getCurrentDTOSheet().getCell(selectedCellID),
+                selectedCellID, mainSheetController ,originalCellValueProperty , lastUpdateVersionCellProperty);
+        updateCellFormat.display();
     }
 
     public void populateVersionSelector() {
-//        // Get available versions from the engine
-//        ObservableList<String> availableVersions = FXCollections.observableArrayList();
-//        int numOfVersions = mainController.getEngine().getNumberOfVersions();
-//        for (int i = 1; i <= numOfVersions; i++) {
-//            availableVersions.add(String.valueOf(i));
-//        }
-//        FXCollections.observableArrayList(mainController.getEngine().getNumberOfVersions());
-//        // Set available versions in the ComboBox
-//        versionSelectorComboBox.setItems(availableVersions);
+        String numVersionsUrl = HttpUrl
+                .parse(Constants.GET_NUM_VERSIONS)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(numVersionsUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        ShowAlert.showAlert("Error", "", "Request failed: " + e.getMessage(), Alert.AlertType.WARNING)
+                );
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() ->
+                            ShowAlert.showAlert("Error", "", "Failed to fetch versions: " + responseBody, Alert.AlertType.WARNING)
+                    );
+                } else {
+                    Platform.runLater(() -> {
+                        try {
+                            String json = response.body().string();
+                            Gson gson = new Gson();
+                            Type versionListType = new TypeToken<List<String>>() {}.getType();
+                            List<String> versions = gson.fromJson(json, versionListType);
+                            ObservableList<String> availableVersions = FXCollections.observableArrayList(versions);
+                            versionSelectorComboBox.setItems(availableVersions);
+
+                        } catch (IOException e) {
+                            ShowAlert.showAlert("Error", "Failed to parse the version list.", "Something went wrong: " + e.getMessage(), Alert.AlertType.WARNING);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @FXML
     void versionSelectorComboBoxAction(ActionEvent event) {
-//        // Get the selected version
-//        String selectedVersion = versionSelectorComboBox.getSelectionModel().getSelectedItem();
-//
-//        // Ensure the selected version is not null or empty
-//        if (selectedVersion == null || selectedVersion.isEmpty()) {
-//            populateVersionSelector();
-//            return;
-//        }
-//
-//        DTOsheet dtoSheet = mainController.getEngine().GetVersionForDisplay(selectedVersion);
-//
-//        // Use setSheet() from SheetController to display the selected version
-//        mainController.displaySheetVersionInPopup(dtoSheet);
-//
-//        // Reset the prompt text without triggering the action again
-//        Platform.runLater(() -> {
-//            versionSelectorComboBox.setButtonCell(new ListCell<>() {
-//                @Override
-//                protected void updateItem(String item, boolean empty) {
-//                    super.updateItem(item, empty);
-//                    setText(empty ? "Version Selector" : item);
-//                }
-//            });
-//        });
-//
-//        // Prevent re-triggering the action after resetting the prompt
-//        versionSelectorComboBox.getSelectionModel().clearSelection();
+        String selectedVersion = versionSelectorComboBox.getSelectionModel().getSelectedItem();
+
+        if (selectedVersion == null || selectedVersion.isEmpty()) {
+            populateVersionSelector();
+            return;
+        }
+
+        String finalUrl = HttpUrl
+                .parse(Constants.GET_DTO_SHEET_VERSION)
+                .newBuilder()
+                .addQueryParameter("selectedVersion", selectedVersion)
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() ->
+                        ShowAlert.showAlert("Error", "", "Request failed: " + e.getMessage(), Alert.AlertType.WARNING)
+                );
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() ->
+                            ShowAlert.showAlert("Error", "", "Failed to fetch version details: " + responseBody, Alert.AlertType.WARNING)
+                    );
+                } else {
+                    try {
+                        String json = response.body().string();
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                                .create();
+                        Type sheetType = new TypeToken<DTOsheet>() {}.getType();
+                        DTOsheet dtoSheet = gson.fromJson(json, sheetType);
+
+                        Platform.runLater(() ->{
+                            mainSheetController.displaySheetVersionInPopup(dtoSheet);
+                        });
+
+                    } catch (IOException e) {
+                        ShowAlert.showAlert("Error", "Failed to parse the version details.", "Something went wrong: " + e.getMessage(), Alert.AlertType.WARNING);
+                    }
+                }
+            }
+        });
+
+        Platform.runLater(() -> {
+            if (versionSelectorComboBox.getItems().size() > 0) {
+                versionSelectorComboBox.getSelectionModel().clearSelection();
+                versionSelectorComboBox.setPromptText("Version Selector");
+            }
+        });
     }
 
+    @FXML
+    void backButtonOnAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
+            Parent dashboardRoot = loader.load();
+            ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+            mainScrollPane.setContent(dashboardRoot);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            ShowAlert.showAlert("Error", "Failed to load the dashboard", e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 }

@@ -57,11 +57,11 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     @Override
     public String getOwner()
     { return owner; }
-//
-//    @Override
-//    public int getNumberOfVersions() {
-//        return versionManager.getVersionToChanges().size();
-//    }
+
+    @Override
+    public int getNumberOfVersions() {
+        return versionManager.getVersionToChanges().size();
+    }
 //
 //    @Override
 //    public int getChangesAccordingToVersionNumber(int version) {
@@ -155,19 +155,20 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         return new DTOsheet(name, version, dtoCellsMap, dtoLayout, dtoRangeMap);
     }
 
-//    @Override
-//    public DTOsheet GetVersionForDisplay(String version) {
-//        Integer versionNumber = Integer.parseInt(version);
-//        DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
-//        return dtoSheet;
-//    }
-//
     @Override
-    public void EditCell(String coordinateStr, String inputValue) {
+    public DTOsheet GetVersionForDisplay(String version) {
+        Integer versionNumber = Integer.parseInt(version);
+        DTOsheet dtoSheet = versionManager.getSheetVersion(versionNumber);
+        return dtoSheet;
+    }
+
+    @Override
+    public DTOsheet EditCell(String coordinateStr, String inputValue) {
         Coordinate coordinate = CoordinateFactory.from(coordinateStr);
         sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
+        return dtoSheet;
     }
 //
 //    @Override
