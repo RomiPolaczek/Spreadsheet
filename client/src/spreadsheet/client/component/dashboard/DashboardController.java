@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class DashboardController {
 
-
+    @FXML private BorderPane dashboardBorderPane;
     @FXML private ScrollPane dashboardScrollPane;
     @FXML private Button loadFileButton;
 
@@ -64,9 +65,13 @@ public class DashboardController {
             tabelsComponentController.setDashboardController(this);
             dashboardCommandsComponentController.setDashboardController(this);
         }
+
         else{
             System.out.println("nullll");
         }
+    }
+    public BorderPane getDashboardBorderPane() {
+        return dashboardBorderPane;
     }
 
     public void setUserName(String userName) {
@@ -173,7 +178,7 @@ public class DashboardController {
 
                             Platform.runLater(() -> {
                                 if (response.isSuccessful()) {
-                                    tabelsComponentController.fetchSheetTableDetails();
+//                                    tabelsComponentController.startAvailableSheetsTableRefresher();
                                 } else {
                                     ShowAlert.showAlert("Error", "File Load Error", message, Alert.AlertType.ERROR);
                                 }

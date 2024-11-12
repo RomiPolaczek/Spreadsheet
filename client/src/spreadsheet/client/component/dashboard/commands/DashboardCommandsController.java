@@ -54,6 +54,7 @@ public class DashboardCommandsController {
     private DashboardController dashboardController;
     private BooleanProperty isViewSheetDisabledProperty;
 
+
 //    public void setDashboardController(DashboardController dashboardController) {
 //        this.dashboardController = dashboardController;
 //        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
@@ -79,6 +80,8 @@ public class DashboardCommandsController {
 //        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
 
         setApproveAndRejectButtons();
+
+//        requestPermissionButton.disableProperty().bind(isOwner().not());
     }
 
     public void setApproveAndRejectButtons() {

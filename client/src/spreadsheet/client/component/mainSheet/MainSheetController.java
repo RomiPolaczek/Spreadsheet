@@ -43,13 +43,12 @@ public class MainSheetController {
     private String selectedTheme = "Classic";
     private ThemeManager themeManager;
     private String sheetName;
-    //private String userName;
     private DTOsheet currentDTOSheet;
     private BooleanProperty isEditDisabledProperty;
 
 
     @FXML
-    public void initialize(String sheetName /*, String userName*/) {
+    public void initialize(String sheetName  /*SimpleStringProperty userName*/) {
         engine = new EngineImpl();
         themeManager = new ThemeManager();
 
@@ -59,7 +58,6 @@ public class MainSheetController {
             leftComponentController.setMainSheetController(this);
             this.sheetName = sheetName;
             isEditDisabledProperty = new SimpleBooleanProperty(false);
-            //this.userName = userName;
         }
     }
 
@@ -227,6 +225,12 @@ public class MainSheetController {
         headerComponentController.displaySheet(sheetName, loadSheetFromDashboard);
     }
 
+
+    public SimpleStringProperty getUserName(){
+        return dashboardController.getUserName();
+    }
+
+
 //    public void disableEditFeatures() {
 //        if(headerComponentController!=null)
 //            headerComponentController.disableEditFeatures();
@@ -241,6 +245,7 @@ public class MainSheetController {
         headerComponentController.disableEditFeatures();
         leftComponentController.disableEditFeatures();
     }
+
 
 
 

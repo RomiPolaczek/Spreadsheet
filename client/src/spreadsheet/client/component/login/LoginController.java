@@ -85,6 +85,7 @@ public class LoginController {
                             DashboardController dashboardController = loader.getController();
                             dashboardController.setUserName(userNameTextField.getText());
 
+
                             Stage mainStage = new Stage();
                             mainStage.setScene(new Scene(root));
                             mainStage.show();

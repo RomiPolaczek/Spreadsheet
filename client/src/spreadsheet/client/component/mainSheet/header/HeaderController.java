@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import okhttp3.*;
@@ -61,6 +62,8 @@ public class HeaderController {
     private Button formatFunctionButton;
     @FXML
     private Button backButton;
+    @FXML
+    private Label userNameLabel;
 
     private MainSheetController mainSheetController;
     private SimpleStringProperty selectedCellProperty;
@@ -97,7 +100,6 @@ public class HeaderController {
         animationsCheckBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
         themesComboBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
 
-
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
             if (oldValue != null && !oldValue.equals(newValue)) {
@@ -123,7 +125,9 @@ public class HeaderController {
     public void setMainSheetController(MainSheetController mainSheetController) {
         this.mainSheetController = mainSheetController;
         mainSheetController.getThemeManager().setMainController(mainSheetController);
+        userNameLabel.textProperty().bind(mainSheetController.getUserName());
     }
+
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
@@ -178,6 +182,7 @@ public class HeaderController {
                                 originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
                                 lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
                                 mainSheetController.populateRangeListView();
+
                             } else{
                                 mainSheetController.setSheet(dtoSheet, true);
                             }
@@ -466,15 +471,51 @@ public class HeaderController {
 
     @FXML
     void backButtonOnAction(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
-            Parent dashboardRoot = loader.load();
-            ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
-            mainScrollPane.setContent(dashboardRoot);
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
+//            Parent dashboardRoot = loader.load();
+//            ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+//            mainScrollPane.setContent(dashboardRoot);
 
-        } catch (IOException e) {
+//        // Access the existing ScrollPane
+//        ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+//        ScrollPane dashboardScrollPane = mainSheetController.getDashboardController().getDashboardScrollPane();
+//
+//        if (mainScrollPane != null && dashboardScrollPane != null) {
+//            // Reuse the existing BorderPane (dashboardScrollPane already has it set)
+//            mainScrollPane.setContent(dashboardScrollPane.getContent());
+//        } else {
+//            System.out.println("Error: ScrollPane or its content not found.");
+//        }
+
+
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            ShowAlert.showAlert("Error", "Failed to load the dashboard", e.getMessage(), Alert.AlertType.ERROR);
+//        }
+
+        try {
+            // Find the main scroll pane in the current scene
+            ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+
+            if (mainScrollPane != null) {
+                System.out.println("mainScrollPane found.");
+                BorderPane dashboardBorderPane = mainSheetController.getDashboardController().getDashboardBorderPane();
+
+                if (dashboardBorderPane != null) {
+                    // Set the existing dashboard BorderPane as the content
+                    mainScrollPane.setContent(dashboardBorderPane);
+                    System.out.println("Dashboard content switched successfully.");
+                } else {
+                    System.out.println("dashboardBorderPane is null.");
+                }
+            } else {
+                System.out.println("mainScrollPane not found.");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
-            ShowAlert.showAlert("Error", "Failed to load the dashboard", e.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "Failed to display the dashboard", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

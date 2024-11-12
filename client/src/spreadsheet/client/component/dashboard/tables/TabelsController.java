@@ -22,6 +22,10 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static spreadsheet.client.util.Constants.REFRESH_RATE;
 
 public class TabelsController {
 
@@ -53,11 +57,14 @@ public class TabelsController {
     private TableColumn<DTOpermissionRequest, String> requestStatusColumn;
 
     private DashboardController dashboardController;
+    private Timer timer;
+    private TimerTask availableSheetsRefresher;
 
 
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+        startAvailableSheetsTableRefresher();
     }
 
     @FXML
@@ -125,49 +132,52 @@ public class TabelsController {
         return permissionsTable.getSelectionModel().getSelectedItem();
     }
 
-    public void fetchSheetTableDetails() {
-        String url = HttpUrl
-                .parse(Constants.GET_SHEET_DETAILS)
-                .newBuilder()
-                .build()
-                .toString();
-
-        HttpClientUtil.runAsync(url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                // Handle failure
-
-
-                //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String json = response.body().string();
-                    Gson gson = new Gson();
-                    Type listType = new TypeToken<List<DTOsheetTableDetails>>(){}.getType();
-                    List<DTOsheetTableDetails> sheetsDetailsList = gson.fromJson(json, listType);
-
-                    Platform.runLater(() -> {
-                        availableSheetsTable.getItems().setAll(sheetsDetailsList);
-                    });
-                } else {
-                    System.err.println("Request failed: " + response.code());
-
-
-
-                    //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                }
-                response.close();
-            }
-        });
+    public void startAvailableSheetsTableRefresher() {
+        availableSheetsRefresher = new AvailableSheetsRefresher(this::updateSheetTableAvailableDetails);
+        timer = new Timer();
+        timer.schedule(availableSheetsRefresher, REFRESH_RATE, REFRESH_RATE);
     }
+
+    public void updateSheetTableAvailableDetails(List<DTOsheetTableDetails> sheetsDetailsList) {
+
+        availableSheetsTable.getItems().setAll(sheetsDetailsList);
+    }
+
+//    public void fetchSheetTableDetails() {
+//        String url = HttpUrl
+//                .parse(Constants.GET_SHEET_DETAILS)
+//                .newBuilder()
+//                .build()
+//                .toString();
+//
+//        HttpClientUtil.runAsync(url, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                // Handle failure
+//                //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    String json = response.body().string();
+//                    Gson gson = new Gson();
+//                    Type listType = new TypeToken<List<DTOsheetTableDetails>>(){}.getType();
+//                    List<DTOsheetTableDetails> sheetsDetailsList = gson.fromJson(json, listType);
+//
+//                    Platform.runLater(() -> {
+//                        availableSheetsTable.getItems().setAll(sheetsDetailsList);
+//                    });
+//                } else {
+//                    System.err.println("Request failed: " + response.code());
+//                    //POP UP ALERT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+//                }
+//                response.close();
+//            }
+//        });
+//    }
 
     public void fetchPermissionTableDetails(String sheetName) {
         String url = HttpUrl
