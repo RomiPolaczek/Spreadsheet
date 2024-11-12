@@ -41,12 +41,11 @@ public class MainSheetController {
     private String selectedTheme = "Classic";
     private ThemeManager themeManager;
     private String sheetName;
-    //private String userName;
     private DTOsheet currentDTOSheet;
 
 
     @FXML
-    public void initialize(String sheetName /*, String userName*/) {
+    public void initialize(String sheetName  /*SimpleStringProperty userName*/) {
         engine = new EngineImpl();
         themeManager = new ThemeManager();
 
@@ -55,7 +54,7 @@ public class MainSheetController {
             sheetComponentController.setMainController(this);
             leftComponentController.setMainSheetController(this);
             this.sheetName = sheetName;
-            //this.userName = userName;
+//            this.userName = userName;
         }
     }
 
@@ -221,6 +220,10 @@ public class MainSheetController {
 
     public void displaySheet(Boolean loadSheetFromDashboard){
         headerComponentController.displaySheet(sheetName, loadSheetFromDashboard);
+    }
+
+    public SimpleStringProperty getUserName(){
+        return dashboardController.getUserName();
     }
 
 //    public void showMainWindow(){

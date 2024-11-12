@@ -50,6 +50,7 @@ public class DashboardCommandsController {
 
     private DashboardController dashboardController;
 
+
 //    public void setDashboardController(DashboardController dashboardController) {
 //        this.dashboardController = dashboardController;
 //        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
@@ -75,6 +76,8 @@ public class DashboardCommandsController {
 //        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
 
         setApproveAndRejectButtons();
+
+//        requestPermissionButton.disableProperty().bind(isOwner().not());
     }
 
     public void setApproveAndRejectButtons() {
@@ -174,10 +177,12 @@ public class DashboardCommandsController {
 
             // Get the MainSheetController instance and initialize it if needed
             MainSheetController mainSheetController = loader.getController();
-            mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
             mainSheetController.setDashboardController(dashboardController);
+            mainSheetController.initialize(dashboardController.getSelectedSheet().getValue() /*dashboardController.getUserName()*/);  // Ensures any required setup
             // Find the ScrollPane in the dashboard scene
             ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+//            System.out.println(dashboardController.getUserName()+" nini");
+//            mainSheetController.setUserNameLabel(dashboardController.getUserName());
 
             // Set the content of the ScrollPane to the new root component
             dashboardScrollPane.setContent(mainSheetRoot);

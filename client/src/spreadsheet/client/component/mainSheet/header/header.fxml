@@ -7,15 +7,32 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.header.HeaderController">
    <content>
-      <VBox alignment="TOP_CENTER" minWidth="700.0" prefWidth="1000.0" styleClass="root">
+      <VBox alignment="TOP_CENTER" styleClass="root">
          <children>
-            <Label id="header" alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER" />
-            <HBox alignment="CENTER_LEFT" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="750.0" spacing="12.0" VBox.vgrow="ALWAYS">
+            <AnchorPane>
+               <children>
+                  <Label fx:id="userNameLabel" layoutX="79.0" layoutY="6.0" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="6.0">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="backButton" layoutX="879.0" layoutY="1.0" mnemonicParsing="false" onAction="#backButtonOnAction" text="Back to dashboard" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Label layoutX="13.0" layoutY="1.0" text="User name:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="5.0" />
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label id="header" alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" spacing="12.0" VBox.vgrow="ALWAYS">
                <children>
                   <ComboBox fx:id="themesComboBox" onAction="#themesComboBoxOnAction" prefWidth="130.0" promptText="Theme" styleClass="combo-box" />
                   <CheckBox fx:id="animationsCheckBox" mnemonicParsing="false" onAction="#animationsCheckBoxOnAction" prefWidth="137.0" text="Animations">
@@ -23,29 +40,31 @@
                         <Insets />
                      </HBox.margin>
                   </CheckBox>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonOnAction" text="Back to dashboard" />
                </children>
                <padding>
-                  <Insets left="12.0" right="12.0" />
+                  <Insets left="5.0" right="5.0" />
                </padding>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="575.0" spacing="7.0">
+            <HBox alignment="CENTER_LEFT" spacing="7.0">
                <children>
                   <Label text="Selected Cell ID:" />
-                  <Label fx:id="selectedCellIDLabel" minWidth="50.0" />
+                  <Label fx:id="selectedCellIDLabel" minWidth="40.0" />
                   <Label text="Original Cell Value:" />
-                  <TextField fx:id="originalCellValueTextField" />
+                  <TextField fx:id="originalCellValueTextField" minWidth="160.0" prefWidth="200.0" />
                   <Button fx:id="updateCellValueButton" mnemonicParsing="false" onAction="#updateCellValueButtonAction" text="Update" />
-                  <Button fx:id="formatFunctionButton" mnemonicParsing="false" onAction="#formatFunctionButtonOnAction" text="Format Functions" />
+                  <Button fx:id="formatFunctionButton" mnemonicParsing="false" onAction="#formatFunctionButtonOnAction" text="Format Functions">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></Button>
                   <Label minWidth="100.0" text="Last update cell version: " />
                   <Label fx:id="lastUpdateVersionCellLabel" minWidth="29.0" />
                   <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box" />
                </children>
                <VBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="7.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

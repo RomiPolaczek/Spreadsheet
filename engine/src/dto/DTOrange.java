@@ -2,9 +2,10 @@ package dto;
 
 import sheet.coordinate.api.Coordinate;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DTOrange {
+public class DTOrange implements Serializable {
     private List<Coordinate> cells;
     private String name;
 

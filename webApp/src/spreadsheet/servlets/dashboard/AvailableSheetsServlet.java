@@ -12,17 +12,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-@WebServlet("/sheetList")
-public class SheetListServlet extends HttpServlet {
+import static spreadsheet.constants.Constants.GSON_INSTANCE;
+
+@WebServlet(name = "AvailableSheetsServlet", urlPatterns = "/dashboard/availableSheets")
+
+public class AvailableSheetsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //returning JSON objects, not HTML
         response.setContentType("application/json");
-        try (PrintWriter out = response.getWriter()) {
-            Gson gson = new Gson();
+
+        try (PrintWriter out = response.getWriter()) {;
+
             Engine engine = ServletUtils.getEngine(getServletContext());
             Set<String> sheetList = engine.getSheetNameToSheet().keySet();
-            String json = gson.toJson(sheetList);
+            String json = GSON_INSTANCE.toJson(sheetList);
             out.println(json);
             out.flush();
         }
