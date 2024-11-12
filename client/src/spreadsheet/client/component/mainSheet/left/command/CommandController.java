@@ -1,5 +1,7 @@
 package spreadsheet.client.component.mainSheet.left.command;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,17 +45,23 @@ public class CommandController {
     private SimpleStringProperty selectedRowProperty;
     private Map<String, String> newCoordToOldCoord;
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
+    private SimpleBooleanProperty isEditDisabledProperty;
 
     public void initializeCommandController(){
         BooleanBinding noSelectedCell = mainSheetController.getSelectedCellProperty().isNull();
+        isEditDisabledProperty = new SimpleBooleanProperty(false);
 
         selectedCellLabel.textProperty().bind(mainSheetController.getSelectedCellProperty());
         selectedColumnLabel.textProperty().bind(selectedColumnProperty);
         selectedRowLabel.textProperty().bind(selectedRowProperty);
-        cellBackgroundColorPicker.disableProperty().bind(noSelectedCell);
-        cellTextColorPicker.disableProperty().bind(noSelectedCell);
-        resetCellDesignButton.disableProperty().bind(noSelectedCell
-                .or(mainSheetController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
+        cellBackgroundColorPicker.disableProperty().bind(Bindings.or(noSelectedCell, isEditDisabledProperty));
+        cellTextColorPicker.disableProperty().bind(Bindings.or(noSelectedCell, isEditDisabledProperty));
+//        resetCellDesignButton.disableProperty().bind(noSelectedCell
+//                .or(mainSheetController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle())));
+        resetCellDesignButton.disableProperty().bind(
+                noSelectedCell
+                        .or(mainSheetController.getSelectedCellProperty().isNotNull().and(isDefaultCellStyle()))
+                        .or(isEditDisabledProperty));// the new one for the permissions
         columnAlignmentComboBox.disableProperty().bind(selectedColumnProperty.isNull());
         columnWidthSlider.disableProperty().bind(selectedColumnProperty.isNull());
         rowHeightSlider.disableProperty().bind(selectedRowProperty.isNull());
@@ -69,6 +77,7 @@ public class CommandController {
         rowHeightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             changeRowHeight(newValue.intValue());
         });
+
     }
 
     public void setMainSheetController(MainSheetController mainSheetController) {
@@ -876,4 +885,13 @@ public class CommandController {
     }
 
     public Map<String,String> getNewCoordToOldCoord() {return newCoordToOldCoord; }
+
+    public void disableEditFeatures() {
+        isEditDisabledProperty.set(true);
+        //selectedColumnLabel.setDisable(true);
+        //columnAlignmentComboBox.setDisable(true);
+        //columnWidthSlider.setDisable(true);
+        //selectedRowLabel.setDisable(true);
+        //rowHeightSlider.setDisable(true);
+    }
 }

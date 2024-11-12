@@ -5,7 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import dto.DTOpermissionRequest;
 import dto.DTOsheetTableDetails;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +52,7 @@ public class DashboardCommandsController {
     private Button RefreshRequestButton;
 
     private DashboardController dashboardController;
+    private BooleanProperty isViewSheetDisabledProperty;
 
 //    public void setDashboardController(DashboardController dashboardController) {
 //        this.dashboardController = dashboardController;
@@ -68,8 +72,8 @@ public class DashboardCommandsController {
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
-
-        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
+        isViewSheetDisabledProperty = new SimpleBooleanProperty(false);
+        viewSheetButton.disableProperty().bind(Bindings.or(dashboardController.getSelectedSheet().isNull(), isViewSheetDisabledProperty));
         requestPermissionButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
 //        approvePermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
 //        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
@@ -168,29 +172,37 @@ public class DashboardCommandsController {
     @FXML
     void viewSheetButtonOnAction(ActionEvent event) {
         try {
-            // Load the FXML file for MainSheetController (mainSheet.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION));
-            BorderPane mainSheetRoot = loader.load();
-
-            // Get the MainSheetController instance and initialize it if needed
-            MainSheetController mainSheetController = loader.getController();
-            mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
-            mainSheetController.setDashboardController(dashboardController);
-            // Find the ScrollPane in the dashboard scene
-            ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
-
-            // Set the content of the ScrollPane to the new root component
-            dashboardScrollPane.setContent(mainSheetRoot);
-
-            // Optionally apply the selected theme or any other settings
-            mainSheetController.setTheme(dashboardScrollPane.getScene());
-            dashboardController.setMainSheetController(mainSheetController);
-            dashboardController.displaySheet(true);
-
+            String permissionType = dashboardController.getTabelsComponentController().getSelectedSheetPermissionType().toUpperCase();
+            if (permissionType.equals(PermissionType.NONE.toString())) {
+                throw new IllegalStateException("You are not allowed to view this sheet");
+            }
+            viewSheetButtonHelper(event);
         } catch (IOException e) {
-            e.printStackTrace();
-//            showAlert("Error", "Failed to load sheet view", e.getMessage(), Alert.AlertType.ERROR);
+            ShowAlert.showAlert("Error", "View Sheet Error", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (IllegalStateException e) {
+            ShowAlert.showAlert("Error", "View Sheet Error", e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void viewSheetButtonHelper(ActionEvent event) throws IOException {
+        // Load the FXML file for MainSheetController (mainSheet.fxml)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION));
+        BorderPane mainSheetRoot = loader.load();
+
+        // Get the MainSheetController instance and initialize it if needed
+        MainSheetController mainSheetController = loader.getController();
+        mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
+        mainSheetController.setDashboardController(dashboardController);
+        // Find the ScrollPane in the dashboard scene
+        ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+
+        // Set the content of the ScrollPane to the new root component
+        dashboardScrollPane.setContent(mainSheetRoot);
+        dashboardController.getUserPermissionAndDisableIfNecessary(dashboardController.getSelectedSheet().getValue(), dashboardController.getUserName().get());
+        // Optionally apply the selected theme or any other settings
+        mainSheetController.setTheme(dashboardScrollPane.getScene());
+        dashboardController.setMainSheetController(mainSheetController);
+        dashboardController.displaySheet(true);
     }
 
 
@@ -238,6 +250,7 @@ public class DashboardCommandsController {
                         if (response.isSuccessful()) {
                             Platform.runLater(() -> {
                                 dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
+                                dashboardController.getTabelsController().fetchSheetTableDetails();
                             });
                         } else {
                             ShowAlert.showAlert("Error", "Permission Request Handling Error", jsonResponse, Alert.AlertType.ERROR);
@@ -257,7 +270,9 @@ public class DashboardCommandsController {
         dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
     }
 
-
+    public void disableViewSheet() {
+        isViewSheetDisabledProperty.set(true);
+    }
 
 
 

@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import spreadsheet.client.component.dashboard.commands.DashboardCommandsController;
 import spreadsheet.client.component.dashboard.tables.TabelsController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
+import spreadsheet.client.enums.PermissionType;
+import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import static spreadsheet.client.util.Constants.*;
@@ -45,16 +47,18 @@ public class DashboardController {
     private SimpleStringProperty userName;
     private SimpleStringProperty selectedSheet;
     private SimpleStringProperty selectedRequestUserName;
+    private BooleanProperty isEditDisabledProperty;
     //private SimpleStringProperty selectedRequestOwnerName;
-    private BooleanProperty isOwner;
+    //private BooleanProperty isOwner;
 
     @FXML
     public void initialize() {
         userName = new SimpleStringProperty();
         selectedSheet = new SimpleStringProperty();
         selectedRequestUserName = new SimpleStringProperty();
+        isEditDisabledProperty = new SimpleBooleanProperty(false);
         //selectedRequestOwnerName = new SimpleStringProperty();
-        isOwner = new SimpleBooleanProperty();
+        //isOwner = new SimpleBooleanProperty();
 
         if (tabelsComponentController != null && dashboardCommandsComponentController != null) {
             tabelsComponentController.setDashboardController(this);
@@ -231,4 +235,77 @@ public class DashboardController {
     public void displaySheet(Boolean loadSheetFromDashboard){
         mainSheetController.displaySheet(loadSheetFromDashboard);
     }
+
+    public void getUserPermissionAndDisableIfNecessary(String spreadsheetName, String username) {
+        // URL for the GET request
+        String finalUrl = HttpUrl.parse(Constants.GET_USER_PERMISSIONS)
+                .newBuilder()
+                .addQueryParameter("sheetName", spreadsheetName)
+                .addQueryParameter("username", username)
+                .build()
+                .toString();
+
+        // Create a request object
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
+
+        // Run the async GET request
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", "Failed to get permissions: ", e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call,@NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Parse the response to get the PermissionType using Gson
+                    String jsonResponse = response.body().string();
+                    Gson gson = new Gson();
+                    PermissionType permissionType = gson.fromJson(jsonResponse.toUpperCase(), PermissionType.class);
+
+                    // Check if the PermissionType is READER, then disable the edit buttons
+                    Platform.runLater(() -> {
+//                        if(permissionType.equals(PermissionType.NONE)) {
+//                            disableViewSheet();
+//                        }
+                        if (permissionType.equals(PermissionType.READER)) {
+                            disableEditFeatures();
+                        }
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to get permissions: ", response.message(), Alert.AlertType.ERROR);
+                    });
+                }
+            }
+        });
+    }
+
+    private void disableEditFeatures() {
+        isEditDisabledProperty.set(true); // Use this to disable all bound elements.
+        mainSheetController.disableEditFeatures();
+    }
+
+    public BooleanProperty getEditDisabledProperty() {
+        return isEditDisabledProperty;
+    }
+
+    private void disableViewSheet() {
+        dashboardCommandsComponentController.disableViewSheet();
+    }
+
+    public TabelsController getTabelsComponentController() {
+        return tabelsComponentController;
+    }
+
+
+//    private void disableMainSheetEditFeatures(){
+//        if(mainSheetController!= null){
+//            mainSheetController.disableEditFeatures();
+//        }
+//    }
 }

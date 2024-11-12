@@ -72,6 +72,8 @@ public class TabelsController {
                 String selectedSheet = newSelection.getSheetName();
                 dashboardController.setSelectedSheet(selectedSheet);
                 fetchPermissionTableDetails(selectedSheet);
+                //dashboardController.getUserPermissionAndDisableIfNecessary(dashboardController.getSelectedSheet().get(), dashboardController.getUserName().get());
+
             }
         });
 
@@ -107,6 +109,17 @@ public class TabelsController {
 
         return null; // Return null if no row is selected
     }
+
+    public String getSelectedSheetPermissionType() {
+        DTOsheetTableDetails selectedSheet = availableSheetsTable.getSelectionModel().getSelectedItem(); // Get the selected item
+
+        if (selectedSheet != null) {
+            return selectedSheet.getPermission().getPermission(); // Return the sheet name of the selected item
+        }
+
+        return null; // Return null if no row is selected
+    }
+
 
     public DTOpermissionRequest getSelectedRequest() {
         return permissionsTable.getSelectionModel().getSelectedItem();

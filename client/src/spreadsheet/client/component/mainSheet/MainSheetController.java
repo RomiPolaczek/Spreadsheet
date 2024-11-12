@@ -3,6 +3,8 @@ package spreadsheet.client.component.mainSheet;
 import api.Engine;
 import dto.DTOcell;
 import dto.DTOsheet;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.component.mainSheet.header.HeaderController;
 import impl.EngineImpl;
@@ -43,6 +45,7 @@ public class MainSheetController {
     private String sheetName;
     //private String userName;
     private DTOsheet currentDTOSheet;
+    private BooleanProperty isEditDisabledProperty;
 
 
     @FXML
@@ -55,6 +58,7 @@ public class MainSheetController {
             sheetComponentController.setMainController(this);
             leftComponentController.setMainSheetController(this);
             this.sheetName = sheetName;
+            isEditDisabledProperty = new SimpleBooleanProperty(false);
             //this.userName = userName;
         }
     }
@@ -223,6 +227,24 @@ public class MainSheetController {
         headerComponentController.displaySheet(sheetName, loadSheetFromDashboard);
     }
 
+//    public void disableEditFeatures() {
+//        if(headerComponentController!=null)
+//            headerComponentController.disableEditFeatures();
+//        if(leftComponentController!=null)
+//            leftComponentController.disableEditFeatures();
+////        if(sheetComponentController!=null)
+////            sheetComponentController.disableEditFeatures();
+//    }
+
+    public void disableEditFeatures() {
+        isEditDisabledProperty.set(true);
+        headerComponentController.disableEditFeatures();
+        leftComponentController.disableEditFeatures();
+    }
+
+
+
+
 //    public void showMainWindow(){
 //        try {
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("client/src/spreadsheet/client/component/main/mainSheet.fxml"));
@@ -234,4 +256,5 @@ public class MainSheetController {
 //            e.printStackTrace();
 //        }
 //    }
+
 }
