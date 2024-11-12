@@ -3,8 +3,8 @@ package spreadsheet.client.enums;
 public enum PermissionType {
     OWNER("Owner"),
     READER("Reader"),
-    WRITER("Writer");
-    //NONE("None"),
+    WRITER("Writer"),
+    NONE("None");
     //NOT_AUTHORIZED("Not Authorized");
 
     private final String permission;

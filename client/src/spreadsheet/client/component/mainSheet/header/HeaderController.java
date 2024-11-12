@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
 import javafx.application.Platform;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -72,6 +73,7 @@ public class HeaderController {
     private List<String> lastHighlightedCells = new ArrayList<>();
     private ThemeManager themeManager;
     private StringBuilder currentExpression;
+    private BooleanProperty isEditDisabledProperty;
 
 
     public HeaderController() {
@@ -83,17 +85,20 @@ public class HeaderController {
         isAnimationSelectedProperty = new SimpleBooleanProperty(false);
         themeManager = new ThemeManager();
         currentExpression = new StringBuilder();
+        isEditDisabledProperty = new SimpleBooleanProperty(false);
     }
 
     @FXML
     private void initialize() {
-        updateCellValueButton.disableProperty().bind(selectedCellProperty.isNull());
+        updateCellValueButton.disableProperty().bind(Bindings.or(selectedCellProperty.isNull(), isEditDisabledProperty));
         themesComboBox.getItems().addAll("Classic", "Pink", "Blue", "Dark");
         themesComboBox.setValue("Classic"); // Set default value
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
-        formatFunctionButton.disableProperty().bind(selectedCellProperty.isNull());
+        formatFunctionButton.disableProperty().bind(Bindings.or(selectedCellProperty.isNull(),isEditDisabledProperty));
+        animationsCheckBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
+        themesComboBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
@@ -513,8 +518,8 @@ public class HeaderController {
             ShowAlert.showAlert("Error", "Failed to display the dashboard", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-//
-//    public void setUserNameLabel(SimpleStringProperty userName) {
-//        userNameLabel.textProperty().bind(userName);
-//    }
+
+    public void disableEditFeatures() {
+        isEditDisabledProperty.set(true);
+    }
 }

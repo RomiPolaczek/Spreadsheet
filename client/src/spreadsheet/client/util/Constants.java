@@ -35,7 +35,7 @@ public class Constants {
     public final static String GET_PERMISSION_TABLE_DETAILS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getPermissionTableDetails";
     public final static String HANDLE_PERMISSION_REQUEST = FULL_SERVER_PATH + DASHBOARD_PAGE + "/handlePermissionRequest";
     public final static String AVAILABLE_SHEETS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/availableSheets";
-
+    public final static String GET_USER_PERMISSIONS = FULL_SERVER_PATH + DASHBOARD_PAGE + "/getUserPermissions";
 
 
     // Main sheet commands

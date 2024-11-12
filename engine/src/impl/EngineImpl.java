@@ -137,4 +137,9 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.get(sheetName).handlePermissionRequest(connectedUserName, applicantUsername, newStatus, requestedPermission);
     }
 
+    @Override
+    public String getUserPermission(String username, String sheetName) {
+        return sheetNameToSheet.get(sheetName).getPermissionManager().getUserPermission(username).getPermission();
+    }
+
 }

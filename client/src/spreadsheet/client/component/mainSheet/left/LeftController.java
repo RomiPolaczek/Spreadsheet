@@ -73,4 +73,9 @@ public class LeftController {
     public Map<String,String> getNewCoordToOldCoord() {
         return commandComponentController.getNewCoordToOldCoord();
     }
+
+    public void disableEditFeatures() {
+        commandComponentController.disableEditFeatures();
+        rangeComponentController.disableEditFeatures();
+    }
 }

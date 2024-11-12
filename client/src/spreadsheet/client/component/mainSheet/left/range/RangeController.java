@@ -3,6 +3,7 @@ package spreadsheet.client.component.mainSheet.left.range;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -49,6 +50,7 @@ public class RangeController {
     private ObservableList<String> rangeObservableList;
     private List<ToggleButton> toggleButtons;
     private BooleanProperty anyRangePressedProperty;
+    private BooleanProperty isEditDisabledProperty;
 
     public void setMainController(MainSheetController mainSheetController) {
         this.mainSheetController = mainSheetController;
@@ -58,7 +60,9 @@ public class RangeController {
     }
 
     public void initializeRangeController() {
-        deleteRangeButton.disableProperty().bind(anyRangePressedProperty.not());
+        isEditDisabledProperty = new SimpleBooleanProperty(false);
+        deleteRangeButton.disableProperty().bind(Bindings.or(anyRangePressedProperty.not(), isEditDisabledProperty));
+        addRangeButton.disableProperty().bind(isEditDisabledProperty);
 
         // Set a custom CellFactory to display a label for each range
         rangeListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
@@ -363,6 +367,10 @@ public class RangeController {
     private void updateAnyRangePressedProperty() {
         boolean anyPressed = toggleButtons.stream().anyMatch(ToggleButton::isSelected);
         anyRangePressedProperty.set(anyPressed);
+    }
+
+    public void disableEditFeatures() {
+        isEditDisabledProperty.set(true);
     }
 
 }
