@@ -19,6 +19,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import static spreadsheet.client.util.Constants.*;
 
@@ -51,7 +52,9 @@ public class LoginController {
             return;
         }
 
-        //noinspection ConstantConditions
+        CompletableFuture<Void> loginRequest = new CompletableFuture<>();
+
+                //noinspection ConstantConditions
         String finalUrl = HttpUrl
                 .parse(Constants.LOGIN_PAGE)
                 .newBuilder()
@@ -73,33 +76,38 @@ public class LoginController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            errorMessageProperty.set("Something went wrong: " + responseBody)
-                    );
+                    loginRequest.completeExceptionally(new Exception("Something went wrong: " + responseBody));
                 } else {
-                    Platform.runLater(() -> {
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
-                            Parent root = loader.load();
-
-                            DashboardController dashboardController = loader.getController();
-                            dashboardController.setUserName(userNameTextField.getText());
-
-
-                            Stage mainStage = new Stage();
-                            mainStage.setScene(new Scene(root));
-                            mainStage.show();
-
-                            // Close the login window
-                            userNameTextField.getScene().getWindow().hide();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            errorMessageProperty.set("Failed to load the main window.");
-                        }
-                    });
+                    loginRequest.complete(null);
                 }
             }
+        });
+
+        loginRequest.thenRun(() -> {
+            Platform.runLater(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
+                    Parent root = loader.load();
+
+                    DashboardController dashboardController = loader.getController();
+                    dashboardController.setUserName(userNameTextField.getText());
+
+
+                    Stage mainStage = new Stage();
+                    mainStage.setScene(new Scene(root));
+                    mainStage.show();
+
+                    // Close the login window
+                    userNameTextField.getScene().getWindow().hide();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    errorMessageProperty.set("Failed to load the main window.");
+                }
+            });
+        }).exceptionally(e -> {
+            errorMessageProperty.set("Something went wrong: " + e.getMessage());
+            return null;
         });
     }
 

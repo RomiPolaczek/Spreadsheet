@@ -179,6 +179,7 @@ public class DashboardCommandsController {
             if (permissionType.equals(PermissionType.NONE.toString())) {
                 throw new IllegalStateException("You are not allowed to view this sheet");
             }
+
             viewSheetButtonHelper(event);
         } catch (IOException e) {
             ShowAlert.showAlert("Error", "View Sheet Error", e.getMessage(), Alert.AlertType.ERROR);
@@ -194,8 +195,8 @@ public class DashboardCommandsController {
 
         // Get the MainSheetController instance and initialize it if needed
         MainSheetController mainSheetController = loader.getController();
-        mainSheetController.initialize(dashboardController.getSelectedSheet().getValue());  // Ensures any required setup
-        mainSheetController.setDashboardController(dashboardController);
+        mainSheetController.initialize(dashboardController.getSelectedSheet().getValue(), dashboardController);  // Ensures any required setup
+        //mainSheetController.setDashboardController(dashboardController);
         // Find the ScrollPane in the dashboard scene
         ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
 
@@ -253,7 +254,7 @@ public class DashboardCommandsController {
                         if (response.isSuccessful()) {
                             Platform.runLater(() -> {
                                 dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
-                                dashboardController.getTabelsController().fetchSheetTableDetails();
+                                //dashboardController.getTabelsController().fetchSheetTableDetails();
                             });
                         } else {
                             ShowAlert.showAlert("Error", "Permission Request Handling Error", jsonResponse, Alert.AlertType.ERROR);

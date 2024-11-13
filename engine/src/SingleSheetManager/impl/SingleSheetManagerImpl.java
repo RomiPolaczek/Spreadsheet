@@ -292,20 +292,25 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 
     @Override
     public PermissionType getPermissionTypeForUser(String userName) {
-        PermissionType permissionType;
-        if (owner.equals(userName)) {
-            permissionType = PermissionType.OWNER;
-        }
-        else {
-            permissionType = PermissionType.NONE;
-        }
-        return permissionType;
+//        PermissionType permissionType;
+//        if (owner.equals(userName)) {
+//            permissionType = PermissionType.OWNER;
+//        }
+//        else {
+//            permissionType = PermissionType.NONE;
+//        }
+        return permissionManager.getPermissionTypeForUser(userName);
     }
 
 
     @Override
     public void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission) {
         permissionManager.handlePermissionRequest(connectedUserName, applicantUsername, newStatus, requestedPermission);
+    }
+
+    @Override
+    public void updateNewUserPermissionToNone(String username) {
+        permissionManager.updateNewUserPermissionToNone(username);
     }
 
 }

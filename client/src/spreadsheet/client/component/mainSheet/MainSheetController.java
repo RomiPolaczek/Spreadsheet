@@ -48,9 +48,12 @@ public class MainSheetController {
 
 
     @FXML
-    public void initialize(String sheetName  /*SimpleStringProperty userName*/) {
+    public void initialize(String sheetName, DashboardController dashboardController  /*SimpleStringProperty userName*/) {
         engine = new EngineImpl();
         themeManager = new ThemeManager();
+        if (dashboardController != null) {
+            this.dashboardController = dashboardController;
+        }
 
         if (headerComponentController != null && sheetComponentController != null && leftComponentController != null) {
             headerComponentController.setMainSheetController(this);

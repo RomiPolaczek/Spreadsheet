@@ -16,7 +16,7 @@ import java.util.*;
 
 public class EngineImpl implements Engine, Serializable {
     private Map<String, SingleSheetManager> sheetNameToSheet;
-    private UserManager userManager;
+    //private UserManager userManager;
 
     public EngineImpl() {
         sheetNameToSheet = new HashMap<>();
@@ -37,6 +37,8 @@ public class EngineImpl implements Engine, Serializable {
                 String size = singleSheetManager.getSheet().getLayout().toString();
                 PermissionType permissionType = getPermissionTypeOfUser(sheetName, userName);
                 list.add(new DTOsheetTableDetails(sheetName, owner, size, permissionType));
+
+                System.out.println(permissionType);
             }
         }
 
@@ -140,6 +142,13 @@ public class EngineImpl implements Engine, Serializable {
     @Override
     public String getUserPermission(String username, String sheetName) {
         return sheetNameToSheet.get(sheetName).getPermissionManager().getUserPermission(username).getPermission();
+    }
+
+    @Override
+    public void addUser(String username) {
+        for (SingleSheetManager singleSheetManager : sheetNameToSheet.values()) {
+            singleSheetManager.updateNewUserPermissionToNone(username);
+        }
     }
 
 }

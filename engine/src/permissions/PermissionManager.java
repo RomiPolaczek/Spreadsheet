@@ -31,10 +31,10 @@ public class PermissionManager {
 
     // Method to submit a new permission request
     public synchronized void askForPermission(String username, PermissionType permissionType) {
-        if(allPermissionsRequests.containsKey(username)) {
+        if (allPermissionsRequests.containsKey(username)) {
             throw new IllegalStateException("You can only ask for permissions once.");
         }
-        if(username.equals(owner)) {
+        if (username.equals(owner)) {
             throw new IllegalStateException("The owner of a spreadsheet does not need permissions.");
         }
         DTOpermissionRequest newRequest = new DTOpermissionRequest(username, permissionType, PermissionStatus.PENDING);
@@ -47,14 +47,14 @@ public class PermissionManager {
             throw new IllegalStateException("Only the owner can handle permission requests.");
         }
 
-        if(allPermissionsRequests.get(applicantUsername).getRequestPermissionStatus().equals(PermissionStatus.APPROVED)) {
+        if (allPermissionsRequests.get(applicantUsername).getRequestPermissionStatus().equals(PermissionStatus.APPROVED)) {
             throw new IllegalStateException("This request is already approved.");
         }
 
         // Get the request from the requestHistory
         DTOpermissionRequest request = allPermissionsRequests.get(applicantUsername);
 
-           // Handle the permission status update
+        // Handle the permission status update
         if (newStatus.equals(PermissionStatus.APPROVED)) {
             // Insert or update the user in the permissions map with the approved permission type
             permissionsForUser.put(applicantUsername, requestedPermission);
@@ -79,6 +79,16 @@ public class PermissionManager {
         permissionsForUser.put(owner, PermissionType.OWNER);
         DTOpermissionRequest request = new DTOpermissionRequest(owner, PermissionType.OWNER, PermissionStatus.APPROVED);
         allPermissionsRequests.put(owner, request);
+    }
+
+    public PermissionType getPermissionTypeForUser(String userName) {
+        PermissionType permissionType = permissionsForUser.get(userName);
+
+        return permissionType;
+    }
+
+    public void updateNewUserPermissionToNone(String username) {
+        permissionsForUser.put(username, PermissionType.NONE);
     }
 
 }

@@ -40,5 +40,7 @@ public interface SingleSheetManager {
     void askForPermission(String userName, PermissionType permissionType);
     PermissionType getPermissionTypeForUser(String userName);
     void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission);
+    void updateNewUserPermissionToNone(String username);
+
 
 }
