@@ -23,6 +23,7 @@ public class Constants {
     // Pages
     public final static String DASHBOARD_PAGE = "/dashboard";
     public final static String MAIN_SHEET_PAGE = "/mainSheet";
+    public final static String DYNAMIC_ANALYSIS = "/dynamicAnalysis";
 
     // Login
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
@@ -47,6 +48,12 @@ public class Constants {
 
 
 
+    public final static String UPDATED_CELLS_DYNAMIC_ANALYSIS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + DYNAMIC_ANALYSIS + "/updatedCells";
+    public final static String CREATE_DTO_COPY_SHEET = FULL_SERVER_PATH + MAIN_SHEET_PAGE + DYNAMIC_ANALYSIS + "/getDTOCopySheet";
+
+    public static final String SELECTED_SHEET_NAME = "selectedSheet";
+    public static final String CELL_ID = "cellID";
+    public static final String NEW_VALUE = "newValue";
 
     //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
 

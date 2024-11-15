@@ -6,6 +6,7 @@ import dto.DTOsheet;
 import dto.DTOsheetTableDetails;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
+import sheet.api.EffectiveValue;
 
 import java.io.InputStream;
 import java.util.List;
@@ -26,5 +27,6 @@ public interface Engine {
     void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
     String getUserPermission(String username, String sheetName);
     void addUser(String username);
-
+    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue);
+    DTOsheet createDTOCopySheet(String sheetName);
 }

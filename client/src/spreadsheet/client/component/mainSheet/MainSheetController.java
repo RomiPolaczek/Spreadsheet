@@ -228,11 +228,9 @@ public class MainSheetController {
         headerComponentController.displaySheet(sheetName, loadSheetFromDashboard);
     }
 
-
     public SimpleStringProperty getUserName(){
         return dashboardController.getUserName();
     }
-
 
 //    public void disableEditFeatures() {
 //        if(headerComponentController!=null)
@@ -248,10 +246,6 @@ public class MainSheetController {
         headerComponentController.disableEditFeatures();
         leftComponentController.disableEditFeatures();
     }
-
-
-
-
 
 //    public void showMainWindow(){
 //        try {

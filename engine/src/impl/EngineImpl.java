@@ -6,6 +6,7 @@ import api.Engine;
 import dto.*;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
@@ -46,7 +47,7 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     private PermissionType getPermissionTypeOfUser(String sheetName, String userName) {
-       return sheetNameToSheet.get(sheetName).getPermissionTypeForUser(userName);
+        return sheetNameToSheet.get(sheetName).getPermissionTypeForUser(userName);
     }
 
     @Override
@@ -125,7 +126,7 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
-    private void ensureSheetExists(String sheetName){
+    private void ensureSheetExists(String sheetName) {
         if (sheetName == null || sheetName.isEmpty()) {
             throw new IllegalArgumentException("Sheet name cannot be null or empty");
         }
@@ -151,4 +152,19 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
+    @Override
+    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).getCellsThatHaveChangedAfterUpdateCell(cellID, newValue);
+        }
+    }
+
+    @Override
+    public DTOsheet createDTOCopySheet(String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).createDTOCopySheet();
+        }
+    }
 }
