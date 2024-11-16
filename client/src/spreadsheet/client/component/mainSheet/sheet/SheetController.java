@@ -373,6 +373,8 @@ public class SheetController {
                         int rows = layout.getRows();
                         int cols = layout.getColumns();
 
+                        sheetGridPane.setGridLinesVisible(false); // Disable temporarily
+
                         sheetGridPane.getRowConstraints().clear();
                         sheetGridPane.getColumnConstraints().clear();
                         sheetGridPane.getChildren().clear();
@@ -414,16 +416,20 @@ public class SheetController {
                                 Label cellLabel = new Label(cellValue);
                                 cellLabel.getStyleClass().add("single-cell");
                                 sheetGridPane.add(cellLabel, col, row);
+                                cellLabel.setAlignment(Pos.CENTER); // Default alignment
                             }
                         }
 
                         vbox.getChildren().add(sheetGridPane);
+                        sheetGridPane.setGridLinesVisible(true); // Disable temporarily
+
 
                         Scene scene = new Scene(vbox, 600, 400); // Adjust size as needed
-                        mainSheetController.setSheetStyle(scene);
                         popupStage.setScene(scene);
+                        mainSheetController.setSheetStyle(scene);
                         popupStage.showAndWait();
                     });
+
                 } else {
                     // Handle unsuccessful response
                     Platform.runLater(() -> {

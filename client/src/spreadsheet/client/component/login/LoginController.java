@@ -56,9 +56,7 @@ public class LoginController {
                 .build()
                 .toString();
 
-
         HttpClientUtil.runAsync(finalUrl, new Callback() {
-
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
