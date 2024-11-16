@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import sheet.api.EffectiveValue;
 import spreadsheet.utils.ServletUtils;
+import spreadsheet.utils.SessionUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,15 +49,16 @@ public class UpdatedCellsInDynamicAnalysis extends HttpServlet {
             String sheetName = cellData.get(SELECTED_SHEET_NAME);
             String cellID = cellData.get(CELL_ID);
             String newValue = cellData.get(NEW_VALUE);
+            String username = SessionUtils.getUsername(request);
 
-            if (sheetName == null || cellID == null || newValue == null) {
+            if (sheetName == null || cellID == null || newValue == null || username == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.write(GSON_INSTANCE.toJson("Missing required fields: sheetName, cellID, or newValue"));
                 return;
             }
 
             Engine engine = ServletUtils.getEngine(getServletContext());
-            Map<String, String> cellsNewValues = engine.getCellsThatHaveChangedAfterUpdateCell(sheetName, cellID, newValue);
+            Map<String, String> cellsNewValues = engine.getCellsThatHaveChangedAfterUpdateCell(sheetName, cellID, newValue, username);
 
             Gson gson = new GsonBuilder().create();
             String jsonResponse = gson.toJson(cellsNewValues);

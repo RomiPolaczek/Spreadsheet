@@ -50,7 +50,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
        // File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(inputStream);
-        fromStlSheetToOurSheet();
+        fromStlSheetToOurSheet(owner);
         this.owner = owner;
         permissionManager.addOwnerToPermissions(owner);
        // file = newFile;
@@ -108,7 +108,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         stlSheet = (STLSheet) jaxbUnmarshaller.unmarshal(inputStream);
     }
 
-    private void fromStlSheetToOurSheet() {
+    private void fromStlSheetToOurSheet(String owner) {
         sheet = new SheetImpl();
 
         LayoutImpl layout = new LayoutImpl();
@@ -122,7 +122,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 
         for (int row = 1; row <= stlSheet.getSTLLayout().getRows(); row++) {
             for (int column = 1; column <= stlSheet.getSTLLayout().getColumns(); column++) {
-                sheet.setEmptyCell(row, column);
+                sheet.setEmptyCell(row, column, owner);
             }
         }
 
@@ -154,7 +154,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 
         for (Cell cell : cellsMap.values()) {
             DTOcell dtoCell = new DTOcell(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn(),
-                    cell.getEffectiveValue().getValue().toString(), cell.getOriginalValue(), cell.getVersion(), cell.getDependsOn(), cell.getInfluencingOn());
+                    cell.getEffectiveValue().getValue().toString(), cell.getOriginalValue(), cell.getVersion(), cell.getDependsOn(), cell.getInfluencingOn(), cell.getUserName());
 
             dtoCellsMap.put(CoordinateFactory.createCoordinate(cell.getCoordinate().getRow(), cell.getCoordinate().getColumn()), dtoCell);
         }
@@ -175,9 +175,9 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     }
 
     @Override
-    public DTOsheet EditCell(String coordinateStr, String inputValue) {
+    public DTOsheet EditCell(String coordinateStr, String inputValue, String username) {
         Coordinate coordinate = CoordinateFactory.from(coordinateStr);
-        sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue);
+        sheet = sheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), inputValue, username);
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         versionManager.AddSheetVersionToMap(dtoSheet, sheet.getNumberCellsThatHaveChanged());
         return dtoSheet;
@@ -308,10 +308,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     }
 
     @Override
-    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue) {
+    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue, String username) {
         Sheet copySheet = getSheet().copySheet();
         Coordinate coordinate = CoordinateFactory.from(cellID);
-        copySheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), newValue);
+        copySheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), newValue, username);
         copySheet.getCellsThatHaveChanged();
         Map<String, String> cellsValues = new HashMap<>();
 

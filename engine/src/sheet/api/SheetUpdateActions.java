@@ -8,12 +8,12 @@ import java.util.Map;
 
 public interface SheetUpdateActions {
     void setCell(int row, int column, String value);
-    Sheet updateCellValueAndCalculate(int row, int column, String value);
+    Sheet updateCellValueAndCalculate(int row, int column, String value, String username);
     void setLayout(Layout layout);
     void setName(String name);
     void IncreaseVersion();
     Sheet copySheet();
-    void setEmptyCell(int row, int column);
+    void setEmptyCell(int row, int column, String username);
     void addRange(String name, String rangeStr);
     void removeRange(String name);
     Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> newCoordToOldCoord);

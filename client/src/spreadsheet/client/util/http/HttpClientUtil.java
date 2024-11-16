@@ -18,15 +18,16 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
-    static {
-        Logger okHttpLogger = Logger.getLogger(OkHttpClient.class.getName());
-        okHttpLogger.setLevel(Level.FINE);
-
-        // Ensure there is a handler to print to the console
-        Handler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.FINE);
-        okHttpLogger.addHandler(consoleHandler);
-    }
+    //Logger
+//    static {
+//        Logger okHttpLogger = Logger.getLogger(OkHttpClient.class.getName());
+//        okHttpLogger.setLevel(Level.FINE);
+//
+//        // Ensure there is a handler to print to the console
+//        Handler consoleHandler = new ConsoleHandler();
+//        consoleHandler.setLevel(Level.FINE);
+//        okHttpLogger.addHandler(consoleHandler);
+//    }
 
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);

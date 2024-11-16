@@ -1,9 +1,6 @@
 package spreadsheet.client.component.dashboard.commands;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import dto.DTOpermissionRequest;
-import dto.DTOsheetTableDetails;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -29,8 +26,6 @@ import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import static spreadsheet.client.util.Constants.MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION;
 
@@ -182,29 +177,36 @@ public class DashboardCommandsController {
 
             viewSheetButtonHelper(event);
         } catch (IOException e) {
+            e.printStackTrace();
             ShowAlert.showAlert("Error", "View Sheet Error", e.getMessage(), Alert.AlertType.ERROR);
         } catch (IllegalStateException e) {
+            e.printStackTrace();
             ShowAlert.showAlert("Error", "View Sheet Error", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     private void viewSheetButtonHelper(ActionEvent event) throws IOException {
+        String sheetName = dashboardController.getSelectedSheet().getValue();
+
         // Load the FXML file for MainSheetController (mainSheet.fxml)
         FXMLLoader loader = new FXMLLoader(getClass().getResource(MAIN_SHEET_PAGE_FXML_RESOURCE_LOCATION));
         BorderPane mainSheetRoot = loader.load();
 
         // Get the MainSheetController instance and initialize it if needed
         MainSheetController mainSheetController = loader.getController();
-        mainSheetController.initialize(dashboardController.getSelectedSheet().getValue(), dashboardController);  // Ensures any required setup
+        mainSheetController.setDashboardController(dashboardController);
+        mainSheetController.initialize(sheetName, dashboardController);  // Ensures any required setup
         //mainSheetController.setDashboardController(dashboardController);
         // Find the ScrollPane in the dashboard scene
         ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
 
         // Set the content of the ScrollPane to the new root component
         dashboardScrollPane.setContent(mainSheetRoot);
-        dashboardController.getUserPermissionAndDisableIfNecessary(dashboardController.getSelectedSheet().getValue(), dashboardController.getUserName().get());
+        dashboardController.getUserPermissionAndDisableIfNecessary(sheetName, dashboardController.getUserName().get());
         // Optionally apply the selected theme or any other settings
         mainSheetController.setTheme(dashboardScrollPane.getScene());
+//        dashboardController.setSheetStyle(dashboardScrollPane.getScene());
+        mainSheetController.setSheetStyle(dashboardScrollPane.getScene());
         dashboardController.setMainSheetController(mainSheetController);
         dashboardController.displaySheet(true);
     }

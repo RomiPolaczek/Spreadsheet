@@ -20,7 +20,7 @@ public interface SingleSheetManager {
     PermissionManager getPermissionManager();
     DTOsheet createDTOSheetForDisplay(Sheet sheet);
     List<String> getExistingRanges();
-    DTOsheet EditCell(String coordinateStr, String inputValue);
+    DTOsheet EditCell(String coordinateStr, String inputValue, String username);
     DTOsheet GetVersionForDisplay(String version);
     int getNumberOfVersions();
 //    int getChangesAccordingToVersionNumber(int version);
@@ -43,7 +43,7 @@ public interface SingleSheetManager {
 //    List<String> getColumnsWithinRange(String range);
 //    DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
     DTOsheet createDTOCopySheet();
-    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
+    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue, String username);
 //    Map<String, Integer> createListOfFunctions();
     void askForPermission(String userName, PermissionType permissionType);
     PermissionType getPermissionTypeForUser(String userName);

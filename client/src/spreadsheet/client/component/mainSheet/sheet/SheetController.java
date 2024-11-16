@@ -219,7 +219,7 @@ public class SheetController {
 
         // Set the scene for the pop-up
         Scene scene = new Scene(vbox);
-        mainSheetController.setTheme(scene);
+        newSheetController.mainSheetController.setSheetStyle(scene);
         popupStage.setScene(scene);
 
         // Show the pop-up window
@@ -420,7 +420,7 @@ public class SheetController {
                         vbox.getChildren().add(sheetGridPane);
 
                         Scene scene = new Scene(vbox, 600, 400); // Adjust size as needed
-                        mainSheetController.setTheme(scene);
+                        mainSheetController.setSheetStyle(scene);
                         popupStage.setScene(scene);
                         popupStage.showAndWait();
                     });

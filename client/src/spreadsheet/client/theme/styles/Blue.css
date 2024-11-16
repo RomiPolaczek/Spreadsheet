@@ -104,6 +104,18 @@
     -fx-text-fill: #182caa; /* Dark teal text color */
 }
 
+.subheading{
+    -fx-font-size: 21; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: #182caa; /* Dark teal text color */
+}
+
+.tabelsHeading{
+    -fx-font-size: 14; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: #182caa; /* Dark teal text color */
+}
+
 /* Accordion Style */
 .accordion .titled-pane {
     -fx-background-color: #81d4fa; /* Lighter blue for titled panes */
@@ -151,3 +163,50 @@
 #fileNameLabel {
     -fx-background-color: #81d4fa;
 }
+
+/* TableView Style */
+.table-view {
+    -fx-background-color: #e0f7fa; /* Light blue background */
+    -fx-border-color: #00acc1; /* Medium teal border */
+    -fx-table-cell-border-color: #b3e5fc; /* Cell border color */
+    -fx-selection-bar: #4fc3f7; /* Selection bar color */
+    -fx-selection-bar-text: white; /* Text color on selection */
+    -fx-padding: 5px;
+}
+
+/* TableColumn Header Style */
+.table-column-header {
+    -fx-background-color: #b3e5fc; /* Light blue background for headers */
+    -fx-border-color: #00acc1; /* Border color for header */
+    -fx-text-fill: #004d40; /* Dark teal text color */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-alignment: CENTER; /* Center align text */
+}
+
+/* Styling for cells */
+.table-row-cell {
+    -fx-text-fill: #004d40; /* Dark teal text color */
+    -fx-background-color: transparent; /* Transparent background by default */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #4fc3f7; /* Bright blue background on selection */
+    -fx-text-fill: white; /* White text on selection */
+}
+
+.table-cell {
+    -fx-padding: 5px; /* Padding for cells */
+    -fx-text-fill: #004d40; /* Dark teal text color */
+}
+
+/* Hover effect for rows */
+.table-row-cell:hover {
+    -fx-background-color: #81d4fa; /* Lighter blue on hover */
+}
+
+#updateToLatestVersionButton{
+    -fx-background-color: black; /* Transparent background by default */
+}
+
+
+

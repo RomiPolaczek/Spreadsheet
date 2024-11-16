@@ -22,14 +22,14 @@ public interface Engine {
     List<String> getExistingRangesBySheetName(String sheetName);
     void addRange(String sheetName, String rangeName, String rangeStr);
     void deleteRange(String sheetName, String rangeName);
-    DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName);
+    DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName, String username);
     void askForPermission(String userName, String selectedSheet, PermissionType permissionType);
     int getNumberOfVersions(String sheetName);
     DTOsheet GetVersionForDisplay(String sheetName, String version);
     void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
     String getUserPermission(String username, String sheetName);
     void addUser(String username);
-    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue);
+    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue, String username);
     DTOsheet createDTOCopySheet(String sheetName);
     int getLatestSheetVersion(String sheetName);
     List<String> getRangeCellsList(String rangeName, String sheetName);

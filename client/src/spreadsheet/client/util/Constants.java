@@ -1,7 +1,5 @@
 package spreadsheet.client.util;
 
-//import com.google.gson.Gson;
-
 import com.google.gson.Gson;
 
 public class Constants {
@@ -63,9 +61,6 @@ public class Constants {
     public static final String SELECTED_SHEET_NAME = "selectedSheet";
     public static final String CELL_ID = "cellID";
     public static final String NEW_VALUE = "newValue";
-
-    //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
-
 
     // GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

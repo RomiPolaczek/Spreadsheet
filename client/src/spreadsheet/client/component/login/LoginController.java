@@ -39,9 +39,6 @@ public class LoginController {
     @FXML
     public void initialize() {
         errorMessageLabel.textProperty().bind(errorMessageProperty);
-//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
-//                Platform.runLater(() ->
-//                        updateHttpStatusLine(line)));
     }
 
     @FXML
@@ -87,6 +84,7 @@ public class LoginController {
                         loginRequest.complete(null);
                     });
                 }
+                response.close();
             }
         });
 
@@ -99,21 +97,21 @@ public class LoginController {
                     DashboardController dashboardController = loader.getController();
                     dashboardController.setUserName(userNameTextField.getText());
 
-
                     Stage mainStage = new Stage();
-                    mainStage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    mainStage.setScene(scene);
+                    dashboardController.setTheme(scene);
                     mainStage.show();
 
                     // Close the login window
                     userNameTextField.getScene().getWindow().hide();
 
                 } catch (IOException e) {
-                    e.printStackTrace();
                     errorMessageProperty.set("Failed to load the main window.");
                 }
             });
         }).exceptionally(e -> {
-            errorMessageProperty.set("Something went wrong: " + e.getMessage());
+            errorMessageProperty.set(e.getMessage());
             return null;
         });
     }

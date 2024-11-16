@@ -104,6 +104,18 @@
     -fx-text-fill: white; /* Header text color */
 }
 
+.subheading{
+    -fx-font-size: 21; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: white; /* Header text color */
+}
+
+.tabelsHeading{
+    -fx-font-size: 16; /* Header font size */
+    /*-fx-font-weight: bold; !* Header font weight *!*/
+    -fx-text-fill: white; /* Header text color */
+}
+
 #fileNameLabel {
     -fx-text-fill: #4d4d4d; /* File name label text color */
 }
@@ -154,4 +166,51 @@
 
 #fileNameLabel {
     -fx-background-color: #DCDCDC; /* Light pink background */
+}
+
+/* TableView Style */
+.table-view {
+    -fx-background-color: #2b2b2b; /* Dark background */
+    -fx-border-color: #4d4d4d; /* Darker gray border */
+    -fx-table-cell-border-color: #3d3d3d; /* Cell border color */
+    -fx-selection-bar: #5d5d5d; /* Dark gray selection bar */
+    -fx-selection-bar-text: black; /* White text on selection */
+    -fx-text-fill: black;
+    -fx-padding: 5px;
+}
+
+/* TableColumn Header Style */
+.table-column-header {
+    -fx-background-color: #4d4d4d; /* Dark gray background for headers */
+    -fx-border-color: #707070; /* Header border color */
+    -fx-font-weight: bold; /* Bold header text */
+    -fx-alignment: CENTER; /* Center-aligned header text */
+    -fx-text-fill: black; /* Header text color */
+
+}
+
+/* Styling for table rows */
+.table-row-cell {
+    -fx-text-fill: white; /* White text */
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #5d5d5d; /* Dark gray background for selected rows */
+    -fx-text-fill: white; /* White text for selected rows */
+}
+
+/* Styling for table cells */
+.table-cell {
+    -fx-padding: 5px; /* Cell padding */
+    -fx-text-fill: white; /* White text */
+}
+
+/* Hover effect for rows */
+.table-row-cell:hover {
+    -fx-background-color: #3d3d3d; /* Darker background on hover */
+}
+
+#updateToLatestVersionButton{
+    -fx-background-color: #01c101; /* Transparent background by default */
 }

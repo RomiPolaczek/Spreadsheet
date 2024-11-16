@@ -105,6 +105,18 @@
     -fx-text-fill: #ff09de; /* Header text color */
 }
 
+.subheading{
+    -fx-font-size: 21; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: #ff09de; /* Header text color */
+}
+
+.tabelsHeading{
+    -fx-font-size: 16; /* Header font size */
+    /*-fx-font-weight: bold; !* Header font weight *!*/
+    -fx-text-fill: #ff09de; /* Header text color */
+}
+
 /* Accordion Style */
 .accordion .titled-pane {
     -fx-background-color: #ff99cc; /* Medium pink for titled panes */
@@ -152,3 +164,50 @@
 #fileNameLabel {
     -fx-background-color:  #ffccdd; /* Light pink background */
 }
+
+/* TableView Style */
+.table-view {
+    -fx-background-color: #ffe6f2; /* Light pink background */
+    -fx-border-color: #ff99cc; /* Medium pink border */
+    -fx-table-cell-border-color: #ffccdd; /* Cell border color */
+    -fx-selection-bar: #ff80c1; /* Bright pink selection bar */
+    -fx-selection-bar-text: white; /* White text on selection */
+    -fx-padding: 5px;
+}
+
+/* TableColumn Header Style */
+.table-column-header {
+    -fx-background-color: #ff99cc; /* Medium pink background for headers */
+    -fx-border-color: #ff66b3; /* Darker pink border for headers */
+    -fx-text-fill: #900000; /* Dark pink text color */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-alignment: CENTER; /* Center-aligned text */
+}
+
+/* Styling for table rows */
+.table-row-cell {
+    -fx-text-fill: #900000; /* Dark pink text color */
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #ff80c1; /* Bright pink background for selected rows */
+    -fx-text-fill: white; /* White text for selected rows */
+}
+
+/* Styling for table cells */
+.table-cell {
+    -fx-padding: 5px; /* Padding for cells */
+    -fx-text-fill: #900000; /* Dark pink text color */
+}
+
+/* Hover effect for rows */
+.table-row-cell:hover {
+    -fx-background-color: #ff99cc; /* Medium pink background on hover */
+}
+
+
+#updateToLatestVersionButton{
+    -fx-background-color: black; /* Transparent background by default */
+}
+
