@@ -78,4 +78,9 @@ public class LeftController {
         commandComponentController.disableEditFeatures();
         rangeComponentController.disableEditFeatures();
     }
+
+    public void close() {
+        commandComponentController.close();
+        rangeComponentController.close();
+    }
 }

@@ -38,7 +38,7 @@ public interface Engine {
     List<String> createListOfValuesForFilter(String sheetName, String column, String range);
     Layout getSheetLayout(String sheetName);
     DTOsheet sortColumnBasedOnSelection(String shhetName, String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
-
+    List<Double> getNumericalValuesFromRange(String sheetName, String range) throws IllegalArgumentException;
 
 
 }

@@ -30,7 +30,6 @@ public class AvailableSheetsRefresher extends TimerTask {
 
     @Override
     public void run() {
-
         HttpClientUtil.runAsync(Constants.GET_SHEET_DETAILS, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

@@ -1,4 +1,4 @@
-package spreadsheet.servlets.mainSheet.filterAndSort;
+package spreadsheet.servlets.mainSheet.range;
 
 import api.Engine;
 import com.google.gson.Gson;
@@ -14,37 +14,33 @@ import java.util.List;
 
 import static spreadsheet.constants.Constants.*;
 
-@WebServlet(name = "GetColumnsForFilterServlet", urlPatterns = "/mainSheet/getColumnsForFilter")
-public class GetColumnsForFilterServlet extends HttpServlet {
+
+@WebServlet(name = "GetRangeNumericalValuesServlet", urlPatterns = "/mainSheet/getRangeNumericalValues")
+public class GetRangeNumericalValuesServlet extends HttpServlet {
 
     @Override
     protected void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-
-        try {
+        try (PrintWriter out = response.getWriter()) {
             Gson gson = new Gson();
             Engine engine = ServletUtils.getEngine(getServletContext());
 
             String selectedSheetName = request.getParameter(SELECTED_SHEET_NAME);
             String rangeStr = request.getParameter(RANGE_STR);
 
-            List<String> columnsList = engine.getColumnsWithinRange(selectedSheetName, rangeStr);
+            List<Double> rangeCellsList = engine.getNumericalValuesFromRange(selectedSheetName, rangeStr);
             response.setStatus(HttpServletResponse.SC_OK);
 
-            String json = gson.toJson(columnsList);
+            String json = gson.toJson(rangeCellsList);
             out.println(json);
             out.flush();
 
-        } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.write(e.getMessage());
         } catch (Exception e) {
             // Handle any errors, respond with internal server error status and error message
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.write(e.getMessage());
+            response.getWriter().write(e.getMessage());
         }
-
 
     }
 }
+

@@ -217,4 +217,12 @@ public class TabelsController {
         });
     }
 
+    public void close() {
+        availableSheetsTable.getItems().clear();
+        permissionsTable.getItems().clear();
+        if (availableSheetsRefresher != null && timer != null) {
+            availableSheetsRefresher.cancel();
+            timer.cancel();
+        }
+    }
 }

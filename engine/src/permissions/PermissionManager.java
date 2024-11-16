@@ -82,7 +82,7 @@ public class PermissionManager {
     }
 
     public PermissionType getPermissionTypeForUser(String userName) {
-        PermissionType permissionType = permissionsForUser.get(userName);
+        PermissionType permissionType = permissionsForUser.getOrDefault(userName, PermissionType.NONE);
 
         return permissionType;
     }

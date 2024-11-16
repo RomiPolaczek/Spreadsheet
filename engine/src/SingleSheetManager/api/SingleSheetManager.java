@@ -31,7 +31,7 @@ public interface SingleSheetManager {
     void removeRange(String rangeName);
 //    List<String> getExistingRanges();
     List<String> getRangeCellsList(String name);
-//    List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
+    List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
     List<String> createListOfValuesForFilter(String column, String range);
     DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);
     List<String> getColumnsWithinRange(String range);

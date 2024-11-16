@@ -210,5 +210,9 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
+    @Override
+    public List<Double> getNumericalValuesFromRange(String sheetName, String range) throws IllegalArgumentException {
+        return sheetNameToSheet.get(sheetName).getNumericalValuesFromRange(range);
+    }
 
 }

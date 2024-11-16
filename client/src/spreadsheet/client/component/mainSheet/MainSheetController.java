@@ -224,4 +224,11 @@ public class MainSheetController {
         leftComponentController.disableEditFeatures();
     }
 
+
+    public void close() {
+        headerComponentController.close();
+        leftComponentController.close();
+        sheetComponentController.close();
+    }
+
 }

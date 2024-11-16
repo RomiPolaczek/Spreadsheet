@@ -280,7 +280,9 @@ public class DashboardCommandsController {
         isViewSheetDisabledProperty.set(true);
     }
 
+    public void close() {
 
+    }
 
 
 }

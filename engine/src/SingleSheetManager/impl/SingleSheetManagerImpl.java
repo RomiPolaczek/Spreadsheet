@@ -229,10 +229,10 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
         return dtoSheet.getRangeCellsList(rangeName);
     }
 
-//    @Override
-//    public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
-//        return sheet.getNumericalValuesFromRange(range);
-//    }
+    @Override
+    public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
+        return sheet.getNumericalValuesFromRange(range);
+    }
 
     @Override
     public List<String> createListOfValuesForFilter(String column, String range) {

@@ -432,4 +432,8 @@ public class RangeController {
         isEditDisabledProperty.set(true);
     }
 
+    public void close() {
+        rangeListView.getItems().clear();
+    }
+
 }
