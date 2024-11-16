@@ -58,6 +58,17 @@ public class HttpClientUtil {
         call.enqueue(callback); // Enqueue the call for execution
     }
 
+    public static void runAsyncDelete(String finalUrl, Callback callback) {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .delete()
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
+    }
+
     public static void runAsyncPut(String finalUrl, Request request, Callback callback) {
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
 

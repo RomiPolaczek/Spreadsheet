@@ -9,6 +9,7 @@ import permissions.PermissionType;
 import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
+import sheet.layout.api.Layout;
 import users.UserManager;
 
 import java.io.*;
@@ -37,8 +38,6 @@ public class EngineImpl implements Engine, Serializable {
                 String size = singleSheetManager.getSheet().getLayout().toString();
                 PermissionType permissionType = getPermissionTypeOfUser(sheetName, userName);
                 list.add(new DTOsheetTableDetails(sheetName, owner, size, permissionType));
-
-                System.out.println(permissionType);
             }
         }
 
@@ -46,7 +45,7 @@ public class EngineImpl implements Engine, Serializable {
     }
 
     private PermissionType getPermissionTypeOfUser(String sheetName, String userName) {
-       return sheetNameToSheet.get(sheetName).getPermissionTypeForUser(userName);
+        return sheetNameToSheet.get(sheetName).getPermissionTypeForUser(userName);
     }
 
     @Override
@@ -96,6 +95,11 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.get(sheetName).addRange(rangeName, rangeStr);
     }
 
+    @Override
+    public void deleteRange(String sheetName, String rangeName) {
+        sheetNameToSheet.get(sheetName).removeRange(rangeName);
+    }
+
     public DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName) {
         synchronized (this) {
             ensureSheetExists(sheetName);
@@ -125,7 +129,7 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
-    private void ensureSheetExists(String sheetName){
+    private void ensureSheetExists(String sheetName) {
         if (sheetName == null || sheetName.isEmpty()) {
             throw new IllegalArgumentException("Sheet name cannot be null or empty");
         }
@@ -151,4 +155,34 @@ public class EngineImpl implements Engine, Serializable {
         }
     }
 
+    @Override
+    public List<String> getRangeCellsList(String rangeName, String sheetName) {
+        return sheetNameToSheet.get(sheetName).getRangeCellsList(rangeName);
+    }
+
+    @Override
+    public List<String> getColumnsWithinRange(String sheetName, String rangeStr) {
+        return sheetNameToSheet.get(sheetName).getColumnsWithinRange(rangeStr);
+    }
+
+    @Override
+    public DTOsheet filterColumnBasedOnSelection(String sheetName, String rangeStr, Map<String,
+            List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
+        return sheetNameToSheet.get(sheetName).filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord);
+    }
+
+    @Override
+    public List<String> createListOfValuesForFilter(String sheetName, String column, String range) {
+        return sheetNameToSheet.get(sheetName).createListOfValuesForFilter(column, range);
+    }
+
+    @Override
+    public Layout getSheetLayout(String sheetName) {
+        return sheetNameToSheet.get(sheetName).getLayout();
+    }
+
+    @Override
+    public DTOsheet sortColumnBasedOnSelection(String shhetName, String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
+        return sheetNameToSheet.get(shhetName).sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord);
+    }
 }

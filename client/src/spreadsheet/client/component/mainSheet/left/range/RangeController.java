@@ -20,7 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
-import spreadsheet.client.util.Constants;
+
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static spreadsheet.client.util.Constants.*;
 
@@ -218,15 +219,7 @@ public class RangeController {
                 MediaType.get("application/json; charset=utf-8")
         );
 
-        // Build the request
-        Request request = new Request.Builder()
-                .url(finalUrl)
-                .post(body) // POST request
-                .build();
-
-        // Execute the request asynchronously
-        OkHttpClient client = new OkHttpClient();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
+        HttpClientUtil.runAsyncPost(finalUrl,body, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // Handle failure (e.g., network error)
@@ -253,36 +246,81 @@ public class RangeController {
 
     @FXML
     void deleteRangeButtonOnAction(ActionEvent event) {
-//        List<ToggleButton> pressedButtons = new ArrayList<>();
-//
-//        // Identify all pressed toggle buttons
-//        for (ToggleButton button : toggleButtons) {
-//            if (button.isSelected()) {
-//                pressedButtons.add(button);
-//            }
-//        }
-//
-//        // Check if there are any pressed buttons
-//        if (pressedButtons.isEmpty()) {
-//            mainController.showAlert("Warning", "No ranges selected", "Please select ranges to delete.", Alert.AlertType.WARNING);
-//            return;
-//        }
-//
-//        // Process each pressed button to remove its range
-//        for (ToggleButton button : pressedButtons) {
-//            String rangeName = button.getText();
-//            try {
-//                // Remove the range from the engine
-//                button.setSelected(false);
-//                mainController.getEngine().removeRange(rangeName);
-//                rangeObservableList.remove(rangeName);
-//            } catch (Exception ex) {
-//                mainController.showAlert("Error", "Unable to delete range", ex.getMessage(), Alert.AlertType.ERROR);
-//            }
-//        }
-//
-//        // Reset all toggle buttons to the unpressed state
-//        resetAllToggleButtons();
+        List<ToggleButton> pressedButtons = new ArrayList<>();
+
+        // Identify all pressed toggle buttons
+        for (ToggleButton button : toggleButtons) {
+            if (button.isSelected()) {
+                pressedButtons.add(button);
+            }
+        }
+
+        // Check if there are any pressed buttons
+        if (pressedButtons.isEmpty()) {
+            ShowAlert.showAlert("Warning", "No ranges selected", "Please select a range to delete.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Process each pressed button to remove its range
+        for (ToggleButton button : pressedButtons) {
+            String rangeName = button.getText();
+            try {
+                // Remove the range from the engine
+                button.setSelected(false);
+                //mainController.getEngine().removeRange(rangeName);
+                removeRangeInEngine(rangeName);
+                rangeObservableList.remove(rangeName);
+            } catch (Exception ex) {
+                //ShowAlert.showAlert("Error", "Unable to delete range", ex.getMessage(), Alert.AlertType.ERROR);
+                System.out.println(ex.getMessage());
+            }
+        }
+
+        // Reset all toggle buttons to the unpressed state
+        resetAllToggleButtons();
+    }
+
+    public void removeRangeInEngine(String rangeName) {
+        String finalUrl = HttpUrl
+                .parse(DELETE_RANGE)
+                .newBuilder()
+                .addQueryParameter("rangeName", rangeName)
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsyncDelete(finalUrl, new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    // Handle failure
+                    ShowAlert.showAlert("Error", "Failed to delete range: ", e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                try {
+                    String jsonResponse = response.body().string(); // Get the response as a raw string
+
+                    Platform.runLater(() -> {
+                        if (response.isSuccessful()) {
+                            Platform.runLater(() -> {
+                                populateRangeListView();
+                            });
+                        } else {
+                            ShowAlert.showAlert("Error", "Failed to delete range:", jsonResponse, Alert.AlertType.ERROR);
+                            //System.out.println(jsonResponse);
+                        }
+                    });
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to delete range: ", e.getMessage(), Alert.AlertType.ERROR);
+                        //System.out.println(e.getMessage());
+                    });
+                }
+            }
+        });
     }
 
     public void populateRangeListView() {
@@ -298,15 +336,15 @@ public class RangeController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
-                    ShowAlert.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
+                    ShowAlert.showAlert("Error", "Failed to get ranges", e.getMessage(), Alert.AlertType.ERROR);
                 });
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+
                 if (response.isSuccessful()) {
-                    // Parse the response body as a JSON string
-                    String responseBody = response.body().string();
                     Gson gson = new Gson();
                     List<String> ranges = gson.fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
 
@@ -317,45 +355,73 @@ public class RangeController {
                         rangeListView.setItems(rangeObservableList);
                     });
                 } else {
-                    // Handle unsuccessful response
-                    ///////// FIX !!
-                    System.err.println("Failed to get ranges: " + response.body().string());
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to get ranges: ", responseBody, Alert.AlertType.ERROR);
+                    });
                 }
             }
         });
     }
 
-
-
     private void displayRange(String rangeName) {
-//        try {
-//            // Retrieve the list of cells in the range from the engine
-//            List<String> cellsToHighlight = mainController.getEngine().getRangeCellsList(rangeName);
-//            for (String cellID : cellsToHighlight) {
-//                Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
-//                if (cellLabel != null) {
-//                    cellLabel.getStyleClass().add("range-label");  // Add a custom CSS class to highlight the range
-//                }
-//            }
-//        } catch (Exception ex) {
-//            mainController.showAlert("Error", "Unable to display range", ex.getMessage(), Alert.AlertType.ERROR);
-//        }
+        handleRangeDisplay(rangeName,
+                label -> label.getStyleClass().add("range-label"),
+                "Failed to get range's cells to display."
+        );
     }
 
     private void removeRangeDisplay(String rangeName) {
-//        try {
-//            // Retrieve the list of cells in the range from the engine
-//            List<String> cellsToUnhighlight = mainController.getEngine().getRangeCellsList(rangeName);
-//            for (String cellID : cellsToUnhighlight) {
-//                Label cellLabel = mainController.getCellLabel(cellID);  // Assuming cellLabels is a Map of cell IDs to Labels
-//                if (cellLabel != null) {
-//                    cellLabel.getStyleClass().remove("range-label");  // Remove the custom CSS class to remove highlighting
-//                }
-//            }
-//        } catch (Exception ex) {
-//            mainController.showAlert("Error", "Unable to remove range display", ex.getMessage(), Alert.AlertType.ERROR);
-//        }
+        handleRangeDisplay(rangeName,
+                label -> label.getStyleClass().remove("range-label"),
+                "Failed to get range's cells to remove display."
+        );
     }
+
+    private void handleRangeDisplay(String rangeName, Consumer<Label> cellAction, String errorMessage) {
+        // Construct the URL with query parameters for a GET request
+        String finalUrl = HttpUrl
+                .parse(GET_RANGE_CELLS_LIST)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
+                .addQueryParameter("rangeName", rangeName)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", errorMessage, e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+
+                if (response.isSuccessful()) {
+                    // Parse the response body as a JSON string
+                    Gson gson = new Gson();
+                    List<String> rangeCellsList = gson.fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
+
+                    // Update the ListView on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        for (String cellID : rangeCellsList) {
+                            Label cellLabel = mainSheetController.getCellLabel(cellID); // Assuming cellLabels is a Map of cell IDs to Labels
+                            if (cellLabel != null) {
+                                cellAction.accept(cellLabel); // Apply the passed action to the cell label
+                            }
+                        }
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", errorMessage, responseBody, Alert.AlertType.ERROR);
+                    });
+                }
+            }
+        });
+    }
+
 
     private void resetAllToggleButtons() {
         for (ToggleButton button : toggleButtons) {

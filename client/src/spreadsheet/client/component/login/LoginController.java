@@ -1,5 +1,6 @@
 package spreadsheet.client.component.login;
 
+import com.google.gson.Gson;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -53,6 +54,7 @@ public class LoginController {
         }
 
         CompletableFuture<Void> loginRequest = new CompletableFuture<>();
+        Gson gson = new Gson();
 
                 //noinspection ConstantConditions
         String finalUrl = HttpUrl
@@ -76,9 +78,14 @@ public class LoginController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
-                    loginRequest.completeExceptionally(new Exception("Something went wrong: " + responseBody));
+                    Platform.runLater(() -> {
+                        String message = gson.fromJson(responseBody, String.class);
+                        loginRequest.completeExceptionally(new Exception("Something went wrong: " + message));
+                    });
                 } else {
-                    loginRequest.complete(null);
+                    Platform.runLater(() -> {
+                        loginRequest.complete(null);
+                    });
                 }
             }
         });

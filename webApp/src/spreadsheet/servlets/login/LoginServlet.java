@@ -1,6 +1,7 @@
 package spreadsheet.servlets.login;
 
 import api.Engine;
+import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,12 +13,15 @@ import spreadsheet.utils.ServletUtils;
 import static spreadsheet.constants.Constants.USER_NAME;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain;charset=UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
 
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
@@ -31,6 +35,8 @@ public class LoginServlet extends HttpServlet{
 
                 // stands for conflict in server state
                 response.setStatus(HttpServletResponse.SC_CONFLICT);
+                out.write(gson.toJson("user name cannot be empty"));
+
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
@@ -41,7 +47,7 @@ public class LoginServlet extends HttpServlet{
 
                         // stands for unauthorized as there is already such user with this name
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.getOutputStream().print(errorMessage);
+                        out.write(gson.toJson(errorMessage));
                     }
                     else {
                         //add the new user to the users list
@@ -55,12 +61,14 @@ public class LoginServlet extends HttpServlet{
                         //redirect the request to the chat room - in order to actually change the URL
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
+                        out.write(gson.toJson("succ"));
                     }
                 }
             }
         } else {
             //user is already logged in
             response.setStatus(HttpServletResponse.SC_OK);
+            out.write(gson.toJson("succ"));
         }
     }
 }

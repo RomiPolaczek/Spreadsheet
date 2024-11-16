@@ -11,6 +11,10 @@ public class Constants {
     public static final String SELECTED_VERSION = "selectedVersion";
     public static final String CELL_ID = "cellID";
     public static final String NEW_VALUE = "newValue";
+    public static final String COLUMN_TO_VALUES = "columnToValues";
+    public static final String OLD_COORD_TO_NEW_COORD = "oldCoordToNewCoord";
+    public static final String COLUMN = "column";
+    public static final String SELECTED_COLUMNS = "selectedColumns";
 
 
 

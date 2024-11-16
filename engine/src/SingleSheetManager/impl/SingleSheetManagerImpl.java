@@ -21,6 +21,7 @@ import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
 import sheet.coordinate.impl.CoordinateImpl;
 import sheet.impl.SheetImpl;
+import sheet.layout.api.Layout;
 import sheet.layout.impl.LayoutImpl;
 import sheet.range.Range;
 import xmlGenerated.STLCell;
@@ -210,51 +211,51 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     public void addRange(String name, String rangeStr) {
         sheet.addRange(name, rangeStr);
     }
-//
-//    @Override
-//    public void removeRange(String name) {
-//        sheet.removeRange(name);
-//    }
-//
+
+    @Override
+    public void removeRange(String rangeName) {
+        sheet.removeRange(rangeName);
+    }
+
     @Override
     public List<String> getExistingRanges() {
         DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
         return dtoSheet.getExistingRangeNames();
     }
-//
-//    @Override
-//    public List<String> getRangeCellsList(String name) {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
-//        return dtoSheet.getRangeCellsList(name);
-//    }
-//
+
+    @Override
+    public List<String> getRangeCellsList(String rangeName) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet);
+        return dtoSheet.getRangeCellsList(rangeName);
+    }
+
 //    @Override
 //    public List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException {
 //        return sheet.getNumericalValuesFromRange(range);
 //    }
-//
-//    @Override
-//    public List<String> createListOfValuesForFilter(String column, String range) {
-//        return sheet.createListOfValuesForFilter(column, range);
-//    }
-//
-//    @Override
-//    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord));
-//        return dtoSheet;
-//    }
-//
-//    @Override
-//    public List<String> getColumnsWithinRange(String range) {
-//        return sheet.getColumnsWithinRange(range);
-//    }
-//
-//    @Override
-//    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
-//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord));
-//        return dtoSheet;
-//    }
-//
+
+    @Override
+    public List<String> createListOfValuesForFilter(String column, String range) {
+        return sheet.createListOfValuesForFilter(column, range);
+    }
+
+    @Override
+    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord));
+        return dtoSheet;
+    }
+
+    @Override
+    public List<String> getColumnsWithinRange(String rangeStr) {
+        return sheet.getColumnsWithinRange(rangeStr);
+    }
+
+    @Override
+    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
+        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord));
+        return dtoSheet;
+    }
+
 //    @Override
 //    public DTOsheet createDTOCopySheet() {
 //        Sheet copySheet = getSheet().copySheet();
@@ -311,6 +312,11 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
     @Override
     public void updateNewUserPermissionToNone(String username) {
         permissionManager.updateNewUserPermissionToNone(username);
+    }
+
+    @Override
+    public Layout getLayout() {
+        return sheet.getLayout();
     }
 
 }

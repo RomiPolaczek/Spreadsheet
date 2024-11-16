@@ -41,11 +41,16 @@ public class Constants {
     // Main sheet commands
     public final static String GET_ALL_RANGES = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRanges";
     public final static String ADD_RANGE = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/addRange";
+    public final static String DELETE_RANGE = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/deleteRange";
+    public final static String GET_RANGE_CELLS_LIST = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRangeCellsList";
     public final static String UPDATE_CELL = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/updateCellValue";
     public final static String GET_NUM_VERSIONS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getNumSheetVersions";
     public final static String GET_DTO_SHEET_VERSION = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getDTOSheetVersion";
-
-
+    public final static String GET_COLUMNS_FOR_FILTER = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getColumnsForFilter";
+    public final static String CREATE_DTO_SHEET_FILTER = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/createDTOSheetFilter";
+    public final static String GET_VALUES_FOR_FILTER = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getValuesForFilter";
+    public final static String GET_LAYOUT_FOR_FILTER = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getLayoutForFilter";
+    public final static String CREATE_DTO_SHEET_SORT = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/createDTOSheetSort";
 
 
     //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";

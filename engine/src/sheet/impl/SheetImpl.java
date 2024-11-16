@@ -342,7 +342,7 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public void removeRange(String name) {
+    public synchronized void removeRange(String name) {
         checkUsageOfRange(name);
         stringToRange.remove(name);
     }
@@ -409,7 +409,7 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> newCoordToOldCoord) {
+    public synchronized Sheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> newCoordToOldCoord) {
         Range range = new Range("filterRange", layout);
         range.parseRange(rangeStr);
 
@@ -482,7 +482,7 @@ public class SheetImpl implements Sheet, Serializable {
 
 
     @Override
-    public Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
+    public synchronized Sheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
         // Sort selected columns alphabetically (optional, if needed)
         Collections.sort(selectedColumns);
 

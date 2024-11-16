@@ -1,7 +1,14 @@
 package spreadsheet.client.component.mainSheet.left.command;
 
+import com.google.gson.GsonBuilder;
+import dto.DTOsheet;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.layout.HBox;
+import okhttp3.*;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,11 +25,30 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
+import spreadsheet.client.util.http.HttpClientUtil;
+
+import java.io.IOException;
+
 
 public class CommandController {
 
@@ -43,7 +69,7 @@ public class CommandController {
     private MainSheetController mainSheetController;
     private SimpleStringProperty selectedColumnProperty;
     private SimpleStringProperty selectedRowProperty;
-    private Map<String, String> newCoordToOldCoord;
+    private Map<String, String> oldCoordToNewCoord;
     public static final String DEFAULT_CELL_STYLE = "-fx-background-color: white; -fx-text-fill: black;";
     private SimpleBooleanProperty isEditDisabledProperty;
 
@@ -89,7 +115,7 @@ public class CommandController {
         selectedColumnProperty = new SimpleStringProperty();
         selectedRowProperty = new SimpleStringProperty();
         columnAlignmentComboBox.getItems().addAll("Left","Center", "Right");
-        newCoordToOldCoord = new HashMap<>();
+        oldCoordToNewCoord = new HashMap<>();
     }
 
     public SimpleStringProperty selectedColumnProperty() {return selectedColumnProperty;}
@@ -338,144 +364,293 @@ public class CommandController {
        showFilterPopup();
     }
 
+    private void showFilterPopup() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Filter");
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(15, 15, 15, 15));
+
+        Label rangeLabel = new Label("Enter range for filter: ");
+        vbox.getChildren().add(rangeLabel);
+
+        // TextField to enter range
+        TextField rangeField = new TextField();
+        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
+
+        // Add "Choose range" button
+        Button chooseRangeButton = new Button("Choose range");
+        chooseRangeButton.setDisable(false);
+
+        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
+        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
+        vbox.getChildren().add(rangeBox);
+
+        // VBox to hold multiple column filter sections
+        VBox columnSections = new VBox();
+        vbox.getChildren().add(columnSections);
+
+        // Button to add additional columns (initially disabled)
+        Button addColumnButton = new Button("Add Column");
+        addColumnButton.setDisable(true);
+        vbox.getChildren().add(addColumnButton);
+
+        // OK Button (initially disabled)
+        Button okButton = new Button("OK");
+        okButton.setDisable(true);
+        vbox.getChildren().add(okButton);
+
+        // Add listener for "Choose range" button
+        chooseRangeButton.setOnAction(e -> {
+            String rangeStr = rangeField.getText();
+            if (!rangeStr.isEmpty()) {
+                try {
+                    // Send request to get available columns
+                    getAvailableColumns(rangeStr, columnSections, addColumnButton, okButton);
+                } catch (Exception exception) {
+                    ShowAlert.showAlert("Error", "Invalid input", exception.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+        });
+
+        // OK Button action
+        okButton.setOnAction(e -> {
+            Map<String, List<String>> columnToValues = new HashMap<>();
+
+            // Collect selected columns and values from checkboxes
+            for (Node node : columnSections.getChildren()) {
+                if (node instanceof HBox) {
+                    HBox columnSection = (HBox) node;
+                    ComboBox<String> columnComboBox = (ComboBox<String>) columnSection.getChildren().get(1); // Column ComboBox
+                    VBox checkBoxContainer = (VBox) columnSection.getChildren().get(2); // Checkbox container
+
+                    String selectedColumn = columnComboBox.getValue();
+                    List<String> selectedValues = new ArrayList<>();
+                    for (Node checkBoxNode : checkBoxContainer.getChildren()) {
+                        CheckBox checkBox = (CheckBox) checkBoxNode;
+                        if (checkBox.isSelected()) {
+                            selectedValues.add(checkBox.getText());
+                        }
+                    }
+                    columnToValues.put(selectedColumn, selectedValues); // Add column and its selected values
+                }
+            }
+
+            String rangeStr = rangeField.getText();
+
+            // Close the popup after filtering
+            popupStage.close();
+
+            // Send the request to apply the filter asynchronously
+            applyFilter(rangeStr, columnToValues);
+        });
+
+        scrollPane.setContent(vbox);
+        Scene scene = new Scene(scrollPane, 300, 400);
+        mainSheetController.setTheme(scene);
+        popupStage.setScene(scene);
+        popupStage.showAndWait();
+    }
+
+    private void getAvailableColumns(String rangeStr, VBox columnSections, Button addColumnButton, Button okButton) {
+        String selectedSheetName = mainSheetController.getSheetName();
+        String finalUrl = HttpUrl
+                .parse(Constants.GET_COLUMNS_FOR_FILTER)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", selectedSheetName)
+                .addQueryParameter("rangeStr", rangeStr)
+                .build()
+                .toString();
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+
+        HttpClientUtil.runAsync(finalUrl, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Handle failure (e.g., network error)
+                ShowAlert.showAlert("Error", "Failed to get columns : ", e.getMessage(), Alert.AlertType.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.isSuccessful()) {
+                    // Parse the response body if needed
+                    // Assuming the response is a JSON array of column names
+                    List<String> availableColumns = new Gson().fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
+
+                    Platform.runLater(() -> {
+                        // Enable the "Add Column" button and clear previous sections
+                        addColumnButton.setDisable(false);
+                        columnSections.getChildren().clear(); // Clear any existing column sections
+
+                        // Create the first column section
+                        createColumnSection(columnSections, okButton, rangeStr, availableColumns);
+
+                        // Allow adding more columns
+                        addColumnButton.setOnAction(ev -> createColumnSection(columnSections, okButton, rangeStr, availableColumns));
+                    });
+                } else {
+                    // Handle the unsuccessful response
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to get columns: ", responseBody, Alert.AlertType.ERROR);
+                    });
+                }
+            }
+        });
+    }
+
+    private void applyFilter(String rangeStr, Map<String, List<String>> columnToValues) {
+        // Create the map for the filter data
+        Map<String, Object> filterData = new HashMap<>();
+        filterData.put("rangeStr", rangeStr);
+        filterData.put("columnToValues", columnToValues);
+        filterData.put("selectedSheet", mainSheetController.getSheetName());
+        filterData.put("oldCoordToNewCoord", oldCoordToNewCoord);
+
+        // Convert the map to JSON
+        Gson gson = new Gson();
+        String jsonBody = gson.toJson(filterData);
+
+        String finalUrl = HttpUrl
+                .parse(Constants.CREATE_DTO_SHEET_FILTER) // Replace with your actual URL endpoint
+                .newBuilder()
+                .build()
+                .toString();
+
+        // Create the request body
+        RequestBody body = RequestBody.create(
+                jsonBody,
+                MediaType.get("application/json; charset=utf-8")
+        );
+
+        HttpClientUtil.runAsyncPost(finalUrl, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Handle failure (e.g., network error)
+                ShowAlert.showAlert("Error", "Failed to apply filter: ", e.getMessage(), Alert.AlertType.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+
+                if (response.isSuccessful()) {
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                            .create();
+                    Type sheet = new TypeToken<DTOsheet>(){}.getType();
+                    DTOsheet filteredSheet  = gson.fromJson(responseBody, sheet);
+
+                    Platform.runLater(() -> {
+                        // Display filtered sheet in a popup or table
+                        mainSheetController.displayFilteredSortedSheetInPopup(filteredSheet, "Filtered Sheet", rangeStr);
+                    });
+                } else {
+                    // Handle the unsuccessful response
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to apply filter: ", responseBody, Alert.AlertType.ERROR);
+                    });
+                }
+            }
+        });
+    }
+
+
+    private void createColumnSection(VBox columnSections, Button okButton, String rangeField, List<String> availableColumns) {
+        HBox columnSection = new HBox(10); // Horizontal box for column and checkboxes
+        ComboBox<String> columnComboBox = new ComboBox<>(); // ComboBox for selecting the column
+        VBox checkBoxContainer = new VBox(); // VBox for checkboxes
+
+        // Populate the column ComboBox with available columns
+        columnComboBox.getItems().addAll(availableColumns);
+        columnComboBox.setDisable(availableColumns.isEmpty()); // Disable if no columns available
+
+        columnSection.getChildren().addAll(new Label("Select column:"), columnComboBox, checkBoxContainer);
+        columnSections.getChildren().add(columnSection);
+
+        // Add listener for ComboBox to populate checkboxes
+        columnComboBox.setOnAction(e -> {
+            checkBoxContainer.getChildren().clear();
+            String selectedColumn = columnComboBox.getValue();
+
+            // Create a map for the parameters
+            Map<String, String> requestData = new HashMap<>();
+            requestData.put("selectedSheet", mainSheetController.getSheetName());
+            requestData.put("column", selectedColumn);
+            requestData.put("rangeStr", rangeField);
+
+            // Convert the map to JSON
+            Gson gson = new Gson();
+            String jsonBody = gson.toJson(requestData);
+
+            String finalUrl = HttpUrl
+                    .parse(Constants.GET_VALUES_FOR_FILTER)
+                    .newBuilder()
+                    .build()
+                    .toString();
+
+            // Create the request body
+            RequestBody body = RequestBody.create(
+                    jsonBody,
+                    MediaType.get("application/json; charset=utf-8")
+            );
+
+            // Send async POST request
+            HttpClientUtil.runAsyncPost(finalUrl, body, new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    // Handle failure (e.g., network error)
+                    Platform.runLater(() ->
+                            ShowAlert.showAlert("Error", "Failed to fetch values", e.getMessage(), Alert.AlertType.ERROR)
+                            //System.out.println(e.getMessage())
+                    );
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        // Parse the response body
+                        String responseBody = response.body().string();
+                        Type listType = new TypeToken<List<String>>() {}.getType();
+                        List<String> uniqueValues = gson.fromJson(responseBody, listType);
+
+                        // Populate checkboxes with unique values
+                        Platform.runLater(() -> {
+                            for (String value : uniqueValues) {
+                                CheckBox checkBox = new CheckBox(value);
+                                checkBoxContainer.getChildren().add(checkBox); // Add checkbox to the container
+                            }
+
+                            // Enable OK button if there are checkboxes
+                            okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
+                        });
+                    } else {
+                        // Handle unsuccessful response
+                        String responseBody = response.body().string();
+                        Platform.runLater(() ->
+                                ShowAlert.showAlert("Error", "Failed to fetch values", responseBody, Alert.AlertType.ERROR)
+                                //System.out.println(responseBody)
+                        );
+                    }
+                }
+            });
+        });
+    }
+
+
     @FXML
     private void sortButtonOnAction(ActionEvent event) {
         showSortPopup();
-    }
-
-    private void showFilterPopup() {
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Filter");
-//
-//        ScrollPane scrollPane = new ScrollPane();
-//        scrollPane.setFitToWidth(true);
-//        scrollPane.setFitToHeight(true);
-//
-//        VBox vbox = new VBox();
-//        vbox.setSpacing(10);
-//        vbox.setPadding(new Insets(15, 15, 15, 15));
-//
-//        Label rangeLabel = new Label("Enter range for filter: ");
-//        vbox.getChildren().add(rangeLabel);
-//
-//        // TextField to enter range
-//        TextField rangeField = new TextField();
-//        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
-//
-//        // Add "Choose range" button
-//        Button chooseRangeButton = new Button("Choose range");
-//        chooseRangeButton.setDisable(false);
-//
-//        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
-//        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
-//        vbox.getChildren().add(rangeBox);
-//
-//        // VBox to hold multiple column filter sections
-//        VBox columnSections = new VBox();
-//        vbox.getChildren().add(columnSections);
-//
-//        // Button to add additional columns (initially disabled)
-//        Button addColumnButton = new Button("Add Column");
-//        addColumnButton.setDisable(true);
-//        vbox.getChildren().add(addColumnButton);
-//
-//        // OK Button (initially disabled)
-//        Button okButton = new Button("OK");
-//        okButton.setDisable(true);
-//        vbox.getChildren().add(okButton);
-//
-//        // Add listener for "Choose range" button
-//        chooseRangeButton.setOnAction(e -> {
-//            String rangeStr = rangeField.getText();
-//            if (!rangeStr.isEmpty()) {
-//                try {
-//                    // Validate the range and get available columns within it
-//                    List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
-//
-//                    // Enable the "Add Column" button and clear previous sections
-//                    addColumnButton.setDisable(false);
-//                    columnSections.getChildren().clear(); // Clear any existing column sections
-//
-//                    // Create the first column section
-//                    createColumnSection(columnSections, okButton, rangeField, availableColumns);
-//
-//                    // Allow adding more columns
-//                    addColumnButton.setOnAction(ev -> createColumnSection(columnSections, okButton, rangeField, availableColumns));
-//
-//                } catch (Exception exception) {
-//                    mainController.showAlert("Error", "Invalid input", exception.getMessage(), Alert.AlertType.ERROR);
-//                }
-//            }
-//        });
-//
-//        // OK Button action
-//        okButton.setOnAction(e -> {
-//            Map<String, List<String>> columnToValues = new HashMap<>();
-//
-//            // Collect selected columns and values from checkboxes
-//            for (Node node : columnSections.getChildren()) {
-//                if (node instanceof HBox) {
-//                    HBox columnSection = (HBox) node;
-//                    ComboBox<String> columnComboBox = (ComboBox<String>) columnSection.getChildren().get(1); // Column ComboBox
-//                    VBox checkBoxContainer = (VBox) columnSection.getChildren().get(2); // Checkbox container
-//
-//                    String selectedColumn = columnComboBox.getValue();
-//                    List<String> selectedValues = new ArrayList<>();
-//                    for (Node checkBoxNode : checkBoxContainer.getChildren()) {
-//                        CheckBox checkBox = (CheckBox) checkBoxNode;
-//                        if (checkBox.isSelected()) {
-//                            selectedValues.add(checkBox.getText());
-//                        }
-//                    }
-//                    columnToValues.put(selectedColumn, selectedValues); // Add column and its selected values
-//                }
-//            }
-//
-//            String rangeStr = rangeField.getText();
-//
-//            // Close the popup after filtering
-//            popupStage.close();
-//
-//            // Call the engine method to filter based on the selected columns and values
-//            newCoordToOldCoord.clear();
-//            DTOsheet dtoSheet = mainController.getEngine().filterColumnBasedOnSelection(rangeField.getText(), columnToValues, newCoordToOldCoord);
-//            mainController.displayFilteredSortedSheetInPopup(dtoSheet, "Filtered Sheet", rangeStr);
-//        });
-//
-//        scrollPane.setContent(vbox);
-//        Scene scene = new Scene(scrollPane, 300, 400);
-//        mainController.setTheme(scene);
-//        popupStage.setScene(scene);
-//        popupStage.showAndWait();
-    }
-
-    private void createColumnSection(VBox columnSections, Button okButton, TextField rangeField, List<String> availableColumns) {
-//        HBox columnSection = new HBox(10); // Horizontal box for column and checkboxes
-//        ComboBox<String> columnComboBox = new ComboBox<>(); // ComboBox for selecting the column
-//        VBox checkBoxContainer = new VBox(); // VBox for checkboxes
-//
-//        // Populate the column ComboBox with available columns
-//        columnComboBox.getItems().addAll(availableColumns);
-//        columnComboBox.setDisable(availableColumns.isEmpty()); // Disable if no columns available
-//
-//        columnSection.getChildren().addAll(new Label("Select column:"), columnComboBox, checkBoxContainer);
-//        columnSections.getChildren().add(columnSection);
-//
-//        // Add listener for ComboBox to populate checkboxes
-//        columnComboBox.setOnAction(e -> {
-//            checkBoxContainer.getChildren().clear();
-//            String selectedColumn = columnComboBox.getValue();
-//            List<String> uniqueValues = mainController.getEngine().createListOfValuesForFilter(selectedColumn, rangeField.getText());
-//
-//            for (String value : uniqueValues) {
-//                CheckBox checkBox = new CheckBox(value);
-//                checkBoxContainer.getChildren().add(checkBox); // Add checkbox to the container
-//            }
-//
-//            // Enable OK button if there are checkboxes
-//            okButton.setDisable(checkBoxContainer.getChildren().isEmpty());
-//        });
     }
 
     @FXML
@@ -787,104 +962,188 @@ public class CommandController {
     }
 
     private void showSortPopup() {
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Sort");
-//
-//        ScrollPane scrollPane = new ScrollPane();
-//
-//        VBox vbox = new VBox();
-//        vbox.setSpacing(10);
-//        vbox.setPadding(new Insets(15, 15, 15, 15));
-//
-//        Label rangeLabel = new Label("Enter range for sorting: ");
-//        vbox.getChildren().add(rangeLabel);
-//
-//        // TextField to enter range
-//        TextField rangeField = new TextField();
-//        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
-//
-//        // Add "Choose range" button
-//        Button chooseRangeButton = new Button("Choose range");
-//        chooseRangeButton.setDisable(false); // Initially enabled
-//
-//        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
-//        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
-//        vbox.getChildren().add(rangeBox);
-//
-//        // Add a label before checkboxes
-//        Label selectColumnsLabel = new Label("Select columns to sort by: ");
-//        vbox.getChildren().add(selectColumnsLabel);
-//
-//        // VBox for checkboxes
-//        VBox checkBoxContainer = new VBox();
-//        vbox.getChildren().add(checkBoxContainer);
-//
-//        // OK Button (initially disabled)
-//        Button okButton = new Button("OK");
-//        okButton.setDisable(true); // Disable the button initially
-//        vbox.getChildren().add(okButton);
-//
-//        // Add listener for the "Choose range" button
-//        chooseRangeButton.setOnAction(e -> {
-//            String rangeStr = rangeField.getText();
-//            if (!rangeStr.isEmpty()) {
-//
-//                try{
-//                List<String> availableColumns = mainController.getEngine().getColumnsWithinRange(rangeStr);
-//                checkBoxContainer.getChildren().clear(); // Clear previous checkboxes
-//
-//                for (String column : availableColumns) {
-//                    CheckBox checkBox = new CheckBox(column);
-//                    checkBoxContainer.getChildren().add(checkBox);
-//                }
-//
-//                // Enable the OK button if at least one checkbox is selected
-//                okButton.setDisable(false);
-//                // Add a listener to enable the OK button only if at least one checkbox is checked
-//                checkBoxContainer.getChildren().forEach(node -> {
-//                    if (node instanceof CheckBox checkBox) {
-//                        checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-//                            okButton.setDisable(checkBoxContainer.getChildren().stream()
-//                                    .filter(n -> n instanceof CheckBox)
-//                                    .noneMatch(c -> ((CheckBox) c).isSelected()));
-//                        });
-//                    }
-//                });
-//                }
-//                catch (Exception exception){
-//                    mainController.showAlert("Error", "Invalid input", exception.getMessage(), Alert.AlertType.ERROR);
-//                }
-//            }
-//        });
-//
-//        // Set action for OK button
-//        okButton.setOnAction(e -> {
-//            // Handle sorting logic based on selected checkboxes
-//            List<String> selectedColumns = new ArrayList<>();
-//            for (Node node : checkBoxContainer.getChildren()) {
-//                if (node instanceof CheckBox checkBox && checkBox.isSelected()) {
-//                    selectedColumns.add(checkBox.getText());
-//                }
-//            }
-//
-//            String rangeStr = rangeField.getText();
-//
-//            popupStage.close(); // Close the popup after sorting
-//            newCoordToOldCoord.clear();
-//            DTOsheet dtoSheet = mainController.getEngine().sortColumnBasedOnSelection(rangeField.getText(), selectedColumns, newCoordToOldCoord);
-//            mainController.displayFilteredSortedSheetInPopup(dtoSheet, "Sorted Sheet", rangeStr);
-//        });
-//
-//        // Set scene and show the popup
-//        scrollPane.setContent(vbox);
-//        Scene scene = new Scene(scrollPane, 400, 300);
-//        mainController.setTheme(scene);
-//        popupStage.setScene(scene);
-//        popupStage.show();
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Sort");
+
+        ScrollPane scrollPane = new ScrollPane();
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(15, 15, 15, 15));
+
+        Label rangeLabel = new Label("Enter range for sorting: ");
+        vbox.getChildren().add(rangeLabel);
+
+        // TextField to enter range
+        TextField rangeField = new TextField();
+        rangeField.setPromptText("Enter cell range (e.g., A1..A10)");
+
+        // Add "Choose range" button
+        Button chooseRangeButton = new Button("Choose range");
+        chooseRangeButton.setDisable(false); // Initially enabled
+
+        HBox rangeBox = new HBox(10); // Horizontal box to hold the TextField and Button
+        rangeBox.getChildren().addAll(rangeField, chooseRangeButton);
+        vbox.getChildren().add(rangeBox);
+
+        // Add a label before checkboxes
+        Label selectColumnsLabel = new Label("Select columns to sort by: ");
+        vbox.getChildren().add(selectColumnsLabel);
+
+        // VBox for checkboxes
+        VBox checkBoxContainer = new VBox();
+        vbox.getChildren().add(checkBoxContainer);
+
+        // OK Button (initially disabled)
+        Button okButton = new Button("OK");
+        okButton.setDisable(true); // Disable the button initially
+        vbox.getChildren().add(okButton);
+
+        // Add listener for the "Choose range" button
+        chooseRangeButton.setOnAction(e -> {
+            String rangeStr = rangeField.getText();
+            if (!rangeStr.isEmpty()) {
+                fetchColumnsWithinRange(rangeStr, checkBoxContainer, okButton);
+            }
+        });
+
+        // Set action for OK button
+        okButton.setOnAction(e -> {
+            List<String> selectedColumns = new ArrayList<>();
+            for (Node node : checkBoxContainer.getChildren()) {
+                if (node instanceof CheckBox checkBox && checkBox.isSelected()) {
+                    selectedColumns.add(checkBox.getText());
+                }
+            }
+
+            String rangeStr = rangeField.getText();
+            popupStage.close(); // Close the popup after sorting
+            sendSortRequest(rangeStr, selectedColumns);
+        });
+
+        // Set scene and show the popup
+        scrollPane.setContent(vbox);
+        Scene scene = new Scene(scrollPane, 400, 300);
+        mainSheetController.setTheme(scene);
+        popupStage.setScene(scene);
+        popupStage.show();
     }
 
-    public Map<String,String> getNewCoordToOldCoord() {return newCoordToOldCoord; }
+    private void fetchColumnsWithinRange(String rangeStr, VBox checkBoxContainer, Button okButton) {
+        String finalUrl = HttpUrl
+                .parse(Constants.GET_COLUMNS_FOR_FILTER)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
+                .addQueryParameter("rangeStr", rangeStr)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", "Failed to get columns: ", e.getMessage(), Alert.AlertType.ERROR);
+                    //System.out.println(e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+
+                if (response.isSuccessful()) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<String>>() {}.getType();
+                    List<String> availableColumns = gson.fromJson(responseBody, listType);
+
+                    Platform.runLater(() -> {
+                        checkBoxContainer.getChildren().clear(); // Clear previous checkboxes
+                        for (String column : availableColumns) {
+                            CheckBox checkBox = new CheckBox(column);
+                            checkBoxContainer.getChildren().add(checkBox);
+                        }
+
+                        // Enable the OK button if at least one checkbox is selected
+                        okButton.setDisable(false);
+                        checkBoxContainer.getChildren().forEach(node -> {
+                            if (node instanceof CheckBox checkBox) {
+                                checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                                    okButton.setDisable(checkBoxContainer.getChildren().stream()
+                                            .filter(n -> n instanceof CheckBox)
+                                            .noneMatch(c -> ((CheckBox) c).isSelected()));
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to get columns: ", responseBody, Alert.AlertType.ERROR);
+                        //System.out.println(responseBody);
+                    });
+                }
+            }
+        });
+    }
+
+    private void sendSortRequest(String rangeStr, List<String> selectedColumns) {
+        Map<String, Object> sortData = new HashMap<>();
+        sortData.put("rangeStr", rangeStr);
+        sortData.put("selectedColumns", selectedColumns);
+        sortData.put("selectedSheet", mainSheetController.getSheetName());
+        sortData.put("oldCoordToNewCoord", oldCoordToNewCoord);
+
+        Gson gson = new Gson();
+        String jsonBody = gson.toJson(sortData);
+
+        String finalUrl = HttpUrl
+                .parse(Constants.CREATE_DTO_SHEET_SORT)
+                .newBuilder()
+                .build()
+                .toString();
+
+        RequestBody body = RequestBody.create(
+                jsonBody,
+                MediaType.get("application/json; charset=utf-8")
+        );
+
+        HttpClientUtil.runAsyncPost(finalUrl, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", "Failed to sort: ", e.getMessage(), Alert.AlertType.ERROR);
+                    //System.out.println(e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+
+                if (response.isSuccessful()) {
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(Coordinate.class, new CoordinateDeserializer())
+                            .create();
+                    Type sheetType = new TypeToken<DTOsheet>() {}.getType();
+                    DTOsheet sortedSheet = gson.fromJson(responseBody, sheetType);
+
+                    Platform.runLater(() -> {
+                        mainSheetController.displayFilteredSortedSheetInPopup(sortedSheet, "Sorted Sheet", rangeStr);
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to sort: ", responseBody, Alert.AlertType.ERROR);
+                        //System.out.println(responseBody);
+                    });
+                }
+            }
+        });
+    }
+
+
+    public Map<String,String> getNewCoordToOldCoord() {
+        return oldCoordToNewCoord;
+    }
 
     public void disableEditFeatures() {
         isEditDisabledProperty.set(true);
@@ -894,4 +1153,6 @@ public class CommandController {
         //selectedRowLabel.setDisable(true);
         //rowHeightSlider.setDisable(true);
     }
+
+
 }

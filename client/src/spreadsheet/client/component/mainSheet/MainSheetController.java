@@ -57,7 +57,7 @@ public class MainSheetController {
 
         if (headerComponentController != null && sheetComponentController != null && leftComponentController != null) {
             headerComponentController.setMainSheetController(this);
-            sheetComponentController.setMainController(this);
+            sheetComponentController.setMainSheetController(this);
             leftComponentController.setMainSheetController(this);
             this.sheetName = sheetName;
             isEditDisabledProperty = new SimpleBooleanProperty(false);
@@ -217,7 +217,7 @@ public class MainSheetController {
     }
 
     public void displayFilteredSortedSheetInPopup(DTOsheet dtoSheet, String title, String range) {
-//        sheetComponentController.displayFilteredSortedSheetInPopup(dtoSheet, title, range);
+        sheetComponentController.displayFilteredSortedSheetInPopup(dtoSheet, title, range);
     }
 
     public void updateCellValue(String cellID, String newValue) {

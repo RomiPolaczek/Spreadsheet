@@ -4,6 +4,7 @@ import exception.InvalidSheetException;
 import sheet.layout.api.Layout;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class LayoutImpl implements Layout, Serializable {
@@ -17,6 +18,16 @@ public class LayoutImpl implements Layout, Serializable {
     private final int ROWS_UPPER_LIMIT = 50 ;
     private final int COLUMNS_UPPER_LIMIT = 20 ;
 
+//    public LayoutImpl(int rowsHeightUnits, int columnsWidthUnits, int rows, int columns) {
+//        this.rowsHeightUnits = rowsHeightUnits;
+//        this.columnsWidthUnits = columnsWidthUnits;
+//        this.rows = rows;
+//        this.columns = columns;
+//    }
+//
+//    public LayoutImpl() {
+//
+//    }
 
     @Override
     public void setRowsHeightUnits (int rowsHeightUnits)  {

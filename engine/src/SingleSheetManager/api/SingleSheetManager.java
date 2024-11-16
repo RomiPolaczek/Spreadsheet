@@ -6,9 +6,11 @@ import permissions.PermissionManager;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
 import sheet.api.Sheet;
+import sheet.layout.api.Layout;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public interface SingleSheetManager {
     void LoadFile(InputStream inputStream, String owner) throws Exception;
@@ -26,14 +28,14 @@ public interface SingleSheetManager {
 //    void saveSystemState(String filePath) throws IOException;
 //    Coordinate checkAndConvertInputToCoordinate(String inputCell);
     void addRange(String name, String rangeStr);
-//    void removeRange(String name);
+    void removeRange(String rangeName);
 //    List<String> getExistingRanges();
-//    List<String> getRangeCellsList(String name);
+    List<String> getRangeCellsList(String name);
 //    List<Double> getNumericalValuesFromRange(String range) throws IllegalArgumentException;
-//    List<String> createListOfValuesForFilter(String column, String range);
-//    DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);
-//    List<String> getColumnsWithinRange(String range);
-//    DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
+    List<String> createListOfValuesForFilter(String column, String range);
+    DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);
+    List<String> getColumnsWithinRange(String range);
+    DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
 //    DTOsheet createDTOCopySheet();
 //    Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
 //    Map<String, Integer> createListOfFunctions();
@@ -41,6 +43,8 @@ public interface SingleSheetManager {
     PermissionType getPermissionTypeForUser(String userName);
     void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission);
     void updateNewUserPermissionToNone(String username);
+    Layout getLayout();
+
 
 
 }
