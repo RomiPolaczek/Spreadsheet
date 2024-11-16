@@ -3,10 +3,21 @@ package spreadsheet.client.component.mainSheet.left.command;
 import com.google.gson.GsonBuilder;
 import dto.DTOsheet;
 import javafx.application.Platform;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import dto.DTOsheet;
+import dto.DTOsheetTableDetails;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.HBox;
 import okhttp3.*;
+import sheet.coordinate.api.Coordinate;
+import sheet.coordinate.api.CoordinateDeserializer;
+import javafx.scene.layout.GridPane;
+import org.jetbrains.annotations.NotNull;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.client.component.mainSheet.MainSheetController;
@@ -20,17 +31,47 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import okhttp3.Callback;
+import sheet.api.EffectiveValue;
+import java.util.concurrent.CompletableFuture;
+
+import spreadsheet.client.component.mainSheet.MainSheetController;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
+import okhttp3.*;
+
+
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -655,172 +696,9 @@ public class CommandController {
 
     @FXML
     void dynamicAnalysisButtonAction(ActionEvent event) {
-//        BorderPane root = new BorderPane();
-//
-//        HBox selectedCellBox = new HBox();
-//        Label introToSelectedCell = new Label("Cell: ");
-//        Label cellToDynamicAnalysis = new Label(selectedCellLabel.getText());
-//        cellToDynamicAnalysis.setStyle("-fx-font-weight: bold");
-//        cellToDynamicAnalysis.textProperty().bind(selectedCellLabel.textProperty());
-//        selectedCellBox.getChildren().addAll(introToSelectedCell, cellToDynamicAnalysis);
-//
-//        // Left VBox
-//        VBox leftVBox = new VBox(3);
-//        leftVBox.setPadding(new Insets(8, 8, 8, 8));
-//        leftVBox.setPrefSize(127, 400);
-//
-//        // Minimum Value Label and TextField
-//        Label minValueLabel = new Label("Minimum Value:");
-//        TextField minValueTextField = new TextField();
-//        VBox.setMargin(minValueLabel, new Insets(10, 0, 0, 0));
-//
-//        // Maximum Value Label and TextField
-//        Label maxValueLabel = new Label("Maximum Value:");
-//        TextField maxValueTextField = new TextField();
-//        VBox.setMargin(maxValueLabel, new Insets(10, 0, 0, 0));
-//
-//        // Step Size Label and TextField
-//        Label stepSizeLabel = new Label("Step Size:");
-//        TextField stepSizeTextField = new TextField();
-//        VBox.setMargin(stepSizeLabel, new Insets(10, 0, 0, 0));
-//
-//        // Slider
-//        Slider valueSlider = new Slider();
-//        VBox.setMargin(valueSlider, new Insets(10, 0, 0, 0));
-//
-//        valueSlider.setDisable(true);  // Initially disabled
-//
-//        // Call the validate function for each text field, passing the other text fields for the slider enable/disable check
-//        validateAndSetSlider(maxValueTextField, valueSlider, "Please enter a \nvalid max value.", minValueTextField, maxValueTextField, stepSizeTextField);
-//        validateAndSetSlider(minValueTextField, valueSlider, "Please enter a \nvalid min value.", minValueTextField, maxValueTextField, stepSizeTextField);
-//        validateAndSetSlider(stepSizeTextField, valueSlider, "Please enter a \nvalid step size.", minValueTextField, maxValueTextField, stepSizeTextField);
-//
-//        // Add components to the VBox
-//        leftVBox.getChildren().addAll(selectedCellBox, minValueLabel, minValueTextField,
-//                maxValueLabel, maxValueTextField, stepSizeLabel,
-//                stepSizeTextField);
-//
-//        // Set VBox to the left of BorderPane
-//        root.setLeft(leftVBox);
-//        GridPane gridPane = new GridPane();
-//
-//        // Create a new SheetController instance for the pop-up
-//        SheetController newSheetController = new SheetController();
-//        newSheetController.setMainController(this.mainController);
-//        newSheetController.setDynamicGridPane(gridPane); // Set gridPane to be used in the setSheet method
-//        newSheetController.initializeSheetController();
-//        DTOsheet dtoSheet = mainController.getEngine().createDTOCopySheet();
-//        SimpleStringProperty selectedCell = mainController.getSelectedCellProperty();
-//        newSheetController.setSheet(dtoSheet, false);   // Populate the grid with sheet data
-//        newSheetController.getCellLabel(selectedCell.getValue()).setStyle("-fx-background-color: yellow; -fx-text-fill: black");
-//
-//
-//        mainController.setTheme(root.getScene());
-//
-//        selectedCell.addListener((observable, oldValue, newValue) -> {
-//            newSheetController.getCellLabel(oldValue).setStyle("");
-//            newSheetController.getCellLabel(newValue).setStyle("-fx-background-color: yellow; -fx-text-fill: black");
-//            minValueTextField.clear();
-//            maxValueTextField.clear();
-//            stepSizeTextField.clear();
-//
-//        });
-//
-//        valueSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            if (selectedCell != null && selectedCell.get() != null) {
-//                Map<String, EffectiveValue> cellsNewValues =  mainController.getEngine().getCellsThatHaveChangedAfterUpdateCell(selectedCellLabel.getText(), String.valueOf(newValue.intValue()));
-//                for(Map.Entry<String, EffectiveValue> entry : cellsNewValues.entrySet())
-//                {
-//                    Label newCellLabel = newSheetController.getCellLabel(entry.getKey());
-//                    newCellLabel.setText(cellsNewValues.get(entry.getKey()).getValue().toString());
-//                }
-//            }
-//        });
-//
-//        root.setCenter(gridPane);
-//        leftVBox.getChildren().add(valueSlider);
-//        valueSlider.setShowTickMarks(true);
-//        valueSlider.setShowTickLabels(true);
-//
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Sheet Version Popup");
-//
-//        Scene scene = new Scene(root);
-//        mainController.setTheme(scene);
-//        popupStage.setScene(scene);
-//        popupStage.showAndWait();
+        DynamicAnalysisHandler handler = new DynamicAnalysisHandler(mainSheetController, selectedCellLabel);
+        handler.handleDynamicAnalysis(event);
     }
-
-
-    private void validateAndSetSlider(TextField textField, Slider valueSlider, String labelText, TextField minValueTextField, TextField maxValueTextField, TextField stepSizeTextField) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
-                    maxValueTextField.getText().trim().isEmpty() ||
-                    stepSizeTextField.getText().trim().isEmpty());
-
-            VBox parentVBox = (VBox) textField.getParent();
-            Label errorLabel = null;
-
-            for (Node node : parentVBox.getChildren()) {
-                if (node instanceof Label && "errorLabel".equals(node.getId())) {
-                    errorLabel = (Label) node;
-                    break;
-                }
-            }
-
-            // Create a new error label if it doesn't already exist
-            if (errorLabel == null) {
-                errorLabel = new Label();
-                errorLabel.setId("errorLabel");
-                errorLabel.setTextFill(Color.RED);
-            }
-
-            // Clear previous styles
-            textField.setStyle("");
-
-            // Check if the TextField is not empty
-            if (!textField.getText().trim().isEmpty()) {
-                try {
-                    // Attempt to parse the double value from the TextField
-                    double value = Double.parseDouble(textField.getText());
-
-                    // Set the value as the slider's max and apply green border
-                    if(textField == maxValueTextField)
-                        valueSlider.setMax(value);
-                    else if(textField == minValueTextField)
-                        valueSlider.setMin(value);
-                    else if(textField == stepSizeTextField)
-                        valueSlider.setBlockIncrement(value);
-
-                    textField.setStyle("-fx-border-color: green; -fx-background-color: #dcfbdc; -fx-border-width: 2px; -fx-text-fill: black");
-
-                    // Remove error label if the value is valid
-                    if (parentVBox.getChildren().contains(errorLabel)) {
-                        parentVBox.getChildren().remove(errorLabel);
-                    }
-                }
-                catch (NumberFormatException e) {
-                    // Invalid number: show red border and add the error label
-                    textField.setStyle("-fx-border-color: red; -fx-background-color: #ffdddd; -fx-border-width: 2px; -fx-text-fill: black ");
-                    errorLabel.setText(labelText);
-
-                    // Add the error label if it's not already present
-                    if (!parentVBox.getChildren().contains(errorLabel)) {
-                        parentVBox.getChildren().add(errorLabel);
-                    }
-                    valueSlider.setDisable(true);
-                }
-            } else {
-                // If the field is empty, reset the styles and remove any error label
-                textField.setStyle("");
-                if (parentVBox.getChildren().contains(errorLabel)) {
-                    parentVBox.getChildren().remove(errorLabel);
-                }
-            }
-        });
-    }
-
 
     @FXML
     void createGraphButtonOnAction(ActionEvent event) {
@@ -1153,6 +1031,4 @@ public class CommandController {
         //selectedRowLabel.setDisable(true);
         //rowHeightSlider.setDisable(true);
     }
-
-
 }

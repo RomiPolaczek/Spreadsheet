@@ -6,6 +6,7 @@ import dto.DTOsheet;
 import dto.DTOsheetTableDetails;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
+import sheet.api.EffectiveValue;
 import sheet.layout.api.Layout;
 
 import java.io.InputStream;
@@ -28,6 +29,9 @@ public interface Engine {
     void handlePermissionRequest(String connectedUserName, String applicantUsername, PermissionStatus newStatus, PermissionType requestedPermission, String sheetName);
     String getUserPermission(String username, String sheetName);
     void addUser(String username);
+    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue);
+    DTOsheet createDTOCopySheet(String sheetName);
+    int getLatestSheetVersion(String sheetName);
     List<String> getRangeCellsList(String rangeName, String sheetName);
     List<String> getColumnsWithinRange(String sheetName, String rangeStr);
     DTOsheet filterColumnBasedOnSelection(String sheetName, String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);

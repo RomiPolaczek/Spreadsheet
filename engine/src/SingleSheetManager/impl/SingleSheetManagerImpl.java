@@ -277,6 +277,50 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 //        return cellsValues;
 //    }
 //
+//
+//    @Override
+//    public List<String> createListOfValuesForFilter(String column, String range) {
+//        return sheet.createListOfValuesForFilter(column, range);
+//    }
+//
+//    @Override
+//    public DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord) {
+//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.filterColumnBasedOnSelection(rangeStr, columnToValues, oldCoordToNewCoord));
+//        return dtoSheet;
+//    }
+//
+//    @Override
+//    public List<String> getColumnsWithinRange(String range) {
+//        return sheet.getColumnsWithinRange(range);
+//    }
+//
+//    @Override
+//    public DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
+//        DTOsheet dtoSheet = createDTOSheetForDisplay(sheet.sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord));
+//        return dtoSheet;
+//    }
+//
+    @Override
+    public DTOsheet createDTOCopySheet() {
+        Sheet copySheet = getSheet().copySheet();
+        DTOsheet dtoSheet = createDTOSheetForDisplay(copySheet);
+        return dtoSheet;
+    }
+
+    @Override
+    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue) {
+        Sheet copySheet = getSheet().copySheet();
+        Coordinate coordinate = CoordinateFactory.from(cellID);
+        copySheet.updateCellValueAndCalculate(coordinate.getRow(), coordinate.getColumn(), newValue);
+        copySheet.getCellsThatHaveChanged();
+        Map<String, String> cellsValues = new HashMap<>();
+
+        for (Cell cell : copySheet.getCellsThatHaveChanged()) {
+            cellsValues.put(cell.getCoordinate().toString(), cell.getEffectiveValue().getValue().toString());
+        }
+        return cellsValues;
+    }
+
 //    @Override
 //    public Map<String, Integer> createListOfFunctions() {
 //        Map<String, Integer> functionMap = new HashMap<>();

@@ -1,4 +1,4 @@
-package spreadsheet.servlets.mainSheet.range;
+package spreadsheet.servlets.mainSheet.left.range;
 
 import api.Engine;
 import com.google.gson.Gson;

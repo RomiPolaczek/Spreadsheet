@@ -1,4 +1,4 @@
-package spreadsheet.servlets.mainSheet.range;
+package spreadsheet.servlets.mainSheet.left.range;
 
 import jakarta.servlet.http.HttpServlet;
 import api.Engine;
@@ -39,7 +39,6 @@ public class GetAllRangesServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write(e.getMessage());
         }
-
     }
 }
 

@@ -139,7 +139,6 @@ public class TabelsController {
     }
 
     public void updateSheetTableAvailableDetails(List<DTOsheetTableDetails> sheetsDetailsList) {
-
         availableSheetsTable.getItems().setAll(sheetsDetailsList);
     }
 

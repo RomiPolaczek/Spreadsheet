@@ -5,6 +5,7 @@ import dto.DTOsheet;
 import permissions.PermissionManager;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.layout.api.Layout;
 
@@ -21,7 +22,6 @@ public interface SingleSheetManager {
     List<String> getExistingRanges();
     DTOsheet EditCell(String coordinateStr, String inputValue);
     DTOsheet GetVersionForDisplay(String version);
-//    void EditCell(Coordinate coordinate, String inputValue);
     int getNumberOfVersions();
 //    int getChangesAccordingToVersionNumber(int version);
 //    File getFile();
@@ -38,6 +38,12 @@ public interface SingleSheetManager {
     DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
 //    DTOsheet createDTOCopySheet();
 //    Map<String, EffectiveValue> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
+//    List<String> createListOfValuesForFilter(String column, String range);
+//    DTOsheet filterColumnBasedOnSelection(String rangeStr, Map<String, List<String>> columnToValues, Map<String, String> oldCoordToNewCoord);
+//    List<String> getColumnsWithinRange(String range);
+//    DTOsheet sortColumnBasedOnSelection(String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord);
+    DTOsheet createDTOCopySheet();
+    Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String cellID, String newValue);
 //    Map<String, Integer> createListOfFunctions();
     void askForPermission(String userName, PermissionType permissionType);
     PermissionType getPermissionTypeForUser(String userName);

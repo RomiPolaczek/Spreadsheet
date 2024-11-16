@@ -6,6 +6,7 @@ import api.Engine;
 import dto.*;
 import permissions.PermissionStatus;
 import permissions.PermissionType;
+import sheet.api.EffectiveValue;
 import sheet.api.Sheet;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.impl.CoordinateFactory;
@@ -185,4 +186,29 @@ public class EngineImpl implements Engine, Serializable {
     public DTOsheet sortColumnBasedOnSelection(String shhetName, String rangeStr, List<String> selectedColumns, Map<String, String> newCoordToOldCoord) {
         return sheetNameToSheet.get(shhetName).sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord);
     }
+    @Override
+    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).getCellsThatHaveChangedAfterUpdateCell(cellID, newValue);
+        }
+    }
+
+    @Override
+    public DTOsheet createDTOCopySheet(String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).createDTOCopySheet();
+        }
+    }
+
+    @Override
+    public int getLatestSheetVersion(String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).getSheet().getVersion();
+        }
+    }
+
+
 }

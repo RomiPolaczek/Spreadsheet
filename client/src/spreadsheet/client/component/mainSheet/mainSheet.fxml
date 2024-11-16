@@ -2,7 +2,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="595.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.MainSheetController">
+<BorderPane prefHeight="595.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.mainSheet.MainSheetController">
    <top>
       <fx:include fx:id="headerComponent" source="header/header.fxml" />
    </top>

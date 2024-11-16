@@ -18,13 +18,16 @@
          <children>
             <AnchorPane>
                <children>
-                  <Label fx:id="userNameLabel" layoutX="79.0" layoutY="6.0" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="6.0">
+                  <Label fx:id="userNameLabel" layoutX="79.0" layoutY="6.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="System Bold Italic" size="13.0" />
                      </font>
+                     <graphic>
+                        <Label text="User name:" />
+                     </graphic>
                   </Label>
                   <Button fx:id="backButton" layoutX="879.0" layoutY="1.0" mnemonicParsing="false" onAction="#backButtonOnAction" text="Back to dashboard" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                  <Label layoutX="13.0" layoutY="1.0" text="User name:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="5.0" />
+                  <Button fx:id="updateToLatestVersionButton" layoutX="698.0" layoutY="2.0" mnemonicParsing="false" onAction="#updateToLatestVersionButton" style="-fx-background-color: #32CD32;" text="Update to Latest Version" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="5.0" />
                </children>
             </AnchorPane>
             <HBox alignment="CENTER">
