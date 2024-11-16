@@ -47,7 +47,7 @@ public class SingleSheetManagerImpl implements SingleSheetManager, Serializable 
 
     @Override
     public void LoadFile(InputStream inputStream, String owner) throws Exception {
-       // File newFile = checkFileValidation(inputStream);
+//        File newFile = checkFileValidation(inputStream);
         fromXmlFileToObject(inputStream);
         fromStlSheetToOurSheet();
         this.owner = owner;

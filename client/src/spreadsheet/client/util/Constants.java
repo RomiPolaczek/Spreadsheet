@@ -2,6 +2,8 @@ package spreadsheet.client.util;
 
 //import com.google.gson.Gson;
 
+import com.google.gson.Gson;
+
 public class Constants {
 
     // global constants
@@ -45,7 +47,7 @@ public class Constants {
     public final static String UPDATE_CELL = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/updateCellValue";
     public final static String GET_NUM_VERSIONS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getNumSheetVersions";
     public final static String GET_DTO_SHEET_VERSION = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getDTOSheetVersion";
-
+    public final static String GET_NUM_LATEST_SHEET_VERSION = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getNumLatestSheetVersion";
 
 
     public final static String UPDATED_CELLS_DYNAMIC_ANALYSIS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + DYNAMIC_ANALYSIS + "/updatedCells";
@@ -59,5 +61,5 @@ public class Constants {
 
 
     // GSON instance
-    //public final static Gson GSON_INSTANCE = new Gson();
+    public final static Gson GSON_INSTANCE = new Gson();
 }

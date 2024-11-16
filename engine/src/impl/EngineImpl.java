@@ -167,4 +167,14 @@ public class EngineImpl implements Engine, Serializable {
             return sheetNameToSheet.get(sheetName).createDTOCopySheet();
         }
     }
+
+    @Override
+    public int getLatestSheetVersion(String sheetName) {
+        synchronized (this) {
+            ensureSheetExists(sheetName);
+            return sheetNameToSheet.get(sheetName).getSheet().getVersion();
+        }
+    }
+
+
 }

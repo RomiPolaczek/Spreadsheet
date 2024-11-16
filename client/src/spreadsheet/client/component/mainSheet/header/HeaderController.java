@@ -39,8 +39,10 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
-import static spreadsheet.client.util.Constants.DASHBOARD_PAGE_FXML_RESOURCE_LOCATION;
+import static spreadsheet.client.util.Constants.*;
 
 public class HeaderController {
 
@@ -64,6 +66,8 @@ public class HeaderController {
     private Button backButton;
     @FXML
     private Label userNameLabel;
+    @FXML
+    private Button updateToLatestVersionButton;
 
     private MainSheetController mainSheetController;
     private SimpleStringProperty selectedCellProperty;
@@ -99,6 +103,7 @@ public class HeaderController {
         formatFunctionButton.disableProperty().bind(Bindings.or(selectedCellProperty.isNull(),isEditDisabledProperty));
         animationsCheckBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
         themesComboBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
+        updateToLatestVersionButton.setVisible(false);
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
@@ -140,7 +145,7 @@ public class HeaderController {
 
         //noinspection ConstantConditions
         String finalUrl = HttpUrl
-                .parse(Constants.LOAD_SHEET)
+                .parse(LOAD_SHEET)
                 .newBuilder()
                 .addQueryParameter("selectedSheet", selectedSheet)
                 .build()
@@ -286,18 +291,31 @@ public class HeaderController {
 
     @FXML
     void updateCellValueButtonAction(ActionEvent event) {
-        String newValue = originalCellValueTextField.getText();
+        // Validate that a cell is selected before proceeding
         String selectedCellID = selectedCellProperty.get();
-
         if (selectedCellID == null || selectedCellID.isEmpty()) {
             ShowAlert.showAlert("Error", "No Cell Selected", "Please select a cell before editing.", Alert.AlertType.ERROR);
             return;
         }
-        updateCellValue(selectedCellID, newValue);
+
+        // Get the new value to update
+        String newValue = originalCellValueTextField.getText();
+
+        // Check for the latest version and handle user decision
+        fetchNumOfLatestSheetVersion(
+            latestVersion -> {
+                if(mainSheetController.getCurrentDTOSheet().getVersion() != latestVersion)
+                    handleDifferentVersionsSheet();
+                else{
+                    updateCellValue(selectedCellID, newValue);
+                }
+            },
+            errorMessage -> Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + errorMessage, Alert.AlertType.ERROR))
+        );
     }
 
     public void updateCellValue(String cellID, String newValue) {
-        String updateCellUrl = Constants.UPDATE_CELL; // Replace with your endpoint URL
+        String updateCellUrl = UPDATE_CELL; // Replace with your endpoint URL
 
         JsonObject jsonBody = new JsonObject();
         jsonBody.addProperty("selectedSheet", mainSheetController.getSheetName());
@@ -306,7 +324,7 @@ public class HeaderController {
 
         RequestBody body = RequestBody.create(
                 jsonBody.toString(),
-                okhttp3.MediaType.parse("application/json")
+                MediaType.parse("application/json")
         );
 
         Request request = new Request.Builder()
@@ -367,7 +385,7 @@ public class HeaderController {
 
     public void populateVersionSelector() {
         String numVersionsUrl = HttpUrl
-                .parse(Constants.GET_NUM_VERSIONS)
+                .parse(GET_NUM_VERSIONS)
                 .newBuilder()
                 .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
                 .build()
@@ -418,7 +436,7 @@ public class HeaderController {
         }
 
         String finalUrl = HttpUrl
-                .parse(Constants.GET_DTO_SHEET_VERSION)
+                .parse(GET_DTO_SHEET_VERSION)
                 .newBuilder()
                 .addQueryParameter("selectedVersion", selectedVersion)
                 .addQueryParameter("selectedSheet", mainSheetController.getSheetName())
@@ -522,4 +540,61 @@ public class HeaderController {
     public void disableEditFeatures() {
         isEditDisabledProperty.set(true);
     }
+
+    private void handleDifferentVersionsSheet() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Version Mismatch");
+            alert.setHeaderText("A New Version of the Sheet is Available");
+            alert.setContentText("You cannot make updates to this sheet as a newer version is available. Please retrieve the latest version before proceeding with any changes.");
+
+            ButtonType retrieveButton = new ButtonType("Retrieve Latest Version");
+            ButtonType cancelButton = new ButtonType("Cancel");
+
+            alert.getButtonTypes().setAll(retrieveButton, cancelButton);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == retrieveButton) {
+                mainSheetController.displaySheet(false);
+                originalCellValueTextField.clear();
+                originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+            } else {
+                disableEditFeatures();
+                System.out.println("Operation canceled by the user.");
+            }
+        });
+    }
+
+
+    private void fetchNumOfLatestSheetVersion(Consumer<Integer> onSuccess, Consumer<String> onError){
+        String url = HttpUrl
+                .parse(GET_NUM_LATEST_SHEET_VERSION)
+                .newBuilder()
+                .addQueryParameter(SELECTED_SHEET_NAME, mainSheetController.getSheetName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(url ,new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                onError.accept("Request failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    int latestVersion = GSON_INSTANCE.fromJson(response.body().string(), Integer.class);
+                    onSuccess.accept(latestVersion);
+                } else {
+                    onError.accept("Error: " + response.code() + " - " + response.message());
+                }
+            }
+        });
+    }
+
+    @FXML
+    void updateToLatestVersionButton(ActionEvent event) {
+
+    }
+
 }

@@ -29,4 +29,5 @@ public interface Engine {
     void addUser(String username);
     Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue);
     DTOsheet createDTOCopySheet(String sheetName);
+    int getLatestSheetVersion(String sheetName);
 }

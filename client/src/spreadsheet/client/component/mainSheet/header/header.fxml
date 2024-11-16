@@ -62,6 +62,7 @@
                   <Label minWidth="100.0" text="Last update cell version: " />
                   <Label fx:id="lastUpdateVersionCellLabel" minWidth="29.0" />
                   <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box" />
+                  <Button fx:id="updateToLatestVersionButton" mnemonicParsing="false" onAction="#updateToLatestVersionButton" text="Update to Latest Version" />
                </children>
                <VBox.margin>
                   <Insets left="7.0" />
