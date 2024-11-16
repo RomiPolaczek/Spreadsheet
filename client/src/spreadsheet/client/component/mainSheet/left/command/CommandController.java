@@ -527,10 +527,11 @@ public class CommandController {
                 if (response.isSuccessful()) {
                     // Parse the response body if needed
                     // Assuming the response is a JSON array of column names
-                    List<String> availableColumns = new Gson().fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
 
                     Platform.runLater(() -> {
                         // Enable the "Add Column" button and clear previous sections
+                        List<String> availableColumns = new Gson().fromJson(responseBody, new TypeToken<List<String>>() {}.getType());
+
                         addColumnButton.setDisable(false);
                         columnSections.getChildren().clear(); // Clear any existing column sections
 
@@ -700,8 +701,8 @@ public class CommandController {
         handler.handleDynamicAnalysis(event);
     }
 
-    @FXML
-    void createGraphButtonOnAction(ActionEvent event) {
+//    @FXML
+//    void createGraphButtonOnAction(ActionEvent event) {
 //        // Create a new Stage (popup window)
 //        Stage popupStage = new Stage();
 //        popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -776,7 +777,7 @@ public class CommandController {
 //                    lineChart.getData().add(dataSeries);
 //                    chart = lineChart;
 //                    lineChart.getStyleClass().add("visible");
-//                    if(!mainController.isAnimationSelectedProperty())
+//                    if(!mainSheetController.isAnimationSelectedProperty())
 //                        chart.setAnimated(false);
 //
 //                }
@@ -797,7 +798,7 @@ public class CommandController {
 //                    barChart.getData().add(dataSeries);
 //                    chart = barChart;
 //
-//                    if(!mainController.isAnimationSelectedProperty())
+//                    if(!mainSheetController.isAnimationSelectedProperty())
 //                        chart.setAnimated(false);
 //                }
 //
@@ -805,15 +806,15 @@ public class CommandController {
 //                showChartInPopup(popupStage, chart, inputScene);
 //
 //            } catch (Exception ex) {
-//                mainController.showAlert("Error", "Could not create graph", ex.getMessage(), Alert.AlertType.ERROR);
+//                //mainController.showAlert("Error", "Could not create graph", ex.getMessage(), Alert.AlertType.ERROR);
 //            }
 //        });
 //
 //        inputFormVBox.getChildren().add(submitButton);
 //        popupStage.setScene(inputScene);
-//        mainController.setTheme(inputScene);
+//        mainSheetController.setTheme(inputScene);
 //        popupStage.show();
-    }
+//    }
 
     private void showChartInPopup(Stage popupStage, Chart chart, Scene inputScene) {
         VBox chartVBox = new VBox(chart);
@@ -834,8 +835,157 @@ public class CommandController {
         popupStage.setScene(chartScene);
     }
 
+    @FXML
+    void createGraphButtonOnAction(ActionEvent event) {
+        // Create a new Stage (popup window)
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Create Graph");
+
+        // Create a VBox for the input form
+        VBox inputFormVBox = new VBox(10);
+        inputFormVBox.setPadding(new Insets(20));
+
+        // Create and configure the text fields for X-axis and Y-axis range input
+        Label xAxisLabel = new Label("X-axis (Cells Range):");
+        TextField xAxisField = new TextField();
+        xAxisField.setPromptText("e.g., \"A1..A3\", \"D2..D5\"");
+        inputFormVBox.getChildren().addAll(xAxisLabel, xAxisField);
+
+        Label yAxisLabel = new Label("Y-axis (Cells Range): ");
+        TextField yAxisField = new TextField();
+        yAxisField.setPromptText("e.g., \"A1..A3\", \"D2..D5\"");
+        inputFormVBox.getChildren().addAll(yAxisLabel, yAxisField);
+
+        // Create a combo box to allow selection of graph type (Line Graph or Bar Graph)
+        Label graphTypeLabel = new Label("Select Graph Type: ");
+        ComboBox<String> graphTypeComboBox = new ComboBox<>();
+        graphTypeComboBox.getItems().addAll("Line Graph", "Bar Graph");
+        graphTypeComboBox.setValue("Line Graph"); // Default selection
+        inputFormVBox.getChildren().addAll(graphTypeLabel, graphTypeComboBox);
+
+        // Create and configure the submit button
+        Button submitButton = new Button("Create Graph");
+        submitButton.setDisable(true); // Initially disabled
+
+        // Enable the submit button only when both fields are not empty
+        xAxisField.textProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(xAxisField.getText().trim().isEmpty() || yAxisField.getText().trim().isEmpty());
+        });
+
+        yAxisField.textProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(xAxisField.getText().trim().isEmpty() || yAxisField.getText().trim().isEmpty());
+        });
+
+        Scene inputScene = new Scene(inputFormVBox, 400, 300);
+
+        submitButton.setOnAction(e -> {
+            String xAxisRange = xAxisField.getText();
+            String yAxisRange = yAxisField.getText();
+            String selectedGraphType = graphTypeComboBox.getValue();
+            String selectedSheetName = mainSheetController.getSheetName();
+
+            try {
+                // Fetch numerical values for X-axis
+                fetchNumericalValues(selectedSheetName, xAxisRange, xAxisValues -> {
+                    // Fetch numerical values for Y-axis
+                    fetchNumericalValues(selectedSheetName, yAxisRange, yAxisValues -> {
+                        Platform.runLater(() -> {
+                            try {
+                                if (xAxisValues.size() != yAxisValues.size()) {
+                                    throw new IllegalArgumentException("X and Y ranges must have the same number of values.");
+                                }
+
+                                Chart chart = createGraph(selectedGraphType, xAxisValues, yAxisValues);
+                                showChartInPopup(popupStage, chart, inputScene);
+                            } catch (Exception ex) {
+                                //ShowAlert.showAlert("Error", "Could not create graph", ex.getMessage(), Alert.AlertType.ERROR);
+                                System.out.println(ex.getMessage());
+                            }
+                        });
+                    });
+                });
+            } catch (Exception ex) {
+                ShowAlert.showAlert("Error", "Could not fetch data", ex.getMessage(), Alert.AlertType.ERROR);
+            }
+        });
+
+        inputFormVBox.getChildren().add(submitButton);
+        popupStage.setScene(inputScene);
+        mainSheetController.setTheme(inputScene);
+        popupStage.show();
+    }
+
+    private void fetchNumericalValues(String sheetName, String rangeStr, Consumer<List<Double>> callback) {
+        String finalUrl = HttpUrl
+                .parse(Constants.GET_RANGE_NUMERICAL_VALUES)
+                .newBuilder()
+                .addQueryParameter("selectedSheet", sheetName)
+                .addQueryParameter("rangeStr", rangeStr)
+                .build()
+                .toString();
+
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Platform.runLater(() -> ShowAlert.showAlert("Error", "Failed to fetch range values", e.getMessage(), Alert.AlertType.ERROR));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+
+                if (response.isSuccessful()) {
+                    List<Double> numericalValues = new Gson().fromJson(responseBody, new TypeToken<List<Double>>() {}.getType());
+
+                    Platform.runLater(() ->
+                            callback.accept(numericalValues)
+                    );
+
+                } else {
+                    //Platform.runLater(() -> ShowAlert.showAlert("Error", "Failed to fetch range values", responseBody, Alert.AlertType.ERROR));
+                    System.out.println(responseBody);
+                }
+            }
+        });
+    }
+
+    private Chart createGraph(String graphType, List<Double> xAxisValues, List<Double> yAxisValues) {
+        if ("Line Graph".equals(graphType)) {
+            NumberAxis xAxis = new NumberAxis();
+            xAxis.setLabel("X Axis");
+
+            NumberAxis yAxis = new NumberAxis();
+            yAxis.setLabel("Y Axis");
+
+            LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+            XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
+            for (int i = 0; i < xAxisValues.size(); i++) {
+                dataSeries.getData().add(new XYChart.Data<>(xAxisValues.get(i), yAxisValues.get(i)));
+            }
+            lineChart.getData().add(dataSeries);
+            return lineChart;
+        } else {
+            CategoryAxis xAxis = new CategoryAxis();
+            xAxis.setLabel("X Axis");
+
+            NumberAxis yAxis = new NumberAxis();
+            yAxis.setLabel("Y Axis");
+
+            BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+            XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
+            for (int i = 0; i < xAxisValues.size(); i++) {
+                dataSeries.getData().add(new XYChart.Data<>(xAxisValues.get(i).toString(), yAxisValues.get(i)));
+            }
+            barChart.getData().add(dataSeries);
+            return barChart;
+        }
+    }
+
+
     public void setGraphStyle(Scene scene){
-        String css = getClass().getResource(  "/left/command/graph/style/"+ mainSheetController.getSelectedTheme() + "Graph.css").toExternalForm();
+        String css = getClass().getResource(  "/spreadSheet/client/component/mainSheet/left/command/graph/style/"+ mainSheetController.getSelectedTheme() + "Graph.css").toExternalForm();
         scene.getStylesheets().add(css);
     }
 
@@ -1030,5 +1180,9 @@ public class CommandController {
         //columnWidthSlider.setDisable(true);
         //selectedRowLabel.setDisable(true);
         //rowHeightSlider.setDisable(true);
+    }
+
+    public void close() {
+
     }
 }

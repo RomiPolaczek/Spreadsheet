@@ -579,6 +579,7 @@ public class SheetImpl implements Sheet, Serializable {
         newRange.parseRange(range);
         int startCol = newRange.getTopLeftCoordinate().getColumn();
         int endCol = newRange.getBottomRightCoordinate().getColumn();
+
         for(int i = startCol; i <= endCol; i++) {
             columns.add(CoordinateImpl.convertNumberToAlphabetString(i));
         }

@@ -247,6 +247,12 @@ public class MainSheetController {
         leftComponentController.disableEditFeatures();
     }
 
+    public void close() {
+        headerComponentController.close();
+        leftComponentController.close();
+        sheetComponentController.close();
+    }
+
 //    public void showMainWindow(){
 //        try {
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("client/src/spreadsheet/client/component/main/mainSheet.fxml"));

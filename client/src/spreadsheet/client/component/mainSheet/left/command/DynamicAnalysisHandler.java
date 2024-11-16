@@ -54,7 +54,7 @@ public class DynamicAnalysisHandler {
 
         // Create a new SheetController for the pop-up
         SheetController newSheetController = new SheetController();
-        newSheetController.setMainController(mainSheetController);
+        newSheetController.setMainSheetController(mainSheetController);
         GridPane gridPane = new GridPane();
         newSheetController.setDynamicGridPane(gridPane);
         newSheetController.initializeSheetController();

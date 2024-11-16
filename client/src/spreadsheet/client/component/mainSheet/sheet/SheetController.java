@@ -448,4 +448,8 @@ public class SheetController {
         return (cellRow <= endRow && cellRow >= startRow && cellCol <= endCol && cellCol >= startCol);
     }
 
+    public void close() {
+
+    }
+
 }

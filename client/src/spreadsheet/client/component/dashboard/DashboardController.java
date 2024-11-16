@@ -38,6 +38,7 @@ public class DashboardController {
     @FXML private BorderPane dashboardBorderPane;
     @FXML private ScrollPane dashboardScrollPane;
     @FXML private Button loadFileButton;
+    @FXML private Button logoutButton;
 
     @FXML private VBox tabelsComponent;
     @FXML private TabelsController tabelsComponentController;
@@ -305,6 +306,61 @@ public class DashboardController {
 
     public TabelsController getTabelsComponentController() {
         return tabelsComponentController;
+    }
+
+    public void close() {
+        if(dashboardCommandsComponentController != null)
+            dashboardCommandsComponentController.close();
+        if(tabelsComponentController != null)
+            tabelsComponentController.close();
+        if(mainSheetController != null)
+            mainSheetController.close();
+    }
+
+    @FXML
+    void logoutButtonOnAction(ActionEvent event) {
+
+        String finalUrl = HttpUrl
+                .parse(Constants.LOGOUT)
+                .newBuilder()
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    ShowAlert.showAlert("Error", "Failed to logout", e.getMessage(), Alert.AlertType.ERROR);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                if (response.body() == null) {
+                    return;
+                }
+
+                try {
+                    String jsonResponse = response.body().string();
+                    if (response.isSuccessful()) {
+                        String message = jsonResponse.trim();
+                        System.out.println("See you next time");
+                        close();
+                        Platform.exit();
+                    } else {
+                        String message = jsonResponse.trim();
+                        System.out.println(message);
+                    }
+                } catch (IOException e) {
+                    Platform.runLater(() -> {
+                        ShowAlert.showAlert("Error", "Failed to logout", e.getMessage(), Alert.AlertType.ERROR);
+                    });
+                } finally {
+                    response.close();
+                    HttpClientUtil.shutdown();
+                }
+            }
+        });
     }
 
 

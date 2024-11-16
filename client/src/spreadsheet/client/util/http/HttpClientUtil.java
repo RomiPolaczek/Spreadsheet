@@ -2,6 +2,7 @@ package spreadsheet.client.util.http;
 
 import okhttp3.*;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -16,6 +17,9 @@ public class HttpClientUtil {
             new OkHttpClient.Builder()
                     .cookieJar(simpleCookieManager)
                     .followRedirects(false)
+                    .connectTimeout(30, TimeUnit.SECONDS) // זמן חיבור
+                    .readTimeout(30, TimeUnit.SECONDS)    // זמן קריאה
+                    .writeTimeout(30, TimeUnit.SECONDS)   // זמן כתיבה
                     .build();
 
     static {

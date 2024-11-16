@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -70,14 +72,15 @@ public class LoginController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() ->
-                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
+                        ShowAlert.showAlert("Error", "Failed to login", e.getMessage(), Alert.AlertType.ERROR)
                 );
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+
                 if (response.code() != 200) {
-                    String responseBody = response.body().string();
                     Platform.runLater(() -> {
                         String message = gson.fromJson(responseBody, String.class);
                         loginRequest.completeExceptionally(new Exception("Something went wrong: " + message));
@@ -85,8 +88,10 @@ public class LoginController {
                 } else {
                     Platform.runLater(() -> {
                         loginRequest.complete(null);
+                        ShowAlert.showAlert("Error", "Failed to login", responseBody, Alert.AlertType.ERROR);
                     });
                 }
+                response.close();
             }
         });
 
@@ -109,11 +114,13 @@ public class LoginController {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    errorMessageProperty.set("Failed to load the main window.");
+                    ShowAlert.showAlert("Error", "Failed to load main window", e.getMessage(), Alert.AlertType.ERROR);
+
                 }
             });
         }).exceptionally(e -> {
-            errorMessageProperty.set("Something went wrong: " + e.getMessage());
+            ShowAlert.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
+
             return null;
         });
     }
@@ -131,4 +138,5 @@ public class LoginController {
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
     }
+
 }

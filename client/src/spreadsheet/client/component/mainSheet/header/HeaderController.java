@@ -596,4 +596,11 @@ public class HeaderController {
             timer.cancel();
         }
     }
+
+    public void close() {
+        if (sheetVersionsRefresher != null && timer != null) {
+            sheetVersionsRefresher.cancel();
+            timer.cancel();
+        }
+    }
 }

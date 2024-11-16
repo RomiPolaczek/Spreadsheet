@@ -58,6 +58,8 @@ public class Range implements Serializable {
         int bottomRightRow = bottomRightCoordinate.getRow();
         int bottomRightColumn = bottomRightCoordinate.getColumn();
 
+//        if(topLeftRow < 1 || bottomRightRow )
+
         // Iterate over the range of columns and rows
         for (int col = topLeftColumn; col <= bottomRightColumn; col++) {
             if(topLeftRow == bottomRightRow) {

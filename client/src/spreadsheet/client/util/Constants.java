@@ -29,6 +29,7 @@ public class Constants {
 
     // Login
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/login";
+    public final static String LOGOUT = FULL_SERVER_PATH + "/logout";
 
     // Dashboard commands
     public final static String LOAD_FILE = FULL_SERVER_PATH + "/loadFile";
@@ -55,7 +56,7 @@ public class Constants {
     public final static String GET_LAYOUT_FOR_FILTER = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getLayoutForFilter";
     public final static String CREATE_DTO_SHEET_SORT = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/createDTOSheetSort";
     public final static String GET_NUM_LATEST_SHEET_VERSION = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getNumLatestSheetVersion";
-
+    public final static String GET_RANGE_NUMERICAL_VALUES = FULL_SERVER_PATH + MAIN_SHEET_PAGE + "/getRangeNumericalValues";
 
     public final static String UPDATED_CELLS_DYNAMIC_ANALYSIS = FULL_SERVER_PATH + MAIN_SHEET_PAGE + DYNAMIC_ANALYSIS + "/updatedCells";
     public final static String CREATE_DTO_COPY_SHEET = FULL_SERVER_PATH + MAIN_SHEET_PAGE + DYNAMIC_ANALYSIS + "/getDTOCopySheet";

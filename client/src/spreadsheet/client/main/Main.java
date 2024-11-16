@@ -1,13 +1,23 @@
 package spreadsheet.client.main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import spreadsheet.client.component.login.LoginController;
 import spreadsheet.client.component.dashboard.DashboardController;
 import spreadsheet.client.util.Constants;
+import spreadsheet.client.util.ShowAlert;
+import spreadsheet.client.util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,9 +53,9 @@ public class Main extends Application {
 
 //    @Override
 //    public void stop() throws Exception {
-//        HttpClientUtil.shutdown();
-//        chatAppMainController.close();
+//        dashboardController.
 //    }
+
 
     public static void main(String[] args) {
         launch(args);
