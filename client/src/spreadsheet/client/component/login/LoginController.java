@@ -41,9 +41,6 @@ public class LoginController {
     @FXML
     public void initialize() {
         errorMessageLabel.textProperty().bind(errorMessageProperty);
-//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
-//                Platform.runLater(() ->
-//                        updateHttpStatusLine(line)));
     }
 
     @FXML
@@ -104,9 +101,10 @@ public class LoginController {
                     DashboardController dashboardController = loader.getController();
                     dashboardController.setUserName(userNameTextField.getText());
 
-
                     Stage mainStage = new Stage();
-                    mainStage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    mainStage.setScene(scene);
+                    dashboardController.setTheme(scene);
                     mainStage.show();
 
                     // Close the login window
@@ -120,7 +118,6 @@ public class LoginController {
             });
         }).exceptionally(e -> {
             ShowAlert.showAlert("Error", "", e.getMessage(), Alert.AlertType.ERROR);
-
             return null;
         });
     }

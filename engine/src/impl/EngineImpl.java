@@ -101,10 +101,10 @@ public class EngineImpl implements Engine, Serializable {
         sheetNameToSheet.get(sheetName).removeRange(rangeName);
     }
 
-    public DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName) {
+    public DTOsheet EditCell(String coordinateStr, String inputValue, String sheetName, String username) {
         synchronized (this) {
             ensureSheetExists(sheetName);
-            return sheetNameToSheet.get(sheetName).EditCell(coordinateStr, inputValue);
+            return sheetNameToSheet.get(sheetName).EditCell(coordinateStr, inputValue, username);
         }
     }
 
@@ -187,10 +187,10 @@ public class EngineImpl implements Engine, Serializable {
         return sheetNameToSheet.get(shhetName).sortColumnBasedOnSelection(rangeStr, selectedColumns, newCoordToOldCoord);
     }
     @Override
-    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue) {
+    public Map<String, String> getCellsThatHaveChangedAfterUpdateCell(String sheetName, String cellID, String newValue, String username) {
         synchronized (this) {
             ensureSheetExists(sheetName);
-            return sheetNameToSheet.get(sheetName).getCellsThatHaveChangedAfterUpdateCell(cellID, newValue);
+            return sheetNameToSheet.get(sheetName).getCellsThatHaveChangedAfterUpdateCell(cellID, newValue, username);
         }
     }
 

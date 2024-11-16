@@ -14,9 +14,10 @@ public class DTOcell implements Serializable {
     private int version;
     private List<String> dependsOn;
     private List<String> influencingOn;
+    private String username;
 
 
-    public DTOcell(int row, int col, String effectiveValue, String originalValue, int version, List<Coordinate> dependsOn, List<Coordinate> influencingOn) {
+    public DTOcell(int row, int col, String effectiveValue, String originalValue, int version, List<Coordinate> dependsOn, List<Coordinate> influencingOn, String username) {
         this.row = row;
         this.col = col;
         this.effectiveValue = effectiveValue;
@@ -24,6 +25,7 @@ public class DTOcell implements Serializable {
         this.version = version;
         this.dependsOn = convertListCellsToString(dependsOn);
         this.influencingOn = convertListCellsToString(influencingOn);
+        this.username = username;
     }
 
     public int getRow() {
@@ -45,6 +47,8 @@ public class DTOcell implements Serializable {
     public List<String> getDependsOn() {return dependsOn;}
 
     public List<String> getInfluencingOn() {return influencingOn;}
+
+    public String getUsername() {return username;}
 
     private List<String> convertListCellsToString(List<Coordinate> coordinates) {
         List<String> cellsList = new ArrayList<>();

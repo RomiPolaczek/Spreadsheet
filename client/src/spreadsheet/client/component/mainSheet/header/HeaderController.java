@@ -6,22 +6,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import dto.DTOsheet;
 import javafx.application.Platform;
-
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
-import spreadsheet.client.component.dashboard.DashboardController;
-import spreadsheet.client.component.dashboard.tables.AvailableSheetsRefresher;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -32,8 +25,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
-import spreadsheet.client.theme.ThemeManager;
-import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import java.io.IOException;
@@ -54,10 +45,6 @@ public class HeaderController {
     @FXML
     private Label selectedCellIDLabel;
     @FXML
-    private CheckBox animationsCheckBox;
-    @FXML
-    private ComboBox<String> themesComboBox;
-    @FXML
     private TextField originalCellValueTextField;
     @FXML
     private Button formatFunctionButton;
@@ -67,14 +54,18 @@ public class HeaderController {
     private Label userNameLabel;
     @FXML
     private Button updateToLatestVersionButton;
+    @FXML
+    private Label sheetNameLabel;
+    @FXML
+    private Label editedByUserNameLabel;
 
     private MainSheetController mainSheetController;
+    private SimpleStringProperty selectedSheetNameProperty;
+
     private SimpleStringProperty selectedCellProperty;
     private SimpleStringProperty originalCellValueProperty;
     private SimpleStringProperty lastUpdateVersionCellProperty;
-    private SimpleBooleanProperty isAnimationSelectedProperty;
     private List<String> lastHighlightedCells = new ArrayList<>();
-    private ThemeManager themeManager;
     private StringBuilder currentExpression;
     private BooleanProperty isEditDisabledProperty;
     private BooleanProperty isSheetVersionSynced;
@@ -87,27 +78,22 @@ public class HeaderController {
         originalCellValueProperty = new SimpleStringProperty();
         lastUpdateVersionCellProperty = new SimpleStringProperty();
         versionSelectorComboBox = new ComboBox<>();
-        themesComboBox = new ComboBox<>();
-        isAnimationSelectedProperty = new SimpleBooleanProperty(false);
-        themeManager = new ThemeManager();
         currentExpression = new StringBuilder();
         isEditDisabledProperty = new SimpleBooleanProperty(false);
         isSheetVersionSynced = new SimpleBooleanProperty(true);
+        selectedSheetNameProperty = new SimpleStringProperty();
     }
 
     @FXML
     private void initialize() {
         updateCellValueButton.disableProperty().bind(Bindings.or(selectedCellProperty.isNull(), isEditDisabledProperty));
-        themesComboBox.getItems().addAll("Classic", "Pink", "Blue", "Dark");
-        themesComboBox.setValue("Classic"); // Set default value
         selectedCellIDLabel.textProperty().bind(selectedCellProperty);
         originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
         lastUpdateVersionCellLabel.textProperty().bind(lastUpdateVersionCellProperty);
         formatFunctionButton.disableProperty().bind(Bindings.or(selectedCellProperty.isNull(),isEditDisabledProperty));
-        animationsCheckBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
-        themesComboBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
         updateToLatestVersionButton.setVisible(false);
         updateToLatestVersionButton.visibleProperty().bind(isSheetVersionSynced.not());
+        sheetNameLabel.textProperty().bind(selectedSheetNameProperty);
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
@@ -134,15 +120,18 @@ public class HeaderController {
 
     public void setMainSheetController(MainSheetController mainSheetController) {
         this.mainSheetController = mainSheetController;
-        mainSheetController.getThemeManager().setMainController(mainSheetController);
         userNameLabel.textProperty().bind(mainSheetController.getUserName());
     }
 
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
-    public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
-
     public BooleanProperty getIsSheetVersionSynced() { return isSheetVersionSynced; }
+
+    public MainSheetController getMainSheetController() { return mainSheetController; }
+
+    public void setSheetNameLabel(String sheetNameLabel) {
+        this.sheetNameLabel.setText(sheetNameLabel);
+    }
 
     public void displaySheet(String selectedSheet, Boolean loadSheetFromDashboard){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
@@ -196,6 +185,8 @@ public class HeaderController {
                             originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
                             lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
                             mainSheetController.populateRangeListView();
+                            selectedSheetNameProperty.set(selectedSheet);
+                            editedByUserNameLabel.setText(dtoSheet.getCell("A1").getUsername());
                             startSheetVersionsRefresher();
                         } catch (IOException e) {
                             ShowAlert.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
@@ -206,25 +197,13 @@ public class HeaderController {
         });
     }
 
-    @FXML
-    void themesComboBoxOnAction(ActionEvent event) {
-        String selectedTheme = themesComboBox.getValue();
-        mainSheetController.setSelectedTheme(selectedTheme);
-        // Use ThemeManager to apply the selected theme
-        mainSheetController.setTheme(lastUpdateVersionCellLabel.getScene());
-    }
-
-    @FXML
-    void animationsCheckBoxOnAction(ActionEvent event) {
-        boolean isSelected = animationsCheckBox.isSelected();
-        isAnimationSelectedProperty.set(isSelected);
-    }
-
     public void addClickEventForSelectedCell(Label label, String cellID, DTOcell dtoCell) {
         label.setOnMouseClicked(event -> {
             resetPreviousStyles();
             selectedCellProperty.set(cellID);
             animateSelectedCell(label);
+
+            editedByUserNameLabel.setText(dtoCell.getUsername());
 
             mainSheetController.selectedColumnProperty().set(cellID.replaceAll("\\d", ""));
             mainSheetController.selectedRowProperty().set(cellID.replaceAll("[^\\d]", ""));
@@ -254,7 +233,7 @@ public class HeaderController {
     }
 
     private void animateSelectedCell(Label label) {
-        if(isAnimationSelectedProperty.get()) {
+        if(mainSheetController.isAnimationSelectedProperty()) {
 
             ScaleTransition scaleTransition = new ScaleTransition();
             scaleTransition.setNode(label); // Set the label to animate
@@ -365,6 +344,7 @@ public class HeaderController {
 
                             originalCellValueTextField.clear();
                             originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
+                            editedByUserNameLabel.setText(dtoSheet.getCell(cellID).getUsername());
                         });
                     }catch (IOException e) {
                         Platform.runLater(() -> ShowAlert.showAlert("Error", "Update Failed", "Error: " + e.getMessage(), Alert.AlertType.ERROR));
@@ -485,11 +465,13 @@ public class HeaderController {
             }
         });
 
-        Platform.runLater(() -> {
-            if (versionSelectorComboBox.getItems().size() > 0) {
-                versionSelectorComboBox.getSelectionModel().clearSelection();
-                versionSelectorComboBox.setPromptText("Version Selector");
-            }
+        versionSelectorComboBox.getSelectionModel().clearSelection();
+        versionSelectorComboBox.setButtonCell(new ListCell<>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(empty ? "Version Selector" : item);
+                    }
         });
     }
 
@@ -574,7 +556,7 @@ public class HeaderController {
     }
 
     @FXML
-    void updateToLatestVersionButton(ActionEvent event) {
+    void updateToLatestVersionButtonOnAction(ActionEvent event) {
         mainSheetController.displaySheet(false);
         isEditDisabledProperty.set(false);
     }
@@ -588,7 +570,6 @@ public class HeaderController {
     public int getLastKnownVersion(){
         return mainSheetController.getCurrentDTOSheet().getVersion();
     }
-
 
     public void stopSheetVersionsRefresher() throws IOException {
         if (sheetVersionsRefresher != null && timer != null) {

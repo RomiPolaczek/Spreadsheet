@@ -212,8 +212,6 @@ public class DynamicAnalysisHandler {
     }
 
 
-
-
     private void validateAndSetSlider(TextField textField, Slider valueSlider, String labelText, TextField minValueTextField, TextField maxValueTextField, TextField stepSizeTextField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             valueSlider.setDisable(minValueTextField.getText().trim().isEmpty() ||
@@ -316,7 +314,7 @@ public class DynamicAnalysisHandler {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root);
-        mainSheetController.setTheme(scene);
+        mainSheetController.setSheetStyle(scene);
         gridPane.setMinSize(400, 400); // Set a reasonable minimum size
         gridPane.setPrefSize(600, 400); // Set a preferred size
 

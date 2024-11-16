@@ -18,7 +18,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import spreadsheet.client.component.mainSheet.left.LeftController;
 import spreadsheet.client.component.mainSheet.sheet.SheetController;
-import spreadsheet.client.theme.ThemeManager;
 
 import java.util.List;
 import java.util.Map;
@@ -40,8 +39,6 @@ public class MainSheetController {
 
     private Engine engine;
     private DashboardController dashboardController;
-    private String selectedTheme = "Classic";
-    private ThemeManager themeManager;
     private String sheetName;
     private DTOsheet currentDTOSheet;
     private BooleanProperty isEditDisabledProperty;
@@ -50,7 +47,6 @@ public class MainSheetController {
     @FXML
     public void initialize(String sheetName, DashboardController dashboardController  /*SimpleStringProperty userName*/) {
         engine = new EngineImpl();
-        themeManager = new ThemeManager();
         if (dashboardController != null) {
             this.dashboardController = dashboardController;
         }
@@ -80,18 +76,9 @@ public class MainSheetController {
         return currentDTOSheet;
     }
 
-    public void setSelectedTheme(String selectedTheme) {
-        this.selectedTheme = selectedTheme;
-    }
-
     public String getSelectedTheme() {
-        return selectedTheme;
+        return dashboardController.getSelectedTheme();
     }
-
-    public ThemeManager getThemeManager() {
-        return themeManager;
-    }
-
 
     public void setSheet(DTOsheet dtoSheet, Boolean applyCustomStyles) {
         sheetComponentController.setSheet(dtoSheet, applyCustomStyles);
@@ -147,7 +134,6 @@ public class MainSheetController {
         leftComponentController.resetColumnAlignmentComboBox();
     }
 
-
     public Map<String, String> getCellStyles() {
         return sheetComponentController.getCellStyles();
     }
@@ -201,15 +187,15 @@ public class MainSheetController {
     }
 
     public Boolean isAnimationSelectedProperty() {
-        return headerComponentController.isAnimationSelectedProperty().getValue();
+        return dashboardController.isAnimationSelectedProperty().getValue();
     }
 
-    public void setSheetStyle(Scene scene, String theme) {
-        sheetComponentController.setSheetStyle(scene, theme);
+    public void setSheetStyle(Scene scene) {
+        sheetComponentController.setSheetStyle(scene, dashboardController.getSelectedTheme());
     }
 
     public void setTheme(Scene scene) {
-        themeManager.applyTheme(scene, selectedTheme);
+        dashboardController.setTheme(scene);
     }
 
     public Map<String, String> getNewCoordToOldCoord() {
@@ -232,37 +218,17 @@ public class MainSheetController {
         return dashboardController.getUserName();
     }
 
-//    public void disableEditFeatures() {
-//        if(headerComponentController!=null)
-//            headerComponentController.disableEditFeatures();
-//        if(leftComponentController!=null)
-//            leftComponentController.disableEditFeatures();
-////        if(sheetComponentController!=null)
-////            sheetComponentController.disableEditFeatures();
-//    }
-
     public void disableEditFeatures() {
         isEditDisabledProperty.set(true);
         headerComponentController.disableEditFeatures();
         leftComponentController.disableEditFeatures();
     }
 
+
     public void close() {
         headerComponentController.close();
         leftComponentController.close();
         sheetComponentController.close();
     }
-
-//    public void showMainWindow(){
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("client/src/spreadsheet/client/component/main/mainSheet.fxml"));
-//            Parent root = loader.load();
-//            Stage mainStage = new Stage();
-//            mainStage.setScene(new Scene(root));
-//            mainStage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

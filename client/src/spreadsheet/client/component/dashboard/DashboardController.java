@@ -24,6 +24,7 @@ import spreadsheet.client.component.dashboard.commands.DashboardCommandsControll
 import spreadsheet.client.component.dashboard.tables.TabelsController;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import spreadsheet.client.enums.PermissionType;
+import spreadsheet.client.theme.ThemeManager;
 import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
@@ -37,9 +38,11 @@ public class DashboardController {
 
     @FXML private BorderPane dashboardBorderPane;
     @FXML private ScrollPane dashboardScrollPane;
+    @FXML private Label userNameLabel;
     @FXML private Button loadFileButton;
+    @FXML private ComboBox<String> themesComboBox;
+    @FXML private CheckBox animationsCheckBox;
     @FXML private Button logoutButton;
-
     @FXML private VBox tabelsComponent;
     @FXML private TabelsController tabelsComponentController;
     @FXML private VBox dashboardCommandsComponent;
@@ -50,8 +53,10 @@ public class DashboardController {
     private SimpleStringProperty selectedSheet;
     private SimpleStringProperty selectedRequestUserName;
     private BooleanProperty isEditDisabledProperty;
-    //private SimpleStringProperty selectedRequestOwnerName;
-    //private BooleanProperty isOwner;
+    private ThemeManager themeManager;
+    private String selectedTheme = "Classic";
+    private SimpleBooleanProperty isAnimationSelectedProperty;
+
 
     @FXML
     public void initialize() {
@@ -59,8 +64,13 @@ public class DashboardController {
         selectedSheet = new SimpleStringProperty();
         selectedRequestUserName = new SimpleStringProperty();
         isEditDisabledProperty = new SimpleBooleanProperty(false);
-        //selectedRequestOwnerName = new SimpleStringProperty();
-        //isOwner = new SimpleBooleanProperty();
+        userNameLabel.textProperty().bind(userName);
+
+        isAnimationSelectedProperty = new SimpleBooleanProperty(false);
+        themeManager = new ThemeManager(this);
+
+        themesComboBox.getItems().addAll("Classic", "Pink", "Blue", "Dark");
+        themesComboBox.setValue("Classic"); // Set default value
 
         if (tabelsComponentController != null && dashboardCommandsComponentController != null) {
             tabelsComponentController.setDashboardController(this);
@@ -106,10 +116,6 @@ public class DashboardController {
     public SimpleStringProperty getSelectedRequestUserName() {
         return selectedRequestUserName;
     }
-
-//    public void setSelectedRequestOwnerName(String owner) {
-//        this.selectedRequestOwnerName.set(owner);
-//    }
 
     public DashboardCommandsController getDashboardCommandsComponentController() {
         return dashboardCommandsComponentController;
@@ -308,6 +314,24 @@ public class DashboardController {
         return tabelsComponentController;
     }
 
+    @FXML
+    void animationsCheckBoxOnAction(ActionEvent event) {
+        boolean isSelected = animationsCheckBox.isSelected();
+        isAnimationSelectedProperty.set(isSelected);
+    }
+
+    public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
+
+    @FXML
+    void themesComboBoxOnAction(ActionEvent event) {
+        selectedTheme = themesComboBox.getValue();
+        themeManager.applyTheme(loadFileButton.getScene(), selectedTheme);
+    }
+
+    public void setSelectedTheme(String selectedTheme) {
+        this.selectedTheme = selectedTheme;
+    }
+  
     public void close() {
         if(dashboardCommandsComponentController != null)
             dashboardCommandsComponentController.close();
@@ -363,10 +387,15 @@ public class DashboardController {
         });
     }
 
+    public String getSelectedTheme() {
+        return selectedTheme;
+    }
 
-//    private void disableMainSheetEditFeatures(){
-//        if(mainSheetController!= null){
-//            mainSheetController.disableEditFeatures();
-//        }
-//    }
+    public void setTheme(Scene scene) {
+        themeManager.applyTheme(scene, selectedTheme);
+    }
+
+    public void setSheetStyle(Scene scene) {
+        mainSheetController.setSheetStyle(scene);
+    }
 }

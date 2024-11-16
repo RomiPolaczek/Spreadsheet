@@ -93,12 +93,12 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public Sheet updateCellValueAndCalculate(int row, int column, String value) {
+    public Sheet updateCellValueAndCalculate(int row, int column, String value, String username) {
         numberCellsThatHaveChanged = 0;
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
         SheetImpl newSheetVersion = copySheet();
 
-        Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion);
+        Cell newCell = new CellImpl(row, column, value, newSheetVersion.getVersion() + 1, newSheetVersion, username);
         newSheetVersion.activeCells.put(coordinate, newCell);
 
         try {
@@ -318,9 +318,9 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public void setEmptyCell(int row, int column){
+    public void setEmptyCell(int row, int column, String username){
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, column);
-        CellImpl newCell = new CellImpl(coordinate.getRow(), coordinate.getColumn(), "", 1, this);
+        CellImpl newCell = new CellImpl(coordinate.getRow(), coordinate.getColumn(), "", 1, this, username);
         newCell.calculateEffectiveValue();
         activeCells.put(coordinate, newCell);
         updateInfluenceAndDepends();
@@ -458,7 +458,7 @@ public class SheetImpl implements Sheet, Serializable {
         // Clear the entire range
         for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
             for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
-                filteredSheet.setEmptyCell(rowIndex, colIndex);
+                filteredSheet.setEmptyCell(rowIndex, colIndex, "");
             }
         }
 
@@ -540,7 +540,7 @@ public class SheetImpl implements Sheet, Serializable {
 
         for (int rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
             for (int colIndex = startCol; colIndex <= endCol; colIndex++) {
-                sortedSheet.setEmptyCell(rowIndex,colIndex);
+                sortedSheet.setEmptyCell(rowIndex,colIndex, "");
             }
         }
 

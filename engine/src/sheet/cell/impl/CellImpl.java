@@ -24,15 +24,17 @@ public class CellImpl implements Cell, Serializable {
     private List<Coordinate> dependsOn;
     private List<Coordinate> influencingOn;
     private SheetReadActions sheet;
+    private String userName;
 
 
-    public CellImpl(int row, int column, String originalValue, int version, SheetReadActions sheet)  {
+    public CellImpl(int row, int column, String originalValue, int version, SheetReadActions sheet, String userName)  {
         this.sheet = sheet;
         this.coordinate = new CoordinateImpl(row, column);
         this.originalValue = originalValue;
         this.version = version;
         this.dependsOn = new ArrayList<>();
         this.influencingOn = new ArrayList<>();
+        this.userName = userName;
     }
 
     @Override
@@ -91,6 +93,9 @@ public class CellImpl implements Cell, Serializable {
     public int getVersion() {
         return version;
     }
+
+    @Override
+    public String getUserName() { return userName; }
 
     @Override
     public List<Coordinate> getDependsOn() {

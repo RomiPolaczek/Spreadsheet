@@ -12,6 +12,7 @@ public interface Cell {
     boolean calculateEffectiveValue();
     void updateVersion(int version);
     int getVersion();
+    String getUserName();
     List<Coordinate> getDependsOn();
     List<Coordinate> getInfluencingOn();
 }

@@ -18,7 +18,7 @@ public class SheetVersionsRefresher extends TimerTask {
                 latestVersion -> {
                     if(headerController.getLastKnownVersion() != latestVersion){
                         headerController.getIsSheetVersionSynced().set(false);
-                        headerController.disableEditFeatures();
+                        headerController.getMainSheetController().disableEditFeatures();
                     }
                     else{
                         headerController.getIsSheetVersionSynced().set(true);

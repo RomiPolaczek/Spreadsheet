@@ -36,7 +36,6 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPage);
             Parent root = fxmlLoader.load();
-            //chatAppMainController = fxmlLoader.getController();
 
             LoginController loginController = fxmlLoader.getController();
             loginController.setDashboardController(dashboardController);

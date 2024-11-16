@@ -99,6 +99,18 @@
     -fx-text-fill: black; /* Header text color */
 }
 
+.subheading{
+    -fx-font-size: 21; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+    -fx-text-fill: black; /* Header text color */
+}
+
+.tabelsHeading{
+    -fx-font-size: 15; /* Header font size */
+    -fx-font-weight: Bold italic; /* Header font weight */
+    -fx-text-fill: black; /* Header text color */
+}
+
 /* Accordion Style */
 .accordion .titled-pane {
     -fx-background-color: white; /* White background for titled panes */
@@ -147,3 +159,53 @@
     -fx-background-color: #DCDCDC; /* Light pink background */
 }
 
+
+.table-view {
+    -fx-background-color: white; /* Background color for the table */
+    -fx-border-color: gray; /* Border color */
+    -fx-border-width: 1; /* Border width */
+    -fx-table-cell-border-color: lightgray; /* Cell border color */
+    -fx-padding: 5px; /* Padding */
+}
+
+/* TableView Header */
+.table-view .column-header {
+    -fx-background-color: #f0f0f0; /* Light gray background for headers */
+    -fx-border-color: gray; /* Header border color */
+    -fx-font-weight: bold; /* Bold text for headers */
+    -fx-font-size: 13px; /* Font size for headers */
+    -fx-text-fill: black; /* Text color for header */
+}
+
+/* TableView Row Styling */
+.table-row-cell {
+    -fx-background-color: transparent; /* Transparent by default */
+    -fx-text-fill: black; /* Row text color */
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Light gray for odd rows */
+}
+
+.table-row-cell:even {
+    -fx-background-color: white; /* White for even rows */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: darkgray; /* Background color for selected rows */
+    -fx-text-fill: black; /* Text color for selected rows */
+}
+
+.table-cell {
+    -fx-border-color: lightgray; /* Cell border color */
+    -fx-padding: 5px; /* Padding for cell content */
+}
+
+/* Hover effect */
+.table-row-cell:hover {
+    -fx-background-color: lightgray; /* Light gray background on hover */
+}
+
+#updateToLatestVersionButton{
+    -fx-background-color: #01c101; /* Transparent background by default */
+}

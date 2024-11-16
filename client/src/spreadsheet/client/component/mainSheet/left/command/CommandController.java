@@ -4,22 +4,13 @@ import com.google.gson.GsonBuilder;
 import dto.DTOsheet;
 import javafx.application.Platform;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import dto.DTOsheet;
-import dto.DTOsheetTableDetails;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.HBox;
 import okhttp3.*;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
-import javafx.scene.layout.GridPane;
-import org.jetbrains.annotations.NotNull;
-import sheet.coordinate.api.Coordinate;
-import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -31,64 +22,27 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.Modality;
-import okhttp3.Callback;
-import sheet.api.EffectiveValue;
-import java.util.concurrent.CompletableFuture;
-
-import spreadsheet.client.component.mainSheet.MainSheetController;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.chart.*;
-import javafx.scene.control.*;
-import okhttp3.*;
-
-
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import spreadsheet.client.util.Constants;
 import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
-
-import java.io.IOException;
 
 
 public class CommandController {
@@ -494,7 +448,7 @@ public class CommandController {
 
         scrollPane.setContent(vbox);
         Scene scene = new Scene(scrollPane, 300, 400);
-        mainSheetController.setTheme(scene);
+        mainSheetController.setSheetStyle(scene);
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
@@ -1053,7 +1007,7 @@ public class CommandController {
         // Set scene and show the popup
         scrollPane.setContent(vbox);
         Scene scene = new Scene(scrollPane, 400, 300);
-        mainSheetController.setTheme(scene);
+        mainSheetController.setSheetStyle(scene);
         popupStage.setScene(scene);
         popupStage.show();
     }
