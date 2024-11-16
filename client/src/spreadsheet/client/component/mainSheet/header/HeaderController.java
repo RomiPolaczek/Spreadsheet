@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import sheet.coordinate.api.Coordinate;
 import sheet.coordinate.api.CoordinateDeserializer;
 import spreadsheet.client.component.dashboard.DashboardController;
+import spreadsheet.client.component.dashboard.tables.AvailableSheetsRefresher;
 import spreadsheet.client.component.mainSheet.MainSheetController;
 import dto.DTOcell;
 import javafx.animation.ScaleTransition;
@@ -37,9 +38,7 @@ import spreadsheet.client.util.ShowAlert;
 import spreadsheet.client.util.http.HttpClientUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static spreadsheet.client.util.Constants.*;
@@ -78,6 +77,9 @@ public class HeaderController {
     private ThemeManager themeManager;
     private StringBuilder currentExpression;
     private BooleanProperty isEditDisabledProperty;
+    private BooleanProperty isSheetVersionSynced;
+    private TimerTask sheetVersionsRefresher;
+    private Timer timer;
 
 
     public HeaderController() {
@@ -90,6 +92,7 @@ public class HeaderController {
         themeManager = new ThemeManager();
         currentExpression = new StringBuilder();
         isEditDisabledProperty = new SimpleBooleanProperty(false);
+        isSheetVersionSynced = new SimpleBooleanProperty(true);
     }
 
     @FXML
@@ -104,6 +107,7 @@ public class HeaderController {
         animationsCheckBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
         themesComboBox.disableProperty().bind(isEditDisabledProperty); //maybe shouldn't be
         updateToLatestVersionButton.setVisible(false);
+        updateToLatestVersionButton.visibleProperty().bind(isSheetVersionSynced.not());
 
         // Add listener for changes to the selectedCellProperty
         selectedCellProperty.addListener((observable, oldValue, newValue) -> {
@@ -125,6 +129,7 @@ public class HeaderController {
                 }
             }
         });
+
     }
 
     public void setMainSheetController(MainSheetController mainSheetController) {
@@ -133,10 +138,11 @@ public class HeaderController {
         userNameLabel.textProperty().bind(mainSheetController.getUserName());
     }
 
-
     public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
 
     public BooleanProperty isAnimationSelectedProperty() { return isAnimationSelectedProperty; }
+
+    public BooleanProperty getIsSheetVersionSynced() { return isSheetVersionSynced; }
 
     public void displaySheet(String selectedSheet, Boolean loadSheetFromDashboard){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
@@ -181,16 +187,16 @@ public class HeaderController {
 
                             if(loadSheetFromDashboard){
                                 mainSheetController.setSheet(dtoSheet, false);
-                                selectedCellProperty.set("A1");
-                                mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
-                                mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
-                                originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
-                                lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
-                                mainSheetController.populateRangeListView();
-
                             } else{
                                 mainSheetController.setSheet(dtoSheet, true);
                             }
+                            selectedCellProperty.set("A1");
+                            mainSheetController.selectedColumnProperty().set("A1".replaceAll("\\d", ""));
+                            mainSheetController.selectedRowProperty().set("A1".replaceAll("[^\\d]", ""));
+                            originalCellValueProperty.set(dtoSheet.getCell(1,1).getOriginalValue());
+                            lastUpdateVersionCellProperty.set(String.valueOf(dtoSheet.getCell(1,1).getVersion()));
+                            mainSheetController.populateRangeListView();
+                            startSheetVersionsRefresher();
                         } catch (IOException e) {
                             ShowAlert.showAlert("Error","Failed to load the sheet window.","Something went wrong: " +  e.getMessage(), Alert.AlertType.WARNING);
                         }
@@ -305,7 +311,7 @@ public class HeaderController {
         fetchNumOfLatestSheetVersion(
             latestVersion -> {
                 if(mainSheetController.getCurrentDTOSheet().getVersion() != latestVersion)
-                    handleDifferentVersionsSheet();
+                    handleDifferentVersionsSheetPopup();
                 else{
                     updateCellValue(selectedCellID, newValue);
                 }
@@ -489,32 +495,10 @@ public class HeaderController {
 
     @FXML
     void backButtonOnAction(ActionEvent event) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_PAGE_FXML_RESOURCE_LOCATION));
-//            Parent dashboardRoot = loader.load();
-//            ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
-//            mainScrollPane.setContent(dashboardRoot);
-
-//        // Access the existing ScrollPane
-//        ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
-//        ScrollPane dashboardScrollPane = mainSheetController.getDashboardController().getDashboardScrollPane();
-//
-//        if (mainScrollPane != null && dashboardScrollPane != null) {
-//            // Reuse the existing BorderPane (dashboardScrollPane already has it set)
-//            mainScrollPane.setContent(dashboardScrollPane.getContent());
-//        } else {
-//            System.out.println("Error: ScrollPane or its content not found.");
-//        }
-
-
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            ShowAlert.showAlert("Error", "Failed to load the dashboard", e.getMessage(), Alert.AlertType.ERROR);
-//        }
-
         try {
             // Find the main scroll pane in the current scene
             ScrollPane mainScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
+            stopSheetVersionsRefresher();
 
             if (mainScrollPane != null) {
                 System.out.println("mainScrollPane found.");
@@ -541,7 +525,7 @@ public class HeaderController {
         isEditDisabledProperty.set(true);
     }
 
-    private void handleDifferentVersionsSheet() {
+    private void handleDifferentVersionsSheetPopup() {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Version Mismatch");
@@ -556,8 +540,6 @@ public class HeaderController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == retrieveButton) {
                 mainSheetController.displaySheet(false);
-                originalCellValueTextField.clear();
-                originalCellValueTextField.promptTextProperty().bind(originalCellValueProperty);
             } else {
                 disableEditFeatures();
                 System.out.println("Operation canceled by the user.");
@@ -565,8 +547,7 @@ public class HeaderController {
         });
     }
 
-
-    private void fetchNumOfLatestSheetVersion(Consumer<Integer> onSuccess, Consumer<String> onError){
+    public void fetchNumOfLatestSheetVersion(Consumer<Integer> onSuccess, Consumer<String> onError){
         String url = HttpUrl
                 .parse(GET_NUM_LATEST_SHEET_VERSION)
                 .newBuilder()
@@ -594,7 +575,25 @@ public class HeaderController {
 
     @FXML
     void updateToLatestVersionButton(ActionEvent event) {
-
+        mainSheetController.displaySheet(false);
+        isEditDisabledProperty.set(false);
     }
 
+    private void startSheetVersionsRefresher() {
+        sheetVersionsRefresher = new SheetVersionsRefresher(this);
+        timer = new Timer();
+        timer.schedule(sheetVersionsRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public int getLastKnownVersion(){
+        return mainSheetController.getCurrentDTOSheet().getVersion();
+    }
+
+
+    public void stopSheetVersionsRefresher() throws IOException {
+        if (sheetVersionsRefresher != null && timer != null) {
+            sheetVersionsRefresher.cancel();
+            timer.cancel();
+        }
+    }
 }
