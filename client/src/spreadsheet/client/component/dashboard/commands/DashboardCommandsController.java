@@ -50,33 +50,12 @@ public class DashboardCommandsController {
     private BooleanProperty isViewSheetDisabledProperty;
 
 
-//    public void setDashboardController(DashboardController dashboardController) {
-//        this.dashboardController = dashboardController;
-//        viewSheetButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
-//        requestPermissionButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
-////        approvePermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequest().isNull() && !isOwner());
-////        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequest().isNull());
-//    }
-//
-//    private Boolean isOwner() {
-//        Boolean isOwner = false;
-////        if(dashboardController.getUserName().equals(dashboardController.getSelectedRequest())){
-////            isOwner = true;
-////        }
-//        return isOwner;
-//    }
-
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
         isViewSheetDisabledProperty = new SimpleBooleanProperty(false);
         viewSheetButton.disableProperty().bind(Bindings.or(dashboardController.getSelectedSheet().isNull(), isViewSheetDisabledProperty));
         requestPermissionButton.disableProperty().bind(dashboardController.getSelectedSheet().isNull());
-//        approvePermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
-//        rejectPermissionRequestButton.disableProperty().bind(dashboardController.getSelectedRequestUserName().isNull());
-
         setApproveAndRejectButtons();
-
-//        requestPermissionButton.disableProperty().bind(isOwner().not());
     }
 
     public void setApproveAndRejectButtons() {
@@ -196,16 +175,16 @@ public class DashboardCommandsController {
         MainSheetController mainSheetController = loader.getController();
         mainSheetController.setDashboardController(dashboardController);
         mainSheetController.initialize(sheetName, dashboardController);  // Ensures any required setup
-        //mainSheetController.setDashboardController(dashboardController);
+
         // Find the ScrollPane in the dashboard scene
         ScrollPane dashboardScrollPane = (ScrollPane) ((Node) event.getSource()).getScene().lookup("#dashboardScrollPane");
 
         // Set the content of the ScrollPane to the new root component
         dashboardScrollPane.setContent(mainSheetRoot);
         dashboardController.getUserPermissionAndDisableIfNecessary(sheetName, dashboardController.getUserName().get());
+
         // Optionally apply the selected theme or any other settings
         mainSheetController.setTheme(dashboardScrollPane.getScene());
-//        dashboardController.setSheetStyle(dashboardScrollPane.getScene());
         mainSheetController.setSheetStyle(dashboardScrollPane.getScene());
         dashboardController.setMainSheetController(mainSheetController);
         dashboardController.displaySheet(true);
@@ -256,7 +235,6 @@ public class DashboardCommandsController {
                         if (response.isSuccessful()) {
                             Platform.runLater(() -> {
                                 dashboardController.getTabelsController().fetchPermissionTableDetails(dashboardController.getSelectedSheet().getValue());
-                                //dashboardController.getTabelsController().fetchSheetTableDetails();
                             });
                         } else {
                             ShowAlert.showAlert("Error", "Permission Request Handling Error", jsonResponse, Alert.AlertType.ERROR);
@@ -283,6 +261,4 @@ public class DashboardCommandsController {
     public void close() {
 
     }
-
-
 }

@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="dashboardScrollPane" fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.dashboard.DashboardController">
+<ScrollPane fx:id="dashboardScrollPane" fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spreadsheet.client.component.dashboard.DashboardController">
    <content>
-      <BorderPane fx:id="dashboardBorderPane" prefHeight="610.0" prefWidth="1055.0" styleClass="root">
+      <BorderPane fx:id="dashboardBorderPane" prefHeight="640.0" prefWidth="1070.0" styleClass="root">
          <top>
             <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
@@ -28,6 +28,7 @@
                               <Label text="User name:" />
                            </graphic>
                         </Label>
+                        <Button id="logoutButton" fx:id="logoutButton" layoutX="926.0" layoutY="1.0" mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
                   <Label id="header" alignment="TOP_CENTER" text="Sheet-cell" textAlignment="CENTER" />
@@ -36,7 +37,6 @@
                         <CheckBox fx:id="animationsCheckBox" mnemonicParsing="false" onAction="#animationsCheckBoxOnAction" prefWidth="137.0" text="Animations" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="5.0" />
                         <ComboBox fx:id="themesComboBox" onAction="#themesComboBoxOnAction" prefWidth="90.0" promptText="Theme" styleClass="combo-box" AnchorPane.rightAnchor="7.0" />
                       <Button fx:id="loadFileButton" mnemonicParsing="false" onAction="#loadFileButtonOnAction" text="Load File" AnchorPane.leftAnchor="5.0" />
-                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout">
                      </children>
                   </AnchorPane>
                   <Separator prefWidth="200.0">

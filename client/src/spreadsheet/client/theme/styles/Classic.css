@@ -209,3 +209,7 @@
 #updateToLatestVersionButton{
     -fx-background-color: #01c101; /* Transparent background by default */
 }
+
+#logoutButton{
+    -fx-background-color: red; /* Transparent background by default */
+}

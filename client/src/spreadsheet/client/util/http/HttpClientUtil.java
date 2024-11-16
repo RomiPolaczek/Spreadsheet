@@ -4,10 +4,6 @@ import okhttp3.*;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HttpClientUtil {
 
@@ -22,7 +18,7 @@ public class HttpClientUtil {
                     .writeTimeout(30, TimeUnit.SECONDS)   // זמן כתיבה
                     .build();
 
-    //Logger
+    //Logger - DO NOT DELETE
 //    static {
 //        Logger okHttpLogger = Logger.getLogger(OkHttpClient.class.getName());
 //        okHttpLogger.setLevel(Level.FINE);

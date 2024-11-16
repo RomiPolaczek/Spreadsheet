@@ -34,6 +34,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -655,121 +657,6 @@ public class CommandController {
         handler.handleDynamicAnalysis(event);
     }
 
-//    @FXML
-//    void createGraphButtonOnAction(ActionEvent event) {
-//        // Create a new Stage (popup window)
-//        Stage popupStage = new Stage();
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        popupStage.setTitle("Create Graph");
-//
-//        // Create a VBox for the input form
-//        VBox inputFormVBox = new VBox(10);
-//        inputFormVBox.setPadding(new Insets(20));
-//
-//        // Create and configure the text fields for X-axis and Y-axis range input
-//        Label xAxisLabel = new Label("X-axis (Cells Range):");
-//        TextField xAxisField = new TextField();
-//        xAxisField.setPromptText("e.g., \"A1..A3\", \"D2..D5\"");
-//        inputFormVBox.getChildren().addAll(xAxisLabel, xAxisField);
-//
-//        Label yAxisLabel = new Label("Y-axis (Cells Range): ");
-//        TextField yAxisField = new TextField();
-//        yAxisField.setPromptText("e.g., \"A1..A3\", \"D2..D5\"");
-//        inputFormVBox.getChildren().addAll(yAxisLabel, yAxisField);
-//
-//        // Create a combo box to allow selection of graph type (Line Graph or Bar Graph)
-//        Label graphTypeLabel = new Label("Select Graph Type: ");
-//        ComboBox<String> graphTypeComboBox = new ComboBox<>();
-//        graphTypeComboBox.getItems().addAll("Line Graph", "Bar Graph");
-//        graphTypeComboBox.setValue("Line Graph"); // Default selection
-//        inputFormVBox.getChildren().addAll(graphTypeLabel, graphTypeComboBox);
-//
-//        // Create and configure the submit button
-//        Button submitButton = new Button("Create Graph");
-//        submitButton.setDisable(true);  // Initially disabled
-//
-//        // Enable the submit button only when both fields are not empty
-//        xAxisField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            submitButton.setDisable(xAxisField.getText().trim().isEmpty() || yAxisField.getText().trim().isEmpty());
-//        });
-//
-//        yAxisField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            submitButton.setDisable(xAxisField.getText().trim().isEmpty() || yAxisField.getText().trim().isEmpty());
-//        });
-//
-//        // Scene for graph display
-//        Scene inputScene = new Scene(inputFormVBox, 400, 300);
-//
-//        submitButton.setOnAction(e -> {
-//            String xAxisRange = xAxisField.getText();
-//            String yAxisRange = yAxisField.getText();
-//            String selectedGraphType = graphTypeComboBox.getValue();
-//
-//            try {
-//                // Parse the ranges
-//                List<Double> xAxisValues = mainController.getEngine().getNumericalValuesFromRange(xAxisRange);
-//                List<Double> yAxisValues = mainController.getEngine().getNumericalValuesFromRange(yAxisRange);
-//
-//                if (xAxisValues.size() != yAxisValues.size()) {
-//                    throw new IllegalArgumentException("X and Y ranges must have the same number of values.");
-//                }
-//
-//                Chart chart = null;
-//                if ("Line Graph".equals(selectedGraphType)) {
-//                    NumberAxis xAxis = new NumberAxis();
-//                    xAxis.setLabel("X Axis");
-//
-//                    NumberAxis yAxis = new NumberAxis();
-//                    yAxis.setLabel("Y Axis");
-//
-//                    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-//                    XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
-//                    for (int i = 0; i < xAxisValues.size(); i++) {
-//                        dataSeries.getData().add(new XYChart.Data<>(xAxisValues.get(i), yAxisValues.get(i)));
-//                    }
-//
-//                    lineChart.getData().add(dataSeries);
-//                    chart = lineChart;
-//                    lineChart.getStyleClass().add("visible");
-//                    if(!mainSheetController.isAnimationSelectedProperty())
-//                        chart.setAnimated(false);
-//
-//                }
-//                else if ("Bar Graph".equals(selectedGraphType)) {
-//                    CategoryAxis xAxis = new CategoryAxis();
-//                    xAxis.setLabel("X Axis");
-//
-//                    NumberAxis yAxis = new NumberAxis();
-//                    yAxis.setLabel("Y Axis");
-//
-//                    BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-//
-//                    XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
-//                    for (int i = 0; i < xAxisValues.size(); i++) {
-//                        dataSeries.getData().add(new XYChart.Data<>(xAxisValues.get(i).toString(), yAxisValues.get(i)));
-//                    }
-//
-//                    barChart.getData().add(dataSeries);
-//                    chart = barChart;
-//
-//                    if(!mainSheetController.isAnimationSelectedProperty())
-//                        chart.setAnimated(false);
-//                }
-//
-//                // Display the chart with a "Back" button
-//                showChartInPopup(popupStage, chart, inputScene);
-//
-//            } catch (Exception ex) {
-//                //mainController.showAlert("Error", "Could not create graph", ex.getMessage(), Alert.AlertType.ERROR);
-//            }
-//        });
-//
-//        inputFormVBox.getChildren().add(submitButton);
-//        popupStage.setScene(inputScene);
-//        mainSheetController.setTheme(inputScene);
-//        popupStage.show();
-//    }
-
     private void showChartInPopup(Stage popupStage, Chart chart, Scene inputScene) {
         VBox chartVBox = new VBox(chart);
         chartVBox.setPadding(new Insets(10));
@@ -898,7 +785,7 @@ public class CommandController {
                     );
 
                 } else {
-                    //Platform.runLater(() -> ShowAlert.showAlert("Error", "Failed to fetch range values", responseBody, Alert.AlertType.ERROR));
+//                    Platform.runLater(() -> ShowAlert.showAlert("Error", "Failed to fetch range values", responseBody, Alert.AlertType.ERROR));
                     System.out.println(responseBody);
                 }
             }

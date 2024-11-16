@@ -211,3 +211,6 @@
     -fx-background-color: black; /* Transparent background by default */
 }
 
+#logoutButton{
+    -fx-background-color: black; /* Transparent background by default */
+}

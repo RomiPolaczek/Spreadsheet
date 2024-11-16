@@ -64,7 +64,10 @@
                         <Insets right="2.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box" />
+                  <ComboBox fx:id="versionSelectorComboBox" onAction="#versionSelectorComboBoxAction" prefWidth="135.0" promptText="Version Selector" styleClass="combo-box">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></ComboBox>
                </children>
                <VBox.margin>
                   <Insets left="7.0" />

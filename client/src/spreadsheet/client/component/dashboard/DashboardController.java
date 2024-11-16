@@ -1,8 +1,6 @@
 package spreadsheet.client.component.dashboard;
 
 import com.google.gson.Gson;
-import dto.DTOpermissionRequest;
-import impl.EngineImpl;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -180,13 +178,10 @@ public class DashboardController {
                             Gson gson = new Gson();
                             Map<String, Object> result = gson.fromJson(jsonResponse, Map.class);
 
-//                            int status = ((Double) result.get("status")).intValue(); // JSON numbers are parsed as Double
                             String message = (String) result.get("message");
 
                             Platform.runLater(() -> {
-                                if (response.isSuccessful()) {
-//                                    tabelsComponentController.startAvailableSheetsTableRefresher();
-                                } else {
+                                if (!response.isSuccessful()) {
                                     ShowAlert.showAlert("Error", "File Load Error", message, Alert.AlertType.ERROR);
                                 }
                                 progressBarStage.close();
@@ -281,9 +276,6 @@ public class DashboardController {
 
                     // Check if the PermissionType is READER, then disable the edit buttons
                     Platform.runLater(() -> {
-//                        if(permissionType.equals(PermissionType.NONE)) {
-//                            disableViewSheet();
-//                        }
                         if (permissionType.equals(PermissionType.READER)) {
                             disableEditFeatures();
                         }
@@ -327,10 +319,6 @@ public class DashboardController {
         selectedTheme = themesComboBox.getValue();
         themeManager.applyTheme(loadFileButton.getScene(), selectedTheme);
     }
-
-    public void setSelectedTheme(String selectedTheme) {
-        this.selectedTheme = selectedTheme;
-    }
   
     public void close() {
         if(dashboardCommandsComponentController != null)
@@ -343,7 +331,6 @@ public class DashboardController {
 
     @FXML
     void logoutButtonOnAction(ActionEvent event) {
-
         String finalUrl = HttpUrl
                 .parse(Constants.LOGOUT)
                 .newBuilder()
@@ -393,9 +380,5 @@ public class DashboardController {
 
     public void setTheme(Scene scene) {
         themeManager.applyTheme(scene, selectedTheme);
-    }
-
-    public void setSheetStyle(Scene scene) {
-        mainSheetController.setSheetStyle(scene);
     }
 }

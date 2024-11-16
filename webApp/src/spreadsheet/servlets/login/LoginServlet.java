@@ -61,14 +61,12 @@ public class LoginServlet extends HttpServlet{
                         //redirect the request to the chat room - in order to actually change the URL
                         //System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
-                        out.write(gson.toJson("succ"));
                     }
                 }
             }
         } else {
             //user is already logged in
             response.setStatus(HttpServletResponse.SC_OK);
-            out.write(gson.toJson("succ"));
         }
     }
 }

@@ -107,10 +107,6 @@ public class UpdateCellFormat {
         window.showAndWait();
     }
 
-    public String getGeneratedString() {
-        return generatedString;
-    }
-
     private Label createLabel(String prefix, String value) {
         return new Label(prefix + value);
     }

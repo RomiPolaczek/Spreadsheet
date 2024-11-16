@@ -123,15 +123,11 @@ public class HeaderController {
         userNameLabel.textProperty().bind(mainSheetController.getUserName());
     }
 
-    public SimpleStringProperty getSelectedCellProperty(){ return selectedCellProperty; }
+    public SimpleStringProperty getSelectedCellProperty() { return selectedCellProperty; }
 
     public BooleanProperty getIsSheetVersionSynced() { return isSheetVersionSynced; }
 
     public MainSheetController getMainSheetController() { return mainSheetController; }
-
-    public void setSheetNameLabel(String sheetNameLabel) {
-        this.sheetNameLabel.setText(sheetNameLabel);
-    }
 
     public void displaySheet(String selectedSheet, Boolean loadSheetFromDashboard){
         if (selectedSheet==null ||selectedSheet.isEmpty()) {
