@@ -31,6 +31,7 @@ The **Sheet-Cell** project is a Java-based implementation of a fully functional 
    - Engineered to handle concurrent user updates while ensuring data consistency.
    - Implements synchronization mechanisms to manage shared resources safely.
 
+
 ## ⚙️ How to Run
 
 ### Prerequisites
@@ -39,27 +40,10 @@ The **Sheet-Cell** project is a Java-based implementation of a fully functional 
 - **Runtime Dependencies**: Include JavaFX runtime for graphical features.
 - **Input Files**: Prepare spreadsheets in XML or JSON format.
 
-### Steps
-1. **Server Setup**:
-   - Deploy the server-side JAR to Tomcat and start the server.
 
-2. **Run the Client**:
-   - Launch the desktop application:
-     ```bash
-     java -jar gui-client.jar
-     ```
+> ### Note:
+> For client-server usage, ensure the server is running and accessible to clients. Modify configuration files to specify server addresses and ports.
 
-3. **Console Interface**:
-   - Use the console application for command-line interaction:
-     ```bash
-     java -jar console-app.jar
-     ```
-
-4. **File Management**:
-   - Import or export spreadsheets using supported file formats.
-
-### Note:
-For client-server usage, ensure the server is running and accessible to clients. Modify configuration files to specify server addresses and ports.
 
 ## 🌈  Advanced Capabilities
 1. **🔍 Dynamic Analysis**:
@@ -74,12 +58,16 @@ For client-server usage, ensure the server is running and accessible to clients.
    - Visualize spreadsheet data using bar and line charts.
    - Define X and Y axes through ranges for flexible graphing.
 
+
+
 ## 🏗️ Project Architecture
 The application follows a modular structure for better scalability and maintainability:
 - **Engine**: Core logic for spreadsheets, including formula evaluation, dependency management, and versioning.
 - **UI**: Console-based and JavaFX graphical interfaces.
 - **Server**: Manages client requests and maintains centralized spreadsheet data.
 - **Data Handling**: Processes XML and JSON formats for importing/exporting spreadsheets.
+
+
 
 ## 💪 Challenges and Solutions
 1. **Concurrency**:
@@ -93,6 +81,8 @@ The application follows a modular structure for better scalability and maintaina
 3. **User Experience**:
    - Focused on intuitive UI/UX for both console and GUI interfaces.
    - Provided meaningful error messages and feedback for better usability.
+
+
 
 ## 📌 Use Cases
 1. **Individual Productivity**:
